@@ -1,0 +1,43 @@
+# Python/cache artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Environments
+.venv/
+venv/
+env/
+streamsplat_venv/
+
+# Large model/data artifacts
+checkpoints/
+weights/
+datasets/
+data/
+outputs/
+renders/
+videos/
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.png
+*.jpg
+*.jpeg
+*.webp
+
+# Build artifacts
+build/
+dist/
+*.so
+*.o
+
+# Local external dependency links/configs
+external/
+local_paths.json
