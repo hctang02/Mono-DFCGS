@@ -1,6 +1,6 @@
-# KeyStreamSplat
+# Mono-DFCGS
 
-KeyStreamSplat is a research codebase for a keyframe-Gaussian-only dynamic 3D Gaussian video codec built around a StreamSplat-style decoder.
+Mono-DFCGS is a research codebase for a keyframe-Gaussian-only dynamic 3D Gaussian video codec built around a StreamSplat-style decoder.
 
 The intended codec setting is:
 

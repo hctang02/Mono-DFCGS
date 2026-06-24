@@ -8,6 +8,14 @@
 
 ### Answer / Decision
 
-建议不要长期放在 `/mnt/hdd2tC/tmp/opencode`，该目录更适合作为临时实验区。长期项目放到 `/mnt/hdd2tC/haocheng/KeyStreamSplat` 更清晰。
+建议不要长期放在 `/mnt/hdd2tC/tmp/opencode`，该目录更适合作为临时实验区。长期项目放到 `/mnt/hdd2tC/haocheng/Mono-DFCGS` 更清晰。
 
-建议不要推送到 NeoVerse 仓库。NeoVerse 当前已有 CompactWorld/CWGS 相关改动，且 KeyStreamSplat 的研究目标、rate accounting 和代码结构会逐渐独立。应新建独立仓库。
+建议不要推送到 NeoVerse 仓库。NeoVerse 当前已有 CompactWorld/CWGS 相关改动，且 Mono-DFCGS 的研究目标、rate accounting 和代码结构会逐渐独立。应新建独立仓库。
+
+### User Question
+
+希望后续基于 GitHub 仓库 `https://github.com/hctang02/Mono-DFCGS` 上传 git，而不是传到 NeoVerse；并且把本地 `KeyStreamSplat` 文件夹改成 `Mono-DFCGS`，相关命名也同步修改。
+
+### Answer / Decision
+
+本地项目目录已改为 `/mnt/hdd2tC/haocheng/Mono-DFCGS`。后续 git 上传以 `https://github.com/hctang02/Mono-DFCGS` 为远端目标，不再上传到 NeoVerse。

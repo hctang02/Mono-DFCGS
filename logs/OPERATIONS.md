@@ -7,7 +7,7 @@
 Created long-term project directory:
 
 ```text
-/mnt/hdd2tC/haocheng/KeyStreamSplat
+/mnt/hdd2tC/haocheng/Mono-DFCGS
 ```
 
 Initial structure:
@@ -15,7 +15,7 @@ Initial structure:
 ```text
 docs/
 experiments/
-keystreamsplat/
+mono_dfcgs/
 logs/
 scripts/
 ```
@@ -29,3 +29,18 @@ External resources remain outside this repository:
 ```
 
 Reason: avoid tracking large checkpoints, virtual environments, compiled rasterizers, output videos, and third-party repository state.
+
+### Repository Rename
+
+Renamed local project directory:
+
+```text
+/mnt/hdd2tC/haocheng/KeyStreamSplat
+-> /mnt/hdd2tC/haocheng/Mono-DFCGS
+```
+
+Remote target selected by user:
+
+```text
+https://github.com/hctang02/Mono-DFCGS
+```

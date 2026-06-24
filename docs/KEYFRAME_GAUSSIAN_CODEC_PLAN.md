@@ -161,4 +161,4 @@ Use y-axis metrics:
 
 ## Main Claim
 
-KeyStreamSplat transmits only sparse compressed keyframe Gaussian anchors and reconstructs non-keyframes through decoder-side dynamic 3D Gaussian prediction, enabling extremely low transmitted Gaussian size while preserving a dynamic 3DGS representation.
+Mono-DFCGS transmits only sparse compressed keyframe Gaussian anchors and reconstructs non-keyframes through decoder-side dynamic 3D Gaussian prediction, enabling extremely low transmitted Gaussian size while preserving a dynamic 3DGS representation.

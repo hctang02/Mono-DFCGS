@@ -4,7 +4,7 @@
 
 - `/mnt/ssd2tB` is almost full and should not receive copied StreamSplat checkpoints or output videos.
 - `/mnt/hdd2tC/tmp/opencode` is acceptable for temporary experiments but not ideal for a long-term source repository.
-- Long-term project source should live under `/mnt/hdd2tC/haocheng/KeyStreamSplat`.
+- Long-term project source should live under `/mnt/hdd2tC/haocheng/Mono-DFCGS`.
 
 ## Git Hygiene
 
@@ -12,7 +12,7 @@
 - Do not commit Python virtual environments.
 - Do not commit compiled rasterizer build directories.
 - Do not commit rendered videos or large image outputs.
-- Keep NeoVerse/CompactWorld work separate from KeyStreamSplat work.
+- Keep NeoVerse/CompactWorld work separate from Mono-DFCGS work.
 
 ## StreamSplat Dependency State
 
