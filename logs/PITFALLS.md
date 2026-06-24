@@ -24,3 +24,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - The last segment can be shorter than the nominal gap, especially for `robot`. Stage 1 handles this by grouping pairs by actual segment length instead of forcing a fixed output length.
 - xFormers is unavailable/disabled in the current environment. The model still runs, but inference may be slower.
 - Heavy frame/depth caches should remain outside git under `/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs`.
+
+## Stage 2 Notes
+
+- Stage 2 initially completed GPU inference but failed at CSV writing because `total_bytes` was missing from the CSV field list. The script was fixed and CSV was regenerated from the already-written JSON, avoiding duplicate GPU inference.
+- `static_anchor` and `full_half_anchor` must be kept distinct. The former is the intended transmitted keyframe Gaussian payload; the latter is a conservative upper-bound profile.
+- Simple opacity pruning is weak for current StreamSplat anchors because most base opacities remain above low thresholds. Future rate control should include top-K or learned importance pruning.

@@ -96,3 +96,76 @@ experiments/stage1_streamsplat_fair_metrics/stage1_streamsplat_fair_metrics_summ
 - driving / robot 的 middle-only PSNR 明显低于 given-keyframe PSNR，说明动态预测难度更高。
 - gap 增大时，raw pred_gs size 近似按 keyframe pair 数下降，但 middle-only 质量同步下降。
 - 阶段 2 需要从这些 pair-level Gaussian 中建立 keyframe Gaussian anchor size 口径。
+
+## 2026-06-25：阶段 2 Keyframe Gaussian Anchor Baseline
+
+### 执行计划
+
+阶段 2 的目标是从 StreamSplat pair-level `pred_gs` 中抽取唯一 keyframe Gaussian anchors，并估计只传关键帧 Gaussian 时的 transmitted size。
+
+统计两种 profile：
+
+- `static_anchor`：传 `rgb + base opacity + scale + xyz_static + rot_static`，共 13 values / Gaussian，更符合后续 codec 设定。
+- `full_half_anchor`：传 pair half 中全部字段，作为保守上界，共 22 values / Gaussian。
+
+统计 codec：
+
+- `float32`
+- `float16`
+- `q8`
+- `q6`
+- `q4`
+
+统计 opacity pruning threshold：
+
+- `0.0`
+- `0.05`
+- `0.1`
+- `0.2`
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 2 被占用约 23.7GB，GPU 6 有运行进程，其余 GPU 基本空闲。阶段 2 使用 `CUDA_VISIBLE_DEVICES=1` 执行。
+
+### 新增脚本
+
+```text
+scripts/run_stage2_keyframe_gaussian_anchor_baseline.py
+```
+
+### 输出文件
+
+```text
+experiments/stage2_keyframe_gaussian_anchor/stage2_keyframe_gaussian_anchor_summary.json
+experiments/stage2_keyframe_gaussian_anchor/stage2_keyframe_gaussian_anchor_summary.csv
+```
+
+### 主配置结果
+
+主配置为 `profile=static_anchor, codec=q8, opacity_threshold=0.0`。
+
+| sample | gap | keyframes | total MiB | avg MiB/frame |
+|---|---:|---:|---:|---:|
+| n3dv | 2 | 41 | 18.738 | 0.231337 |
+| meetroom | 2 | 41 | 18.738 | 0.231337 |
+| driving | 2 | 41 | 18.738 | 0.231337 |
+| robot | 2 | 39 | 17.824 | 0.231483 |
+| n3dv | 4 | 21 | 9.598 | 0.118490 |
+| meetroom | 4 | 21 | 9.598 | 0.118490 |
+| driving | 4 | 21 | 9.598 | 0.118490 |
+| robot | 4 | 20 | 9.141 | 0.118709 |
+| n3dv | 8 | 11 | 5.027 | 0.062066 |
+| meetroom | 8 | 11 | 5.027 | 0.062066 |
+| driving | 8 | 11 | 5.027 | 0.062066 |
+| robot | 8 | 11 | 5.027 | 0.065290 |
+| n3dv | 16 | 6 | 2.742 | 0.033854 |
+| meetroom | 16 | 6 | 2.742 | 0.033854 |
+| driving | 16 | 6 | 2.742 | 0.033854 |
+| robot | 16 | 6 | 2.742 | 0.035613 |
+
+### 结论
+
+- 只传 static keyframe Gaussian anchors 后，估算码率远低于阶段 1 的 raw pair-level `pred_gs` size。
+- gap=4 的 static q8 transmitted size 约为 `0.1185 MiB/frame`，适合作为阶段 3 的 keyframe-Gaussian-only codec 默认点。
+- opacity threshold 到 `0.1` 基本不剪枝，说明当前 StreamSplat static opacity 大多较高；简单 opacity pruning 对码率帮助有限，需要后续考虑 top-K / learned importance。
+- 阶段 3 将把阶段 1 的重建质量和阶段 2 的 transmitted keyframe Gaussian size 合并成 uniform keyframe Gaussian codec RD baseline。
