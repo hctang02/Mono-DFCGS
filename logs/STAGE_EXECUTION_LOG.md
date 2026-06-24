@@ -222,3 +222,60 @@ experiments/stage3_uniform_keyframe_gaussian_codec/stage3_uniform_keyframe_gauss
 - 阶段 3 已形成可与 FCGS / D-FCGS / CWGS 对齐的 RD 表：横轴为 transmitted keyframe Gaussian size，纵轴为 StreamSplat sparse-keyframe reconstruction quality。
 - 当前质量仍来自 StreamSplat RGB/depth-conditioned reconstruction，不是最终 Gaussian-anchor-only predictor；因此阶段 3 是 uniform keyframe Gaussian codec baseline / upper-reference，而非最终方法。
 - 阶段 4 需要开始实现 Gaussian-anchor-conditioned dynamic predictor 的最小闭环，逐步替代对 RGB/depth features 的依赖。
+
+## 2026-06-25：阶段 4 Gaussian-Anchor Dynamic Predictor Smoke
+
+### 执行计划
+
+阶段 4 的目标是实现 Gaussian-anchor-conditioned predictor 的最小闭环，而不是直接训练最终模型。该阶段验证：
+
+- static Gaussian anchor flatten / unflatten
+- payload estimate / q8 size estimate
+- 轻量 GaussianAnchorDynamicPredictor
+- 输入左右关键帧 anchors 和 normalized time，输出中间 Gaussian anchor fields
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 2 被占用约 23.7GB，GPU 1 空闲。阶段 4 使用 `CUDA_VISIBLE_DEVICES=1` 执行 smoke。
+
+### 新增文件
+
+```text
+mono_dfcgs/gaussian_codec.py
+mono_dfcgs/anchor_predictor.py
+scripts/run_stage4_gaussian_anchor_predictor_smoke.py
+```
+
+### 输出文件
+
+```text
+experiments/stage4_gaussian_anchor_predictor_smoke/stage4_gaussian_anchor_predictor_smoke_summary.json
+```
+
+### Smoke 结果
+
+| item | value |
+|---|---:|
+| batch | 2 |
+| gaussians | 1024 |
+| hidden dim | 128 |
+| parameters | 102925 |
+| device | cuda |
+| mean MSE to linear target | 0.089763 |
+| q8 payload MiB for left anchor | 0.025391 |
+
+所有时间点 `0.0 / 0.25 / 0.5 / 0.75 / 1.0` 的输出字段形状均为：
+
+```text
+rgb: [2, 1024, 3]
+opacity: [2, 1024, 1]
+scale: [2, 1024, 2]
+xyz: [2, 1024, 3]
+rot: [2, 1024, 4]
+```
+
+### 结论
+
+- Gaussian-anchor predictor 的最小接口已经跑通。
+- 当前 predictor 只是 stage-4 smoke model，输出是 static anchor field format，不包含真实 renderer 和动态 3DGS lifecycle。
+- 阶段 5 将基于这个接口实现 smoke training，验证反向传播和 loss 下降。
