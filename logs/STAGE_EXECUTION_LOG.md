@@ -169,3 +169,56 @@ experiments/stage2_keyframe_gaussian_anchor/stage2_keyframe_gaussian_anchor_summ
 - gap=4 的 static q8 transmitted size 约为 `0.1185 MiB/frame`，适合作为阶段 3 的 keyframe-Gaussian-only codec 默认点。
 - opacity threshold 到 `0.1` 基本不剪枝，说明当前 StreamSplat static opacity 大多较高；简单 opacity pruning 对码率帮助有限，需要后续考虑 top-K / learned importance。
 - 阶段 3 将把阶段 1 的重建质量和阶段 2 的 transmitted keyframe Gaussian size 合并成 uniform keyframe Gaussian codec RD baseline。
+
+## 2026-06-25：阶段 3 Uniform Keyframe Gaussian Codec Baseline
+
+### 执行计划
+
+阶段 3 的目标是合并阶段 1 的 sparse-keyframe reconstruction quality 和阶段 2 的 transmitted keyframe Gaussian anchor size，得到第一个 RD-compatible Mono-DFCGS baseline。
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。该阶段为 CPU 汇总脚本，但仍按要求检查 GPU。GPU 2 被占用，其他 GPU 基本空闲。
+
+### 新增脚本
+
+```text
+scripts/run_stage3_uniform_keyframe_gaussian_codec.py
+```
+
+### 输出文件
+
+```text
+experiments/stage3_uniform_keyframe_gaussian_codec/stage3_uniform_keyframe_gaussian_codec_summary.json
+experiments/stage3_uniform_keyframe_gaussian_codec/stage3_uniform_keyframe_gaussian_codec_summary.csv
+experiments/stage3_uniform_keyframe_gaussian_codec/stage3_uniform_keyframe_gaussian_codec_main_q8.csv
+```
+
+### 主配置 RD 结果
+
+主配置为 `profile=static_anchor, codec=q8, opacity_threshold=0.0`。
+
+| sample | gap | avg transmitted MiB/frame | all PSNR | middle PSNR | given PSNR |
+|---|---:|---:|---:|---:|---:|
+| n3dv | 2 | 0.231337 | 34.0026 | 33.5896 | 34.4054 |
+| n3dv | 4 | 0.118490 | 33.3961 | 33.0521 | 34.3788 |
+| n3dv | 8 | 0.062066 | 32.5026 | 32.2074 | 34.3810 |
+| n3dv | 16 | 0.033854 | 30.8818 | 30.6031 | 34.3644 |
+| meetroom | 2 | 0.231337 | 34.6654 | 33.1828 | 36.1118 |
+| meetroom | 4 | 0.118490 | 32.4263 | 31.1640 | 36.0328 |
+| meetroom | 8 | 0.062066 | 29.6881 | 28.6872 | 36.0580 |
+| meetroom | 16 | 0.033854 | 26.7990 | 26.0567 | 36.0775 |
+| driving | 2 | 0.231337 | 32.7780 | 28.5295 | 36.9229 |
+| driving | 4 | 0.118490 | 30.1950 | 27.8362 | 36.9345 |
+| driving | 8 | 0.062066 | 27.8651 | 26.4415 | 36.9245 |
+| driving | 16 | 0.033854 | 25.1163 | 24.1721 | 36.9199 |
+| robot | 2 | 0.231483 | 30.3682 | 24.6836 | 35.9070 |
+| robot | 4 | 0.118709 | 26.4895 | 23.1786 | 35.9256 |
+| robot | 8 | 0.065290 | 23.8811 | 21.8721 | 35.9357 |
+| robot | 16 | 0.035613 | 21.8207 | 20.6381 | 35.8144 |
+
+### 结论
+
+- 阶段 3 已形成可与 FCGS / D-FCGS / CWGS 对齐的 RD 表：横轴为 transmitted keyframe Gaussian size，纵轴为 StreamSplat sparse-keyframe reconstruction quality。
+- 当前质量仍来自 StreamSplat RGB/depth-conditioned reconstruction，不是最终 Gaussian-anchor-only predictor；因此阶段 3 是 uniform keyframe Gaussian codec baseline / upper-reference，而非最终方法。
+- 阶段 4 需要开始实现 Gaussian-anchor-conditioned dynamic predictor 的最小闭环，逐步替代对 RGB/depth features 的依赖。
