@@ -279,3 +279,63 @@ rot: [2, 1024, 4]
 - Gaussian-anchor predictor 的最小接口已经跑通。
 - 当前 predictor 只是 stage-4 smoke model，输出是 static anchor field format，不包含真实 renderer 和动态 3DGS lifecycle。
 - 阶段 5 将基于这个接口实现 smoke training，验证反向传播和 loss 下降。
+
+## 2026-06-25：阶段 5 Training / Evaluation Smoke Pipeline
+
+### 执行计划
+
+阶段 5 的目标是建立训练工程 smoke pipeline：
+
+- synthetic left/right keyframe Gaussian anchors
+- random normalized time
+- optional q8 quantization-aware anchor perturbation
+- GaussianAnchorDynamicPredictor training
+- eval loss before/after training
+
+该阶段不做真实视频大规模训练，也不声称最终重建质量，只验证训练路径、反向传播和 loss 下降。
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 2 被占用约 23.7GB，GPU 1 空闲。阶段 5 使用 `CUDA_VISIBLE_DEVICES=1` 执行。
+
+### 新增脚本
+
+```text
+scripts/run_stage5_training_smoke.py
+```
+
+### 输出文件
+
+```text
+experiments/stage5_training_smoke/stage5_training_smoke_summary.json
+```
+
+### Smoke 训练配置
+
+| item | value |
+|---|---:|
+| batch | 4 |
+| gaussians | 512 |
+| hidden dim | 128 |
+| steps | 80 |
+| lr | 0.001 |
+| quant bits | 8 |
+| parameters | 102925 |
+| device | cuda |
+
+### Smoke 训练结果
+
+| metric | value |
+|---|---:|
+| initial eval loss | 0.089216 |
+| final eval loss | 0.014656 |
+| eval loss ratio | 0.164271 |
+| first train loss | 0.090444 |
+| last train loss | 0.013557 |
+| train loss ratio | 0.149896 |
+
+### 结论
+
+- Gaussian-anchor predictor 的训练路径已跑通。
+- q8 quantization-aware synthetic anchors 下，80-step smoke training 能显著降低 proxy loss。
+- 下一步应从 synthetic anchors 过渡到真实导出的 keyframe Gaussian anchors，并接入 renderer / RGB supervision。
