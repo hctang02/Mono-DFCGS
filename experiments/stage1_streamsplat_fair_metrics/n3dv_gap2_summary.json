@@ -1,0 +1,112 @@
+{
+  "method": "StreamSplat pretrained fair metrics",
+  "sample": "n3dv",
+  "input_video": "/mnt/hdd2tC/tmp/opencode/gt_reference_videos/n3dv_input_81f_560x336.mp4",
+  "frame_gap": 2,
+  "resolution": [
+    512,
+    288
+  ],
+  "total_frames": 81,
+  "selected_keyframes": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50,
+    52,
+    54,
+    56,
+    58,
+    60,
+    62,
+    64,
+    66,
+    68,
+    70,
+    72,
+    74,
+    76,
+    78,
+    80
+  ],
+  "keyframe_count": 41,
+  "keyframe_ratio": 0.5061728395061729,
+  "pair_count": 40,
+  "complete": true,
+  "all": {
+    "count": 81,
+    "psnr_avg": 34.00257984969773,
+    "psnr_min": 30.64881693928248,
+    "ssim_avg": 0.9667736291885376,
+    "ssim_min": 0.9420741200447083
+  },
+  "middle_only": {
+    "count": 40,
+    "psnr_avg": 33.58964491875268,
+    "psnr_min": 30.64881693928248,
+    "ssim_avg": 0.9639030694961548,
+    "ssim_min": 0.9420741200447083
+  },
+  "given_keyframes": {
+    "count": 41,
+    "psnr_avg": 34.4054431969612,
+    "psnr_min": 34.31763439637677,
+    "ssim_avg": 0.9695740938186646,
+    "ssim_min": 0.9692116379737854
+  },
+  "raw_pred_gs_mib": 247.5,
+  "raw_pred_gs_mib_per_frame": 3.0555555555555554,
+  "raw_pred_gs_size_note": "Raw StreamSplat predicted dynamic 3DGS tensors for adjacent keyframe pairs; not a codec bitstream.",
+  "pred_gs_shapes_last_batch": {
+    "rgb": [
+      2,
+      73728,
+      3
+    ],
+    "opacity": [
+      2,
+      73728,
+      3
+    ],
+    "scale": [
+      2,
+      73728,
+      2
+    ],
+    "xyz": [
+      2,
+      73728,
+      2,
+      3
+    ],
+    "rot": [
+      2,
+      73728,
+      2,
+      4
+    ]
+  },
+  "heavy_output_dir": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage1_streamsplat_fair_metrics/n3dv_gap2"
+}

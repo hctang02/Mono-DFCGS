@@ -1,0 +1,82 @@
+{
+  "method": "StreamSplat pretrained fair metrics",
+  "sample": "driving",
+  "input_video": "/mnt/ssd2tB/haocheng/NeoVerse/examples/videos/driving.mp4",
+  "frame_gap": 8,
+  "resolution": [
+    512,
+    288
+  ],
+  "total_frames": 81,
+  "selected_keyframes": [
+    0,
+    8,
+    16,
+    24,
+    32,
+    40,
+    48,
+    56,
+    64,
+    72,
+    80
+  ],
+  "keyframe_count": 11,
+  "keyframe_ratio": 0.13580246913580246,
+  "pair_count": 10,
+  "complete": true,
+  "all": {
+    "count": 81,
+    "psnr_avg": 27.865137073780094,
+    "psnr_min": 20.80161497944626,
+    "ssim_avg": 0.7772130370140076,
+    "ssim_min": 0.5036494135856628
+  },
+  "middle_only": {
+    "count": 70,
+    "psnr_avg": 26.441515543187688,
+    "psnr_min": 20.80161497944626,
+    "ssim_avg": 0.7473002076148987,
+    "ssim_min": 0.5036494135856628
+  },
+  "given_keyframes": {
+    "count": 11,
+    "psnr_avg": 36.92454681391353,
+    "psnr_min": 36.74984543496164,
+    "ssim_avg": 0.9675672650337219,
+    "ssim_min": 0.966993510723114
+  },
+  "raw_pred_gs_mib": 61.875,
+  "raw_pred_gs_mib_per_frame": 0.7638888888888888,
+  "raw_pred_gs_size_note": "Raw StreamSplat predicted dynamic 3DGS tensors for adjacent keyframe pairs; not a codec bitstream.",
+  "pred_gs_shapes_last_batch": {
+    "rgb": [
+      2,
+      73728,
+      3
+    ],
+    "opacity": [
+      2,
+      73728,
+      3
+    ],
+    "scale": [
+      2,
+      73728,
+      2
+    ],
+    "xyz": [
+      2,
+      73728,
+      2,
+      3
+    ],
+    "rot": [
+      2,
+      73728,
+      2,
+      4
+    ]
+  },
+  "heavy_output_dir": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage1_streamsplat_fair_metrics/driving_gap8"
+}

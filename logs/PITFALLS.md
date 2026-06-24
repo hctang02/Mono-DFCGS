@@ -17,3 +17,10 @@
 ## StreamSplat Dependency State
 
 The official StreamSplat checkout currently has untracked local runtime artifacts such as checkpoints, `__pycache__`, and compiled rasterizer build products. It should be treated as an external dependency rather than the main project repository.
+
+## Stage 1 Notes
+
+- StreamSplat baseline must report middle-only metrics; all-frame PSNR can be inflated by input keyframes.
+- The last segment can be shorter than the nominal gap, especially for `robot`. Stage 1 handles this by grouping pairs by actual segment length instead of forcing a fixed output length.
+- xFormers is unavailable/disabled in the current environment. The model still runs, but inference may be slower.
+- Heavy frame/depth caches should remain outside git under `/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs`.
