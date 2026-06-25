@@ -2446,3 +2446,65 @@ experiments/stage32_actual_bitstream_rd_report/stage32_mean_*_rd.png
 - Raw prototype container rate is very close to estimated q8 anchor rate, around 1.001x, because JSON/qparam/index overhead is small relative to payload.
 - Zlib container rate is around 65.3% of estimated q8 anchor rate on average, while preserving the same decoded q8 anchors and full-video quality.
 - Zlib is still a generic compression baseline, not the final learned entropy coder.
+
+## 2026-06-25：阶段 33 Dense Gap1 Anchor Export
+
+### 执行计划
+
+Stage33 根据 Stage30 preflight 实际导出 gap1 adjacent pair anchors，让每个视频帧都至少作为某个 pair endpoint 出现，从而解除 Stage27/Stage16 selector 只能选择现有偶数 anchors 的限制。
+
+### 新增文件
+
+```text
+scripts/run_stage33_dense_gap1_anchor_export.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage33_dense_gap1_anchor_export.py
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage33_dense_gap1_anchor_export.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi`。GPU 2 有大进程，GPU 7 有小进程，GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+仓库内轻量 manifest/summary：
+
+```text
+experiments/stage33_dense_gap1_anchor_export/stage33_dense_gap1_anchor_manifest.csv
+experiments/stage33_dense_gap1_anchor_export/stage33_dense_gap1_anchor_manifest.json
+experiments/stage33_dense_gap1_anchor_export/stage33_dense_gap1_anchor_summary.csv
+experiments/stage33_dense_gap1_anchor_export/stage33_dense_gap1_anchor_summary.json
+```
+
+外部 anchor dataset，不提交到 git：
+
+```text
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage33_dense_gap1_anchor_export
+```
+
+外部目录大小约 581M。
+
+### Summary 结果
+
+| sample | total frames | exported gap1 pairs | unique anchor count | unique anchor ratio | total anchor MiB |
+|---|---:|---:|---:|---:|---:|
+| n3dv | 81 | 80 | 81 | 1.0 | 146.25 |
+| meetroom | 81 | 80 | 81 | 1.0 | 146.25 |
+| driving | 81 | 80 | 81 | 1.0 | 146.25 |
+| robot | 77 | 76 | 77 | 1.0 | 138.9375 |
+
+| metric | value |
+|---|---:|
+| total pair rows | 316 |
+| total anchor MiB | 577.6875 |
+
+### 结论
+
+- Stage33 successfully provides dense endpoint coverage for all 320 frames across the four samples.
+- This dataset is non-deduplicated gap1 pair storage, so adjacent anchors are duplicated across neighboring pair files.
+- It is now possible to rerun unconstrained Stage16/Stage29 selectors using actual anchors for odd frames.

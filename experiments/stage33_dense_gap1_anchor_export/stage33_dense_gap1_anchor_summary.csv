@@ -1,0 +1,5 @@
+sample,total_frames,exported_pair_count,unique_anchor_count,unique_anchor_ratio,total_anchor_mib,avg_anchor_mib_per_pair,heavy_root
+n3dv,81,80,81,1.0,146.25,1.828125,/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage33_dense_gap1_anchor_export
+meetroom,81,80,81,1.0,146.25,1.828125,/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage33_dense_gap1_anchor_export
+driving,81,80,81,1.0,146.25,1.828125,/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage33_dense_gap1_anchor_export
+robot,77,76,77,1.0,138.9375,1.828125,/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage33_dense_gap1_anchor_export

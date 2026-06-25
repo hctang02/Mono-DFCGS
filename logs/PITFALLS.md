@@ -220,3 +220,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage32 quality numbers are inherited from Stage26; only the rate axis changes from estimated q8 anchor payload to Stage31 actual raw/zlib bitstream sizes.
 - Raw bitstream uses a readable JSON header, so it is slightly larger than the compact Stage28 estimate.
 - Zlib RD curves are useful practical baselines, but should be labeled as generic-compressed q8 anchor bitstream RD, not final learned entropy coding.
+
+## Stage 33 Notes
+
+- Stage33 gap1 export duplicates anchors across adjacent pair files. Use it for selector/evaluation coverage first; later optimize storage with deduplicated per-frame anchors.
+- Gap1 pair records have zero middle frames by construction. They are anchor-source records, not training pairs for intermediate reconstruction.
+- External Stage33 `.pt` files are large and must stay outside git.
