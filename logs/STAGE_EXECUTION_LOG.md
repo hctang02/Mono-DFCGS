@@ -874,3 +874,60 @@ Segment lengths:
 - 阶段 12 已完成非均匀 selected-keyframe reconstruction/evaluation smoke。
 - 该结果仍使用 StreamSplat RGB/depth-conditioned pair inference，不是最终 Gaussian-anchor-only decoder。
 - 在相同 keyframe count/rate 下，当前 `rd_aware` proxy 选择低于此前 robot uniform gap4 baseline，说明无间隔约束的 top-k selection 会聚簇并造成长 segment，后续 Stage 13 应增加 minimum temporal spacing / segment length penalty 后再做 RD evaluation。
+
+## 2026-06-25：阶段 13 Spacing-Constrained Keyframe Selection
+
+### 执行计划
+
+阶段 13 的目标是修复 Stage 11 top-k selection 容易聚簇的问题。脚本复用 motion / Gaussian / RD 分数，但使用 coverage-first constrained greedy：先保证所有 segment length 不超过 `max_segment_multiplier * reference_gap`，再用剩余 budget 按分数填充。默认 `max_segment_multiplier=2`。
+
+### 新增文件
+
+```text
+scripts/run_stage13_spaced_keyframe_selection.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage13_spaced_keyframe_selection.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。该阶段为 CPU selection/statistics 脚本，不占用 GPU。
+
+### 输出文件
+
+```text
+experiments/stage13_spaced_keyframe_selection/stage13_spaced_keyframe_selection_summary.csv
+experiments/stage13_spaced_keyframe_selection/stage13_spaced_keyframe_selection_summary.json
+```
+
+### 覆盖范围
+
+| item | value |
+|---|---:|
+| samples | n3dv, meetroom, driving, robot |
+| reference gaps | 4, 8, 16 |
+| methods | uniform, motion_spaced, gaussian_spaced, rd_spaced |
+| max_segment_multiplier | 2 |
+| output rows | 48 |
+
+### 示例结果
+
+| sample | method | gap | keyframes | max_segment_length | rate MiB/frame |
+|---|---|---:|---:|---:|---:|
+| robot | uniform | 4 | 20 | 4 | 0.11870941558441558 |
+| robot | rd_spaced | 4 | 20 | 8 | 0.11870941558441558 |
+| robot | rd_spaced | 8 | 11 | 16 | 0.06529017857142858 |
+| robot | rd_spaced | 16 | 6 | 32 | 0.03561282467532467 |
+| n3dv | rd_spaced | 4 | 21 | 8 | 0.11848958333333333 |
+| n3dv | rd_spaced | 8 | 11 | 16 | 0.062065972222222224 |
+| n3dv | rd_spaced | 16 | 6 | 32 | 0.033854166666666664 |
+
+### 结论
+
+- 阶段 13 已生成 spacing-constrained keyframe selection baseline，保持与 uniform 相同 keyframe budget/rate。
+- 对 Stage 12 中 `robot rd_aware gap4` 的问题，新的 `robot rd_spaced gap4` 将 max segment length 从 16 限制到 8，适合下一步重新跑 selected-keyframe reconstruction 对比。
+- 该阶段仍只输出 indices，不代表最终质量；后续 Stage 14 应用 Stage 12 evaluator 跑 `rd_spaced` reconstruction。

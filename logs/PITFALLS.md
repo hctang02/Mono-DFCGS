@@ -85,3 +85,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Non-uniform selected keyframes require grouping pairs by actual segment length because `opt.output_frames` and timestamp grids differ per segment.
 - Top-k motion/RD selection without temporal spacing can cluster keyframes and create long uncovered segments. The `robot + rd_aware + gap4` smoke had max segment length 16 despite a gap4 budget.
 - Stage 12 validates the selected-keyframe evaluation pipeline, but it still uses StreamSplat pair inference with RGB/depth inputs. It is not yet the final Gaussian-anchor-only decoder evaluation.
+
+## Stage 13 Notes
+
+- The first spacing-constrained greedy attempt still allowed clustering because it spent the budget on high-score frames before fully covering long gaps. The script now uses coverage-first splitting before score-based fill.
+- With the same keyframe budget as uniform, strict `max_segment_length <= reference_gap` often collapses to uniform-like selection. Stage 13 therefore defaults to `max_segment_multiplier=2` to allow non-uniform choices while bounding uncovered intervals.
+- Stage 13 only fixes the selection candidate set. Quality must be measured by Stage 12-style reconstruction using the new `*_spaced` methods.
