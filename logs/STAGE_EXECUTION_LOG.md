@@ -2763,3 +2763,59 @@ experiments/stage37_deployable_selector_cost_dataset/stage37_deployable_selector
 - Segment length and endpoint anchor MSE are strong simple predictors for dense oracle cost.
 - RGB motion alone is weakly correlated with the oracle cost on these samples, especially n3dv/driving.
 - Stage37 provides the training data needed for Stage38 deployable selector cost predictor.
+
+## 2026-06-25：阶段 38 Deployable Cost Predictor Validation
+
+### 执行计划
+
+Stage38 在 Stage37 leave-one-out dataset 上训练简单 ridge regression cost predictor。目标是预测 `log_label_anchor_attr_mse`。比较两个 baseline：只使用 segment length 的 `length_only_ridge`，以及使用全部 deployable features 的 `full_feature_ridge`。
+
+### 新增文件
+
+```text
+scripts/run_stage38_deployable_cost_predictor_validation.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage38_deployable_cost_predictor_validation.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage38_deployable_cost_predictor_validation.py
+```
+
+该阶段是 CPU-only regression validation。
+
+### 输出文件
+
+```text
+experiments/stage38_deployable_cost_predictor_validation/stage38_predictor_metrics.csv
+experiments/stage38_deployable_cost_predictor_validation/stage38_predictor_predictions.csv
+experiments/stage38_deployable_cost_predictor_validation/stage38_deployable_cost_predictor_validation_summary.json
+```
+
+### Aggregate 结果
+
+| metric | length-only ridge | full-feature ridge |
+|---|---:|---:|
+| mean Spearman log-cost | 0.9810832482322229 | 0.7734269107632606 |
+| mean RMSE log-cost | 0.6321678273962144 | 1.3141291584888863 |
+
+### Fold-wise 结果
+
+| heldout | model | Spearman log | RMSE log | Pearson cost |
+|---|---|---:|---:|---:|
+| driving | length_only | 0.989720327238339 | 0.49236610749417725 | 0.915799105951025 |
+| driving | full_feature | 0.9820209157992446 | 1.538212462701852 | 0.7691172517622008 |
+| meetroom | length_only | 0.9900150548370009 | 0.27755951764524434 | 0.9159853987410811 |
+| meetroom | full_feature | 0.9803012906569413 | 1.1961997428836078 | 0.8909175137169681 |
+| n3dv | length_only | 0.978034469454981 | 1.0152720329878608 | 0.9057962566716188 |
+| n3dv | full_feature | 0.9843223362668158 | 0.4210671086362759 | 0.938952241825634 |
+| robot | length_only | 0.966563141398571 | 0.7434736514575749 | 0.8800013214396364 |
+| robot | full_feature | 0.14706310033004102 | 2.10103731973381 | 0.19128289118889527 |
+
+### 结论
+
+- Length-only ridge is surprisingly strong because oracle segment cost is highly length-correlated.
+- Full-feature ridge does not robustly generalize across samples and collapses on robot held-out.
+- Do not use naive full-feature ridge as final deployable selector yet.
+- Next step should test predicted selector RD with length-only and/or improved normalized feature models, but expect length-only to behave close to uniform.

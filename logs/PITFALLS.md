@@ -250,3 +250,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage37 labels are oracle/proxy labels derived from dense intermediate anchors. The features are deployable, but the labels are not available at encoder inference time.
 - Segment length is highly correlated with the label, so predictor evaluation must check whether it learns more than just length.
 - RGB motion features are weak in this first dataset; endpoint anchor features appear more useful for the oracle target.
+
+## Stage 38 Notes
+
+- Full-feature linear ridge can overfit or fail under leave-one-sample-out domain shift; robot held-out collapses badly.
+- Length-only is a very strong ranking baseline for oracle cost, but a pure length-based selector may reduce to near-uniform under fixed keyframe budget.
+- Before Stage39, consider sample-normalized targets/features or rank-based models rather than raw cross-sample linear regression.
