@@ -1564,3 +1564,85 @@ experiments/stage21b_residual_zero_anchor_adapter_training/stage21b_final_eval.c
 - residual-zero 初始化有效：初始 model PSNR 与 q8 linear anchor baseline 完全一致。
 - 24-step 小规模训练后，train 集提升约 0.039 dB，robot eval 比 linear baseline 高约 0.0018 dB。
 - 这是方向正确但收益极小的结果，还不足以作为最终 RD curve 的 fine-tuned adapter。下一步需要扩大 steps、balanced rows、gap 覆盖，并加入更强 regularization/learning-rate schedule。
+
+## 2026-06-25：阶段 21c Medium Anchor Adapter Training
+
+### 执行计划
+
+阶段 21c 在 Stage21b 的 residual-zero 初始化基础上扩大训练规模：覆盖 GOP gap `2/4/8/16`，每个 gap 做 sample-balanced row selection，并增加到 96 steps。该阶段仍是 anchor-only：输入只包含 q8 keyframe anchors 和 timestamp，不输入 non-keyframe payload。
+
+### 新增文件
+
+```text
+scripts/run_stage21c_medium_anchor_adapter_training.py
+```
+
+### 运行命令
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage21c_medium_anchor_adapter_training.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 2 有进程，GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage21c_medium_anchor_adapter_training/stage21c_medium_anchor_adapter_training_summary.json
+experiments/stage21c_medium_anchor_adapter_training/stage21c_train_rgb_losses.csv
+experiments/stage21c_medium_anchor_adapter_training/stage21c_initial_eval.csv
+experiments/stage21c_medium_anchor_adapter_training/stage21c_final_eval.csv
+experiments/stage21c_medium_anchor_adapter_training/stage21c_gap_eval_summary.csv
+```
+
+外部 adapter checkpoint：
+
+```text
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage21c_medium_anchor_adapter_training/stage21c_medium_anchor_adapter.safetensors
+```
+
+外部 checkpoint 大小约 404K，不提交到 git。
+
+### 配置
+
+| item | value |
+|---|---:|
+| frame gaps | 2, 4, 8, 16 |
+| train samples | n3dv, meetroom, driving |
+| eval samples | robot |
+| selected train rows | 24 |
+| selected eval rows | 12 |
+| train tasks | 42 |
+| eval tasks | 21 |
+| steps | 96 |
+| hidden_dim | 128 |
+| lr | 1e-05 |
+| quant_bits | 8 |
+| parameter_count | 102925 |
+
+### 总体结果
+
+| metric | initial | final | delta |
+|---|---:|---:|---:|
+| train model PSNR avg | 27.961215027303925 | 28.06389696855266 | 0.10268194124873324 |
+| train linear PSNR avg | 27.961215027303925 | 27.961215027303925 | 0.0 |
+| eval model PSNR avg | 21.88713238848381 | 21.903100985613587 | 0.015968597129777606 |
+| eval linear PSNR avg | 21.88713238848381 | 21.88713238848381 | 0.0 |
+| eval margin over linear | 0.0 | 0.015968597129777606 | 0.015968597129777606 |
+
+### Gap-wise Eval
+
+| gap | initial model PSNR | final model PSNR | linear PSNR | delta | margin over linear |
+|---:|---:|---:|---:|---:|---:|
+| 2 | 22.898814876944613 | 22.916134779744898 | 22.898814876944613 | 0.017319902800284837 | 0.017319902800284837 |
+| 4 | 21.02887941205421 | 21.02850200761415 | 21.02887941205421 | -0.0003774044400586263 | -0.0003774044400586263 |
+| 8 | 21.673428963334427 | 21.69548755972806 | 21.673428963334427 | 0.02205859639363439 | 0.02205859639363439 |
+| 16 | 22.453247545832397 | 22.478796492432902 | 22.453247545832397 | 0.025548946600505218 | 0.025548946600505218 |
+
+### 结论
+
+- Stage21c 相比 Stage21b 更稳定：整体 robot eval 比 q8 linear anchor baseline 高约 0.016 dB。
+- gap2/gap8/gap16 为正收益，gap4 略降 0.0004 dB，说明训练方向可行但还没有足够稳定。
+- 这仍不是 paper-level 大规模实验；下一步应继续扩大 rows/steps 或引入 validation-based checkpoint selection，再考虑 Stage22 RD curve。

@@ -144,3 +144,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Residual-zero initialization is necessary for fair comparison against linear anchor interpolation. Without it, a randomly initialized residual can make the adapter worse than the baseline before training.
 - Do not select training rows by raw manifest order for small runs; the manifest is grouped by sample, so `rows[:N]` can accidentally train only on n3dv. Stage21b now uses sample-balanced row selection.
 - The Stage21b improvement over linear on robot is positive but extremely small. Treat it as a validation of initialization/training direction, not as a meaningful final gain.
+
+## Stage 21c Notes
+
+- Multi-gap anchor-only training gives a larger positive average margin than Stage21b, but gap-wise behavior is not uniformly positive. In Stage21c, gap4 is slightly below linear while gap2/gap8/gap16 are positive.
+- Before using an anchor adapter for RD curves, add validation-based checkpoint selection. A single final checkpoint may improve the average while hurting one GOP setting.
+- Stage21c remains a medium development run on four local samples. It is not a substitute for DAVIS/YouTube-VOS or StreamSplat protocol-scale experiments.

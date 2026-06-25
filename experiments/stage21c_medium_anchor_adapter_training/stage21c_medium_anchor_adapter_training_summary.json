@@ -1,0 +1,981 @@
+{
+  "stage": "21c",
+  "mode": "medium residual-zero Gaussian-anchor-only adapter training",
+  "manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage6_real_anchor_dataset/stage6_real_anchor_dataset_manifest.csv",
+  "samples": [
+    "n3dv",
+    "meetroom",
+    "driving",
+    "robot"
+  ],
+  "eval_samples": [
+    "robot"
+  ],
+  "frame_gaps": [
+    2,
+    4,
+    8,
+    16
+  ],
+  "max_train_rows_per_gap": 6,
+  "max_eval_rows_per_gap": 3,
+  "targets_per_row": 2,
+  "selected_train_row_count": 24,
+  "selected_eval_row_count": 12,
+  "selected_train_samples": [
+    "driving",
+    "meetroom",
+    "n3dv"
+  ],
+  "selected_eval_samples": [
+    "robot"
+  ],
+  "rows_by_gap": {
+    "2": {
+      "available_rows": 158,
+      "selected_train_rows": 6,
+      "selected_eval_rows": 3,
+      "selected_train_samples": [
+        "driving",
+        "meetroom",
+        "n3dv"
+      ],
+      "selected_eval_samples": [
+        "robot"
+      ]
+    },
+    "4": {
+      "available_rows": 79,
+      "selected_train_rows": 6,
+      "selected_eval_rows": 3,
+      "selected_train_samples": [
+        "driving",
+        "meetroom",
+        "n3dv"
+      ],
+      "selected_eval_samples": [
+        "robot"
+      ]
+    },
+    "8": {
+      "available_rows": 40,
+      "selected_train_rows": 6,
+      "selected_eval_rows": 3,
+      "selected_train_samples": [
+        "driving",
+        "meetroom",
+        "n3dv"
+      ],
+      "selected_eval_samples": [
+        "robot"
+      ]
+    },
+    "16": {
+      "available_rows": 20,
+      "selected_train_rows": 6,
+      "selected_eval_rows": 3,
+      "selected_train_samples": [
+        "driving",
+        "meetroom",
+        "n3dv"
+      ],
+      "selected_eval_samples": [
+        "robot"
+      ]
+    }
+  },
+  "train_task_count": 42,
+  "eval_task_count": 21,
+  "steps": 96,
+  "hidden_dim": 128,
+  "lr": 1e-05,
+  "quant_bits": 8,
+  "zero_init_residual": true,
+  "parameter_count": 102925,
+  "initial_train_model_psnr_avg": 27.961215027303925,
+  "final_train_model_psnr_avg": 28.06389696855266,
+  "initial_train_linear_psnr_avg": 27.961215027303925,
+  "final_train_linear_psnr_avg": 27.961215027303925,
+  "initial_eval_model_psnr_avg": 21.88713238848381,
+  "final_eval_model_psnr_avg": 21.903100985613587,
+  "initial_eval_linear_psnr_avg": 21.88713238848381,
+  "final_eval_linear_psnr_avg": 21.88713238848381,
+  "eval_model_psnr_delta": 0.015968597129777606,
+  "eval_margin_over_linear_psnr": 0.015968597129777606,
+  "train_losses_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage21c_medium_anchor_adapter_training/stage21c_train_rgb_losses.csv",
+  "initial_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage21c_medium_anchor_adapter_training/stage21c_initial_eval.csv",
+  "final_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage21c_medium_anchor_adapter_training/stage21c_final_eval.csv",
+  "gap_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage21c_medium_anchor_adapter_training/stage21c_gap_eval_summary.csv",
+  "train_log": [
+    {
+      "step": 1,
+      "sample": "n3dv",
+      "frame_gap": 2,
+      "target_frame_index": 1,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.0012247831327840686,
+      "rgb_psnr": 29.119408031958542
+    },
+    {
+      "step": 2,
+      "sample": "meetroom",
+      "frame_gap": 2,
+      "target_frame_index": 1,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.0009087758371606469,
+      "rgb_psnr": 30.415432286481344
+    },
+    {
+      "step": 3,
+      "sample": "driving",
+      "frame_gap": 2,
+      "target_frame_index": 1,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.0035346548538655043,
+      "rgb_psnr": 24.516529870664527
+    },
+    {
+      "step": 4,
+      "sample": "n3dv",
+      "frame_gap": 2,
+      "target_frame_index": 3,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.0010205336147919297,
+      "rgb_psnr": 29.911726857267315
+    },
+    {
+      "step": 5,
+      "sample": "meetroom",
+      "frame_gap": 2,
+      "target_frame_index": 3,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.001050935941748321,
+      "rgb_psnr": 29.78423754945188
+    },
+    {
+      "step": 6,
+      "sample": "driving",
+      "frame_gap": 2,
+      "target_frame_index": 3,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.003359475638717413,
+      "rgb_psnr": 24.737285038550798
+    },
+    {
+      "step": 7,
+      "sample": "n3dv",
+      "frame_gap": 4,
+      "target_frame_index": 1,
+      "normalized_time": 0.25,
+      "rgb_mse": 0.0014188422355800867,
+      "rgb_psnr": 28.480658920873516
+    },
+    {
+      "step": 8,
+      "sample": "n3dv",
+      "frame_gap": 4,
+      "target_frame_index": 3,
+      "normalized_time": 0.75,
+      "rgb_mse": 0.001084626535885036,
+      "rgb_psnr": 29.64719774557149
+    },
+    {
+      "step": 9,
+      "sample": "meetroom",
+      "frame_gap": 4,
+      "target_frame_index": 1,
+      "normalized_time": 0.25,
+      "rgb_mse": 0.0009966082870960236,
+      "rgb_psnr": 30.014755058614195
+    },
+    {
+      "step": 10,
+      "sample": "meetroom",
+      "frame_gap": 4,
+      "target_frame_index": 3,
+      "normalized_time": 0.75,
+      "rgb_mse": 0.0012440214632079005,
+      "rgb_psnr": 29.05172126661001
+    },
+    {
+      "step": 11,
+      "sample": "driving",
+      "frame_gap": 4,
+      "target_frame_index": 1,
+      "normalized_time": 0.25,
+      "rgb_mse": 0.0061797876842319965,
+      "rgb_psnr": 22.090264454856843
+    },
+    {
+      "step": 12,
+      "sample": "driving",
+      "frame_gap": 4,
+      "target_frame_index": 3,
+      "normalized_time": 0.75,
+      "rgb_mse": 0.004174785688519478,
+      "rgb_psnr": 23.79365813996506
+    },
+    {
+      "step": 13,
+      "sample": "n3dv",
+      "frame_gap": 4,
+      "target_frame_index": 5,
+      "normalized_time": 0.25,
+      "rgb_mse": 0.0011164045426994562,
+      "rgb_psnr": 29.521784050163582
+    },
+    {
+      "step": 14,
+      "sample": "n3dv",
+      "frame_gap": 4,
+      "target_frame_index": 7,
+      "normalized_time": 0.75,
+      "rgb_mse": 0.0009503139881417155,
+      "rgb_psnr": 30.221328780929284
+    },
+    {
+      "step": 15,
+      "sample": "meetroom",
+      "frame_gap": 4,
+      "target_frame_index": 5,
+      "normalized_time": 0.25,
+      "rgb_mse": 0.0013552727177739143,
+      "rgb_psnr": 28.679733041202986
+    },
+    {
+      "step": 16,
+      "sample": "meetroom",
+      "frame_gap": 4,
+      "target_frame_index": 7,
+      "normalized_time": 0.75,
+      "rgb_mse": 0.0011500617256388068,
+      "rgb_psnr": 29.39278849746455
+    },
+    {
+      "step": 17,
+      "sample": "driving",
+      "frame_gap": 4,
+      "target_frame_index": 5,
+      "normalized_time": 0.25,
+      "rgb_mse": 0.002838860498741269,
+      "rgb_psnr": 25.468559481276905
+    },
+    {
+      "step": 18,
+      "sample": "driving",
+      "frame_gap": 4,
+      "target_frame_index": 7,
+      "normalized_time": 0.75,
+      "rgb_mse": 0.0025208797305822372,
+      "rgb_psnr": 25.98447873716827
+    },
+    {
+      "step": 19,
+      "sample": "n3dv",
+      "frame_gap": 8,
+      "target_frame_index": 1,
+      "normalized_time": 0.125,
+      "rgb_mse": 0.0015095692360773683,
+      "rgb_psnr": 28.211469633584798
+    },
+    {
+      "step": 20,
+      "sample": "n3dv",
+      "frame_gap": 8,
+      "target_frame_index": 7,
+      "normalized_time": 0.875,
+      "rgb_mse": 0.0009313522605225444,
+      "rgb_psnr": 30.308860270034454
+    },
+    {
+      "step": 21,
+      "sample": "meetroom",
+      "frame_gap": 8,
+      "target_frame_index": 1,
+      "normalized_time": 0.125,
+      "rgb_mse": 0.0009998376481235027,
+      "rgb_psnr": 30.000705142483042
+    },
+    {
+      "step": 22,
+      "sample": "meetroom",
+      "frame_gap": 8,
+      "target_frame_index": 7,
+      "normalized_time": 0.875,
+      "rgb_mse": 0.0011406061239540577,
+      "rgb_psnr": 29.42864301002434
+    },
+    {
+      "step": 23,
+      "sample": "driving",
+      "frame_gap": 8,
+      "target_frame_index": 1,
+      "normalized_time": 0.125,
+      "rgb_mse": 0.00740843964740634,
+      "rgb_psnr": 21.30273252733119
+    },
+    {
+      "step": 24,
+      "sample": "driving",
+      "frame_gap": 8,
+      "target_frame_index": 7,
+      "normalized_time": 0.875,
+      "rgb_mse": 0.002431206637993455,
+      "rgb_psnr": 26.141781271597715
+    },
+    {
+      "step": 25,
+      "sample": "n3dv",
+      "frame_gap": 8,
+      "target_frame_index": 9,
+      "normalized_time": 0.125,
+      "rgb_mse": 0.0009456883417442441,
+      "rgb_psnr": 30.242519648257744
+    },
+    {
+      "step": 26,
+      "sample": "n3dv",
+      "frame_gap": 8,
+      "target_frame_index": 15,
+      "normalized_time": 0.875,
+      "rgb_mse": 0.000884543580468744,
+      "rgb_psnr": 30.532807650257826
+    },
+    {
+      "step": 27,
+      "sample": "meetroom",
+      "frame_gap": 8,
+      "target_frame_index": 9,
+      "normalized_time": 0.125,
+      "rgb_mse": 0.0012232012813910842,
+      "rgb_psnr": 29.125020726408756
+    },
+    {
+      "step": 28,
+      "sample": "meetroom",
+      "frame_gap": 8,
+      "target_frame_index": 15,
+      "normalized_time": 0.875,
+      "rgb_mse": 0.0009103302145376801,
+      "rgb_psnr": 30.40801042472345
+    },
+    {
+      "step": 29,
+      "sample": "driving",
+      "frame_gap": 8,
+      "target_frame_index": 9,
+      "normalized_time": 0.125,
+      "rgb_mse": 0.005162823013961315,
+      "rgb_psnr": 22.871127626880945
+    },
+    {
+      "step": 30,
+      "sample": "driving",
+      "frame_gap": 8,
+      "target_frame_index": 15,
+      "normalized_time": 0.875,
+      "rgb_mse": 0.0032801833003759384,
+      "rgb_psnr": 24.841018867402987
+    },
+    {
+      "step": 31,
+      "sample": "n3dv",
+      "frame_gap": 16,
+      "target_frame_index": 1,
+      "normalized_time": 0.0625,
+      "rgb_mse": 0.001555280527099967,
+      "rgb_psnr": 28.08191265554525
+    },
+    {
+      "step": 32,
+      "sample": "n3dv",
+      "frame_gap": 16,
+      "target_frame_index": 15,
+      "normalized_time": 0.9375,
+      "rgb_mse": 0.0008946569869294763,
+      "rgb_psnr": 30.483434420444553
+    },
+    {
+      "step": 33,
+      "sample": "meetroom",
+      "frame_gap": 16,
+      "target_frame_index": 1,
+      "normalized_time": 0.0625,
+      "rgb_mse": 0.0009795395890250802,
+      "rgb_psnr": 30.089780068895713
+    },
+    {
+      "step": 34,
+      "sample": "meetroom",
+      "frame_gap": 16,
+      "target_frame_index": 15,
+      "normalized_time": 0.9375,
+      "rgb_mse": 0.0009058899013325572,
+      "rgb_psnr": 30.429245817373875
+    },
+    {
+      "step": 35,
+      "sample": "driving",
+      "frame_gap": 16,
+      "target_frame_index": 1,
+      "normalized_time": 0.0625,
+      "rgb_mse": 0.00786046963185072,
+      "rgb_psnr": 21.045515058144957
+    },
+    {
+      "step": 36,
+      "sample": "driving",
+      "frame_gap": 16,
+      "target_frame_index": 15,
+      "normalized_time": 0.9375,
+      "rgb_mse": 0.0034073542337864637,
+      "rgb_psnr": 24.67582714162773
+    },
+    {
+      "step": 37,
+      "sample": "n3dv",
+      "frame_gap": 16,
+      "target_frame_index": 17,
+      "normalized_time": 0.0625,
+      "rgb_mse": 0.0009106114157475531,
+      "rgb_psnr": 30.406669095241035
+    },
+    {
+      "step": 38,
+      "sample": "n3dv",
+      "frame_gap": 16,
+      "target_frame_index": 31,
+      "normalized_time": 0.9375,
+      "rgb_mse": 0.000880177307408303,
+      "rgb_psnr": 30.554298325401682
+    },
+    {
+      "step": 39,
+      "sample": "meetroom",
+      "frame_gap": 16,
+      "target_frame_index": 17,
+      "normalized_time": 0.0625,
+      "rgb_mse": 0.0011726653901860118,
+      "rgb_psnr": 29.308258923402377
+    },
+    {
+      "step": 40,
+      "sample": "meetroom",
+      "frame_gap": 16,
+      "target_frame_index": 31,
+      "normalized_time": 0.9375,
+      "rgb_mse": 0.001086672069504857,
+      "rgb_psnr": 29.639014953722942
+    },
+    {
+      "step": 41,
+      "sample": "driving",
+      "frame_gap": 16,
+      "target_frame_index": 17,
+      "normalized_time": 0.0625,
+      "rgb_mse": 0.0016096578910946846,
+      "rgb_psnr": 27.932664170100658
+    },
+    {
+      "step": 42,
+      "sample": "driving",
+      "frame_gap": 16,
+      "target_frame_index": 31,
+      "normalized_time": 0.9375,
+      "rgb_mse": 0.0013179172528907657,
+      "rgb_psnr": 28.801118566168746
+    },
+    {
+      "step": 43,
+      "sample": "n3dv",
+      "frame_gap": 2,
+      "target_frame_index": 1,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.0012046305928379297,
+      "rgb_psnr": 29.191461116685204
+    },
+    {
+      "step": 44,
+      "sample": "meetroom",
+      "frame_gap": 2,
+      "target_frame_index": 1,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.0008947911555878818,
+      "rgb_psnr": 30.482783172646815
+    },
+    {
+      "step": 45,
+      "sample": "driving",
+      "frame_gap": 2,
+      "target_frame_index": 1,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.0035060790833085775,
+      "rgb_psnr": 24.55178292162026
+    },
+    {
+      "step": 46,
+      "sample": "n3dv",
+      "frame_gap": 2,
+      "target_frame_index": 3,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.0010008501121774316,
+      "rgb_psnr": 29.996309578137552
+    },
+    {
+      "step": 47,
+      "sample": "meetroom",
+      "frame_gap": 2,
+      "target_frame_index": 3,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.0010375460842624307,
+      "rgb_psnr": 29.839926043060963
+    },
+    {
+      "step": 48,
+      "sample": "driving",
+      "frame_gap": 2,
+      "target_frame_index": 3,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.003331336658447981,
+      "rgb_psnr": 24.773814761295373
+    },
+    {
+      "step": 49,
+      "sample": "n3dv",
+      "frame_gap": 4,
+      "target_frame_index": 1,
+      "normalized_time": 0.25,
+      "rgb_mse": 0.0013992154272273183,
+      "rgb_psnr": 28.541154151340397
+    },
+    {
+      "step": 50,
+      "sample": "n3dv",
+      "frame_gap": 4,
+      "target_frame_index": 3,
+      "normalized_time": 0.75,
+      "rgb_mse": 0.001066646189428866,
+      "rgb_psnr": 29.719796138092054
+    },
+    {
+      "step": 51,
+      "sample": "meetroom",
+      "frame_gap": 4,
+      "target_frame_index": 1,
+      "normalized_time": 0.25,
+      "rgb_mse": 0.000982954865321517,
+      "rgb_psnr": 30.07466423359961
+    },
+    {
+      "step": 52,
+      "sample": "meetroom",
+      "frame_gap": 4,
+      "target_frame_index": 3,
+      "normalized_time": 0.75,
+      "rgb_mse": 0.001230851630680263,
+      "rgb_psnr": 29.09794294640016
+    },
+    {
+      "step": 53,
+      "sample": "driving",
+      "frame_gap": 4,
+      "target_frame_index": 1,
+      "normalized_time": 0.25,
+      "rgb_mse": 0.006173128727823496,
+      "rgb_psnr": 22.09494666625875
+    },
+    {
+      "step": 54,
+      "sample": "driving",
+      "frame_gap": 4,
+      "target_frame_index": 3,
+      "normalized_time": 0.75,
+      "rgb_mse": 0.004146759398281574,
+      "rgb_psnr": 23.822911623765144
+    },
+    {
+      "step": 55,
+      "sample": "n3dv",
+      "frame_gap": 4,
+      "target_frame_index": 5,
+      "normalized_time": 0.25,
+      "rgb_mse": 0.0010976765770465136,
+      "rgb_psnr": 29.595256029596055
+    },
+    {
+      "step": 56,
+      "sample": "n3dv",
+      "frame_gap": 4,
+      "target_frame_index": 7,
+      "normalized_time": 0.75,
+      "rgb_mse": 0.000933360424824059,
+      "rgb_psnr": 30.299506174694002
+    },
+    {
+      "step": 57,
+      "sample": "meetroom",
+      "frame_gap": 4,
+      "target_frame_index": 5,
+      "normalized_time": 0.25,
+      "rgb_mse": 0.00134235096629709,
+      "rgb_psnr": 28.72133920233739
+    },
+    {
+      "step": 58,
+      "sample": "meetroom",
+      "frame_gap": 4,
+      "target_frame_index": 7,
+      "normalized_time": 0.75,
+      "rgb_mse": 0.0011405121767893434,
+      "rgb_psnr": 29.429000735752425
+    },
+    {
+      "step": 59,
+      "sample": "driving",
+      "frame_gap": 4,
+      "target_frame_index": 5,
+      "normalized_time": 0.25,
+      "rgb_mse": 0.002816199092194438,
+      "rgb_psnr": 25.50336645842057
+    },
+    {
+      "step": 60,
+      "sample": "driving",
+      "frame_gap": 4,
+      "target_frame_index": 7,
+      "normalized_time": 0.75,
+      "rgb_mse": 0.002496213186532259,
+      "rgb_psnr": 26.027183269299705
+    },
+    {
+      "step": 61,
+      "sample": "n3dv",
+      "frame_gap": 8,
+      "target_frame_index": 1,
+      "normalized_time": 0.125,
+      "rgb_mse": 0.0014924617717042565,
+      "rgb_psnr": 28.260967841855415
+    },
+    {
+      "step": 62,
+      "sample": "n3dv",
+      "frame_gap": 8,
+      "target_frame_index": 7,
+      "normalized_time": 0.875,
+      "rgb_mse": 0.0009153381688520312,
+      "rgb_psnr": 30.384184275361072
+    },
+    {
+      "step": 63,
+      "sample": "meetroom",
+      "frame_gap": 8,
+      "target_frame_index": 1,
+      "normalized_time": 0.125,
+      "rgb_mse": 0.0009878952987492085,
+      "rgb_psnr": 30.05289081308115
+    },
+    {
+      "step": 64,
+      "sample": "meetroom",
+      "frame_gap": 8,
+      "target_frame_index": 7,
+      "normalized_time": 0.875,
+      "rgb_mse": 0.0011321757920086384,
+      "rgb_psnr": 29.46086135363334
+    },
+    {
+      "step": 65,
+      "sample": "driving",
+      "frame_gap": 8,
+      "target_frame_index": 1,
+      "normalized_time": 0.125,
+      "rgb_mse": 0.0074075874872505665,
+      "rgb_psnr": 21.30323210586246
+    },
+    {
+      "step": 66,
+      "sample": "driving",
+      "frame_gap": 8,
+      "target_frame_index": 7,
+      "normalized_time": 0.875,
+      "rgb_mse": 0.002403711201623082,
+      "rgb_psnr": 26.191177126575674
+    },
+    {
+      "step": 67,
+      "sample": "n3dv",
+      "frame_gap": 8,
+      "target_frame_index": 9,
+      "normalized_time": 0.125,
+      "rgb_mse": 0.0009306597639806569,
+      "rgb_psnr": 30.31209061910618
+    },
+    {
+      "step": 68,
+      "sample": "n3dv",
+      "frame_gap": 8,
+      "target_frame_index": 15,
+      "normalized_time": 0.875,
+      "rgb_mse": 0.0008703210623934865,
+      "rgb_psnr": 30.60320506112764
+    },
+    {
+      "step": 69,
+      "sample": "meetroom",
+      "frame_gap": 8,
+      "target_frame_index": 9,
+      "normalized_time": 0.125,
+      "rgb_mse": 0.0012120675528421998,
+      "rgb_psnr": 29.16473174716731
+    },
+    {
+      "step": 70,
+      "sample": "meetroom",
+      "frame_gap": 8,
+      "target_frame_index": 15,
+      "normalized_time": 0.875,
+      "rgb_mse": 0.0008997092372737825,
+      "rgb_psnr": 30.45897820616245
+    },
+    {
+      "step": 71,
+      "sample": "driving",
+      "frame_gap": 8,
+      "target_frame_index": 9,
+      "normalized_time": 0.125,
+      "rgb_mse": 0.005157340317964554,
+      "rgb_psnr": 22.875742098115126
+    },
+    {
+      "step": 72,
+      "sample": "driving",
+      "frame_gap": 8,
+      "target_frame_index": 15,
+      "normalized_time": 0.875,
+      "rgb_mse": 0.003262135200202465,
+      "rgb_psnr": 24.86498043453591
+    },
+    {
+      "step": 73,
+      "sample": "n3dv",
+      "frame_gap": 16,
+      "target_frame_index": 1,
+      "normalized_time": 0.0625,
+      "rgb_mse": 0.0015406834427267313,
+      "rgb_psnr": 28.122865846427892
+    },
+    {
+      "step": 74,
+      "sample": "n3dv",
+      "frame_gap": 16,
+      "target_frame_index": 15,
+      "normalized_time": 0.9375,
+      "rgb_mse": 0.0008804168901406229,
+      "rgb_psnr": 30.55311634423427
+    },
+    {
+      "step": 75,
+      "sample": "meetroom",
+      "frame_gap": 16,
+      "target_frame_index": 1,
+      "normalized_time": 0.0625,
+      "rgb_mse": 0.0009687955607660115,
+      "rgb_psnr": 30.137678598931238
+    },
+    {
+      "step": 76,
+      "sample": "meetroom",
+      "frame_gap": 16,
+      "target_frame_index": 15,
+      "normalized_time": 0.9375,
+      "rgb_mse": 0.0008959858678281307,
+      "rgb_psnr": 30.476988403073648
+    },
+    {
+      "step": 77,
+      "sample": "driving",
+      "frame_gap": 16,
+      "target_frame_index": 1,
+      "normalized_time": 0.0625,
+      "rgb_mse": 0.007864980027079582,
+      "rgb_psnr": 21.043023759192877
+    },
+    {
+      "step": 78,
+      "sample": "driving",
+      "frame_gap": 16,
+      "target_frame_index": 15,
+      "normalized_time": 0.9375,
+      "rgb_mse": 0.003388762939721346,
+      "rgb_psnr": 24.699588110894073
+    },
+    {
+      "step": 79,
+      "sample": "n3dv",
+      "frame_gap": 16,
+      "target_frame_index": 17,
+      "normalized_time": 0.0625,
+      "rgb_mse": 0.0008998536504805088,
+      "rgb_psnr": 30.458281171795306
+    },
+    {
+      "step": 80,
+      "sample": "n3dv",
+      "frame_gap": 16,
+      "target_frame_index": 31,
+      "normalized_time": 0.9375,
+      "rgb_mse": 0.000870779505930841,
+      "rgb_psnr": 30.60091800767696
+    },
+    {
+      "step": 81,
+      "sample": "meetroom",
+      "frame_gap": 16,
+      "target_frame_index": 17,
+      "normalized_time": 0.0625,
+      "rgb_mse": 0.0011653380934149027,
+      "rgb_psnr": 29.335480567816646
+    },
+    {
+      "step": 82,
+      "sample": "meetroom",
+      "frame_gap": 16,
+      "target_frame_index": 31,
+      "normalized_time": 0.9375,
+      "rgb_mse": 0.001076705870218575,
+      "rgb_psnr": 29.679029191597984
+    },
+    {
+      "step": 83,
+      "sample": "driving",
+      "frame_gap": 16,
+      "target_frame_index": 17,
+      "normalized_time": 0.0625,
+      "rgb_mse": 0.0016071884892880917,
+      "rgb_psnr": 27.939331866733003
+    },
+    {
+      "step": 84,
+      "sample": "driving",
+      "frame_gap": 16,
+      "target_frame_index": 31,
+      "normalized_time": 0.9375,
+      "rgb_mse": 0.0012939757434651256,
+      "rgb_psnr": 28.880738647631325
+    },
+    {
+      "step": 85,
+      "sample": "n3dv",
+      "frame_gap": 2,
+      "target_frame_index": 1,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.0011925293365493417,
+      "rgb_psnr": 29.23530928392852
+    },
+    {
+      "step": 86,
+      "sample": "meetroom",
+      "frame_gap": 2,
+      "target_frame_index": 1,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.0008867263095453382,
+      "rgb_psnr": 30.522104056427935
+    },
+    {
+      "step": 87,
+      "sample": "driving",
+      "frame_gap": 2,
+      "target_frame_index": 1,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.003484666347503662,
+      "rgb_psnr": 24.578387987352613
+    },
+    {
+      "step": 88,
+      "sample": "n3dv",
+      "frame_gap": 2,
+      "target_frame_index": 3,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.000987426727078855,
+      "rgb_psnr": 30.05495121732883
+    },
+    {
+      "step": 89,
+      "sample": "meetroom",
+      "frame_gap": 2,
+      "target_frame_index": 3,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.0010297636035829782,
+      "rgb_psnr": 29.872624621324107
+    },
+    {
+      "step": 90,
+      "sample": "driving",
+      "frame_gap": 2,
+      "target_frame_index": 3,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.0033092156518250704,
+      "rgb_psnr": 24.802749302272975
+    },
+    {
+      "step": 91,
+      "sample": "n3dv",
+      "frame_gap": 4,
+      "target_frame_index": 1,
+      "normalized_time": 0.25,
+      "rgb_mse": 0.0013869341928511858,
+      "rgb_psnr": 28.579441448096368
+    },
+    {
+      "step": 92,
+      "sample": "n3dv",
+      "frame_gap": 4,
+      "target_frame_index": 3,
+      "normalized_time": 0.75,
+      "rgb_mse": 0.0010553926695138216,
+      "rgb_psnr": 29.765859266462485
+    },
+    {
+      "step": 93,
+      "sample": "meetroom",
+      "frame_gap": 4,
+      "target_frame_index": 1,
+      "normalized_time": 0.25,
+      "rgb_mse": 0.0009743483969941735,
+      "rgb_psnr": 30.11285725013055
+    },
+    {
+      "step": 94,
+      "sample": "meetroom",
+      "frame_gap": 4,
+      "target_frame_index": 3,
+      "normalized_time": 0.75,
+      "rgb_mse": 0.0012226840481162071,
+      "rgb_psnr": 29.126857538280305
+    },
+    {
+      "step": 95,
+      "sample": "driving",
+      "frame_gap": 4,
+      "target_frame_index": 1,
+      "normalized_time": 0.25,
+      "rgb_mse": 0.00617220439016819,
+      "rgb_psnr": 22.09559700876474
+    },
+    {
+      "step": 96,
+      "sample": "driving",
+      "frame_gap": 4,
+      "target_frame_index": 3,
+      "normalized_time": 0.75,
+      "rgb_mse": 0.004124879837036133,
+      "rgb_psnr": 23.845886984770264
+    }
+  ],
+  "external_adapter_checkpoint": {
+    "path": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage21c_medium_anchor_adapter_training/stage21c_medium_anchor_adapter.safetensors",
+    "tensor_count": 14,
+    "parameter_count": 102925
+  },
+  "notes": "Medium-size anchor-only training across multiple GOP gaps. Inputs remain q8 keyframe anchors plus timestamp only."
+}

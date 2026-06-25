@@ -253,3 +253,13 @@ Stage 18 已完成并推送后，继续执行 Stage 19：整理 original StreamS
 ### 当前执行决策
 
 优先执行 Stage21b residual-zero Gaussian-anchor-only adapter training，而不是直接跑 Stage22 RD curve。原因是 Stage21 随机 residual 初始化仍低于 linear anchor baseline；Stage21b 先让初始 adapter 严格等于 q8 linear anchor interpolation，再用 RGB renderer loss 做更稳定的小规模训练。
+
+## 2026-06-25：继续推进到 Stage21c
+
+### 用户原始问题
+
+用户确认：继续按下一步计划执行。
+
+### 当前执行决策
+
+Stage21b 收益为正但极小，因此继续执行 Stage21c medium anchor adapter training。Stage21c 扩大到多 GOP gap `2/4/8/16`，使用 sample-balanced rows，并保持输入 payload 只包含 q8 keyframe anchors + timestamp。
