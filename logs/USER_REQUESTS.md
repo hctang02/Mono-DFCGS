@@ -83,3 +83,13 @@ experiments/stage6_real_anchor_dataset
 ### 回答要求
 
 需要给出可直接放入 PPT 的中文 slide 结构、每页标题、核心 bullet、讲解备注和方法定位表述。
+
+## 2026-06-25：transmitted MiB/frame 数值相近的问题
+
+### 用户原始问题
+
+用户询问：`transmitted MiB/frame` 为什么在几个数据集上的结果都差不多。
+
+### 回答要求
+
+需要解释当前阶段 2/3 的 size 统计口径：固定分辨率、固定 Gaussian 数量、固定字段数、固定 q8 估算，因此主要由 keyframe 数量和总帧数决定，而不是由内容复杂度决定。
