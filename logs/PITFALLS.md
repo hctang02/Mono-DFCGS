@@ -274,3 +274,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage41 confirms that better predictor ranking does not guarantee full-video RD improvement. All normalized/rank predicted selectors underperform uniform on all 12 evaluated points.
 - Relative rank costs can distort DP layout under a fixed budget. Without a uniform prior or spacing regularization, DP may choose segments that look cheap under proxy cost but are bad for rendered PSNR.
 - Future selector work should report uniform as a strong baseline and include layout-level constraints or directly optimized rendered-RD validation before claiming deployable selection gains.
+
+## Stage 42 Notes
+
+- Adding a uniform segment-length prior recovers Stage41 failures toward uniform but does not create a deployable gain; high prior weights mostly collapse to exact uniform selections.
+- A selector can look better by becoming uniform-like. Track `exact_uniform_points` to avoid mistaking fallback-to-uniform for a learned selection improvement.
+- The current strongest selector result remains the dense oracle/proxy upper bound, not the deployable predicted selector.

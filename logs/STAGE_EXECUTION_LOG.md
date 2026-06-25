@@ -2957,3 +2957,58 @@ experiments/stage41_normalized_predicted_selector_rd/stage41_normalized_predicte
 - Stage41 是更强的负结果：即使 Stage40 predictor ranking 明显改善，直接把 predicted relative cost 放入 DP selection 仍然 0/12 点超过 uniform。
 - 当前 proxy label / predictor 与最终 rendered RD objective 存在明显 mismatch；rank/normalized cost 可能导致 DP 选择过度非均匀的 segment layout。
 - 下一步不应继续只优化 predictor correlation，而应加入 selector-level calibration，例如 spacing/fairness constraints、uniform-prior penalty、或直接学习/验证 keyframe layout 的 rendered RD objective。
+
+## 2026-06-25：阶段 42 Calibrated Selector Prior RD
+
+### 执行计划
+
+Stage42 在 Stage40 `full_sample_z_rank` predictor score 上加入 uniform-layout prior：
+
+```text
+cost = pred_cost + alpha * ((segment_length - target_gap) / target_gap)^2
+```
+
+扫 `alpha = 0, 0.05, 0.1, 0.3, 1, 3, 10`，评估是否可以避免 Stage41 的过度非均匀 layout，同时保持可能的 selector gain。
+
+### 新增文件
+
+```text
+scripts/run_stage42_calibrated_selector_prior_rd.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage42_calibrated_selector_prior_rd.py
+CUDA_VISIBLE_DEVICES=3 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage42_calibrated_selector_prior_rd.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi`。GPU 2 满载，GPU 1/4/5/6/7 有其他进程，GPU 3 空闲，因此使用 `CUDA_VISIBLE_DEVICES=3`。
+
+### 输出文件
+
+```text
+experiments/stage42_calibrated_selector_prior_rd/stage42_calibrated_selector_prior_rd.csv
+experiments/stage42_calibrated_selector_prior_rd/stage42_selector_comparison.csv
+experiments/stage42_calibrated_selector_prior_rd/stage42_calibrated_selector_prior_rd_summary.json
+```
+
+### Aggregate 结果
+
+| method | positive all PSNR | exact uniform points | mean delta all PSNR | mean delta middle PSNR |
+|---|---:|---:|---:|---:|
+| prior 0.0 | 0 | 0 | -0.847949115968393 | -0.9945000333189684 |
+| prior 0.05 | 0 | 0 | -0.6041559056558018 | -0.7002204555279228 |
+| prior 0.1 | 0 | 0 | -0.44743080235738564 | -0.5125116619406539 |
+| prior 0.3 | 1 | 0 | -0.21756857982868696 | -0.24895227588894642 |
+| prior 1.0 | 3 | 6 | -0.09932737838737005 | -0.10902505140314893 |
+| prior 3.0 | 1 | 9 | -0.014864631968911782 | -0.014910339549485249 |
+| prior 10.0 | 1 | 10 | -0.01123851571938476 | -0.01083193660040808 |
+
+### 结论
+
+- Uniform prior 可以显著缓解 predicted selector 的过度非均匀 layout，`alpha=10` 几乎回到 uniform。
+- 但最佳 mean 仍为负，且高 alpha 下多数点 exact uniform，说明当前 deployable predicted selector 尚未产生真实 RD gain。
+- 当前结论应写成：dense oracle selector 有明确上界收益，但 deployable predictor/selector 仍未超过 uniform，需要更贴近 rendered RD 的 selector-level training 或更多数据。
