@@ -226,3 +226,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage33 gap1 export duplicates anchors across adjacent pair files. Use it for selector/evaluation coverage first; later optimize storage with deduplicated per-frame anchors.
 - Gap1 pair records have zero middle frames by construction. They are anchor-source records, not training pairs for intermediate reconstruction.
 - External Stage33 `.pt` files are large and must stay outside git.
+
+## Stage 34 Notes
+
+- Dense anchors do not rescue the Stage16 `segment_rd` heuristic. The main issue is objective mismatch, not just anchor availability.
+- Stage34 uniform numbers differ slightly from Stage26 because keyframe anchors now come from Stage33 gap1 pair exports rather than Stage6 multi-gap pair exports.
+- Keep Stage34 as a negative ablation and use it to motivate learned/deployable selector costs derived from Stage29-style anchor-quality targets.

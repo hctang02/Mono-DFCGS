@@ -2508,3 +2508,70 @@ experiments/stage33_dense_gap1_anchor_export/stage33_dense_gap1_anchor_summary.j
 - Stage33 successfully provides dense endpoint coverage for all 320 frames across the four samples.
 - This dataset is non-deduplicated gap1 pair storage, so adjacent anchors are duplicated across neighboring pair files.
 - It is now possible to rerun unconstrained Stage16/Stage29 selectors using actual anchors for odd frames.
+
+## 2026-06-25：阶段 34 Dense-Anchor Stage16 Selector RD
+
+### 执行计划
+
+Stage34 使用 Stage33 dense gap1 anchors 重新评估 Stage16 的 unconstrained `segment_rd` selections。与 Stage27 不同，本阶段所有奇数帧 keyframes 都有真实 exported anchors，不需要 snapping，也不需要 anchor-available constraint。
+
+### 新增文件
+
+```text
+scripts/run_stage34_dense_stage16_selector_rd.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage34_dense_stage16_selector_rd.py
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage34_dense_stage16_selector_rd.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi`。GPU 2 有大进程，GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage34_dense_stage16_selector_rd/stage34_dense_stage16_selector_rd.csv
+experiments/stage34_dense_stage16_selector_rd/stage34_selector_comparison.csv
+experiments/stage34_dense_stage16_selector_rd/stage34_dense_stage16_selector_rd_summary.json
+experiments/stage34_dense_stage16_selector_rd/stage34_delta_all_psnr.png
+experiments/stage34_dense_stage16_selector_rd/stage34_delta_middle_psnr.png
+```
+
+### Aggregate 结果
+
+| metric | value |
+|---|---:|
+| rows | 24 |
+| comparisons | 12 |
+| mean selector delta adapter all PSNR | -0.20844626209557107 |
+| mean selector delta adapter middle PSNR | -0.23827828367891582 |
+| positive selector all points | 4 / 12 |
+| positive selector middle points | 4 / 12 |
+
+### Selector-vs-uniform adapter PSNR delta
+
+| sample | gap | all PSNR delta | middle PSNR delta |
+|---|---:|---:|---:|
+| driving | 4 | -0.04081701674233429 | -0.08122249036710372 |
+| driving | 8 | -0.17610964099429793 | -0.21006903285362455 |
+| driving | 16 | -0.3701326258593731 | -0.4024097767248733 |
+| meetroom | 4 | -0.14344631811249542 | -0.2087883543335245 |
+| meetroom | 8 | -0.25901919279537466 | -0.30222039669111567 |
+| meetroom | 16 | -0.4515902929372686 | -0.48782180927879537 |
+| n3dv | 4 | 0.020734923720947762 | 0.02170452108476084 |
+| n3dv | 8 | 0.009707321878057229 | 0.00956914383604257 |
+| n3dv | 16 | 0.16337144121226643 | 0.17505980150671618 |
+| robot | 4 | 0.07922042169743904 | 0.09803821429976622 |
+| robot | 8 | -0.35994816705443 | -0.41630651822905307 |
+| robot | 16 | -0.9733259991599894 | -1.0548727063961856 |
+
+### 结论
+
+- Stage34 confirms Stage27's negative result is not primarily caused by missing odd-frame anchors.
+- Even with dense Stage33 anchors, Stage16 `segment_rd` remains worse than uniform on average and only improves 4/12 points.
+- Stage29 remains the stronger evidence: selector can help when the objective is aligned with anchor/adapter quality, but Stage16 motion/RD heuristic should not be used as final selector.
