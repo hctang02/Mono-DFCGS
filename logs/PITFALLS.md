@@ -79,3 +79,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage 11 keyframe selection is a selection/rate baseline only. It does not run reconstruction quality evaluation for non-uniform keyframes yet.
 - Motion-aware selection can cluster keyframes around high-motion bursts. Later evaluation may need minimum temporal spacing constraints to avoid wasting budget.
 - Gaussian-aware scores currently use stage6 gap=2 anchor MSE as a proxy. This requires the stage6 external `.pt` dataset to remain available at its manifest paths.
+
+## Stage 12 Notes
+
+- Non-uniform selected keyframes require grouping pairs by actual segment length because `opt.output_frames` and timestamp grids differ per segment.
+- Top-k motion/RD selection without temporal spacing can cluster keyframes and create long uncovered segments. The `robot + rd_aware + gap4` smoke had max segment length 16 despite a gap4 budget.
+- Stage 12 validates the selected-keyframe evaluation pipeline, but it still uses StreamSplat pair inference with RGB/depth inputs. It is not yet the final Gaussian-anchor-only decoder evaluation.

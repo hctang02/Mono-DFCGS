@@ -163,3 +163,13 @@ experiments/stage6_real_anchor_dataset
 ### 当前执行决策
 
 阶段 10b 已完成并推送。下一步实现 keyframe selection baseline，先输出 uniform / motion-aware / Gaussian-aware / RD-aware 的 keyframe indices 和 q8 static-anchor rate 估算；重建质量评估留到后续阶段运行 selected-keyframe reconstruction。
+
+## 2026-06-25：阶段 12 selected-keyframe reconstruction smoke
+
+### 用户原始问题
+
+用户表示：好的，可以继续做。
+
+### 当前执行决策
+
+阶段 11 已完成并推送。下一步执行 Stage 12 selected-keyframe reconstruction/evaluation。为避免直接启动完整大批量 GPU 实验，先实现通用非均匀 selected-keyframe evaluator，并只运行 `robot + rd_aware + reference_gap=4` 的 smoke；该组合最大 segment length 为 16，风险低于 gap8/gap16 的聚簇选择。

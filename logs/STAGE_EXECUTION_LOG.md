@@ -799,3 +799,78 @@ experiments/stage11_keyframe_selection/stage11_keyframe_selection_summary.json
 - 阶段 11 已形成 keyframe selection baseline 和统一 rate 估算入口。
 - 当前只输出 keyframe indices，不代表 quality；后续需要把 selected indices 接入 reconstruction/evaluation pipeline，比较 selected-keyframe RD 曲线。
 - Gaussian-aware 分数目前来自 stage6 gap=2 pair anchor MSE，是轻量 proxy，不是最终 entropy/RD-aware optimization。
+
+## 2026-06-25：阶段 12 Selected-Keyframe Reconstruction Smoke
+
+### 执行计划
+
+阶段 12 的目标是把阶段 11 输出的非均匀 keyframe indices 接入 StreamSplat reconstruction/evaluation pipeline，验证 selected-keyframe quality 评估闭环。为避免直接运行完整 4 samples × methods × gaps 大实验，本阶段先实现通用 evaluator，并只运行 `robot + rd_aware + reference_gap=4` smoke。
+
+### 新增文件
+
+```text
+scripts/run_stage12_selected_keyframe_reconstruction.py
+```
+
+### 运行命令
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage12_selected_keyframe_reconstruction.py --sample robot --method rd_aware --reference_gap 4 --batch_size 1 --max_segment_length 20 --save_per_frame
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 2 被占用；GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage12_selected_keyframe_reconstruction/stage12_selected_keyframe_reconstruction_summary.json
+experiments/stage12_selected_keyframe_reconstruction/stage12_selected_keyframe_reconstruction_summary.csv
+experiments/stage12_selected_keyframe_reconstruction/robot_rd_aware_gap4_summary.json
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage12_selected_keyframe_reconstruction/robot_rd_aware_gap4/per_frame_metrics.json
+```
+
+### 测试设置
+
+| item | value |
+|---|---:|
+| sample | robot |
+| selection_method | rd_aware |
+| reference_gap | 4 |
+| total_frames | 77 |
+| keyframe_count | 20 |
+| keyframe_ratio | 0.2597402597402597 |
+| max_segment_length | 16 |
+| pair_count | 19 |
+| estimated_q8_static_mib_per_frame | 0.11870941558441558 |
+
+Selected keyframes:
+
+```text
+0 8 10 11 12 22 23 24 36 38 40 41 42 43 44 54 58 74 75 76
+```
+
+Segment lengths:
+
+```text
+8 2 1 1 10 1 1 12 2 2 1 1 1 1 10 4 16 1 1
+```
+
+### 结果
+
+| metric | value |
+|---|---:|
+| all_psnr_avg | 24.733323284443408 |
+| all_ssim_avg | 0.8312911770560525 |
+| middle_psnr_avg | 20.742726407113338 |
+| middle_ssim_avg | 0.7831615586029855 |
+| given_psnr_avg | 36.106524384834096 |
+| given_ssim_avg | 0.9684605896472931 |
+| raw_pred_gs_mib_per_frame | 1.5267857142857142 |
+
+### 结论
+
+- 阶段 12 已完成非均匀 selected-keyframe reconstruction/evaluation smoke。
+- 该结果仍使用 StreamSplat RGB/depth-conditioned pair inference，不是最终 Gaussian-anchor-only decoder。
+- 在相同 keyframe count/rate 下，当前 `rd_aware` proxy 选择低于此前 robot uniform gap4 baseline，说明无间隔约束的 top-k selection 会聚簇并造成长 segment，后续 Stage 13 应增加 minimum temporal spacing / segment length penalty 后再做 RD evaluation。
