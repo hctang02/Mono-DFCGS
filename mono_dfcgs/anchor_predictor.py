@@ -30,8 +30,9 @@ class GaussianAnchorDynamicPredictor(nn.Module):
     interpolation and keeps the output in the static anchor field format.
     """
 
-    def __init__(self, attr_dim: int = 13, hidden_dim: int = 128):
+    def __init__(self, attr_dim: int = 13, hidden_dim: int = 128, apply_output_constraints: bool = True):
         super().__init__()
+        self.apply_output_constraints = apply_output_constraints
         self.encoder = GaussianAnchorEncoder(attr_dim, hidden_dim)
         self.time_mlp = nn.Sequential(
             nn.Linear(4, hidden_dim),
@@ -61,6 +62,7 @@ class GaussianAnchorDynamicPredictor(nn.Module):
         left_anchor: Dict[str, torch.Tensor],
         right_anchor: Dict[str, torch.Tensor],
         t: torch.Tensor,
+        apply_output_constraints: bool | None = None,
     ) -> Dict[str, torch.Tensor]:
         left = flatten_static_anchor(left_anchor)
         right = flatten_static_anchor(right_anchor)
@@ -77,6 +79,10 @@ class GaussianAnchorDynamicPredictor(nn.Module):
         residual = self.fuse(torch.cat([left_feat, right_feat, time_feat], dim=-1))
         pred = base + 0.05 * residual
         out = unflatten_static_anchor(pred)
+        if apply_output_constraints is None:
+            apply_output_constraints = self.apply_output_constraints
+        if not apply_output_constraints:
+            return out
         out["rgb"] = out["rgb"].sigmoid()
         out["opacity"] = out["opacity"].sigmoid()
         out["scale"] = F.softplus(out["scale"])

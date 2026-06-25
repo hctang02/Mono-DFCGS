@@ -1,0 +1,33 @@
+{
+  "stage": 9,
+  "model": "GaussianAnchorDynamicPredictor real-anchor proxy training",
+  "device": "cuda",
+  "manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage6_real_anchor_dataset/stage6_real_anchor_dataset_manifest.csv",
+  "frame_gap": 4,
+  "samples": null,
+  "eval_samples": [
+    "robot"
+  ],
+  "total_rows": 79,
+  "train_rows": 60,
+  "eval_rows": 19,
+  "batch_items": 2,
+  "gaussians_per_item": 2048,
+  "hidden_dim": 128,
+  "steps": 80,
+  "eval_batches": 8,
+  "lr": 0.001,
+  "quant_bits": 8,
+  "apply_output_constraints": false,
+  "initial_eval_loss": 6.341110747598577e-06,
+  "final_eval_loss": 4.971821141452892e-07,
+  "eval_loss_ratio": 0.07840615531491475,
+  "initial_baseline_loss": 5.393901716388427e-07,
+  "final_baseline_loss": 5.092729402633722e-07,
+  "first_train_loss": 6.465598744398449e-06,
+  "last_train_loss": 4.793312768924807e-07,
+  "train_loss_ratio": 0.07413563628701135,
+  "parameter_count": 102925,
+  "loss_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage9_real_anchor_proxy_training/stage9_train_losses.csv",
+  "notes": "Proxy loss only: clean linear interpolation of real keyframe anchors in raw attribute space. No renderer/RGB supervision yet."
+}

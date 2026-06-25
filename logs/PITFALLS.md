@@ -55,3 +55,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage 8 is intentionally non-strict by default. It writes empty manifests when no DAVIS / YouTube-VOS root exists, so the repo still records the required layout and a reproducible preflight result.
 - DAVIS depth images are not part of the standard RGB/annotation download. They must be generated before anchor export; otherwise `ready_for_depth=true` but `ready_for_anchor_export=false` will appear in the sequence manifest.
 - StreamSplat compatibility and Mono-DFCGS convenience differ slightly: the stage 8 script accepts DAVIS `480p` directories, but the original StreamSplat provider may still expect `Full-Resolution` unless adapted.
+
+## Stage 9 Notes
+
+- The first stage 9 run used the predictor's default `sigmoid` / `softplus` / rotation normalization output constraints. That mismatched the stage6 StreamSplat raw anchor attribute space and produced a much larger proxy loss than simple q8 linear interpolation.
+- `GaussianAnchorDynamicPredictor` now keeps output constraints enabled by default but allows them to be disabled for raw-attribute proxy training. Renderer/RGB training should revisit the correct output-domain constraints.
+- `torch.load(..., weights_only=True)` is used for stage6 `.pt` items to avoid the PyTorch pickle safety warning for this local tensor-only dataset format.

@@ -539,3 +539,70 @@ YouTube-VOS/
 - 当前默认路径仍未检测到可用 DAVIS / YouTube-VOS sequence。
 - 阶段 8 产物提供了明确的数据挂载/下载检查入口。
 - 后续如果用户提供 DAVIS root，可运行 `scripts/run_stage8_davis_vos_manifest.py --davis_roots /path/to/DAVIS` 生成 sequence manifest，然后接 depth preprocessing 和 anchor export。
+
+## 2026-06-25：阶段 9 Real Anchor Proxy Training
+
+### 执行计划
+
+阶段 9 的目标是在 stage6 已导出的真实 keyframe Gaussian anchors 上训练 `GaussianAnchorDynamicPredictor`，验证真实数据加载、q8 keyframe anchor 输入模拟、held-out sample 评估和训练闭环。该阶段只使用 raw Gaussian attribute proxy loss，不接 renderer/RGB loss。
+
+### 新增/修改文件
+
+```text
+scripts/run_stage9_real_anchor_proxy_training.py
+mono_dfcgs/anchor_predictor.py
+```
+
+`anchor_predictor.py` 保留默认输出约束行为，同时新增可选关闭输出约束的接口。阶段 9 默认关闭输出约束，在 StreamSplat raw attribute 空间拟合线性 teacher。
+
+### 运行命令
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage9_real_anchor_proxy_training.py --device cuda --frame_gap 4 --steps 80 --eval_batches 8 --gaussians 2048 --batch_items 2
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 2 被占用；GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage9_real_anchor_proxy_training/stage9_real_anchor_proxy_training_summary.json
+experiments/stage9_real_anchor_proxy_training/stage9_train_losses.csv
+```
+
+### 训练设置
+
+| item | value |
+|---|---:|
+| frame_gap | 4 |
+| total rows | 79 |
+| train rows | 60 |
+| eval rows | 19 |
+| held-out eval sample | robot |
+| batch_items | 2 |
+| gaussians_per_item | 2048 |
+| steps | 80 |
+| eval_batches | 8 |
+| quant_bits | 8 |
+| parameters | 102925 |
+
+### 结果
+
+| metric | value |
+|---|---:|
+| initial_eval_loss | 6.341110747598577e-06 |
+| final_eval_loss | 4.971821141452892e-07 |
+| eval_loss_ratio | 0.07840615531491475 |
+| initial_baseline_loss | 5.393901716388427e-07 |
+| final_baseline_loss | 5.092729402633722e-07 |
+| first_train_loss | 6.465598744398449e-06 |
+| last_train_loss | 4.793312768924807e-07 |
+| train_loss_ratio | 0.07413563628701135 |
+
+### 结论
+
+- 阶段 9 已完成真实 anchor proxy training smoke。
+- 训练后的 eval loss 接近 q8 linear baseline，说明真实 anchor 加载、quantized input simulation 和 predictor 训练闭环可运行。
+- 该结果不是最终视频重建质量；下一步需要接 Gaussian renderer / RGB loss，或先实现能把 predicted raw attributes 转回 renderer 所需格式的 adapter。
