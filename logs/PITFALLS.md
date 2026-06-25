@@ -262,3 +262,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Strong cost-prediction ranking metrics are not sufficient for keyframe-selection RD gains. Stage39 length-only ridge has high Stage38 Spearman but still loses to uniform on all 12 RD points.
 - Raw predicted segment costs can produce DP selections that optimize the proxy label but hurt full-video rendered PSNR. Treat Stage39 as evidence for objective mismatch, not just model underfitting.
 - Future deployable selectors should normalize costs per sample/candidate budget or optimize a selector-level/rank objective before re-running full-video RD.
+
+## Stage 40 Notes
+
+- Sample/candidate normalization fixes part of the cross-sample scale problem, especially for full-feature rank prediction.
+- Predictor ranking quality must still be validated with actual DP selection and rendered RD; Stage39 showed that high Spearman alone can be misleading.
+- Rank targets are useful for within-sample selection but no longer represent calibrated distortion magnitudes. Any DP cost derived from ranks should be treated as a relative selector score.

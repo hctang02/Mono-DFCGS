@@ -2868,3 +2868,47 @@ experiments/stage39_predicted_selector_rd/stage39_full_feature_ridge_delta_middl
 - `length_only_ridge` 在 Stage38 ranking metrics 上很强，但转成 fixed-budget selection 后 12/12 点低于 uniform，说明高相关不等价于 RD-optimal selector。
 - `full_feature_ridge` 受跨样本 domain shift 影响更严重，只在 1/12 点上超过 uniform。
 - 下一步应改用 sample-normalized / rank-normalized / candidate-normalized predictor 或直接训练 selector objective，而不是继续使用 raw-cost ridge。
+
+## 2026-06-25：阶段 40 Normalized Cost Predictor Validation
+
+### 执行计划
+
+Stage40 针对 Stage38/39 的 negative result，改用 sample/candidate 内归一化的 deployable features，并尝试 z-score log target 与 rank target。目标是验证 predictor 是否能减少跨样本 scale mismatch，尤其避免 Stage38 full-feature ridge 在 robot held-out 上崩溃。
+
+### 新增文件
+
+```text
+scripts/run_stage40_normalized_cost_predictor_validation.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage40_normalized_cost_predictor_validation.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage40_normalized_cost_predictor_validation.py
+```
+
+Stage40 是 CPU-only regression validation。运行前仍检查 `nvidia-smi`，GPU 2 满载，GPU 1/4/5/6/7 空闲。
+
+### 输出文件
+
+```text
+experiments/stage40_normalized_cost_predictor_validation/stage40_predictor_metrics.csv
+experiments/stage40_normalized_cost_predictor_validation/stage40_predictor_predictions.csv
+experiments/stage40_normalized_cost_predictor_validation/stage40_normalized_cost_predictor_validation_summary.json
+```
+
+### Aggregate 结果
+
+| model | mean Spearman log | mean Spearman transformed | mean RMSE transformed |
+|---|---:|---:|---:|
+| length_sample_z_zlog | 0.9810832482322229 | 0.9810832482322229 | 0.4479778496500245 |
+| full_sample_z_zlog | 0.8634807769805042 | 0.8634807769805042 | 0.5124079104179997 |
+| length_sample_z_rank | 0.9810832482322229 | 0.9810832482322229 | 0.05718025637542119 |
+| full_sample_z_rank | 0.9855087922482462 | 0.9855087922482462 | 0.05203336788251095 |
+
+### 结论
+
+- Rank target + sample-normalized full features gives the best predictor ranking: `full_sample_z_rank` mean Spearman log `0.9855087922482462`.
+- This substantially improves over Stage38 raw full-feature ridge mean Spearman `0.7734269107632606` and suggests scale normalization is necessary.
+- Stage40 predictor metrics alone are not enough; next step must run full-video RD selection using Stage40 predictions.
