@@ -2575,3 +2575,73 @@ experiments/stage34_dense_stage16_selector_rd/stage34_delta_middle_psnr.png
 - Stage34 confirms Stage27's negative result is not primarily caused by missing odd-frame anchors.
 - Even with dense Stage33 anchors, Stage16 `segment_rd` remains worse than uniform on average and only improves 4/12 points.
 - Stage29 remains the stronger evidence: selector can help when the objective is aligned with anchor/adapter quality, but Stage16 motion/RD heuristic should not be used as final selector.
+
+## 2026-06-25：阶段 35 Dense Anchor-Attribute Oracle Selector RD
+
+### 执行计划
+
+Stage35 使用 Stage33 dense gap1 anchors 作为全帧 candidate pool，重跑 Stage29 的 anchor-attribute oracle/proxy selector。选择目标是最小化 segment 内部 adapter-predicted anchor 与 dense q8 anchor 的 attribute MSE，然后用 full-video renderer 评估 RD。
+
+该方法仍使用 intermediate anchors 作为 oracle/proxy target，因此不是可部署 encoder-side selector。
+
+### 新增文件
+
+```text
+scripts/run_stage35_dense_anchor_attribute_oracle_selector_rd.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage35_dense_anchor_attribute_oracle_selector_rd.py
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage35_dense_anchor_attribute_oracle_selector_rd.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi`。GPU 2 有大进程，GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage35_dense_anchor_attribute_oracle_selector_rd/stage35_dense_anchor_attribute_oracle_selector_rd.csv
+experiments/stage35_dense_anchor_attribute_oracle_selector_rd/stage35_selector_comparison.csv
+experiments/stage35_dense_anchor_attribute_oracle_selector_rd/stage35_dense_anchor_attribute_oracle_selector_rd_summary.json
+experiments/stage35_dense_anchor_attribute_oracle_selector_rd/stage35_delta_all_psnr.png
+experiments/stage35_dense_anchor_attribute_oracle_selector_rd/stage35_delta_middle_psnr.png
+```
+
+### Aggregate 结果
+
+| metric | value |
+|---|---:|
+| rows | 24 |
+| comparisons | 12 |
+| mean selector delta adapter all PSNR | 0.19715194312405782 |
+| mean selector delta adapter middle PSNR | 0.22543596674489544 |
+| positive selector all points | 12 / 12 |
+| positive selector middle points | 12 / 12 |
+
+### Selector-vs-uniform adapter PSNR delta
+
+| sample | gap | all PSNR delta | middle PSNR delta |
+|---|---:|---:|---:|
+| driving | 4 | 0.10271658333038047 | 0.11828421815953405 |
+| driving | 8 | 0.07420764607518393 | 0.07862427317779819 |
+| driving | 16 | 0.04696688605787713 | 0.047731645026328096 |
+| meetroom | 4 | 0.08472378864621177 | 0.09548642832174536 |
+| meetroom | 8 | 0.1634962721689739 | 0.17821243977365953 |
+| meetroom | 16 | 0.1456696036510401 | 0.15254014616091638 |
+| n3dv | 4 | 0.06615256078153564 | 0.08225455855895447 |
+| n3dv | 8 | 0.15626101230313694 | 0.17673748652441645 |
+| n3dv | 16 | 0.32445355363339345 | 0.34806274149884686 |
+| robot | 4 | 0.35480000997070604 | 0.47451667271218767 |
+| robot | 8 | 0.544173011655797 | 0.6282561146693126 |
+| robot | 16 | 0.3022023892144574 | 0.3245248763550457 |
+
+### 结论
+
+- Stage35 is the strongest selector upper-bound so far: dense anchor-attribute oracle improves all 12 sample-gap points.
+- Dense candidate coverage fixes Stage29's driving gap4/8 negative points.
+- Stage34 vs Stage35 cleanly shows the decisive factor is selector objective alignment, not just dense anchor availability.
+- Next step is Stage36: encode Stage35 selected keyframes with actual q8 bitstreams and report actual-bitstream RD.

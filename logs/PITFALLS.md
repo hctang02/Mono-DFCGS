@@ -232,3 +232,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Dense anchors do not rescue the Stage16 `segment_rd` heuristic. The main issue is objective mismatch, not just anchor availability.
 - Stage34 uniform numbers differ slightly from Stage26 because keyframe anchors now come from Stage33 gap1 pair exports rather than Stage6 multi-gap pair exports.
 - Keep Stage34 as a negative ablation and use it to motivate learned/deployable selector costs derived from Stage29-style anchor-quality targets.
+
+## Stage 35 Notes
+
+- Stage35 is still an oracle/proxy selector: it uses dense intermediate anchors from the same video to choose keyframes.
+- The 12/12 positive result should be reported as an upper bound and a training target for deployable selector research, not as the final encoder-side selector.
+- Stage35 uniform rows use Stage33 gap1 anchors, so they may differ slightly from Stage26 uniform rows that used Stage6 multi-gap anchors.
