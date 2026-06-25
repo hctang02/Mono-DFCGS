@@ -2155,3 +2155,54 @@ experiments/stage27_anchor_available_selector_rd/stage27_adapter_middle_psnr_rd.
 - It improves n3dv all gaps and robot gap4, but hurts driving/meetroom and robot long gaps.
 - This negative result suggests the selector objective is mismatched with anchor-only rendering quality, and Stage16-style motion/RD edge scores are insufficient.
 - 下一步应做 selector objective upgrade，而不是报告 Stage27 selector as win。
+
+## 2026-06-25：阶段 28 Enhanced Rate Model Report
+
+### 执行计划
+
+Stage28 升级 rate accounting，但不改变主 rate 口径。主 rate 仍为 transmitted q8 static Gaussian anchors MiB/frame；enhanced report 额外估算 quant params、keyframe indices/timestamps、metadata，以及 q8 symbol zero-order entropy estimate。
+
+### 新增文件
+
+```text
+scripts/run_stage28_enhanced_rate_model_report.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage28_enhanced_rate_model_report.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage28_enhanced_rate_model_report.py
+```
+
+该阶段是 CPU-only rate accounting，没有训练或渲染。
+
+### 输出文件
+
+```text
+experiments/stage28_enhanced_rate_model_report/stage28_enhanced_rate_model_report.csv
+experiments/stage28_enhanced_rate_model_report/stage28_enhanced_rate_model_report_summary.json
+```
+
+### Assumptions
+
+- Anchor payload: q8 static anchor values only，`36864 Gaussians * 13 values * 8 bits/keyframe`。
+- Quant params: per-keyframe per-field min/scale，`13 * 2 * float32 = 104 bytes/keyframe`。
+- Keyframe indices: `uint16` per keyframe。
+- Timestamps: `uint16` per keyframe。
+- Metadata: fixed header 128 bytes + field table 64 bytes per video。
+- Entropy estimate: zero-order entropy of q8 symbols after per-anchor uniform quantization；不包含真实 entropy model/header 开销。
+
+### Aggregate 结果
+
+| group | count | mean primary MiB/frame | mean container MiB/frame | mean entropy-container MiB/frame | mean overhead vs anchor | mean entropy bits/value | entropy savings vs raw q8 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| stage26/uniform | 16 | 0.11177096015963203 | 0.11179843884697896 | 0.08875509970880423 | 0.025846283880480058% | 6.351033181558638 | 20.612085230517025% |
+| stage27/anchor_segment_rd | 12 | 0.07190346545815296 | 0.07192195958389348 | 0.05710426629956228 | 0.026619792244792242% | 6.351353170965801 | 20.608085362927486% |
+| stage27/uniform | 12 | 0.07190346545815296 | 0.07192195958389348 | 0.05710230238847568 | 0.026619792244792242% | 6.351305247366445 | 20.60868440791943% |
+
+### 结论
+
+- Metadata/index/timestamp/quant-param overhead is tiny relative to q8 anchor payload under the current fixed-size anchor format: around 0.026% vs anchor bytes.
+- A simple zero-order q8 entropy estimate suggests roughly 20.6% anchor-byte savings, around 6.35 bits/value.
+- This is still an estimate, not an implemented entropy-coded bitstream. Paper/report should label it as auxiliary rate analysis.

@@ -190,3 +190,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage16 unconstrained selected indices cannot be directly used as transmitted keyframe anchors with the current Stage6 dataset because Stage6 only contains anchors for even endpoint frames.
 - Do not silently snap odd selected keyframes to nearby even anchors; that changes the selected frames and may duplicate/drop budget. Stage27 instead uses an explicit anchor-available constrained selector.
 - The current anchor-available `anchor_segment_rd` selector is a negative result: 4/12 points beat uniform and the mean adapter PSNR delta is negative. Treat this as evidence that the selector objective needs redesign.
+
+## Stage 28 Notes
+
+- Stage28 does not replace the primary rate metric. Keep reporting primary q8 static anchor MiB/frame for continuity with Stage2/23/26.
+- Stage28 entropy numbers are zero-order symbol entropy estimates, not a real entropy-coded bitstream. They exclude entropy model/header details beyond the simple metadata budget.
+- Quantization parameter overhead is small only because anchors are large; if future pruning reduces Gaussian count substantially, overhead should be recomputed and may no longer be negligible.
