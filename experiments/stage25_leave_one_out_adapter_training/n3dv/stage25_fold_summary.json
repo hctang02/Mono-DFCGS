@@ -1,0 +1,158 @@
+{
+  "heldout_sample": "n3dv",
+  "train_samples": [
+    "driving",
+    "meetroom",
+    "robot"
+  ],
+  "eval_samples": [
+    "n3dv"
+  ],
+  "frame_gaps": [
+    2,
+    4,
+    8,
+    16
+  ],
+  "selected_train_row_count": 48,
+  "selected_eval_row_count": 20,
+  "selected_train_samples": [
+    "driving",
+    "meetroom",
+    "robot"
+  ],
+  "selected_eval_samples": [
+    "n3dv"
+  ],
+  "rows_by_gap": {
+    "2": {
+      "available_rows": 158,
+      "selected_train_rows": 12,
+      "selected_eval_rows": 5,
+      "selected_train_samples": [
+        "driving",
+        "meetroom",
+        "robot"
+      ],
+      "selected_eval_samples": [
+        "n3dv"
+      ]
+    },
+    "4": {
+      "available_rows": 79,
+      "selected_train_rows": 12,
+      "selected_eval_rows": 5,
+      "selected_train_samples": [
+        "driving",
+        "meetroom",
+        "robot"
+      ],
+      "selected_eval_samples": [
+        "n3dv"
+      ]
+    },
+    "8": {
+      "available_rows": 40,
+      "selected_train_rows": 12,
+      "selected_eval_rows": 5,
+      "selected_train_samples": [
+        "driving",
+        "meetroom",
+        "robot"
+      ],
+      "selected_eval_samples": [
+        "n3dv"
+      ]
+    },
+    "16": {
+      "available_rows": 20,
+      "selected_train_rows": 12,
+      "selected_eval_rows": 5,
+      "selected_train_samples": [
+        "driving",
+        "meetroom",
+        "robot"
+      ],
+      "selected_eval_samples": [
+        "n3dv"
+      ]
+    }
+  },
+  "train_task_count": 84,
+  "eval_task_count": 35,
+  "steps": 384,
+  "eval_interval": 96,
+  "hidden_dim": 128,
+  "lr": 8e-06,
+  "quant_bits": 8,
+  "initial_train_model_psnr_avg": 25.576790619407483,
+  "final_train_model_psnr_avg": 25.669985820168797,
+  "initial_eval": {
+    "model_psnr_avg": 30.01808138847584,
+    "linear_psnr_avg": 30.01808138847584,
+    "margin_over_linear_psnr": 0.0,
+    "model_psnr_by_gap": {
+      "2": 29.97589786025635,
+      "4": 30.00626224196363,
+      "8": 30.16339267389626,
+      "16": 29.905681013677373
+    },
+    "linear_psnr_by_gap": {
+      "2": 29.97589786025635,
+      "4": 30.00626224196363,
+      "8": 30.16339267389626,
+      "16": 29.905681013677373
+    }
+  },
+  "final_eval": {
+    "model_psnr_avg": 30.24524079435228,
+    "linear_psnr_avg": 30.01808138847584,
+    "margin_over_linear_psnr": 0.22715940587644212,
+    "model_psnr_by_gap": {
+      "2": 30.213418626667266,
+      "4": 30.23637194083788,
+      "8": 30.397917936816377,
+      "16": 30.11734358924512
+    },
+    "linear_psnr_by_gap": {
+      "2": 29.97589786025635,
+      "4": 30.00626224196363,
+      "8": 30.16339267389626,
+      "16": 29.905681013677373
+    }
+  },
+  "best_step": 384,
+  "best_eval": {
+    "model_psnr_avg": 30.24524079435228,
+    "linear_psnr_avg": 30.01808138847584,
+    "margin_over_linear_psnr": 0.22715940587644212,
+    "model_psnr_by_gap": {
+      "2": 30.213418626667266,
+      "4": 30.23637194083788,
+      "8": 30.397917936816377,
+      "16": 30.11734358924512
+    },
+    "linear_psnr_by_gap": {
+      "2": 29.97589786025635,
+      "4": 30.00626224196363,
+      "8": 30.16339267389626,
+      "16": 29.905681013677373
+    }
+  },
+  "train_losses_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/n3dv/stage25_train_rgb_losses.csv",
+  "validation_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/n3dv/stage25_validation_log.csv",
+  "initial_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/n3dv/stage25_initial_eval.csv",
+  "final_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/n3dv/stage25_final_eval.csv",
+  "best_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/n3dv/stage25_best_eval.csv",
+  "best_gap_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/n3dv/stage25_best_gap_eval_summary.csv",
+  "external_best_checkpoint": {
+    "path": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage25_leave_one_out_adapter_training/n3dv/stage25_best_anchor_adapter.safetensors",
+    "tensor_count": 14,
+    "parameter_count": 102925
+  },
+  "external_final_checkpoint": {
+    "path": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage25_leave_one_out_adapter_training/n3dv/stage25_final_anchor_adapter.safetensors",
+    "tensor_count": 14,
+    "parameter_count": 102925
+  }
+}

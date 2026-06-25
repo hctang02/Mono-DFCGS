@@ -1908,3 +1908,89 @@ experiments/stage24_full_video_anchor_only_rd_plots/stage24_full_video_delta_mid
 - Stage24 生成了 full-video anchor-only RD 图和 delta 图。
 - 16 个点均保持正收益；每个样本的 min delta all/middle PSNR 也为正。
 - 该图可作为当前开发集上的 anchor-only full-video RD 参考，但仍不是 paper-level 多数据集结果。
+
+## 2026-06-25：阶段 25 Leave-One-Sample-Out Adapter Training
+
+### 执行计划
+
+阶段 25 的目标是验证 Stage21d adapter 的跨样本泛化。轮流 hold out `n3dv/meetroom/driving/robot`，每折用其余 3 个样本训练，在 held-out 样本上进行 validation-based checkpoint selection。
+
+### 新增文件
+
+```text
+scripts/run_stage25_leave_one_out_adapter_training.py
+```
+
+### 运行命令
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage25_leave_one_out_adapter_training.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 2 有进程，GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage25_leave_one_out_adapter_training/stage25_leave_one_out_adapter_training_summary.json
+experiments/stage25_leave_one_out_adapter_training/stage25_leave_one_out_adapter_training_aggregate.csv
+experiments/stage25_leave_one_out_adapter_training/<heldout>/stage25_fold_summary.json
+experiments/stage25_leave_one_out_adapter_training/<heldout>/stage25_validation_log.csv
+experiments/stage25_leave_one_out_adapter_training/<heldout>/stage25_best_gap_eval_summary.csv
+```
+
+外部 checkpoint：
+
+```text
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage25_leave_one_out_adapter_training/<heldout>/stage25_best_anchor_adapter.safetensors
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage25_leave_one_out_adapter_training/<heldout>/stage25_final_anchor_adapter.safetensors
+```
+
+每个 checkpoint 约 404K，不提交到 git。
+
+### 配置
+
+| item | value |
+|---|---:|
+| folds | n3dv, meetroom, driving, robot |
+| frame gaps | 2, 4, 8, 16 |
+| train samples per fold | 3 |
+| selected train rows per fold | 48 |
+| selected eval rows per fold | 20 |
+| train tasks per fold | 84 |
+| eval tasks per fold | 35 |
+| steps per fold | 384 |
+| eval interval | 96 |
+| hidden_dim | 128 |
+| lr | 8e-06 |
+| quant_bits | 8 |
+
+### Aggregate 结果
+
+| heldout sample | best step | best margin over linear PSNR |
+|---|---:|---:|
+| n3dv | 384 | 0.22715940587644212 |
+| meetroom | 384 | 0.15021969118397394 |
+| driving | 384 | 0.06700045546002897 |
+| robot | 384 | 0.03766598947441224 |
+
+| metric | value |
+|---|---:|
+| mean best margin over linear PSNR | 0.12051138549871432 |
+| min best margin over linear PSNR | 0.03766598947441224 |
+| negative heldout-gap points | 0 |
+
+### Gap-wise 检查
+
+- n3dv: gap2 +0.2375, gap4 +0.2301, gap8 +0.2345, gap16 +0.2117。
+- meetroom: gap2 +0.1820, gap4 +0.1595, gap8 +0.1223, gap16 +0.1530。
+- driving: gap2 +0.0586, gap4 +0.0405, gap8 +0.0669, gap16 +0.0978。
+- robot: gap2 +0.0281, gap4 +0.0243, gap8 +0.0245, gap16 +0.0689。
+
+### 结论
+
+- Stage25 leave-one-out intermediate validation 全部 held-out sample 和全部 gap 都超过 q8 linear anchor baseline。
+- 最弱泛化点仍是 robot，但 best margin 仍为正，约 +0.0377 dB。
+- 下一步应做 Stage26：用每折 best checkpoint 做 held-out full-video anchor-only evaluation 和 RD plots。

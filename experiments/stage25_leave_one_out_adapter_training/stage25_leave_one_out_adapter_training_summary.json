@@ -1,0 +1,700 @@
+{
+  "stage": 25,
+  "mode": "leave-one-sample-out validated anchor adapter training",
+  "samples": [
+    "n3dv",
+    "meetroom",
+    "driving",
+    "robot"
+  ],
+  "frame_gaps": [
+    2,
+    4,
+    8,
+    16
+  ],
+  "max_train_rows_per_gap": 12,
+  "max_eval_rows_per_gap": 5,
+  "targets_per_row": 2,
+  "steps": 384,
+  "eval_interval": 96,
+  "hidden_dim": 128,
+  "lr": 8e-06,
+  "quant_bits": 8,
+  "aggregate_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/stage25_leave_one_out_adapter_training_aggregate.csv",
+  "aggregate": [
+    {
+      "heldout_sample": "n3dv",
+      "best_step": 384,
+      "initial_margin_over_linear_psnr": 0.0,
+      "best_margin_over_linear_psnr": 0.22715940587644212,
+      "final_margin_over_linear_psnr": 0.22715940587644212,
+      "train_task_count": 84,
+      "eval_task_count": 35
+    },
+    {
+      "heldout_sample": "meetroom",
+      "best_step": 384,
+      "initial_margin_over_linear_psnr": 0.0,
+      "best_margin_over_linear_psnr": 0.15021969118397394,
+      "final_margin_over_linear_psnr": 0.15021969118397394,
+      "train_task_count": 84,
+      "eval_task_count": 35
+    },
+    {
+      "heldout_sample": "driving",
+      "best_step": 384,
+      "initial_margin_over_linear_psnr": 0.0,
+      "best_margin_over_linear_psnr": 0.06700045546002897,
+      "final_margin_over_linear_psnr": 0.06700045546002897,
+      "train_task_count": 84,
+      "eval_task_count": 35
+    },
+    {
+      "heldout_sample": "robot",
+      "best_step": 384,
+      "initial_margin_over_linear_psnr": 0.0,
+      "best_margin_over_linear_psnr": 0.03766598947441224,
+      "final_margin_over_linear_psnr": 0.03766598947441224,
+      "train_task_count": 84,
+      "eval_task_count": 35
+    }
+  ],
+  "folds": [
+    {
+      "heldout_sample": "n3dv",
+      "train_samples": [
+        "driving",
+        "meetroom",
+        "robot"
+      ],
+      "eval_samples": [
+        "n3dv"
+      ],
+      "frame_gaps": [
+        2,
+        4,
+        8,
+        16
+      ],
+      "selected_train_row_count": 48,
+      "selected_eval_row_count": 20,
+      "selected_train_samples": [
+        "driving",
+        "meetroom",
+        "robot"
+      ],
+      "selected_eval_samples": [
+        "n3dv"
+      ],
+      "rows_by_gap": {
+        "2": {
+          "available_rows": 158,
+          "selected_train_rows": 12,
+          "selected_eval_rows": 5,
+          "selected_train_samples": [
+            "driving",
+            "meetroom",
+            "robot"
+          ],
+          "selected_eval_samples": [
+            "n3dv"
+          ]
+        },
+        "4": {
+          "available_rows": 79,
+          "selected_train_rows": 12,
+          "selected_eval_rows": 5,
+          "selected_train_samples": [
+            "driving",
+            "meetroom",
+            "robot"
+          ],
+          "selected_eval_samples": [
+            "n3dv"
+          ]
+        },
+        "8": {
+          "available_rows": 40,
+          "selected_train_rows": 12,
+          "selected_eval_rows": 5,
+          "selected_train_samples": [
+            "driving",
+            "meetroom",
+            "robot"
+          ],
+          "selected_eval_samples": [
+            "n3dv"
+          ]
+        },
+        "16": {
+          "available_rows": 20,
+          "selected_train_rows": 12,
+          "selected_eval_rows": 5,
+          "selected_train_samples": [
+            "driving",
+            "meetroom",
+            "robot"
+          ],
+          "selected_eval_samples": [
+            "n3dv"
+          ]
+        }
+      },
+      "train_task_count": 84,
+      "eval_task_count": 35,
+      "steps": 384,
+      "eval_interval": 96,
+      "hidden_dim": 128,
+      "lr": 8e-06,
+      "quant_bits": 8,
+      "initial_train_model_psnr_avg": 25.576790619407483,
+      "final_train_model_psnr_avg": 25.669985820168797,
+      "initial_eval": {
+        "model_psnr_avg": 30.01808138847584,
+        "linear_psnr_avg": 30.01808138847584,
+        "margin_over_linear_psnr": 0.0,
+        "model_psnr_by_gap": {
+          "2": 29.97589786025635,
+          "4": 30.00626224196363,
+          "8": 30.16339267389626,
+          "16": 29.905681013677373
+        },
+        "linear_psnr_by_gap": {
+          "2": 29.97589786025635,
+          "4": 30.00626224196363,
+          "8": 30.16339267389626,
+          "16": 29.905681013677373
+        }
+      },
+      "final_eval": {
+        "model_psnr_avg": 30.24524079435228,
+        "linear_psnr_avg": 30.01808138847584,
+        "margin_over_linear_psnr": 0.22715940587644212,
+        "model_psnr_by_gap": {
+          "2": 30.213418626667266,
+          "4": 30.23637194083788,
+          "8": 30.397917936816377,
+          "16": 30.11734358924512
+        },
+        "linear_psnr_by_gap": {
+          "2": 29.97589786025635,
+          "4": 30.00626224196363,
+          "8": 30.16339267389626,
+          "16": 29.905681013677373
+        }
+      },
+      "best_step": 384,
+      "best_eval": {
+        "model_psnr_avg": 30.24524079435228,
+        "linear_psnr_avg": 30.01808138847584,
+        "margin_over_linear_psnr": 0.22715940587644212,
+        "model_psnr_by_gap": {
+          "2": 30.213418626667266,
+          "4": 30.23637194083788,
+          "8": 30.397917936816377,
+          "16": 30.11734358924512
+        },
+        "linear_psnr_by_gap": {
+          "2": 29.97589786025635,
+          "4": 30.00626224196363,
+          "8": 30.16339267389626,
+          "16": 29.905681013677373
+        }
+      },
+      "train_losses_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/n3dv/stage25_train_rgb_losses.csv",
+      "validation_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/n3dv/stage25_validation_log.csv",
+      "initial_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/n3dv/stage25_initial_eval.csv",
+      "final_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/n3dv/stage25_final_eval.csv",
+      "best_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/n3dv/stage25_best_eval.csv",
+      "best_gap_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/n3dv/stage25_best_gap_eval_summary.csv",
+      "external_best_checkpoint": {
+        "path": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage25_leave_one_out_adapter_training/n3dv/stage25_best_anchor_adapter.safetensors",
+        "tensor_count": 14,
+        "parameter_count": 102925
+      },
+      "external_final_checkpoint": {
+        "path": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage25_leave_one_out_adapter_training/n3dv/stage25_final_anchor_adapter.safetensors",
+        "tensor_count": 14,
+        "parameter_count": 102925
+      }
+    },
+    {
+      "heldout_sample": "meetroom",
+      "train_samples": [
+        "driving",
+        "n3dv",
+        "robot"
+      ],
+      "eval_samples": [
+        "meetroom"
+      ],
+      "frame_gaps": [
+        2,
+        4,
+        8,
+        16
+      ],
+      "selected_train_row_count": 48,
+      "selected_eval_row_count": 20,
+      "selected_train_samples": [
+        "driving",
+        "n3dv",
+        "robot"
+      ],
+      "selected_eval_samples": [
+        "meetroom"
+      ],
+      "rows_by_gap": {
+        "2": {
+          "available_rows": 158,
+          "selected_train_rows": 12,
+          "selected_eval_rows": 5,
+          "selected_train_samples": [
+            "driving",
+            "n3dv",
+            "robot"
+          ],
+          "selected_eval_samples": [
+            "meetroom"
+          ]
+        },
+        "4": {
+          "available_rows": 79,
+          "selected_train_rows": 12,
+          "selected_eval_rows": 5,
+          "selected_train_samples": [
+            "driving",
+            "n3dv",
+            "robot"
+          ],
+          "selected_eval_samples": [
+            "meetroom"
+          ]
+        },
+        "8": {
+          "available_rows": 40,
+          "selected_train_rows": 12,
+          "selected_eval_rows": 5,
+          "selected_train_samples": [
+            "driving",
+            "n3dv",
+            "robot"
+          ],
+          "selected_eval_samples": [
+            "meetroom"
+          ]
+        },
+        "16": {
+          "available_rows": 20,
+          "selected_train_rows": 12,
+          "selected_eval_rows": 5,
+          "selected_train_samples": [
+            "driving",
+            "n3dv",
+            "robot"
+          ],
+          "selected_eval_samples": [
+            "meetroom"
+          ]
+        }
+      },
+      "train_task_count": 84,
+      "eval_task_count": 35,
+      "steps": 384,
+      "eval_interval": 96,
+      "hidden_dim": 128,
+      "lr": 8e-06,
+      "quant_bits": 8,
+      "initial_train_model_psnr_avg": 25.72814063881957,
+      "final_train_model_psnr_avg": 25.83591578366392,
+      "initial_eval": {
+        "model_psnr_avg": 29.417930697652412,
+        "linear_psnr_avg": 29.417930697652412,
+        "margin_over_linear_psnr": 0.0,
+        "model_psnr_by_gap": {
+          "2": 30.070803397916933,
+          "4": 29.521303563512674,
+          "8": 29.216372341876006,
+          "16": 29.189679837436294
+        },
+        "linear_psnr_by_gap": {
+          "2": 30.070803397916933,
+          "4": 29.521303563512674,
+          "8": 29.216372341876006,
+          "16": 29.189679837436294
+        }
+      },
+      "final_eval": {
+        "model_psnr_avg": 29.568150388836386,
+        "linear_psnr_avg": 29.417930697652412,
+        "margin_over_linear_psnr": 0.15021969118397394,
+        "model_psnr_by_gap": {
+          "2": 30.25282158637561,
+          "4": 29.68080698231982,
+          "8": 29.338654526869142,
+          "16": 29.3426540585506
+        },
+        "linear_psnr_by_gap": {
+          "2": 30.070803397916933,
+          "4": 29.521303563512674,
+          "8": 29.216372341876006,
+          "16": 29.189679837436294
+        }
+      },
+      "best_step": 384,
+      "best_eval": {
+        "model_psnr_avg": 29.568150388836386,
+        "linear_psnr_avg": 29.417930697652412,
+        "margin_over_linear_psnr": 0.15021969118397394,
+        "model_psnr_by_gap": {
+          "2": 30.25282158637561,
+          "4": 29.68080698231982,
+          "8": 29.338654526869142,
+          "16": 29.3426540585506
+        },
+        "linear_psnr_by_gap": {
+          "2": 30.070803397916933,
+          "4": 29.521303563512674,
+          "8": 29.216372341876006,
+          "16": 29.189679837436294
+        }
+      },
+      "train_losses_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/meetroom/stage25_train_rgb_losses.csv",
+      "validation_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/meetroom/stage25_validation_log.csv",
+      "initial_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/meetroom/stage25_initial_eval.csv",
+      "final_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/meetroom/stage25_final_eval.csv",
+      "best_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/meetroom/stage25_best_eval.csv",
+      "best_gap_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/meetroom/stage25_best_gap_eval_summary.csv",
+      "external_best_checkpoint": {
+        "path": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage25_leave_one_out_adapter_training/meetroom/stage25_best_anchor_adapter.safetensors",
+        "tensor_count": 14,
+        "parameter_count": 102925
+      },
+      "external_final_checkpoint": {
+        "path": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage25_leave_one_out_adapter_training/meetroom/stage25_final_anchor_adapter.safetensors",
+        "tensor_count": 14,
+        "parameter_count": 102925
+      }
+    },
+    {
+      "heldout_sample": "driving",
+      "train_samples": [
+        "meetroom",
+        "n3dv",
+        "robot"
+      ],
+      "eval_samples": [
+        "driving"
+      ],
+      "frame_gaps": [
+        2,
+        4,
+        8,
+        16
+      ],
+      "selected_train_row_count": 48,
+      "selected_eval_row_count": 20,
+      "selected_train_samples": [
+        "meetroom",
+        "n3dv",
+        "robot"
+      ],
+      "selected_eval_samples": [
+        "driving"
+      ],
+      "rows_by_gap": {
+        "2": {
+          "available_rows": 158,
+          "selected_train_rows": 12,
+          "selected_eval_rows": 5,
+          "selected_train_samples": [
+            "meetroom",
+            "n3dv",
+            "robot"
+          ],
+          "selected_eval_samples": [
+            "driving"
+          ]
+        },
+        "4": {
+          "available_rows": 79,
+          "selected_train_rows": 12,
+          "selected_eval_rows": 5,
+          "selected_train_samples": [
+            "meetroom",
+            "n3dv",
+            "robot"
+          ],
+          "selected_eval_samples": [
+            "driving"
+          ]
+        },
+        "8": {
+          "available_rows": 40,
+          "selected_train_rows": 12,
+          "selected_eval_rows": 5,
+          "selected_train_samples": [
+            "meetroom",
+            "n3dv",
+            "robot"
+          ],
+          "selected_eval_samples": [
+            "driving"
+          ]
+        },
+        "16": {
+          "available_rows": 20,
+          "selected_train_rows": 12,
+          "selected_eval_rows": 5,
+          "selected_train_samples": [
+            "meetroom",
+            "n3dv",
+            "robot"
+          ],
+          "selected_eval_samples": [
+            "driving"
+          ]
+        }
+      },
+      "train_task_count": 84,
+      "eval_task_count": 35,
+      "steps": 384,
+      "eval_interval": 96,
+      "hidden_dim": 128,
+      "lr": 8e-06,
+      "quant_bits": 8,
+      "initial_train_model_psnr_avg": 27.176944665436643,
+      "final_train_model_psnr_avg": 27.328044791505633,
+      "initial_eval": {
+        "model_psnr_avg": 25.508302721561353,
+        "linear_psnr_avg": 25.508302721561353,
+        "margin_over_linear_psnr": 0.0,
+        "model_psnr_by_gap": {
+          "2": 24.983463649989545,
+          "4": 24.794092825637314,
+          "8": 25.528965737225494,
+          "16": 26.464269137607154
+        },
+        "linear_psnr_by_gap": {
+          "2": 24.983463649989545,
+          "4": 24.794092825637314,
+          "8": 25.528965737225494,
+          "16": 26.464269137607154
+        }
+      },
+      "final_eval": {
+        "model_psnr_avg": 25.575303177021382,
+        "linear_psnr_avg": 25.508302721561353,
+        "margin_over_linear_psnr": 0.06700045546002897,
+        "model_psnr_by_gap": {
+          "2": 25.042018164234797,
+          "4": 24.834634973331845,
+          "8": 25.595849673229463,
+          "16": 26.562067390896154
+        },
+        "linear_psnr_by_gap": {
+          "2": 24.983463649989545,
+          "4": 24.794092825637314,
+          "8": 25.528965737225494,
+          "16": 26.464269137607154
+        }
+      },
+      "best_step": 384,
+      "best_eval": {
+        "model_psnr_avg": 25.575303177021382,
+        "linear_psnr_avg": 25.508302721561353,
+        "margin_over_linear_psnr": 0.06700045546002897,
+        "model_psnr_by_gap": {
+          "2": 25.042018164234797,
+          "4": 24.834634973331845,
+          "8": 25.595849673229463,
+          "16": 26.562067390896154
+        },
+        "linear_psnr_by_gap": {
+          "2": 24.983463649989545,
+          "4": 24.794092825637314,
+          "8": 25.528965737225494,
+          "16": 26.464269137607154
+        }
+      },
+      "train_losses_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/driving/stage25_train_rgb_losses.csv",
+      "validation_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/driving/stage25_validation_log.csv",
+      "initial_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/driving/stage25_initial_eval.csv",
+      "final_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/driving/stage25_final_eval.csv",
+      "best_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/driving/stage25_best_eval.csv",
+      "best_gap_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/driving/stage25_best_gap_eval_summary.csv",
+      "external_best_checkpoint": {
+        "path": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage25_leave_one_out_adapter_training/driving/stage25_best_anchor_adapter.safetensors",
+        "tensor_count": 14,
+        "parameter_count": 102925
+      },
+      "external_final_checkpoint": {
+        "path": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage25_leave_one_out_adapter_training/driving/stage25_final_anchor_adapter.safetensors",
+        "tensor_count": 14,
+        "parameter_count": 102925
+      }
+    },
+    {
+      "heldout_sample": "robot",
+      "train_samples": [
+        "driving",
+        "meetroom",
+        "n3dv"
+      ],
+      "eval_samples": [
+        "robot"
+      ],
+      "frame_gaps": [
+        2,
+        4,
+        8,
+        16
+      ],
+      "selected_train_row_count": 48,
+      "selected_eval_row_count": 20,
+      "selected_train_samples": [
+        "driving",
+        "meetroom",
+        "n3dv"
+      ],
+      "selected_eval_samples": [
+        "robot"
+      ],
+      "rows_by_gap": {
+        "2": {
+          "available_rows": 158,
+          "selected_train_rows": 12,
+          "selected_eval_rows": 5,
+          "selected_train_samples": [
+            "driving",
+            "meetroom",
+            "n3dv"
+          ],
+          "selected_eval_samples": [
+            "robot"
+          ]
+        },
+        "4": {
+          "available_rows": 79,
+          "selected_train_rows": 12,
+          "selected_eval_rows": 5,
+          "selected_train_samples": [
+            "driving",
+            "meetroom",
+            "n3dv"
+          ],
+          "selected_eval_samples": [
+            "robot"
+          ]
+        },
+        "8": {
+          "available_rows": 40,
+          "selected_train_rows": 12,
+          "selected_eval_rows": 5,
+          "selected_train_samples": [
+            "driving",
+            "meetroom",
+            "n3dv"
+          ],
+          "selected_eval_samples": [
+            "robot"
+          ]
+        },
+        "16": {
+          "available_rows": 20,
+          "selected_train_rows": 12,
+          "selected_eval_rows": 5,
+          "selected_train_samples": [
+            "driving",
+            "meetroom",
+            "n3dv"
+          ],
+          "selected_eval_samples": [
+            "robot"
+          ]
+        }
+      },
+      "train_task_count": 84,
+      "eval_task_count": 35,
+      "steps": 384,
+      "eval_interval": 96,
+      "hidden_dim": 128,
+      "lr": 8e-06,
+      "quant_bits": 8,
+      "initial_train_model_psnr_avg": 28.203142758070197,
+      "final_train_model_psnr_avg": 28.36143418053878,
+      "initial_eval": {
+        "model_psnr_avg": 22.359687957915238,
+        "linear_psnr_avg": 22.359687957915238,
+        "margin_over_linear_psnr": 0.0,
+        "model_psnr_by_gap": {
+          "2": 22.645976203464308,
+          "4": 22.0418426521134,
+          "8": 21.2065569120507,
+          "16": 23.68752018680706
+        },
+        "linear_psnr_by_gap": {
+          "2": 22.645976203464308,
+          "4": 22.0418426521134,
+          "8": 21.2065569120507,
+          "16": 23.68752018680706
+        }
+      },
+      "final_eval": {
+        "model_psnr_avg": 22.39735394738965,
+        "linear_psnr_avg": 22.359687957915238,
+        "margin_over_linear_psnr": 0.03766598947441224,
+        "model_psnr_by_gap": {
+          "2": 22.67406446116147,
+          "4": 22.06618237686032,
+          "8": 21.23107863435233,
+          "16": 23.756445574070376
+        },
+        "linear_psnr_by_gap": {
+          "2": 22.645976203464308,
+          "4": 22.0418426521134,
+          "8": 21.2065569120507,
+          "16": 23.68752018680706
+        }
+      },
+      "best_step": 384,
+      "best_eval": {
+        "model_psnr_avg": 22.39735394738965,
+        "linear_psnr_avg": 22.359687957915238,
+        "margin_over_linear_psnr": 0.03766598947441224,
+        "model_psnr_by_gap": {
+          "2": 22.67406446116147,
+          "4": 22.06618237686032,
+          "8": 21.23107863435233,
+          "16": 23.756445574070376
+        },
+        "linear_psnr_by_gap": {
+          "2": 22.645976203464308,
+          "4": 22.0418426521134,
+          "8": 21.2065569120507,
+          "16": 23.68752018680706
+        }
+      },
+      "train_losses_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/robot/stage25_train_rgb_losses.csv",
+      "validation_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/robot/stage25_validation_log.csv",
+      "initial_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/robot/stage25_initial_eval.csv",
+      "final_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/robot/stage25_final_eval.csv",
+      "best_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/robot/stage25_best_eval.csv",
+      "best_gap_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage25_leave_one_out_adapter_training/robot/stage25_best_gap_eval_summary.csv",
+      "external_best_checkpoint": {
+        "path": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage25_leave_one_out_adapter_training/robot/stage25_best_anchor_adapter.safetensors",
+        "tensor_count": 14,
+        "parameter_count": 102925
+      },
+      "external_final_checkpoint": {
+        "path": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage25_leave_one_out_adapter_training/robot/stage25_final_anchor_adapter.safetensors",
+        "tensor_count": 14,
+        "parameter_count": 102925
+      }
+    }
+  ],
+  "mean_best_margin_over_linear_psnr": 0.12051138549871432,
+  "min_best_margin_over_linear_psnr": 0.03766598947441224,
+  "notes": "Each fold trains on three samples and validates on the held-out sample. Inputs remain q8 keyframe anchors plus timestamp only."
+}

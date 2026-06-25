@@ -172,3 +172,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 
 - Stage24 plots are derived from Stage23 full-video anchor-only metrics. They should be labeled as anchor-only RD plots, not original StreamSplat decoder RD plots.
 - The x-axis is q8 static keyframe-anchor MiB/frame from Stage2 estimates; no entropy-coded bitstream is included yet.
+
+## Stage 25 Notes
+
+- Leave-one-out validation is more meaningful than the previous fixed robot validation because every sample becomes held-out once.
+- Stage25 still validates on intermediate tasks; full-video held-out evaluation must be run separately using the per-fold best checkpoints.
+- In the current run, all best checkpoints are at the final step 384. Keep validation selection anyway for longer runs where overfitting may occur.

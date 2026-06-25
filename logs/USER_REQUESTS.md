@@ -283,3 +283,13 @@ Stage21b 收益为正但极小，因此继续执行 Stage21c medium anchor adapt
 ### 当前执行决策
 
 执行 Stage23 full-video anchor-only evaluator，将 Stage21d best adapter 从 intermediate-target RD 扩展到完整视频逐帧评估。优先验证 adapter 收益是否在 `n3dv/meetroom/driving/robot × gap 2/4/8/16` 的 all/middle PSNR 上持续为正。
+
+## 2026-06-25：继续执行更多后续 stages
+
+### 用户原始问题
+
+用户要求：按照设计继续往后做，多做一些。
+
+### 当前执行决策
+
+继续执行 Stage25 leave-one-sample-out adapter training。该阶段轮流 hold out `n3dv/meetroom/driving/robot`，每折使用其余三个样本训练并在 held-out 样本上 validation-based checkpoint selection，用于验证 adapter 的跨样本泛化。

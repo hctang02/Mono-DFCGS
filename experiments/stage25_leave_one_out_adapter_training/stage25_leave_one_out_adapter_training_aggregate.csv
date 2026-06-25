@@ -1,0 +1,5 @@
+heldout_sample,best_step,initial_margin_over_linear_psnr,best_margin_over_linear_psnr,final_margin_over_linear_psnr,train_task_count,eval_task_count
+n3dv,384,0.0,0.22715940587644212,0.22715940587644212,84,35
+meetroom,384,0.0,0.15021969118397394,0.15021969118397394,84,35
+driving,384,0.0,0.06700045546002897,0.06700045546002897,84,35
+robot,384,0.0,0.03766598947441224,0.03766598947441224,84,35
