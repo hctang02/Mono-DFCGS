@@ -665,3 +665,73 @@ experiments/stage10_renderer_smoke/stage10_renderer_smoke_summary.json
 - 阶段 10 已验证 static keyframe/intermediate anchor 可以通过 zero-dynamic adapter 调用 StreamSplat renderer。
 - 当前 PSNR 只是 linear raw anchor 的 renderer smoke，不是最终 learned decoder 的 RGB reconstruction quality。
 - 下一步可以把阶段 9 predictor 输出接到 renderer smoke 中，形成 differentiable RGB loss smoke；随后再做小规模 RGB fine-tuning。
+
+## 2026-06-25：阶段 10b Predictor-Renderer RGB Loss Smoke
+
+### 执行计划
+
+阶段 10b 的目标是把 `GaussianAnchorDynamicPredictor` 的输出接入阶段 10 的 renderer adapter，执行少量 RGB MSE 反向传播 step，验证 predictor -> static anchor -> zero-dynamic Gaussian -> renderer -> RGB loss 的 differentiable training 闭环。
+
+### 新增文件
+
+```text
+scripts/run_stage10b_predictor_renderer_rgb_smoke.py
+```
+
+### 运行命令
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage10b_predictor_renderer_rgb_smoke.py --device cuda --sample n3dv --frame_gap 4 --row_index 0 --steps 5
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 2 和 GPU 6 有进程；GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage10b_predictor_renderer_rgb_smoke/stage10b_predictor_renderer_rgb_smoke_summary.json
+```
+
+### 测试设置
+
+| item | value |
+|---|---:|
+| sample | n3dv |
+| frame_gap | 4 |
+| pair | 0 -> 4 |
+| target frame | 2 |
+| normalized_time | 0.5 |
+| Gaussian count | 36864 |
+| resolution | 512x288 |
+| steps | 5 |
+| lr | 0.0001 |
+| quant_bits | 8 |
+| parameters | 102925 |
+
+### 结果
+
+| metric | value |
+|---|---:|
+| initial_rgb_mse | 0.0053450739942491055 |
+| final_rgb_mse | 0.004406371619552374 |
+| rgb_mse_ratio | 0.8243799102301101 |
+| initial_rgb_psnr | 22.720462782809005 |
+| final_rgb_psnr | 23.559188786071505 |
+
+Per-step RGB MSE：
+
+```text
+0.0053450739942491055
+0.005080688279122114
+0.004836901556700468
+0.004612587857991457
+0.004406371619552374
+```
+
+### 结论
+
+- 阶段 10b 已验证 renderer RGB loss 可以反向传播到 `GaussianAnchorDynamicPredictor`。
+- 当前只是单 pair / 单中间帧 / 5 step smoke，不能代表最终重建质量。
+- 初始 predictor 带随机 residual，因此初始 PSNR 低于阶段 10 的纯 linear-anchor smoke；后续应先用阶段 9 proxy checkpoint 或 linear-residual 初始化，再做 RGB fine-tuning。

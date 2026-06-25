@@ -67,3 +67,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - `gaussian_renderer_dynamic.render` expects StreamSplat dynamic Gaussian format: `xyz` and `rot` include static plus dynamic components. A single static predicted anchor must be wrapped with zero dynamic components before rendering.
 - The renderer uses `opt.down_resolution` when it is non-empty. Stage 10 sets `opt.down_resolution = ()` and uses the default inference resolution `512x288` from `Options`.
 - Stage 10's linear-anchor PSNR is a smoke metric only. It validates renderer wiring and target alignment, not the final Mono-DFCGS learned codec quality.
+
+## Stage 10b Notes
+
+- A freshly initialized predictor includes a random residual on top of linear interpolation, so initial RGB quality can be worse than the pure linear-anchor renderer smoke.
+- Stage 10b verifies differentiability only. For meaningful RGB training, initialize from stage 9 proxy training or suppress residual at initialization, then fine-tune on multiple pairs and samples.
+- Full 36864-Gaussian differentiable rendering is feasible on an empty L20 for a single pair, but this should not be scaled blindly without batching and memory checks.

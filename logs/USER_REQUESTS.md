@@ -143,3 +143,13 @@ experiments/stage6_real_anchor_dataset
 ### 当前执行决策
 
 阶段 9 已完成并推送。下一步执行阶段 10 的最小 renderer smoke：先不做完整 RGB loss 训练，而是把单帧 static anchor 包装成 StreamSplat renderer 可接受的 zero-dynamic Gaussian 格式，验证 renderer 调用、RGB target 对齐和 MSE/PSNR 计算闭环。
+
+## 2026-06-25：阶段 10b predictor-renderer RGB smoke
+
+### 用户原始问题
+
+用户表示：如果有下一步就继续执行；如果不确定如何推进，再停下来询问。
+
+### 当前执行决策
+
+阶段 10 已完成并推送。下一步执行 predictor 到 renderer 的 RGB loss smoke：用 q8 左右 keyframe anchors 作为输入，predictor 生成中间 raw anchor，经 zero-dynamic adapter 渲染后对单个 RGB target 执行少量反向传播 step，验证 renderer/RGB loss 可训练闭环。

@@ -1,0 +1,44 @@
+{
+  "stage": "10b",
+  "mode": "predictor renderer RGB loss smoke",
+  "manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage6_real_anchor_dataset/stage6_real_anchor_dataset_manifest.csv",
+  "dataset_item": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage6_real_anchor_dataset/n3dv/gap4/pair_000000_000004.pt",
+  "sample": "n3dv",
+  "frame_gap": 4,
+  "left_index": 0,
+  "right_index": 4,
+  "target_frame_index": 2,
+  "normalized_time": 0.5,
+  "target_rgb_path": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage1_streamsplat_fair_metrics/cache/n3dv/frames/000003.png",
+  "device": "cuda",
+  "resolution": [
+    512,
+    288
+  ],
+  "gaussian_count": 36864,
+  "steps": 5,
+  "lr": 0.0001,
+  "quant_bits": 8,
+  "hidden_dim": 128,
+  "parameter_count": 102925,
+  "initial_rgb_mse": 0.0053450739942491055,
+  "final_rgb_mse": 0.004406371619552374,
+  "rgb_mse_ratio": 0.8243799102301101,
+  "initial_rgb_psnr": 22.720462782809005,
+  "final_rgb_psnr": 23.559188786071505,
+  "losses": [
+    0.0053450739942491055,
+    0.005080688279122114,
+    0.004836901556700468,
+    0.004612587857991457,
+    0.004406371619552374
+  ],
+  "psnrs": [
+    22.720462782809005,
+    22.940774500041094,
+    23.154327515234392,
+    23.36055348555921,
+    23.559188786071505
+  ],
+  "notes": "Differentiability smoke only: one pair, one intermediate target, no checkpoint saved."
+}
