@@ -167,3 +167,8 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - In full-video anchor-only evaluation, keyframes should be rendered directly from transmitted anchors for both methods. Do not pass keyframes through the adapter; the adapter is only for non-keyframe prediction.
 - Stage23 PSNR/SSIM is an anchor-only reconstruction metric. It should not be directly compared against Stage19 original StreamSplat RGB/depth-conditioned decoder metrics without clearly separating input conditions.
 - Stage23 full evaluation can be slow because it renders full 36k-Gaussian anchors for all middle frames across 16 sample-gap points. Run a single sample/gap smoke before full evaluation.
+
+## Stage 24 Notes
+
+- Stage24 plots are derived from Stage23 full-video anchor-only metrics. They should be labeled as anchor-only RD plots, not original StreamSplat decoder RD plots.
+- The x-axis is q8 static keyframe-anchor MiB/frame from Stage2 estimates; no entropy-coded bitstream is included yet.

@@ -1,0 +1,48 @@
+{
+  "stage": 24,
+  "mode": "full-video anchor-only RD plots",
+  "source_stage23_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage23_full_video_anchor_only_evaluator/stage23_full_video_anchor_only_evaluator.csv",
+  "rows": 16,
+  "aggregate_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage24_full_video_anchor_only_rd_plots/stage24_full_video_anchor_only_rd_aggregate.csv",
+  "aggregate": [
+    {
+      "sample": "driving",
+      "mean_delta_all_psnr": 0.08352391673319559,
+      "mean_delta_middle_psnr": 0.12321783919904483,
+      "min_delta_all_psnr": 0.0465389497943427,
+      "min_delta_middle_psnr": 0.05026206577788983
+    },
+    {
+      "sample": "meetroom",
+      "mean_delta_all_psnr": 0.08321870692386568,
+      "mean_delta_middle_psnr": 0.11864301430132773,
+      "min_delta_all_psnr": 0.060858978680400355,
+      "min_delta_middle_psnr": 0.06572769697483949
+    },
+    {
+      "sample": "n3dv",
+      "mean_delta_all_psnr": 0.1592318809129889,
+      "mean_delta_middle_psnr": 0.21560375144838417,
+      "min_delta_all_psnr": 0.12101240598846985,
+      "min_delta_middle_psnr": 0.17531502713124425
+    },
+    {
+      "sample": "robot",
+      "mean_delta_all_psnr": 0.02385336907706037,
+      "mean_delta_middle_psnr": 0.036956283378444255,
+      "min_delta_all_psnr": 0.0032667066510931875,
+      "min_delta_middle_psnr": 0.003542766368092032
+    }
+  ],
+  "plots": [
+    "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage24_full_video_anchor_only_rd_plots/stage24_full_video_all_psnr_rd.png",
+    "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage24_full_video_anchor_only_rd_plots/stage24_full_video_middle_psnr_rd.png",
+    "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage24_full_video_anchor_only_rd_plots/stage24_full_video_all_ssim_rd.png",
+    "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage24_full_video_anchor_only_rd_plots/stage24_full_video_middle_ssim_rd.png",
+    "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage24_full_video_anchor_only_rd_plots/stage24_full_video_delta_all_psnr.png",
+    "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage24_full_video_anchor_only_rd_plots/stage24_full_video_delta_middle_psnr.png"
+  ],
+  "mean_delta_all_psnr": 0.08745696841177764,
+  "mean_delta_middle_psnr": 0.12360522208180025,
+  "notes": "Plots Stage23 full-video anchor-only metrics. This is not original StreamSplat RGB/depth-conditioned RD."
+}

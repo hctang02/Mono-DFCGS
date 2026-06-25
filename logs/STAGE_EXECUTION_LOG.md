@@ -1862,3 +1862,49 @@ experiments/stage23_full_video_anchor_only_evaluator_smoke/stage23_full_video_an
 - 16 个 sample-gap 点的 all/middle PSNR 均为正收益。
 - given-keyframe delta 为 0，这是预期行为，因为 keyframes 直接使用 transmitted q8 anchors 渲染。
 - 注意：Stage23 的 full-video anchor-only PSNR 不等同于 Stage19 原 StreamSplat RGB/depth-conditioned full-video PSNR；二者输入 payload 和 decoder 条件不同。
+
+## 2026-06-25：阶段 24 Full-Video Anchor-Only RD Plots
+
+### 执行计划
+
+阶段 24 将 Stage23 的 full-video anchor-only CSV 转换成 RD 曲线图和 per-sample aggregate 表。该阶段只读 Stage23 CSV，不重新渲染或训练。
+
+### 新增文件
+
+```text
+scripts/run_stage24_full_video_anchor_only_rd_plots.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage24_full_video_anchor_only_rd_plots.py
+```
+
+### 输出文件
+
+```text
+experiments/stage24_full_video_anchor_only_rd_plots/stage24_full_video_anchor_only_rd_plots_summary.json
+experiments/stage24_full_video_anchor_only_rd_plots/stage24_full_video_anchor_only_rd_aggregate.csv
+experiments/stage24_full_video_anchor_only_rd_plots/stage24_full_video_all_psnr_rd.png
+experiments/stage24_full_video_anchor_only_rd_plots/stage24_full_video_middle_psnr_rd.png
+experiments/stage24_full_video_anchor_only_rd_plots/stage24_full_video_all_ssim_rd.png
+experiments/stage24_full_video_anchor_only_rd_plots/stage24_full_video_middle_ssim_rd.png
+experiments/stage24_full_video_anchor_only_rd_plots/stage24_full_video_delta_all_psnr.png
+experiments/stage24_full_video_anchor_only_rd_plots/stage24_full_video_delta_middle_psnr.png
+```
+
+### Aggregate 结果
+
+| sample | mean delta all PSNR | mean delta middle PSNR | min delta all PSNR | min delta middle PSNR |
+|---|---:|---:|---:|---:|
+| driving | 0.08352391673319559 | 0.12321783919904483 | 0.0465389497943427 | 0.05026206577788983 |
+| meetroom | 0.08321870692386568 | 0.11864301430132773 | 0.060858978680400355 | 0.06572769697483949 |
+| n3dv | 0.1592318809129889 | 0.21560375144838417 | 0.12101240598846985 | 0.17531502713124425 |
+| robot | 0.02385336907706037 | 0.036956283378444255 | 0.0032667066510931875 | 0.003542766368092032 |
+
+### 总结
+
+- Stage24 生成了 full-video anchor-only RD 图和 delta 图。
+- 16 个点均保持正收益；每个样本的 min delta all/middle PSNR 也为正。
+- 该图可作为当前开发集上的 anchor-only full-video RD 参考，但仍不是 paper-level 多数据集结果。
