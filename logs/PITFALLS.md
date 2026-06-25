@@ -103,3 +103,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - The expanded RD curve confirms that current `rd_spaced` is safer than unconstrained top-k selection but still worse than uniform on n3dv and robot for gap4/8/16.
 - Uniform Stage 15 rows reproduce Stage 1/3 metrics closely, which validates that the Stage 12/15 selected-keyframe evaluator is aligned with the earlier uniform pipeline.
 - Future keyframe selection should optimize segment coverage and expected reconstruction error jointly; simple frame-wise scores are not enough.
+
+## Stage 16 Notes
+
+- Segment-level greedy selection is less prone to wasting the budget on local frame clusters than frame-wise top-k selection.
+- The current segment cost is still a proxy based on image motion and stage6 Gaussian anchor differences, not measured reconstruction distortion.
+- For final dataset RD curves, the comparison must include more than n3dv/robot; Stage 16 already emits selections for n3dv, meetroom, driving, and robot.

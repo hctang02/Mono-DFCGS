@@ -1066,3 +1066,60 @@ experiments/stage15_selected_keyframe_rd_curve/stage15_rd_curve_middle_ssim.png
 
 - 已生成 Stage 15 的 RD 曲线图。
 - 最建议优先查看 `stage15_rd_curve_middle_psnr.png`，因为 middle-only 更能反映非关键帧重建质量。
+
+## 2026-06-25：阶段 16 Segment-Error-Aware Keyframe Selection
+
+### 执行计划
+
+阶段 16 的目标是改进 Stage 13 的 frame-wise selection objective。新的 selection 不再直接选择高分 frame，而是对当前 selected-keyframe segmentation 做 greedy split，每次选择能最大降低估计 segment difficulty 的 split point。该阶段覆盖当前 4 个样本，为后续更多数据的 RD 曲线对比准备统一 selection CSV。
+
+### 新增文件
+
+```text
+scripts/run_stage16_segment_error_keyframe_selection.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage16_segment_error_keyframe_selection.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。该阶段为 CPU selection/statistics 脚本，不占用 GPU。
+
+### 输出文件
+
+```text
+experiments/stage16_segment_error_keyframe_selection/stage16_segment_error_keyframe_selection_summary.csv
+experiments/stage16_segment_error_keyframe_selection/stage16_segment_error_keyframe_selection_summary.json
+```
+
+### 覆盖范围
+
+| item | value |
+|---|---:|
+| samples | n3dv, meetroom, driving, robot |
+| reference gaps | 4, 8, 16 |
+| methods | uniform, segment_motion, segment_gaussian, segment_rd |
+| output rows | 48 |
+| max_segment_multiplier | 2 |
+| motion_weight for segment_rd | 0.7 |
+
+### 示例 selection stats
+
+| sample | method | gap | keyframes | max segment | rate MiB/frame |
+|---|---|---:|---:|---:|---:|
+| n3dv | segment_rd | 4 | 21 | 6 | 0.11848958333333333 |
+| n3dv | segment_rd | 8 | 11 | 12 | 0.062065972222222224 |
+| robot | segment_rd | 4 | 20 | 8 | 0.11870941558441558 |
+| robot | segment_rd | 8 | 11 | 11 | 0.06529017857142858 |
+| driving | segment_rd | 4 | 21 | 6 | 0.11848958333333333 |
+| meetroom | segment_rd | 4 | 21 | 6 | 0.11848958333333333 |
+
+### 结论
+
+- Stage 16 已生成 segment-error-aware keyframe selection baseline，覆盖当前 4 个样本。
+- 相比 Stage 13 的 frame-wise top-k / spaced fill，Stage 16 更直接优化 segment difficulty，选帧分布更像“切分难 segment”。
+- 下一步 Stage 17 应复用 selected-keyframe evaluator，对 `uniform` 与 `segment_rd` 进行 RD reconstruction 对比，并优先扩展到更多样本。

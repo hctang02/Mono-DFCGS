@@ -213,3 +213,13 @@ experiments/stage6_real_anchor_dataset
 ### 当前执行决策
 
 基于 `experiments/stage15_selected_keyframe_rd_curve/stage15_selected_keyframe_rd_curve_summary.csv` 绘制 RD 曲线。横轴使用 `estimated_q8_static_mib_per_frame`，纵轴分别绘制 all-frame PSNR、middle-only PSNR、all-frame SSIM 和 middle-only SSIM，并按 `n3dv` / `robot` 分子图展示 `uniform` 与 `rd_spaced`。
+
+## 2026-06-25：继续推进 Stage 16/17 并扩展数据集对比
+
+### 用户原始问题
+
+用户表示：可以往下做，并提醒最后的数据集 RD 曲线等对比要包括更多数据。
+
+### 当前执行决策
+
+下一步先执行 Stage 16：实现 segment-error-aware keyframe selection，覆盖当前 4 个样本 `n3dv/meetroom/driving/robot`，为后续更多数据的 RD 曲线对比准备统一 selection CSV。随后执行 Stage 17：在可控范围内复用 selected-keyframe evaluator 跑扩展 RD reconstruction，并逐步扩展到更多样本。
