@@ -183,3 +183,13 @@ experiments/stage6_real_anchor_dataset
 ### 当前执行决策
 
 阶段 12 已完成并推送，且暴露了 top-k motion/RD keyframe selection 容易聚簇、造成长 segment 的问题。下一步执行 Stage 13：实现 spacing-constrained keyframe selection，在保持与 uniform 相同 keyframe budget 的同时约束最大 segment length 不超过 reference gap。
+
+## 2026-06-25：阶段 14 spaced selected-keyframe reconstruction
+
+### 用户原始问题
+
+用户表示：好的，可以继续做。
+
+### 当前执行决策
+
+阶段 13 已完成并推送。下一步扩展 Stage 12 evaluator 支持 `motion_spaced` / `gaussian_spaced` / `rd_spaced` 方法，并运行 `robot + rd_spaced + reference_gap=4` reconstruction smoke，用于和 Stage 12 的 `robot + rd_aware + reference_gap=4` 对比。

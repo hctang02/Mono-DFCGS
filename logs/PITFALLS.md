@@ -91,3 +91,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - The first spacing-constrained greedy attempt still allowed clustering because it spent the budget on high-score frames before fully covering long gaps. The script now uses coverage-first splitting before score-based fill.
 - With the same keyframe budget as uniform, strict `max_segment_length <= reference_gap` often collapses to uniform-like selection. Stage 13 therefore defaults to `max_segment_multiplier=2` to allow non-uniform choices while bounding uncovered intervals.
 - Stage 13 only fixes the selection candidate set. Quality must be measured by Stage 12-style reconstruction using the new `*_spaced` methods.
+
+## Stage 14 Notes
+
+- The Stage 12 evaluator originally restricted methods to `uniform`, `motion_aware`, `gaussian_aware`, and `rd_aware`; it now also accepts `motion_spaced`, `gaussian_spaced`, and `rd_spaced`.
+- Stage 14 uses a separate summary root so Stage 12 smoke outputs are not overwritten.
+- `rd_spaced` improves the robot gap4 smoke but still trails the original uniform gap4 Stage 3 baseline; more samples and methods must be evaluated before claiming selection superiority.

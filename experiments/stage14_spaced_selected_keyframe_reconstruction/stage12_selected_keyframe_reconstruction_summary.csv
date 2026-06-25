@@ -1,0 +1,2 @@
+sample,selection_method,reference_gap,total_frames,keyframe_count,keyframe_ratio,max_segment_length,estimated_q8_static_mib_per_frame,all_psnr_avg,all_ssim_avg,middle_psnr_avg,middle_ssim_avg,given_psnr_avg,given_ssim_avg,raw_pred_gs_mib_per_frame
+robot,rd_spaced,4,77,20,0.2597402597402597,8,0.11870941558441558,25.893064910908713,0.8525844734984559,22.329879626430465,0.8120484801760891,36.04814297167172,0.9681120544672013,1.5267857142857142

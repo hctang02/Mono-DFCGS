@@ -278,7 +278,11 @@ def write_csv(rows, path):
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--sample", default="robot")
-    parser.add_argument("--method", default="rd_aware", choices=["uniform", "motion_aware", "gaussian_aware", "rd_aware"])
+    parser.add_argument(
+        "--method",
+        default="rd_aware",
+        choices=["uniform", "motion_aware", "gaussian_aware", "rd_aware", "motion_spaced", "gaussian_spaced", "rd_spaced"],
+    )
     parser.add_argument("--reference_gap", type=int, default=4)
     parser.add_argument("--selection_csv", type=Path, default=DEFAULT_SELECTION_CSV)
     parser.add_argument("--checkpoint", type=Path, default=DEFAULT_CHECKPOINT)

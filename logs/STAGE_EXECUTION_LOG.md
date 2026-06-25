@@ -931,3 +931,53 @@ experiments/stage13_spaced_keyframe_selection/stage13_spaced_keyframe_selection_
 - 阶段 13 已生成 spacing-constrained keyframe selection baseline，保持与 uniform 相同 keyframe budget/rate。
 - 对 Stage 12 中 `robot rd_aware gap4` 的问题，新的 `robot rd_spaced gap4` 将 max segment length 从 16 限制到 8，适合下一步重新跑 selected-keyframe reconstruction 对比。
 - 该阶段仍只输出 indices，不代表最终质量；后续 Stage 14 应用 Stage 12 evaluator 跑 `rd_spaced` reconstruction。
+
+## 2026-06-25：阶段 14 Spaced Selected-Keyframe Reconstruction Smoke
+
+### 执行计划
+
+阶段 14 的目标是评估 Stage 13 spacing-constrained selection 是否修复 Stage 12 中的聚簇问题。复用 Stage 12 evaluator，扩展其 method choices 支持 `motion_spaced` / `gaussian_spaced` / `rd_spaced`，然后运行 `robot + rd_spaced + reference_gap=4` reconstruction smoke。
+
+### 修改文件
+
+```text
+scripts/run_stage12_selected_keyframe_reconstruction.py
+```
+
+### 运行命令
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage12_selected_keyframe_reconstruction.py --sample robot --method rd_spaced --reference_gap 4 --selection_csv experiments/stage13_spaced_keyframe_selection/stage13_spaced_keyframe_selection_summary.csv --summary_root experiments/stage14_spaced_selected_keyframe_reconstruction --heavy_root /mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage14_spaced_selected_keyframe_reconstruction --batch_size 1 --max_segment_length 20 --save_per_frame
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 2/3/7 有进程；GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage14_spaced_selected_keyframe_reconstruction/stage12_selected_keyframe_reconstruction_summary.json
+experiments/stage14_spaced_selected_keyframe_reconstruction/stage12_selected_keyframe_reconstruction_summary.csv
+experiments/stage14_spaced_selected_keyframe_reconstruction/robot_rd_spaced_gap4_summary.json
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage14_spaced_selected_keyframe_reconstruction/robot_rd_spaced_gap4/per_frame_metrics.json
+```
+
+### 结果
+
+| metric | Stage 12 rd_aware | Stage 14 rd_spaced |
+|---|---:|---:|
+| keyframe_count | 20 | 20 |
+| estimated_q8_static_mib_per_frame | 0.11870941558441558 | 0.11870941558441558 |
+| max_segment_length | 16 | 8 |
+| all_psnr_avg | 24.733323284443408 | 25.893064910908713 |
+| all_ssim_avg | 0.8312911770560525 | 0.8525844734984559 |
+| middle_psnr_avg | 20.742726407113338 | 22.329879626430465 |
+| middle_ssim_avg | 0.7831615586029855 | 0.8120484801760891 |
+| given_psnr_avg | 36.106524384834096 | 36.04814297167172 |
+
+### 结论
+
+- Stage 14 证明 spacing-constrained selection 在相同 rate 下改善了 selected-keyframe reconstruction smoke。
+- 对 `robot gap4`，`rd_spaced` 相比无约束 `rd_aware`：all PSNR 提升约 1.16 dB，middle PSNR 提升约 1.59 dB。
+- 结果仍是 StreamSplat RGB/depth-conditioned inference，不是最终 Gaussian-anchor-only decoder；但它验证了 keyframe selection 的评估闭环和 segment constraint 的必要性。

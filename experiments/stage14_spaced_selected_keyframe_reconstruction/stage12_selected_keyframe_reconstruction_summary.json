@@ -1,0 +1,120 @@
+{
+  "rows": [
+    {
+      "stage": 12,
+      "method": "selected-keyframe StreamSplat reconstruction smoke",
+      "sample": "robot",
+      "selection_method": "rd_spaced",
+      "reference_gap": 4,
+      "resolution": [
+        512,
+        288
+      ],
+      "total_frames": 77,
+      "selected_keyframes": [
+        0,
+        8,
+        10,
+        11,
+        12,
+        16,
+        22,
+        24,
+        32,
+        40,
+        41,
+        42,
+        43,
+        44,
+        48,
+        54,
+        56,
+        64,
+        72,
+        76
+      ],
+      "keyframe_count": 20,
+      "keyframe_ratio": 0.2597402597402597,
+      "segment_lengths": [
+        8,
+        2,
+        1,
+        1,
+        4,
+        6,
+        2,
+        8,
+        8,
+        1,
+        1,
+        1,
+        1,
+        4,
+        6,
+        2,
+        8,
+        8,
+        4
+      ],
+      "max_segment_length": 8,
+      "pair_count": 19,
+      "complete": true,
+      "all": {
+        "count": 77,
+        "psnr_avg": 25.893064910908713,
+        "psnr_min": 18.047325156940808,
+        "ssim_avg": 0.8525844734984559,
+        "ssim_min": 0.7242329716682434
+      },
+      "middle_only": {
+        "count": 57,
+        "psnr_avg": 22.329879626430465,
+        "psnr_min": 18.047325156940808,
+        "ssim_avg": 0.8120484801760891,
+        "ssim_min": 0.7242329716682434
+      },
+      "given_keyframes": {
+        "count": 20,
+        "psnr_avg": 36.04814297167172,
+        "psnr_min": 35.4874215829002,
+        "ssim_avg": 0.9681120544672013,
+        "ssim_min": 0.9657891392707825
+      },
+      "estimated_q8_static_mib_per_frame": 0.11870941558441558,
+      "raw_pred_gs_mib": 117.5625,
+      "raw_pred_gs_mib_per_frame": 1.5267857142857142,
+      "pred_gs_shapes_last_batch": {
+        "rgb": [
+          1,
+          73728,
+          3
+        ],
+        "opacity": [
+          1,
+          73728,
+          3
+        ],
+        "scale": [
+          1,
+          73728,
+          2
+        ],
+        "xyz": [
+          1,
+          73728,
+          2,
+          3
+        ],
+        "rot": [
+          1,
+          73728,
+          2,
+          4
+        ]
+      },
+      "heavy_output_dir": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage14_spaced_selected_keyframe_reconstruction/robot_rd_spaced_gap4",
+      "per_frame_metrics": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage14_spaced_selected_keyframe_reconstruction/robot_rd_spaced_gap4/per_frame_metrics.json",
+      "notes": "Smoke evaluation for selected keyframes. It still uses StreamSplat RGB/depth-conditioned inference for each selected pair, not the final Gaussian-anchor-only decoder."
+    }
+  ]
+}
