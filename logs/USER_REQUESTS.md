@@ -93,3 +93,13 @@ experiments/stage6_real_anchor_dataset
 ### 回答要求
 
 需要解释当前阶段 2/3 的 size 统计口径：固定分辨率、固定 Gaussian 数量、固定字段数、固定 q8 估算，因此主要由 keyframe 数量和总帧数决定，而不是由内容复杂度决定。
+
+## 2026-06-25：方法框图绘制 prompt
+
+### 用户原始问题
+
+用户要求：写一段话，用于描述给 GPT/绘图模型画 Mono-DFCGS 新方法的大致框图，不需要很详细，但要表达清楚整个 pipeline。
+
+### 回答要求
+
+需要给出一段可直接复制给绘图模型的中文 prompt，重点表达 full video -> keyframe selection -> keyframe Gaussian anchors -> transmitted bitstream -> decoder dynamic Gaussian prediction -> rendering/reconstruction 的 pipeline。
