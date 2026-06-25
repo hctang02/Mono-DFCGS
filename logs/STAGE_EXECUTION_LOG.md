@@ -2819,3 +2819,52 @@ experiments/stage38_deployable_cost_predictor_validation/stage38_deployable_cost
 - Full-feature ridge does not robustly generalize across samples and collapses on robot held-out.
 - Do not use naive full-feature ridge as final deployable selector yet.
 - Next step should test predicted selector RD with length-only and/or improved normalized feature models, but expect length-only to behave close to uniform.
+
+## 2026-06-25：阶段 39 Predicted Selector RD
+
+### 执行计划
+
+Stage39 将 Stage38 产生的 predicted segment costs 用于 dynamic programming keyframe selection，再用 Stage33 dense keyframe anchors 和 Stage25 leave-one-out adapter 进行 full-video anchor-only RD 评估。该阶段检验 deployable predictor 是否能真正带来 selector-level RD 增益。
+
+### 新增文件
+
+```text
+scripts/run_stage39_predicted_selector_rd.py
+```
+
+### 运行命令
+
+```text
+python -m py_compile scripts/run_stage39_predicted_selector_rd.py
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage39_predicted_selector_rd.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi`。GPU 2 满载，GPU 1 基本空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage39_predicted_selector_rd/stage39_predicted_selector_rd.csv
+experiments/stage39_predicted_selector_rd/stage39_selector_comparison.csv
+experiments/stage39_predicted_selector_rd/stage39_predicted_selector_rd_summary.json
+experiments/stage39_predicted_selector_rd/stage39_length_only_ridge_delta_all_psnr.png
+experiments/stage39_predicted_selector_rd/stage39_length_only_ridge_delta_middle_psnr.png
+experiments/stage39_predicted_selector_rd/stage39_full_feature_ridge_delta_all_psnr.png
+experiments/stage39_predicted_selector_rd/stage39_full_feature_ridge_delta_middle_psnr.png
+```
+
+### Aggregate 结果
+
+| method | points | positive all PSNR | positive middle PSNR | mean delta all PSNR | mean delta middle PSNR |
+|---|---:|---:|---:|---:|---:|
+| length_only_ridge | 12 | 0 | 0 | -0.035285203146952604 | -0.038178305693805946 |
+| full_feature_ridge | 12 | 1 | 1 | -0.29239474971647805 | -0.3641505090023867 |
+
+### 结论
+
+- Stage39 是关键负结果：Stage38 predicted cost 直接驱动 DP selection 后，没有超过 uniform keyframe selection。
+- `length_only_ridge` 在 Stage38 ranking metrics 上很强，但转成 fixed-budget selection 后 12/12 点低于 uniform，说明高相关不等价于 RD-optimal selector。
+- `full_feature_ridge` 受跨样本 domain shift 影响更严重，只在 1/12 点上超过 uniform。
+- 下一步应改用 sample-normalized / rank-normalized / candidate-normalized predictor 或直接训练 selector objective，而不是继续使用 raw-cost ridge。

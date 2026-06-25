@@ -256,3 +256,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Full-feature linear ridge can overfit or fail under leave-one-sample-out domain shift; robot held-out collapses badly.
 - Length-only is a very strong ranking baseline for oracle cost, but a pure length-based selector may reduce to near-uniform under fixed keyframe budget.
 - Before Stage39, consider sample-normalized targets/features or rank-based models rather than raw cross-sample linear regression.
+
+## Stage 39 Notes
+
+- Strong cost-prediction ranking metrics are not sufficient for keyframe-selection RD gains. Stage39 length-only ridge has high Stage38 Spearman but still loses to uniform on all 12 RD points.
+- Raw predicted segment costs can produce DP selections that optimize the proxy label but hurt full-video rendered PSNR. Treat Stage39 as evidence for objective mismatch, not just model underfitting.
+- Future deployable selectors should normalize costs per sample/candidate budget or optimize a selector-level/rank objective before re-running full-video RD.
