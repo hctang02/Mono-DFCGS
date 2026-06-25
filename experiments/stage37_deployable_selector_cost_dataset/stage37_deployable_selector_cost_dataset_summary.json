@@ -1,0 +1,59 @@
+{
+  "stage": 37,
+  "mode": "deployable selector segment-cost dataset",
+  "stage33_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage33_dense_gap1_anchor_export/stage33_dense_gap1_anchor_manifest.csv",
+  "samples": [
+    "n3dv",
+    "meetroom",
+    "driving",
+    "robot"
+  ],
+  "max_segment_length": 32,
+  "image_size": 64,
+  "base_segment_rows": 7812,
+  "expanded_leave_one_out_rows": 31248,
+  "csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage37_deployable_selector_cost_dataset/stage37_deployable_selector_cost_dataset.csv",
+  "sample_summaries": [
+    {
+      "sample": "n3dv",
+      "row_count": 1984,
+      "label_mean": 0.00532244782212021,
+      "label_min": 1.6982678062049672e-05,
+      "label_max": 0.021853812329936773,
+      "corr_endpoint_anchor_mse": 0.7910826029069399,
+      "corr_rgb_motion_mean": 0.017256400691612793,
+      "corr_segment_length": 0.9570222166451825
+    },
+    {
+      "sample": "meetroom",
+      "row_count": 1984,
+      "label_mean": 0.021771396093475733,
+      "label_min": 0.00016252839122898877,
+      "label_max": 0.06116097897756845,
+      "corr_endpoint_anchor_mse": 0.7162381539481427,
+      "corr_rgb_motion_mean": 0.06799304584099193,
+      "corr_segment_length": 0.9806131694966483
+    },
+    {
+      "sample": "driving",
+      "row_count": 1984,
+      "label_mean": 0.054026661228231056,
+      "label_min": 0.0007965295226313174,
+      "label_max": 0.15516445587854832,
+      "corr_endpoint_anchor_mse": 0.7915354029010068,
+      "corr_rgb_motion_mean": 0.012845690433336424,
+      "corr_segment_length": 0.9822683493581169
+    },
+    {
+      "sample": "robot",
+      "row_count": 1860,
+      "label_mean": 0.08738319363159638,
+      "label_min": 0.0005001415847800672,
+      "label_max": 0.3412707191891968,
+      "corr_endpoint_anchor_mse": 0.6147167428950462,
+      "corr_rgb_motion_mean": 0.22350813869480543,
+      "corr_segment_length": 0.955821501089398
+    }
+  ],
+  "feature_note": "Features use endpoint anchors, segment length and RGB motion only. Labels use dense intermediate anchors as oracle/proxy targets."
+}

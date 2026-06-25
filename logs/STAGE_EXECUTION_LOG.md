@@ -2710,3 +2710,56 @@ experiments/stage36_dense_oracle_actual_bitstream_rd/stage36_*_rd.png
 - Stage36 converts Stage35's oracle selector upper bound into actual-bitstream RD evidence.
 - Dense oracle improves all 12 points while preserving essentially the same keyframe-count bitstream budget.
 - This is the strongest selector upper-bound artifact so far, but still not a deployable selector because the keyframe decisions use dense intermediate anchors as oracle targets.
+
+## 2026-06-25：阶段 37 Deployable Selector Cost Dataset
+
+### 执行计划
+
+Stage37 构建用于训练 deployable selector cost predictor 的 segment-level dataset。Label 仍使用 dense intermediate anchors 计算 Stage35-style oracle/proxy cost，但 features 只使用 encoder-side 可获得信息：endpoint q8 anchors、segment length、endpoint RGB/motion features。
+
+### 新增文件
+
+```text
+scripts/run_stage37_deployable_selector_cost_dataset.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage37_deployable_selector_cost_dataset.py
+CUDA_VISIBLE_DEVICES=3 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage37_deployable_selector_cost_dataset.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi`。GPU 1 有小进程，GPU 2 有大进程，GPU 3 空闲，因此使用 `CUDA_VISIBLE_DEVICES=3`。
+
+### 输出文件
+
+```text
+experiments/stage37_deployable_selector_cost_dataset/stage37_deployable_selector_cost_dataset.csv
+experiments/stage37_deployable_selector_cost_dataset/stage37_deployable_selector_cost_dataset_summary.json
+```
+
+### Dataset 规模
+
+| metric | value |
+|---|---:|
+| max segment length | 32 |
+| base segment rows | 7812 |
+| expanded leave-one-out rows | 31248 |
+
+### Per-sample label statistics and correlations
+
+| sample | rows | label mean | label min | label max | corr endpoint anchor MSE | corr RGB motion mean | corr segment length |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| n3dv | 1984 | 0.00532244782212021 | 1.6982678062049672e-05 | 0.021853812329936773 | 0.7910826029069399 | 0.017256400691612793 | 0.9570222166451825 |
+| meetroom | 1984 | 0.021771396093475733 | 0.00016252839122898877 | 0.06116097897756845 | 0.7162381539481427 | 0.06799304584099193 | 0.9806131694966483 |
+| driving | 1984 | 0.054026661228231056 | 0.0007965295226313174 | 0.15516445587854832 | 0.7915354029010068 | 0.012845690433336424 | 0.9822683493581169 |
+| robot | 1860 | 0.08738319363159638 | 0.0005001415847800672 | 0.3412707191891968 | 0.6147167428950462 | 0.22350813869480543 | 0.955821501089398 |
+
+### 结论
+
+- Segment length and endpoint anchor MSE are strong simple predictors for dense oracle cost.
+- RGB motion alone is weakly correlated with the oracle cost on these samples, especially n3dv/driving.
+- Stage37 provides the training data needed for Stage38 deployable selector cost predictor.

@@ -244,3 +244,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage36 bitstreams are generated from Stage35 selections and Stage33 dense anchors. They are actual q8 anchor containers, but selector decisions are still oracle/proxy.
 - Raw/zlib rate differences between uniform and oracle rows at equal keyframe count are caused by header length and selected-anchor compressibility, not by different keyframe counts.
 - Roundtrip is measured against q8 dequantized anchors, not original fp16 anchors.
+
+## Stage 37 Notes
+
+- Stage37 labels are oracle/proxy labels derived from dense intermediate anchors. The features are deployable, but the labels are not available at encoder inference time.
+- Segment length is highly correlated with the label, so predictor evaluation must check whether it learns more than just length.
+- RGB motion features are weak in this first dataset; endpoint anchor features appear more useful for the oracle target.
