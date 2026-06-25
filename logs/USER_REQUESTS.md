@@ -133,3 +133,13 @@ experiments/stage6_real_anchor_dataset
 ### 当前执行决策
 
 阶段 8 已完成并推送。由于 DAVIS / YouTube-VOS 数据缺失但 stage6 真实 keyframe anchor dataset 已可用，下一步执行阶段 9：在 stage6 真实 anchors 上训练 `GaussianAnchorDynamicPredictor` 的 proxy loss。该阶段只验证真实 anchor 加载、q8 输入模拟、训练闭环和 held-out sample 评估，不引入 renderer/RGB loss。
+
+## 2026-06-25：阶段 10 renderer smoke
+
+### 用户原始问题
+
+用户表示：如果有下一步就继续执行；如果不确定如何推进，再停下来询问。
+
+### 当前执行决策
+
+阶段 9 已完成并推送。下一步执行阶段 10 的最小 renderer smoke：先不做完整 RGB loss 训练，而是把单帧 static anchor 包装成 StreamSplat renderer 可接受的 zero-dynamic Gaussian 格式，验证 renderer 调用、RGB target 对齐和 MSE/PSNR 计算闭环。

@@ -606,3 +606,62 @@ experiments/stage9_real_anchor_proxy_training/stage9_train_losses.csv
 - 阶段 9 已完成真实 anchor proxy training smoke。
 - 训练后的 eval loss 接近 q8 linear baseline，说明真实 anchor 加载、quantized input simulation 和 predictor 训练闭环可运行。
 - 该结果不是最终视频重建质量；下一步需要接 Gaussian renderer / RGB loss，或先实现能把 predicted raw attributes 转回 renderer 所需格式的 adapter。
+
+## 2026-06-25：阶段 10 Renderer Smoke
+
+### 执行计划
+
+阶段 10 的目标是打通 Gaussian anchor 到 StreamSplat renderer 的最小闭环。先不做完整 RGB loss 训练，而是把单帧 static anchor 包装成 renderer 所需的 zero-dynamic Gaussian 格式，渲染一个中间帧，并和对应 RGB target 计算 MSE/PSNR。
+
+### 新增文件
+
+```text
+mono_dfcgs/render_adapter.py
+scripts/run_stage10_renderer_smoke.py
+```
+
+### 运行命令
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage10_renderer_smoke.py --device cuda --sample n3dv --frame_gap 4 --row_index 0
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 2 被占用；GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage10_renderer_smoke/stage10_renderer_smoke_summary.json
+```
+
+### 测试样本
+
+| item | value |
+|---|---|
+| sample | n3dv |
+| frame_gap | 4 |
+| pair | 0 -> 4 |
+| target frame | 2 |
+| normalized_time | 0.5 |
+| Gaussian count | 36864 |
+| resolution | 512x288 |
+
+### 结果
+
+| metric | value |
+|---|---:|
+| render_shape | [1, 1, 3, 288, 512] |
+| depth_shape | [1, 1, 1, 288, 512] |
+| alpha_shape | [1, 1, 1, 288, 512] |
+| rgb_mse | 0.0010116836056113243 |
+| rgb_psnr | 29.94955287715034 |
+| alpha_mean | 0.8632223010063171 |
+| alpha_max | 0.9993191957473755 |
+
+### 结论
+
+- 阶段 10 已验证 static keyframe/intermediate anchor 可以通过 zero-dynamic adapter 调用 StreamSplat renderer。
+- 当前 PSNR 只是 linear raw anchor 的 renderer smoke，不是最终 learned decoder 的 RGB reconstruction quality。
+- 下一步可以把阶段 9 predictor 输出接到 renderer smoke 中，形成 differentiable RGB loss smoke；随后再做小规模 RGB fine-tuning。

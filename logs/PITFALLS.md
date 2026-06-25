@@ -61,3 +61,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - The first stage 9 run used the predictor's default `sigmoid` / `softplus` / rotation normalization output constraints. That mismatched the stage6 StreamSplat raw anchor attribute space and produced a much larger proxy loss than simple q8 linear interpolation.
 - `GaussianAnchorDynamicPredictor` now keeps output constraints enabled by default but allows them to be disabled for raw-attribute proxy training. Renderer/RGB training should revisit the correct output-domain constraints.
 - `torch.load(..., weights_only=True)` is used for stage6 `.pt` items to avoid the PyTorch pickle safety warning for this local tensor-only dataset format.
+
+## Stage 10 Notes
+
+- `gaussian_renderer_dynamic.render` expects StreamSplat dynamic Gaussian format: `xyz` and `rot` include static plus dynamic components. A single static predicted anchor must be wrapped with zero dynamic components before rendering.
+- The renderer uses `opt.down_resolution` when it is non-empty. Stage 10 sets `opt.down_resolution = ()` and uses the default inference resolution `512x288` from `Options`.
+- Stage 10's linear-anchor PSNR is a smoke metric only. It validates renderer wiring and target alignment, not the final Mono-DFCGS learned codec quality.

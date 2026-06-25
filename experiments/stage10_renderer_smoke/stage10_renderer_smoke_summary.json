@@ -1,0 +1,45 @@
+{
+  "stage": 10,
+  "mode": "renderer smoke for linear static intermediate anchor",
+  "manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage6_real_anchor_dataset/stage6_real_anchor_dataset_manifest.csv",
+  "dataset_item": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage6_real_anchor_dataset/n3dv/gap4/pair_000000_000004.pt",
+  "sample": "n3dv",
+  "frame_gap": 4,
+  "left_index": 0,
+  "right_index": 4,
+  "target_frame_index": 2,
+  "normalized_time": 0.5,
+  "target_rgb_path": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage1_streamsplat_fair_metrics/cache/n3dv/frames/000003.png",
+  "device": "cuda",
+  "resolution": [
+    512,
+    288
+  ],
+  "gaussian_count": 36864,
+  "render_shape": [
+    1,
+    1,
+    3,
+    288,
+    512
+  ],
+  "depth_shape": [
+    1,
+    1,
+    1,
+    288,
+    512
+  ],
+  "alpha_shape": [
+    1,
+    1,
+    1,
+    288,
+    512
+  ],
+  "rgb_mse": 0.0010116836056113243,
+  "rgb_psnr": 29.94955287715034,
+  "alpha_mean": 0.8632223010063171,
+  "alpha_max": 0.9993191957473755,
+  "notes": "Smoke only: linear raw static anchor wrapped as zero-dynamic gaussians. Not trained RGB reconstruction quality."
+}
