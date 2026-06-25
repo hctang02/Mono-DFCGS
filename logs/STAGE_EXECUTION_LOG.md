@@ -2388,3 +2388,61 @@ experiments/stage30_dense_anchor_export_preflight/stage30_dense_anchor_export_pr
 - Exporting adjacent gap1 pairs for all four samples is feasible in disk terms, around 577.7 MiB if stored as non-deduplicated fp16 pair records.
 - A deduplicated unique per-frame anchor store would be smaller, around 292.5 MiB fp16 total, with only about 144.4 MiB additional over current unique coverage.
 - Next implementation step should be a dense/gap1 anchor exporter that writes either deduplicated per-frame anchors or gap1 pair records under external storage.
+
+## 2026-06-25：阶段 32 Actual Bitstream RD Report
+
+### 执行计划
+
+Stage32 将 Stage26 leave-one-out full-video quality 与 Stage31 actual q8 anchor bitstream sizes 合并。输出 raw container 和 zlib container 两套真实码流 rate 下的 RD 表和图，同时保留 estimated q8 static anchor MiB/frame 作为对照。
+
+### 新增文件
+
+```text
+scripts/run_stage32_actual_bitstream_rd_report.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage32_actual_bitstream_rd_report.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage32_actual_bitstream_rd_report.py
+```
+
+该阶段只做 CSV 合并和绘图，不需要 GPU。
+
+### 输出文件
+
+```text
+experiments/stage32_actual_bitstream_rd_report/stage32_actual_bitstream_rd.csv
+experiments/stage32_actual_bitstream_rd_report/stage32_gap_aggregate.csv
+experiments/stage32_actual_bitstream_rd_report/stage32_actual_bitstream_rd_summary.json
+experiments/stage32_actual_bitstream_rd_report/stage32_raw_*_rd.png
+experiments/stage32_actual_bitstream_rd_report/stage32_zlib_*_rd.png
+experiments/stage32_actual_bitstream_rd_report/stage32_mean_*_rd.png
+```
+
+### Aggregate 结果
+
+| metric | value |
+|---|---:|
+| rows | 16 |
+| mean delta all PSNR | 0.07979649123330468 |
+| mean delta middle PSNR | 0.1125053472768538 |
+| mean zlib rate / estimated q8 anchor rate | 0.6532718959778985 |
+| mean zlib savings vs raw bitstream | 34.75332282244801% |
+
+### Per-gap mean actual rates
+
+| gap | estimated q8 MiB/frame | raw bitstream MiB/frame | zlib bitstream MiB/frame | adapter all PSNR | adapter middle PSNR |
+|---:|---:|---:|---:|---:|---:|
+| 2 | 0.23137344426406925 | 0.23165553396321917 | 0.15108759154374352 | 29.94152342429438 | 28.25286654810653 |
+| 4 | 0.1185445413961039 | 0.11868976438123867 | 0.07742046583572297 | 28.31306297056608 | 27.172461353061053 |
+| 8 | 0.06287202380952381 | 0.06294975617919304 | 0.04109464166484354 | 26.654635281827648 | 25.862070399193193 |
+| 16 | 0.03429383116883117 | 0.03433686593260466 | 0.022424008958286556 | 25.087539219111537 | 24.55959121535453 |
+
+### 结论
+
+- Stage32 turns the primary RD evidence into an actual q8 anchor bitstream RD report.
+- Raw prototype container rate is very close to estimated q8 anchor rate, around 1.001x, because JSON/qparam/index overhead is small relative to payload.
+- Zlib container rate is around 65.3% of estimated q8 anchor rate on average, while preserving the same decoded q8 anchors and full-video quality.
+- Zlib is still a generic compression baseline, not the final learned entropy coder.

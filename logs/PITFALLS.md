@@ -214,3 +214,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage30 was executed after Stage31, so stage numbering is not chronological in the execution log.
 - Current Stage6 unique anchor coverage is approximately half of all frames because only even endpoint anchors are available.
 - Dense anchor export should write to external storage and should preferably deduplicate per-frame anchors; naive gap1 pair storage duplicates adjacent frame anchors.
+
+## Stage 32 Notes
+
+- Stage32 quality numbers are inherited from Stage26; only the rate axis changes from estimated q8 anchor payload to Stage31 actual raw/zlib bitstream sizes.
+- Raw bitstream uses a readable JSON header, so it is slightly larger than the compact Stage28 estimate.
+- Zlib RD curves are useful practical baselines, but should be labeled as generic-compressed q8 anchor bitstream RD, not final learned entropy coding.
