@@ -193,3 +193,13 @@ experiments/stage6_real_anchor_dataset
 ### 当前执行决策
 
 阶段 13 已完成并推送。下一步扩展 Stage 12 evaluator 支持 `motion_spaced` / `gaussian_spaced` / `rd_spaced` 方法，并运行 `robot + rd_spaced + reference_gap=4` reconstruction smoke，用于和 Stage 12 的 `robot + rd_aware + reference_gap=4` 对比。
+
+## 2026-06-25：阶段 15 selected-keyframe RD curve
+
+### 用户原始问题
+
+用户表示：好的，做吧。
+
+### 当前执行决策
+
+阶段 14 已完成并推送。下一步扩展评估到 `n3dv/robot × uniform/rd_spaced × gap4/8/16`，形成一个更完整的 selected-keyframe RD curve smoke。该阶段仍复用 Stage 12 evaluator，结果口径仍是 StreamSplat RGB/depth-conditioned selected-pair inference，不是最终 Gaussian-anchor-only decoder。

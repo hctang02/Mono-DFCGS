@@ -1,0 +1,118 @@
+{
+  "stage": 15,
+  "method": "selected-keyframe RD curve batch",
+  "sample": "n3dv",
+  "selection_method": "rd_spaced",
+  "reference_gap": 4,
+  "resolution": [
+    512,
+    288
+  ],
+  "total_frames": 81,
+  "selected_keyframes": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    8,
+    16,
+    24,
+    32,
+    40,
+    44,
+    46,
+    48,
+    56,
+    64,
+    70,
+    72,
+    78,
+    80
+  ],
+  "keyframe_count": 21,
+  "keyframe_ratio": 0.25925925925925924,
+  "segment_lengths": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    8,
+    8,
+    8,
+    8,
+    4,
+    2,
+    2,
+    8,
+    8,
+    6,
+    2,
+    6,
+    2
+  ],
+  "max_segment_length": 8,
+  "pair_count": 20,
+  "complete": true,
+  "all": {
+    "count": 81,
+    "psnr_avg": 33.170324376459305,
+    "psnr_min": 29.91762528132893,
+    "ssim_avg": 0.962219700401212,
+    "ssim_min": 0.9399654269218445
+  },
+  "middle_only": {
+    "count": 60,
+    "psnr_avg": 32.74286668259031,
+    "psnr_min": 29.91762528132893,
+    "ssim_avg": 0.9596455295880636,
+    "ssim_min": 0.9399654269218445
+  },
+  "given_keyframes": {
+    "count": 21,
+    "psnr_avg": 34.39163207322783,
+    "psnr_min": 34.3071293895202,
+    "ssim_avg": 0.9695744741530645,
+    "ssim_min": 0.969157874584198
+  },
+  "estimated_q8_static_mib_per_frame": 0.11848958333333333,
+  "raw_pred_gs_mib": 123.75,
+  "raw_pred_gs_mib_per_frame": 1.5277777777777777,
+  "pred_gs_shapes_last_batch": {
+    "rgb": [
+      1,
+      73728,
+      3
+    ],
+    "opacity": [
+      1,
+      73728,
+      3
+    ],
+    "scale": [
+      1,
+      73728,
+      2
+    ],
+    "xyz": [
+      1,
+      73728,
+      2,
+      3
+    ],
+    "rot": [
+      1,
+      73728,
+      2,
+      4
+    ]
+  },
+  "heavy_output_dir": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage15_selected_keyframe_rd_curve/n3dv_rd_spaced_gap4",
+  "per_frame_metrics": null,
+  "notes": "Smoke evaluation for selected keyframes. It still uses StreamSplat RGB/depth-conditioned inference for each selected pair, not the final Gaussian-anchor-only decoder."
+}

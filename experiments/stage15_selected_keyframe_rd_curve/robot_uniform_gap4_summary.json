@@ -1,0 +1,116 @@
+{
+  "stage": 15,
+  "method": "selected-keyframe RD curve batch",
+  "sample": "robot",
+  "selection_method": "uniform",
+  "reference_gap": 4,
+  "resolution": [
+    512,
+    288
+  ],
+  "total_frames": 77,
+  "selected_keyframes": [
+    0,
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    28,
+    32,
+    36,
+    40,
+    44,
+    48,
+    52,
+    56,
+    60,
+    64,
+    68,
+    72,
+    76
+  ],
+  "keyframe_count": 20,
+  "keyframe_ratio": 0.2597402597402597,
+  "segment_lengths": [
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4
+  ],
+  "max_segment_length": 4,
+  "pair_count": 19,
+  "complete": true,
+  "all": {
+    "count": 77,
+    "psnr_avg": 26.48952399862992,
+    "psnr_min": 15.840932629162186,
+    "ssim_avg": 0.8638617195092239,
+    "ssim_min": 0.6869664192199707
+  },
+  "middle_only": {
+    "count": 57,
+    "psnr_avg": 23.178617517791157,
+    "psnr_min": 15.840932629162186,
+    "ssim_avg": 0.827526965685058,
+    "ssim_min": 0.6869664192199707
+  },
+  "given_keyframes": {
+    "count": 20,
+    "psnr_avg": 35.925607469020385,
+    "psnr_min": 35.30063377749919,
+    "ssim_avg": 0.9674157679080964,
+    "ssim_min": 0.9653293490409851
+  },
+  "estimated_q8_static_mib_per_frame": 0.11870941558441558,
+  "raw_pred_gs_mib": 117.5625,
+  "raw_pred_gs_mib_per_frame": 1.5267857142857142,
+  "pred_gs_shapes_last_batch": {
+    "rgb": [
+      1,
+      73728,
+      3
+    ],
+    "opacity": [
+      1,
+      73728,
+      3
+    ],
+    "scale": [
+      1,
+      73728,
+      2
+    ],
+    "xyz": [
+      1,
+      73728,
+      2,
+      3
+    ],
+    "rot": [
+      1,
+      73728,
+      2,
+      4
+    ]
+  },
+  "heavy_output_dir": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage15_selected_keyframe_rd_curve/robot_uniform_gap4",
+  "per_frame_metrics": null,
+  "notes": "Smoke evaluation for selected keyframes. It still uses StreamSplat RGB/depth-conditioned inference for each selected pair, not the final Gaussian-anchor-only decoder."
+}

@@ -981,3 +981,56 @@ experiments/stage14_spaced_selected_keyframe_reconstruction/robot_rd_spaced_gap4
 - Stage 14 证明 spacing-constrained selection 在相同 rate 下改善了 selected-keyframe reconstruction smoke。
 - 对 `robot gap4`，`rd_spaced` 相比无约束 `rd_aware`：all PSNR 提升约 1.16 dB，middle PSNR 提升约 1.59 dB。
 - 结果仍是 StreamSplat RGB/depth-conditioned inference，不是最终 Gaussian-anchor-only decoder；但它验证了 keyframe selection 的评估闭环和 segment constraint 的必要性。
+
+## 2026-06-25：阶段 15 Selected-Keyframe RD Curve Batch
+
+### 执行计划
+
+阶段 15 的目标是把 Stage 14 的单点 smoke 扩展成更完整的 selected-keyframe RD curve。评估范围为 `n3dv/robot × uniform/rd_spaced × gap4/8/16`，共 12 组。该阶段复用 Stage 12 evaluator，仍是 StreamSplat RGB/depth-conditioned selected-pair inference，不是最终 Gaussian-anchor-only decoder。
+
+### 新增文件
+
+```text
+scripts/run_stage15_selected_keyframe_rd_curve.py
+```
+
+### 运行命令
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage15_selected_keyframe_rd_curve.py --batch_size 1 --max_segment_length 40
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 2 被占用；GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage15_selected_keyframe_rd_curve/stage15_selected_keyframe_rd_curve_summary.csv
+experiments/stage15_selected_keyframe_rd_curve/stage15_selected_keyframe_rd_curve_summary.json
+experiments/stage15_selected_keyframe_rd_curve/*_summary.json
+```
+
+### RD Summary
+
+| sample | method | gap | rate MiB/frame | all PSNR | middle PSNR | max segment |
+|---|---|---:|---:|---:|---:|---:|
+| n3dv | uniform | 4 | 0.11848958333333333 | 33.39609679886218 | 33.05215015387749 | 4 |
+| n3dv | uniform | 8 | 0.062065972222222224 | 32.50256438589778 | 32.2073772502555 | 8 |
+| n3dv | uniform | 16 | 0.033854166666666664 | 30.881761283241584 | 30.60315188772239 | 16 |
+| n3dv | rd_spaced | 4 | 0.11848958333333333 | 33.170324376459305 | 32.74286668259031 | 8 |
+| n3dv | rd_spaced | 8 | 0.062065972222222224 | 31.644474346834887 | 31.21410477178391 | 16 |
+| n3dv | rd_spaced | 16 | 0.033854166666666664 | 30.6905517407433 | 30.39447527528243 | 32 |
+| robot | uniform | 4 | 0.11870941558441558 | 26.48952399862992 | 23.178617517791157 | 4 |
+| robot | uniform | 8 | 0.06529017857142858 | 23.881147029593635 | 21.872060070351942 | 8 |
+| robot | uniform | 16 | 0.03561282467532467 | 21.820691934634624 | 20.638129159906573 | 16 |
+| robot | rd_spaced | 4 | 0.11870941558441558 | 25.893064910908713 | 22.329879626430465 | 8 |
+| robot | rd_spaced | 8 | 0.06529017857142858 | 23.17668274155252 | 21.04240930250378 | 16 |
+| robot | rd_spaced | 16 | 0.03561282467532467 | 21.50606959393489 | 20.28240369488664 | 32 |
+
+### 结论
+
+- Stage 15 完成了 12 组 selected-keyframe RD curve smoke。
+- `rd_spaced` 修复了无约束 `rd_aware` 的聚簇问题，但在 n3dv/robot 的当前 RD curve 上仍低于 uniform。
+- 当前 motion/Gaussian/RD score 只是轻量 proxy，下一步需要改进 selection objective，例如引入 per-segment interpolation difficulty、minimum spacing 与 entropy/rate proxy 的联合优化，而不是直接 top-k score。

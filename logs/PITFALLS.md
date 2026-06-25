@@ -97,3 +97,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - The Stage 12 evaluator originally restricted methods to `uniform`, `motion_aware`, `gaussian_aware`, and `rd_aware`; it now also accepts `motion_spaced`, `gaussian_spaced`, and `rd_spaced`.
 - Stage 14 uses a separate summary root so Stage 12 smoke outputs are not overwritten.
 - `rd_spaced` improves the robot gap4 smoke but still trails the original uniform gap4 Stage 3 baseline; more samples and methods must be evaluated before claiming selection superiority.
+
+## Stage 15 Notes
+
+- The expanded RD curve confirms that current `rd_spaced` is safer than unconstrained top-k selection but still worse than uniform on n3dv and robot for gap4/8/16.
+- Uniform Stage 15 rows reproduce Stage 1/3 metrics closely, which validates that the Stage 12/15 selected-keyframe evaluator is aligned with the earlier uniform pipeline.
+- Future keyframe selection should optimize segment coverage and expected reconstruction error jointly; simple frame-wise scores are not enough.

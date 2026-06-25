@@ -1,0 +1,88 @@
+{
+  "stage": 15,
+  "method": "selected-keyframe RD curve batch",
+  "sample": "robot",
+  "selection_method": "uniform",
+  "reference_gap": 16,
+  "resolution": [
+    512,
+    288
+  ],
+  "total_frames": 77,
+  "selected_keyframes": [
+    0,
+    16,
+    32,
+    48,
+    64,
+    76
+  ],
+  "keyframe_count": 6,
+  "keyframe_ratio": 0.07792207792207792,
+  "segment_lengths": [
+    16,
+    16,
+    16,
+    16,
+    12
+  ],
+  "max_segment_length": 16,
+  "pair_count": 5,
+  "complete": true,
+  "all": {
+    "count": 77,
+    "psnr_avg": 21.820691934634624,
+    "psnr_min": 15.240206666675519,
+    "ssim_avg": 0.7877994481619303,
+    "ssim_min": 0.6373882293701172
+  },
+  "middle_only": {
+    "count": 71,
+    "psnr_avg": 20.638129159906573,
+    "psnr_min": 15.240206666675519,
+    "ssim_avg": 0.7726663636489653,
+    "ssim_min": 0.6373882293701172
+  },
+  "given_keyframes": {
+    "count": 6,
+    "psnr_avg": 35.81435143558327,
+    "psnr_min": 35.35869306125871,
+    "ssim_avg": 0.9668742815653483,
+    "ssim_min": 0.9656677842140198
+  },
+  "estimated_q8_static_mib_per_frame": 0.03561282467532467,
+  "raw_pred_gs_mib": 30.9375,
+  "raw_pred_gs_mib_per_frame": 0.4017857142857143,
+  "pred_gs_shapes_last_batch": {
+    "rgb": [
+      1,
+      73728,
+      3
+    ],
+    "opacity": [
+      1,
+      73728,
+      3
+    ],
+    "scale": [
+      1,
+      73728,
+      2
+    ],
+    "xyz": [
+      1,
+      73728,
+      2,
+      3
+    ],
+    "rot": [
+      1,
+      73728,
+      2,
+      4
+    ]
+  },
+  "heavy_output_dir": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage15_selected_keyframe_rd_curve/robot_uniform_gap16",
+  "per_frame_metrics": null,
+  "notes": "Smoke evaluation for selected keyframes. It still uses StreamSplat RGB/depth-conditioned inference for each selected pair, not the final Gaussian-anchor-only decoder."
+}
