@@ -1034,3 +1034,35 @@ experiments/stage15_selected_keyframe_rd_curve/*_summary.json
 - Stage 15 完成了 12 组 selected-keyframe RD curve smoke。
 - `rd_spaced` 修复了无约束 `rd_aware` 的聚簇问题，但在 n3dv/robot 的当前 RD curve 上仍低于 uniform。
 - 当前 motion/Gaussian/RD score 只是轻量 proxy，下一步需要改进 selection objective，例如引入 per-segment interpolation difficulty、minimum spacing 与 entropy/rate proxy 的联合优化，而不是直接 top-k score。
+
+## 2026-06-25：Stage 15 RD Curve Plot
+
+### 执行计划
+
+根据用户要求，将 Stage 15 RD curve CSV 绘制为可直接查看的 PNG 图。横轴为 transmitted Gaussian MiB/frame，纵轴分别为 PSNR/SSIM。
+
+### 新增脚本
+
+```text
+scripts/plot_stage15_rd_curve.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/plot_stage15_rd_curve.py
+```
+
+### 输出文件
+
+```text
+experiments/stage15_selected_keyframe_rd_curve/stage15_rd_curve_all_psnr.png
+experiments/stage15_selected_keyframe_rd_curve/stage15_rd_curve_middle_psnr.png
+experiments/stage15_selected_keyframe_rd_curve/stage15_rd_curve_all_ssim.png
+experiments/stage15_selected_keyframe_rd_curve/stage15_rd_curve_middle_ssim.png
+```
+
+### 结论
+
+- 已生成 Stage 15 的 RD 曲线图。
+- 最建议优先查看 `stage15_rd_curve_middle_psnr.png`，因为 middle-only 更能反映非关键帧重建质量。

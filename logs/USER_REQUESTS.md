@@ -203,3 +203,13 @@ experiments/stage6_real_anchor_dataset
 ### 当前执行决策
 
 阶段 14 已完成并推送。下一步扩展评估到 `n3dv/robot × uniform/rd_spaced × gap4/8/16`，形成一个更完整的 selected-keyframe RD curve smoke。该阶段仍复用 Stage 12 evaluator，结果口径仍是 StreamSplat RGB/depth-conditioned selected-pair inference，不是最终 Gaussian-anchor-only decoder。
+
+## 2026-06-25：绘制 Stage 15 RD 曲线
+
+### 用户原始问题
+
+用户要求：先画一下 Stage 15 的 RD 曲线。
+
+### 当前执行决策
+
+基于 `experiments/stage15_selected_keyframe_rd_curve/stage15_selected_keyframe_rd_curve_summary.csv` 绘制 RD 曲线。横轴使用 `estimated_q8_static_mib_per_frame`，纵轴分别绘制 all-frame PSNR、middle-only PSNR、all-frame SSIM 和 middle-only SSIM，并按 `n3dv` / `robot` 分子图展示 `uniform` 与 `rd_spaced`。
