@@ -1262,3 +1262,65 @@ model.gaussian_upsampler
 - Stage 18 已明确后续微调不应从头训练，而应从 StreamSplat checkpoint 初始化。
 - 首轮 Stage 20 long-GOP 微调应冻结 static feature/Gaussian extraction，只训练 temporal/dynamic decoder path。
 - 下一步 Stage 19 应整理 original decoder variable-GOP baseline，作为微调前对照。
+
+## 2026-06-25：阶段 19 Original Decoder Variable-GOP Baseline
+
+### 执行计划
+
+阶段 19 的目标是建立 long-GOP 微调前的原始 StreamSplat decoder baseline。该阶段不重新推理，而是复用：
+
+- Stage 1 pretrained StreamSplat fair metrics，作为原始 decoder 的 RGB/depth-conditioned reconstruction quality。
+- Stage 2 q8 static-anchor payload estimate，作为 transmitted keyframe Gaussian rate 口径。
+
+### 新增文件
+
+```text
+scripts/run_stage19_original_decoder_variable_gop_baseline.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage19_original_decoder_variable_gop_baseline.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。该阶段只读取已有 CSV/JSON 并绘图，没有新 GPU 推理。
+
+### 输出文件
+
+```text
+experiments/stage19_original_decoder_variable_gop_baseline/stage19_original_decoder_variable_gop_baseline_summary.json
+experiments/stage19_original_decoder_variable_gop_baseline/stage19_original_decoder_variable_gop_baseline.csv
+experiments/stage19_original_decoder_variable_gop_baseline/stage19_original_decoder_variable_gop_gap_averages.csv
+experiments/stage19_original_decoder_variable_gop_baseline/stage19_original_decoder_all_psnr.png
+experiments/stage19_original_decoder_variable_gop_baseline/stage19_original_decoder_middle_psnr.png
+experiments/stage19_original_decoder_variable_gop_baseline/stage19_original_decoder_given_psnr.png
+```
+
+### 覆盖范围
+
+| item | value |
+|---|---:|
+| samples | n3dv, meetroom, driving, robot |
+| gaps | 2, 4, 8, 16 |
+| rows | 16 |
+| rate profile | static_anchor |
+| rate codec | q8 |
+| opacity threshold | 0.0 |
+
+### Gap 平均结果
+
+| gap | q8 static MiB/frame | raw pred_gs MiB/frame | all PSNR | middle PSNR | given PSNR |
+|---:|---:|---:|---:|---:|---:|
+| 2 | 0.23137344426406925 | 3.0550595238095237 | 32.953542199364946 | 29.996391443587946 | 35.83678978896073 |
+| 4 | 0.1185445413961039 | 1.5275297619047619 | 30.626730087064544 | 28.807739474456714 | 35.81793379119585 |
+| 8 | 0.06287202380952381 | 0.7738095238095237 | 28.484245511008048 | 27.302025920513756 | 35.82481680540889 |
+| 16 | 0.03429383116883117 | 0.38690476190476186 | 26.15445374823089 | 25.367519709128025 | 35.79403535099706 |
+
+### 结论
+
+- Stage 19 已给出 Stage 20 微调前的原始 decoder baseline，后续 fine-tune 结果应优先和该表对齐比较。
+- `given_keyframes` PSNR 基本稳定在 35.8 dB 左右，质量下降主要来自 non-keyframe middle reconstruction。
+- `raw_pred_gs_mib_per_frame` 是 decoder 输出诊断量，不是 transmitted bitstream；论文主 rate 应使用 `estimated_q8_static_mib_per_frame` 或后续真实 entropy-coded anchor payload。

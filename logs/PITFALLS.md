@@ -121,3 +121,8 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - `safetensors.torch.load_file` does not accept `device="cuda"`; use `cuda:0` or `cpu`. Stage 18 now maps CUDA devices to `cuda:0` under `CUDA_VISIBLE_DEVICES`.
 - Instantiating `SplatModel` with `use_dino=True` may trigger DINOv2 weight download if the cache is missing. This happened on first Stage 18 run and downloaded to the default torch cache.
 - The first module prefix list used `model.gs_predictor.upsampler`, but the actual static upsampler prefix is `model.gs_predictor.gaussian_upsampler`; the report was corrected and rerun.
+
+## Stage 19 Notes
+
+- Stage 19 is an aggregation stage, not a new inference stage. It reuses Stage1 quality and Stage2 q8 static-anchor rate estimates to avoid accidentally changing the pre-finetune baseline.
+- Keep `raw_pred_gs_mib_per_frame` separate from `estimated_q8_static_mib_per_frame`: the former is decoder output tensor size, while the latter is the transmitted keyframe-anchor rate used for codec RD comparisons.

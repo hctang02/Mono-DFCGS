@@ -233,3 +233,13 @@ experiments/stage6_real_anchor_dataset
 ### 当前执行决策
 
 Stage 18 先不训练，只加载 StreamSplat checkpoint 并统计模块参数量、checkpoint 加载状态和推荐 freeze policy。首轮 long-GOP 微调建议冻结 static encoder / static Gaussian predictor / DINO condition encoder，只训练 temporal decoder、dynamic Gaussian predictor 和小的 projection adapter。
+
+## 2026-06-25：继续执行后续阶段
+
+### 用户原始问题
+
+用户要求：如果有下一步就继续执行；如果不确定如何推进，再停止并提问。
+
+### 当前执行决策
+
+Stage 18 已完成并推送后，继续执行 Stage 19：整理 original StreamSplat decoder 的 variable-GOP pre-finetune baseline。该阶段复用已有 Stage1 推理质量和 Stage2 q8 static-anchor rate，不重新运行昂贵 GPU 推理。
