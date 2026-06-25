@@ -1,0 +1,523 @@
+{
+  "stage": 30,
+  "mode": "dense anchor export preflight",
+  "coverage_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage30_dense_anchor_export_preflight/stage30_dense_anchor_coverage.csv",
+  "selection_compatibility_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage30_dense_anchor_export_preflight/stage30_stage16_selection_compatibility.csv",
+  "samples": [
+    "n3dv",
+    "meetroom",
+    "driving",
+    "robot"
+  ],
+  "gaussians_per_anchor": 36864,
+  "values_per_gaussian": 13,
+  "fp16_bytes_per_anchor": 958464,
+  "q8_bytes_per_anchor": 479232,
+  "total_frames": 320,
+  "total_current_unique_anchors": 162,
+  "total_missing_anchors_for_dense_coverage": 158,
+  "total_dense_unique_fp16_mib": 292.5,
+  "total_dense_unique_q8_mib": 146.25,
+  "total_additional_unique_fp16_mib": 144.421875,
+  "total_additional_unique_q8_mib": 72.2109375,
+  "total_gap1_pair_fp16_mib_if_no_dedup": 577.6875,
+  "stage16_selection_rows": 48,
+  "stage16_unsupported_rows_with_current_stage6": 34,
+  "coverage_rows": [
+    {
+      "sample": "n3dv",
+      "total_frames": 81,
+      "stage6_pair_rows": 75,
+      "current_unique_anchor_count": 41,
+      "current_anchor_ratio": 0.5061728395061729,
+      "missing_anchor_count": 40,
+      "missing_anchor_indices": "1 3 5 7 9 11 13 15 17 19 21 23 25 27 29 31 33 35 37 39 41 43 45 47 49 51 53 55 57 59 61 63 65 67 69 71 73 75 77 79",
+      "dense_unique_fp16_mib": 74.0390625,
+      "dense_unique_q8_mib": 37.01953125,
+      "additional_unique_fp16_mib": 36.5625,
+      "additional_unique_q8_mib": 18.28125,
+      "gap1_pair_count": 80,
+      "gap1_pair_fp16_mib_if_no_dedup": 146.25
+    },
+    {
+      "sample": "meetroom",
+      "total_frames": 81,
+      "stage6_pair_rows": 75,
+      "current_unique_anchor_count": 41,
+      "current_anchor_ratio": 0.5061728395061729,
+      "missing_anchor_count": 40,
+      "missing_anchor_indices": "1 3 5 7 9 11 13 15 17 19 21 23 25 27 29 31 33 35 37 39 41 43 45 47 49 51 53 55 57 59 61 63 65 67 69 71 73 75 77 79",
+      "dense_unique_fp16_mib": 74.0390625,
+      "dense_unique_q8_mib": 37.01953125,
+      "additional_unique_fp16_mib": 36.5625,
+      "additional_unique_q8_mib": 18.28125,
+      "gap1_pair_count": 80,
+      "gap1_pair_fp16_mib_if_no_dedup": 146.25
+    },
+    {
+      "sample": "driving",
+      "total_frames": 81,
+      "stage6_pair_rows": 75,
+      "current_unique_anchor_count": 41,
+      "current_anchor_ratio": 0.5061728395061729,
+      "missing_anchor_count": 40,
+      "missing_anchor_indices": "1 3 5 7 9 11 13 15 17 19 21 23 25 27 29 31 33 35 37 39 41 43 45 47 49 51 53 55 57 59 61 63 65 67 69 71 73 75 77 79",
+      "dense_unique_fp16_mib": 74.0390625,
+      "dense_unique_q8_mib": 37.01953125,
+      "additional_unique_fp16_mib": 36.5625,
+      "additional_unique_q8_mib": 18.28125,
+      "gap1_pair_count": 80,
+      "gap1_pair_fp16_mib_if_no_dedup": 146.25
+    },
+    {
+      "sample": "robot",
+      "total_frames": 77,
+      "stage6_pair_rows": 72,
+      "current_unique_anchor_count": 39,
+      "current_anchor_ratio": 0.5064935064935064,
+      "missing_anchor_count": 38,
+      "missing_anchor_indices": "1 3 5 7 9 11 13 15 17 19 21 23 25 27 29 31 33 35 37 39 41 43 45 47 49 51 53 55 57 59 61 63 65 67 69 71 73 75",
+      "dense_unique_fp16_mib": 70.3828125,
+      "dense_unique_q8_mib": 35.19140625,
+      "additional_unique_fp16_mib": 34.734375,
+      "additional_unique_q8_mib": 17.3671875,
+      "gap1_pair_count": 76,
+      "gap1_pair_fp16_mib_if_no_dedup": 138.9375
+    }
+  ],
+  "selection_compatibility_rows": [
+    {
+      "sample": "n3dv",
+      "method": "uniform",
+      "reference_gap": 4,
+      "selected_keyframe_count": 21,
+      "unavailable_selected_count": 0,
+      "unavailable_selected_indices": "",
+      "is_directly_supported_by_stage6": true
+    },
+    {
+      "sample": "n3dv",
+      "method": "segment_motion",
+      "reference_gap": 4,
+      "selected_keyframe_count": 21,
+      "unavailable_selected_count": 7,
+      "unavailable_selected_indices": "15 25 35 43 55 65 75",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "n3dv",
+      "method": "segment_gaussian",
+      "reference_gap": 4,
+      "selected_keyframe_count": 21,
+      "unavailable_selected_count": 7,
+      "unavailable_selected_indices": "9 19 35 43 55 65 75",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "n3dv",
+      "method": "segment_rd",
+      "reference_gap": 4,
+      "selected_keyframe_count": 21,
+      "unavailable_selected_count": 8,
+      "unavailable_selected_indices": "9 19 25 35 43 55 65 75",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "n3dv",
+      "method": "uniform",
+      "reference_gap": 8,
+      "selected_keyframe_count": 11,
+      "unavailable_selected_count": 0,
+      "unavailable_selected_indices": "",
+      "is_directly_supported_by_stage6": true
+    },
+    {
+      "sample": "n3dv",
+      "method": "segment_motion",
+      "reference_gap": 8,
+      "selected_keyframe_count": 11,
+      "unavailable_selected_count": 4,
+      "unavailable_selected_indices": "3 13 31 49",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "n3dv",
+      "method": "segment_gaussian",
+      "reference_gap": 8,
+      "selected_keyframe_count": 11,
+      "unavailable_selected_count": 7,
+      "unavailable_selected_indices": "3 7 19 31 49 65 71",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "n3dv",
+      "method": "segment_rd",
+      "reference_gap": 8,
+      "selected_keyframe_count": 11,
+      "unavailable_selected_count": 4,
+      "unavailable_selected_indices": "3 19 31 49",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "n3dv",
+      "method": "uniform",
+      "reference_gap": 16,
+      "selected_keyframe_count": 6,
+      "unavailable_selected_count": 0,
+      "unavailable_selected_indices": "",
+      "is_directly_supported_by_stage6": true
+    },
+    {
+      "sample": "n3dv",
+      "method": "segment_motion",
+      "reference_gap": 16,
+      "selected_keyframe_count": 6,
+      "unavailable_selected_count": 2,
+      "unavailable_selected_indices": "13 27",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "n3dv",
+      "method": "segment_gaussian",
+      "reference_gap": 16,
+      "selected_keyframe_count": 6,
+      "unavailable_selected_count": 2,
+      "unavailable_selected_indices": "11 71",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "n3dv",
+      "method": "segment_rd",
+      "reference_gap": 16,
+      "selected_keyframe_count": 6,
+      "unavailable_selected_count": 2,
+      "unavailable_selected_indices": "13 27",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "meetroom",
+      "method": "uniform",
+      "reference_gap": 4,
+      "selected_keyframe_count": 21,
+      "unavailable_selected_count": 0,
+      "unavailable_selected_indices": "",
+      "is_directly_supported_by_stage6": true
+    },
+    {
+      "sample": "meetroom",
+      "method": "segment_motion",
+      "reference_gap": 4,
+      "selected_keyframe_count": 21,
+      "unavailable_selected_count": 6,
+      "unavailable_selected_indices": "3 5 25 35 65 69",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "meetroom",
+      "method": "segment_gaussian",
+      "reference_gap": 4,
+      "selected_keyframe_count": 21,
+      "unavailable_selected_count": 3,
+      "unavailable_selected_indices": "5 29 69",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "meetroom",
+      "method": "segment_rd",
+      "reference_gap": 4,
+      "selected_keyframe_count": 21,
+      "unavailable_selected_count": 3,
+      "unavailable_selected_indices": "5 25 69",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "meetroom",
+      "method": "uniform",
+      "reference_gap": 8,
+      "selected_keyframe_count": 11,
+      "unavailable_selected_count": 0,
+      "unavailable_selected_indices": "",
+      "is_directly_supported_by_stage6": true
+    },
+    {
+      "sample": "meetroom",
+      "method": "segment_motion",
+      "reference_gap": 8,
+      "selected_keyframe_count": 11,
+      "unavailable_selected_count": 2,
+      "unavailable_selected_indices": "9 51",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "meetroom",
+      "method": "segment_gaussian",
+      "reference_gap": 8,
+      "selected_keyframe_count": 11,
+      "unavailable_selected_count": 2,
+      "unavailable_selected_indices": "9 67",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "meetroom",
+      "method": "segment_rd",
+      "reference_gap": 8,
+      "selected_keyframe_count": 11,
+      "unavailable_selected_count": 2,
+      "unavailable_selected_indices": "9 51",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "meetroom",
+      "method": "uniform",
+      "reference_gap": 16,
+      "selected_keyframe_count": 6,
+      "unavailable_selected_count": 0,
+      "unavailable_selected_indices": "",
+      "is_directly_supported_by_stage6": true
+    },
+    {
+      "sample": "meetroom",
+      "method": "segment_motion",
+      "reference_gap": 16,
+      "selected_keyframe_count": 6,
+      "unavailable_selected_count": 0,
+      "unavailable_selected_indices": "",
+      "is_directly_supported_by_stage6": true
+    },
+    {
+      "sample": "meetroom",
+      "method": "segment_gaussian",
+      "reference_gap": 16,
+      "selected_keyframe_count": 6,
+      "unavailable_selected_count": 1,
+      "unavailable_selected_indices": "61",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "meetroom",
+      "method": "segment_rd",
+      "reference_gap": 16,
+      "selected_keyframe_count": 6,
+      "unavailable_selected_count": 0,
+      "unavailable_selected_indices": "",
+      "is_directly_supported_by_stage6": true
+    },
+    {
+      "sample": "driving",
+      "method": "uniform",
+      "reference_gap": 4,
+      "selected_keyframe_count": 21,
+      "unavailable_selected_count": 0,
+      "unavailable_selected_indices": "",
+      "is_directly_supported_by_stage6": true
+    },
+    {
+      "sample": "driving",
+      "method": "segment_motion",
+      "reference_gap": 4,
+      "selected_keyframe_count": 21,
+      "unavailable_selected_count": 10,
+      "unavailable_selected_indices": "9 11 13 19 29 39 49 55 65 75",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "driving",
+      "method": "segment_gaussian",
+      "reference_gap": 4,
+      "selected_keyframe_count": 21,
+      "unavailable_selected_count": 10,
+      "unavailable_selected_indices": "9 11 13 15 23 33 55 59 65 75",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "driving",
+      "method": "segment_rd",
+      "reference_gap": 4,
+      "selected_keyframe_count": 21,
+      "unavailable_selected_count": 10,
+      "unavailable_selected_indices": "9 11 13 19 29 39 49 55 65 75",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "driving",
+      "method": "uniform",
+      "reference_gap": 8,
+      "selected_keyframe_count": 11,
+      "unavailable_selected_count": 0,
+      "unavailable_selected_indices": "",
+      "is_directly_supported_by_stage6": true
+    },
+    {
+      "sample": "driving",
+      "method": "segment_motion",
+      "reference_gap": 8,
+      "selected_keyframe_count": 11,
+      "unavailable_selected_count": 6,
+      "unavailable_selected_indices": "9 13 19 39 49 71",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "driving",
+      "method": "segment_gaussian",
+      "reference_gap": 8,
+      "selected_keyframe_count": 11,
+      "unavailable_selected_count": 5,
+      "unavailable_selected_indices": "9 13 27 59 71",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "driving",
+      "method": "segment_rd",
+      "reference_gap": 8,
+      "selected_keyframe_count": 11,
+      "unavailable_selected_count": 5,
+      "unavailable_selected_indices": "9 13 19 39 71",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "driving",
+      "method": "uniform",
+      "reference_gap": 16,
+      "selected_keyframe_count": 6,
+      "unavailable_selected_count": 0,
+      "unavailable_selected_indices": "",
+      "is_directly_supported_by_stage6": true
+    },
+    {
+      "sample": "driving",
+      "method": "segment_motion",
+      "reference_gap": 16,
+      "selected_keyframe_count": 6,
+      "unavailable_selected_count": 2,
+      "unavailable_selected_indices": "7 39",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "driving",
+      "method": "segment_gaussian",
+      "reference_gap": 16,
+      "selected_keyframe_count": 6,
+      "unavailable_selected_count": 2,
+      "unavailable_selected_indices": "15 25",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "driving",
+      "method": "segment_rd",
+      "reference_gap": 16,
+      "selected_keyframe_count": 6,
+      "unavailable_selected_count": 1,
+      "unavailable_selected_indices": "39",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "robot",
+      "method": "uniform",
+      "reference_gap": 4,
+      "selected_keyframe_count": 20,
+      "unavailable_selected_count": 0,
+      "unavailable_selected_indices": "",
+      "is_directly_supported_by_stage6": true
+    },
+    {
+      "sample": "robot",
+      "method": "segment_motion",
+      "reference_gap": 4,
+      "selected_keyframe_count": 20,
+      "unavailable_selected_count": 7,
+      "unavailable_selected_indices": "5 9 13 19 47 53 59",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "robot",
+      "method": "segment_gaussian",
+      "reference_gap": 4,
+      "selected_keyframe_count": 20,
+      "unavailable_selected_count": 8,
+      "unavailable_selected_indices": "5 9 13 19 23 25 47 73",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "robot",
+      "method": "segment_rd",
+      "reference_gap": 4,
+      "selected_keyframe_count": 20,
+      "unavailable_selected_count": 6,
+      "unavailable_selected_indices": "5 9 13 19 47 59",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "robot",
+      "method": "uniform",
+      "reference_gap": 8,
+      "selected_keyframe_count": 11,
+      "unavailable_selected_count": 0,
+      "unavailable_selected_indices": "",
+      "is_directly_supported_by_stage6": true
+    },
+    {
+      "sample": "robot",
+      "method": "segment_motion",
+      "reference_gap": 8,
+      "selected_keyframe_count": 11,
+      "unavailable_selected_count": 5,
+      "unavailable_selected_indices": "9 13 19 45 67",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "robot",
+      "method": "segment_gaussian",
+      "reference_gap": 8,
+      "selected_keyframe_count": 11,
+      "unavailable_selected_count": 6,
+      "unavailable_selected_indices": "9 13 19 27 45 67",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "robot",
+      "method": "segment_rd",
+      "reference_gap": 8,
+      "selected_keyframe_count": 11,
+      "unavailable_selected_count": 6,
+      "unavailable_selected_indices": "9 13 19 27 45 67",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "robot",
+      "method": "uniform",
+      "reference_gap": 16,
+      "selected_keyframe_count": 6,
+      "unavailable_selected_count": 0,
+      "unavailable_selected_indices": "",
+      "is_directly_supported_by_stage6": true
+    },
+    {
+      "sample": "robot",
+      "method": "segment_motion",
+      "reference_gap": 16,
+      "selected_keyframe_count": 6,
+      "unavailable_selected_count": 2,
+      "unavailable_selected_indices": "19 51",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "robot",
+      "method": "segment_gaussian",
+      "reference_gap": 16,
+      "selected_keyframe_count": 6,
+      "unavailable_selected_count": 1,
+      "unavailable_selected_indices": "17",
+      "is_directly_supported_by_stage6": false
+    },
+    {
+      "sample": "robot",
+      "method": "segment_rd",
+      "reference_gap": 16,
+      "selected_keyframe_count": 6,
+      "unavailable_selected_count": 2,
+      "unavailable_selected_indices": "27 51",
+      "is_directly_supported_by_stage6": false
+    }
+  ],
+  "recommended_next_step": "Export adjacent gap1 anchor pairs or unique per-frame anchors to cover odd frames before rerunning unconstrained keyframe selection."
+}

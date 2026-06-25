@@ -208,3 +208,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage31 raw bitstream size is not identical to Stage28's compact binary estimate because Stage31 intentionally uses a JSON header for prototype readability.
 - Roundtrip error is measured against direct q8 dequantized anchors, not original float anchors. The q8 quantization loss itself is already part of previous RD evaluations.
 - zlib-compressed size is a practical baseline, but it should not be described as a learned entropy-coded bitstream.
+
+## Stage 30 Notes
+
+- Stage30 was executed after Stage31, so stage numbering is not chronological in the execution log.
+- Current Stage6 unique anchor coverage is approximately half of all frames because only even endpoint anchors are available.
+- Dense anchor export should write to external storage and should preferably deduplicate per-frame anchors; naive gap1 pair storage duplicates adjacent frame anchors.

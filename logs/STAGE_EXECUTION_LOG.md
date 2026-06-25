@@ -2332,3 +2332,59 @@ experiments/stage31_anchor_bitstream_prototype/stage31_anchor_bitstream_prototyp
 - Raw bitstream is slightly larger than Stage26 primary anchor bytes because the prototype stores qparams/indices/timestamps in a JSON header.
 - zlib reduces raw bitstream size by about 34.75% on average, stronger than Stage28 zero-order entropy estimate because zlib exploits additional structure/repetition.
 - zlib is a generic compressor, not the final entropy model; report it as a practical compression baseline, not as the learned codec result.
+
+## 2026-06-25：阶段 30 Dense Anchor Export Preflight
+
+### 执行计划
+
+Stage30 统计 dense/all-frame anchor export 的必要性和空间成本。当前 Stage6 只覆盖偶数 endpoint anchors，因此 Stage16 unconstrained selector 选择奇数 keyframes 时不能直接传输对应 anchors。该阶段只做 preflight，不生成新的大 anchor dataset。
+
+### 新增文件
+
+```text
+scripts/run_stage30_dense_anchor_export_preflight.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage30_dense_anchor_export_preflight.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage30_dense_anchor_export_preflight.py
+```
+
+该阶段是 CPU-only metadata/statistics preflight。
+
+### 输出文件
+
+```text
+experiments/stage30_dense_anchor_export_preflight/stage30_dense_anchor_coverage.csv
+experiments/stage30_dense_anchor_export_preflight/stage30_stage16_selection_compatibility.csv
+experiments/stage30_dense_anchor_export_preflight/stage30_dense_anchor_export_preflight_summary.json
+```
+
+### Coverage 结果
+
+| metric | value |
+|---|---:|
+| total frames | 320 |
+| current unique anchors | 162 |
+| missing anchors for dense coverage | 158 |
+| total dense unique fp16 MiB | 292.5 |
+| total dense unique q8 MiB | 146.25 |
+| additional unique fp16 MiB | 144.421875 |
+| additional unique q8 MiB | 72.2109375 |
+| gap1 pair fp16 MiB if no dedup | 577.6875 |
+
+### Selector compatibility
+
+| metric | value |
+|---|---:|
+| Stage16 selection rows | 48 |
+| unsupported rows with current Stage6 anchors | 34 |
+
+### 结论
+
+- Current Stage6 anchor coverage explains why Stage27 had to constrain selector to available even anchors.
+- Exporting adjacent gap1 pairs for all four samples is feasible in disk terms, around 577.7 MiB if stored as non-deduplicated fp16 pair records.
+- A deduplicated unique per-frame anchor store would be smaller, around 292.5 MiB fp16 total, with only about 144.4 MiB additional over current unique coverage.
+- Next implementation step should be a dense/gap1 anchor exporter that writes either deduplicated per-frame anchors or gap1 pair records under external storage.
