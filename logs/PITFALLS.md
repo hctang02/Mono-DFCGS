@@ -150,3 +150,14 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Multi-gap anchor-only training gives a larger positive average margin than Stage21b, but gap-wise behavior is not uniformly positive. In Stage21c, gap4 is slightly below linear while gap2/gap8/gap16 are positive.
 - Before using an anchor adapter for RD curves, add validation-based checkpoint selection. A single final checkpoint may improve the average while hurting one GOP setting.
 - Stage21c remains a medium development run on four local samples. It is not a substitute for DAVIS/YouTube-VOS or StreamSplat protocol-scale experiments.
+
+## Stage 21d Notes
+
+- The first Stage21d run completed training but failed when writing `stage21d_validation_log.csv` because validation rows included nested gap-wise dictionaries not listed in CSV fieldnames. The writer now emits only flat validation fields.
+- Validation-based checkpoint selection is now in place, but the current run selected the final checkpoint. Keep the mechanism for future longer runs where overfitting may appear.
+- Stage21d improves all robot eval gaps over q8 linear anchor interpolation, but the gain is still small and measured only on intermediate eval tasks.
+
+## Stage 22 Notes
+
+- Stage22 RD uses Stage21d robot intermediate-target eval and Stage2 q8 static-anchor rate. It is not comparable one-to-one with Stage19 full-video all-frame PSNR.
+- Rate uses transmitted keyframe anchors only. The Stage21d adapter weights are reported separately and not counted in MiB/frame.

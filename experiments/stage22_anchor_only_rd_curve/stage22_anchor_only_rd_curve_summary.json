@@ -1,0 +1,75 @@
+{
+  "stage": 22,
+  "mode": "anchor-only RD curve from Stage21d validated adapter",
+  "sample": "robot",
+  "source_stage2_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage2_keyframe_gaussian_anchor/stage2_keyframe_gaussian_anchor_summary.csv",
+  "source_stage21d_gap_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage21d_validated_anchor_adapter_training/stage21d_best_gap_eval_summary.csv",
+  "source_stage21d_summary": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage21d_validated_anchor_adapter_training/stage21d_validated_anchor_adapter_training_summary.json",
+  "stage21d_best_checkpoint": {
+    "path": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage21d_validated_anchor_adapter_training/stage21d_best_anchor_adapter.safetensors",
+    "tensor_count": 14,
+    "parameter_count": 102925
+  },
+  "rate_profile": "static_anchor",
+  "rate_codec": "q8",
+  "rate_opacity_threshold": 0.0,
+  "rows": [
+    {
+      "sample": "robot",
+      "frame_gap": 16,
+      "estimated_q8_static_mib_per_frame": 0.03561282467532467,
+      "keyframe_count": 6,
+      "keyframe_ratio": 0.07792207792207792,
+      "total_mib": 2.7421875,
+      "linear_psnr": 23.68752018680706,
+      "adapter_psnr": 23.755596126401358,
+      "delta_psnr": 0.06807593959429781,
+      "margin_over_linear_psnr": 0.06807593959429781
+    },
+    {
+      "sample": "robot",
+      "frame_gap": 8,
+      "estimated_q8_static_mib_per_frame": 0.06529017857142858,
+      "keyframe_count": 11,
+      "keyframe_ratio": 0.14285714285714285,
+      "total_mib": 5.02734375,
+      "linear_psnr": 21.2065569120507,
+      "adapter_psnr": 21.230463662292394,
+      "delta_psnr": 0.023906750241692976,
+      "margin_over_linear_psnr": 0.023906750241692976
+    },
+    {
+      "sample": "robot",
+      "frame_gap": 4,
+      "estimated_q8_static_mib_per_frame": 0.11870941558441558,
+      "keyframe_count": 20,
+      "keyframe_ratio": 0.2597402597402597,
+      "total_mib": 9.140625,
+      "linear_psnr": 22.0418426521134,
+      "adapter_psnr": 22.065700074084212,
+      "delta_psnr": 0.02385742197081342,
+      "margin_over_linear_psnr": 0.02385742197081342
+    },
+    {
+      "sample": "robot",
+      "frame_gap": 2,
+      "estimated_q8_static_mib_per_frame": 0.2314833603896104,
+      "keyframe_count": 39,
+      "keyframe_ratio": 0.5064935064935064,
+      "total_mib": 17.82421875,
+      "linear_psnr": 22.645976203464308,
+      "adapter_psnr": 22.67349864905237,
+      "delta_psnr": 0.027522445588061828,
+      "margin_over_linear_psnr": 0.027522445588061828
+    }
+  ],
+  "mean_delta_psnr": 0.03584063934871651,
+  "min_delta_psnr": 0.02385742197081342,
+  "max_delta_psnr": 0.06807593959429781,
+  "csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage22_anchor_only_rd_curve/stage22_anchor_only_rd_curve.csv",
+  "plots": [
+    "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage22_anchor_only_rd_curve/stage22_anchor_only_rd_curve.png",
+    "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage22_anchor_only_rd_curve/stage22_anchor_only_delta_psnr.png"
+  ],
+  "notes": "Intermediate-target anchor-only RD. Quality is measured on Stage21d robot eval tasks, not full-video all-frame PSNR/SSIM."
+}

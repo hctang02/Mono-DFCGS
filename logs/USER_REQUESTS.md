@@ -263,3 +263,13 @@ Stage 18 已完成并推送后，继续执行 Stage 19：整理 original StreamS
 ### 当前执行决策
 
 Stage21b 收益为正但极小，因此继续执行 Stage21c medium anchor adapter training。Stage21c 扩大到多 GOP gap `2/4/8/16`，使用 sample-balanced rows，并保持输入 payload 只包含 q8 keyframe anchors + timestamp。
+
+## 2026-06-25：完整推进后续阶段
+
+### 用户原始问题
+
+用户要求：完整地继续做，后续由模型自行分析并执行。
+
+### 当前执行决策
+
+继续执行 Stage21d validated anchor adapter training 和 Stage22 anchor-only RD curve。Stage21d 解决 Stage21c 缺少 validation-based checkpoint selection 的问题；Stage22 将 Stage21d best checkpoint 的 robot intermediate-target quality 接入 Stage2 q8 static-anchor rate，形成 anchor-only RD 汇总和曲线图。

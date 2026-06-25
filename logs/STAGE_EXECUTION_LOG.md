@@ -1646,3 +1646,133 @@ experiments/stage21c_medium_anchor_adapter_training/stage21c_gap_eval_summary.cs
 - Stage21c 相比 Stage21b 更稳定：整体 robot eval 比 q8 linear anchor baseline 高约 0.016 dB。
 - gap2/gap8/gap16 为正收益，gap4 略降 0.0004 dB，说明训练方向可行但还没有足够稳定。
 - 这仍不是 paper-level 大规模实验；下一步应继续扩大 rows/steps 或引入 validation-based checkpoint selection，再考虑 Stage22 RD curve。
+
+## 2026-06-25：阶段 21d Validated Anchor Adapter Training
+
+### 执行计划
+
+阶段 21d 在 Stage21c 的基础上加入 validation-based checkpoint selection。训练覆盖 GOP gap `2/4/8/16`，每个 gap 使用更多 sample-balanced rows，训练 384 steps，每 96 steps 在 robot eval tasks 上评估并保存 best checkpoint。
+
+### 新增文件
+
+```text
+scripts/run_stage21d_validated_anchor_adapter_training.py
+```
+
+### 运行命令
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage21d_validated_anchor_adapter_training.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 2 有进程，GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage21d_validated_anchor_adapter_training/stage21d_validated_anchor_adapter_training_summary.json
+experiments/stage21d_validated_anchor_adapter_training/stage21d_train_rgb_losses.csv
+experiments/stage21d_validated_anchor_adapter_training/stage21d_validation_log.csv
+experiments/stage21d_validated_anchor_adapter_training/stage21d_initial_eval.csv
+experiments/stage21d_validated_anchor_adapter_training/stage21d_final_eval.csv
+experiments/stage21d_validated_anchor_adapter_training/stage21d_best_eval.csv
+experiments/stage21d_validated_anchor_adapter_training/stage21d_best_gap_eval_summary.csv
+```
+
+外部 checkpoint：
+
+```text
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage21d_validated_anchor_adapter_training/stage21d_best_anchor_adapter.safetensors
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage21d_validated_anchor_adapter_training/stage21d_final_anchor_adapter.safetensors
+```
+
+每个 checkpoint 约 404K，不提交到 git。
+
+### 配置
+
+| item | value |
+|---|---:|
+| frame gaps | 2, 4, 8, 16 |
+| train samples | n3dv, meetroom, driving |
+| eval samples | robot |
+| selected train rows | 48 |
+| selected eval rows | 20 |
+| train tasks | 84 |
+| eval tasks | 35 |
+| steps | 384 |
+| eval interval | 96 |
+| hidden_dim | 128 |
+| lr | 8e-06 |
+| quant_bits | 8 |
+| parameter_count | 102925 |
+
+### Validation Log
+
+| step | model PSNR | linear PSNR | margin |
+|---:|---:|---:|---:|
+| 0 | 22.359687957915238 | 22.359687957915238 | 0.0 |
+| 96 | 22.378299586064394 | 22.359687957915238 | 0.018611628149155734 |
+| 192 | 22.387509907452376 | 22.359687957915238 | 0.027821949537138124 |
+| 288 | 22.392827616765334 | 22.359687957915238 | 0.03313965885009651 |
+| 384 | 22.396716910658334 | 22.359687957915238 | 0.037028952743096255 |
+
+Best step: 384.
+
+### Gap-wise Best Eval
+
+| gap | initial/linear PSNR | best adapter PSNR | margin |
+|---:|---:|---:|---:|
+| 2 | 22.645976203464308 | 22.67349864905237 | 0.027522445588061828 |
+| 4 | 22.0418426521134 | 22.065700074084212 | 0.02385742197081342 |
+| 8 | 21.2065569120507 | 21.230463662292394 | 0.023906750241692976 |
+| 16 | 23.68752018680706 | 23.755596126401358 | 0.06807593959429781 |
+
+### 结论
+
+- Stage21d 解决了 Stage21c 的 gap4 略负问题，robot eval 上所有 gap 均超过 q8 linear anchor baseline。
+- 平均 margin over linear 达到 0.0370 dB，仍是小幅提升，但比 Stage21b/21c 更稳定。
+- 该结果仍是当前四样本开发集和 robot eval tasks，不是最终大规模实验。
+
+## 2026-06-25：阶段 22 Anchor-Only RD Curve
+
+### 执行计划
+
+阶段 22 将 Stage21d best checkpoint 的 robot intermediate-target quality 与 Stage2 q8 static-anchor transmitted rate 对齐，生成 anchor-only RD CSV 和曲线图。该阶段只做 CPU 汇总和绘图，不重新 GPU 推理。
+
+### 新增文件
+
+```text
+scripts/run_stage22_anchor_only_rd_curve.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage22_anchor_only_rd_curve.py
+```
+
+### 输出文件
+
+```text
+experiments/stage22_anchor_only_rd_curve/stage22_anchor_only_rd_curve_summary.json
+experiments/stage22_anchor_only_rd_curve/stage22_anchor_only_rd_curve.csv
+experiments/stage22_anchor_only_rd_curve/stage22_anchor_only_rd_curve.png
+experiments/stage22_anchor_only_rd_curve/stage22_anchor_only_delta_psnr.png
+```
+
+### RD 结果
+
+| gap | q8 static MiB/frame | linear PSNR | adapter PSNR | delta |
+|---:|---:|---:|---:|---:|
+| 16 | 0.03561282467532467 | 23.68752018680706 | 23.755596126401358 | 0.06807593959429781 |
+| 8 | 0.06529017857142858 | 21.2065569120507 | 21.230463662292394 | 0.023906750241692976 |
+| 4 | 0.11870941558441558 | 22.0418426521134 | 22.065700074084212 | 0.02385742197081342 |
+| 2 | 0.2314833603896104 | 22.645976203464308 | 22.67349864905237 | 0.027522445588061828 |
+
+### 结论
+
+- Stage22 anchor-only RD 中，Stage21d adapter 在 4 个 robot rate 点上都超过 q8 linear anchor baseline。
+- mean delta PSNR: 0.03584063934871651 dB。
+- 该 RD 是 intermediate-target anchor-only RD，不是 full-video all-frame PSNR/SSIM；后续 paper-level RD 还需要完整视频评估和更多数据集。
