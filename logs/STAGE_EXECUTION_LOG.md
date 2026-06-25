@@ -3012,3 +3012,48 @@ experiments/stage42_calibrated_selector_prior_rd/stage42_calibrated_selector_pri
 - Uniform prior 可以显著缓解 predicted selector 的过度非均匀 layout，`alpha=10` 几乎回到 uniform。
 - 但最佳 mean 仍为负，且高 alpha 下多数点 exact uniform，说明当前 deployable predicted selector 尚未产生真实 RD gain。
 - 当前结论应写成：dense oracle selector 有明确上界收益，但 deployable predictor/selector 仍未超过 uniform，需要更贴近 rendered RD 的 selector-level training 或更多数据。
+
+## 2026-06-26：阶段 43 Selector Evidence Synthesis
+
+### 执行计划
+
+Stage43 汇总当前 selector/adapter 证据，避免将 oracle upper bound、deployable selector、adapter gain 混为一谈。该阶段生成机器可读 JSON/CSV 和可直接汇报的 Markdown 表格。
+
+### 新增文件
+
+```text
+scripts/run_stage43_selector_evidence_synthesis.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage43_selector_evidence_synthesis.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage43_selector_evidence_synthesis.py
+```
+
+Stage43 是 CPU-only 汇总脚本。运行前仍检查 `nvidia-smi`。
+
+### 输出文件
+
+```text
+experiments/stage43_selector_evidence_synthesis/stage43_selector_evidence_synthesis.csv
+experiments/stage43_selector_evidence_synthesis/stage43_selector_evidence_synthesis_summary.json
+experiments/stage43_selector_evidence_synthesis/stage43_selector_evidence_synthesis.md
+```
+
+### 关键汇总
+
+| stage | evidence | points | positive all | mean delta all PSNR | interpretation |
+|---|---|---:|---:|---:|---|
+| 26 | leave-one-out anchor adapter vs linear | 16 | 16 | 0.079796 | best current adapter generalization evidence; not selector gain |
+| 36 | dense anchor-attribute oracle selector vs uniform | 12 | 12 | 0.197152 | strong selector upper bound; non-deployable |
+| 39 | raw ridge predicted selectors | 12 each | 0-1 | negative | deployable selector negative |
+| 41 | normalized/rank predicted selectors | 12 each | 0 | negative | deployable selector negative |
+| 42 | uniform-prior calibrated selector | 12 each | 0-3 | best -0.011239 | mostly fallback to uniform |
+
+### 结论
+
+- 当前 strongest deployable codec evidence 是 Stage26：leave-one-out adapter 在 uniform keyframes 下 16/16 点优于 linear interpolation。
+- 当前 strongest selector evidence 是 Stage36：dense oracle/proxy selector 12/12 正收益，并有 actual zlib q8 anchor bitstream rate，但不是 deployable selector。
+- 当前 deployable predicted selector 尚未超过 uniform，后续必须诚实报告为负结果，并把它作为改进 selector objective / 扩数据的动机。

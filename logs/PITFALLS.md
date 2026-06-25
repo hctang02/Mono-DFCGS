@@ -280,3 +280,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Adding a uniform segment-length prior recovers Stage41 failures toward uniform but does not create a deployable gain; high prior weights mostly collapse to exact uniform selections.
 - A selector can look better by becoming uniform-like. Track `exact_uniform_points` to avoid mistaking fallback-to-uniform for a learned selection improvement.
 - The current strongest selector result remains the dense oracle/proxy upper bound, not the deployable predicted selector.
+
+## Stage 43 Notes
+
+- Keep three claims separate: adapter improvement over linear interpolation, oracle/proxy selector upper bound, and deployable predicted selector performance.
+- The current deployable predicted selector result is negative; do not present Stage36 oracle gains as if they were deployable encoder-side selection.
+- Stage43 Markdown is the safest source for current selector claim wording.

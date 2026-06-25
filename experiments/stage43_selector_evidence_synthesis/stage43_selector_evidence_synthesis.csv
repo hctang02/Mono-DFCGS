@@ -1,0 +1,15 @@
+stage,evidence,deployable_selector,actual_bitstream,points,positive_all_points,positive_middle_points,mean_delta_all_psnr,mean_delta_middle_psnr,mean_rate_delta_mib_per_frame,interpretation
+26,leave-one-out anchor adapter vs linear interpolation,uniform only,estimated q8 rate,16,16,16,0.07979649123330468,0.1125053472768538,,best current adapter generalization evidence; not a selector gain
+36,dense anchor-attribute oracle selector vs uniform,no,"yes, zlib q8 anchors",12,12,12,0.19715194312405782,0.22543596674489544,-7.516970442563349e-06,strong selector upper bound; uses non-deployable dense intermediate anchors
+39,raw ridge predicted selector: length_only_ridge,yes,estimated q8 rate,12,0,0,-0.035285203146952604,-0.038178305693805946,,negative selector result against uniform
+39,raw ridge predicted selector: full_feature_ridge,yes,estimated q8 rate,12,1,1,-0.29239474971647805,-0.3641505090023867,,negative selector result against uniform
+41,normalized/rank predicted selector: length_sample_z_rank,yes,estimated q8 rate,12,0,0,-0.5054370606610267,-0.5918630285707692,,negative selector result against uniform
+41,normalized/rank predicted selector: full_sample_z_rank,yes,estimated q8 rate,12,0,0,-0.847949115968393,-0.9945000333189684,,negative selector result against uniform
+41,normalized/rank predicted selector: full_sample_z_zlog,yes,estimated q8 rate,12,0,0,-0.913330142784306,-1.082226324905095,,negative selector result against uniform
+42,uniform-prior calibrated selector: full_sample_z_rank_prior_0p0,yes,estimated q8 rate,12,0,0,-0.847949115968393,-0.9945000333189684,,calibration fallback; exact uniform points=0
+42,uniform-prior calibrated selector: full_sample_z_rank_prior_0p05,yes,estimated q8 rate,12,0,0,-0.6041559056558018,-0.7002204555279228,,calibration fallback; exact uniform points=0
+42,uniform-prior calibrated selector: full_sample_z_rank_prior_0p1,yes,estimated q8 rate,12,0,0,-0.44743080235738564,-0.5125116619406539,,calibration fallback; exact uniform points=0
+42,uniform-prior calibrated selector: full_sample_z_rank_prior_0p3,yes,estimated q8 rate,12,1,1,-0.21756857982868696,-0.24895227588894642,,calibration fallback; exact uniform points=0
+42,uniform-prior calibrated selector: full_sample_z_rank_prior_1p0,yes,estimated q8 rate,12,3,3,-0.09932737838737005,-0.10902505140314893,,calibration fallback; exact uniform points=6
+42,uniform-prior calibrated selector: full_sample_z_rank_prior_3p0,yes,estimated q8 rate,12,1,1,-0.014864631968911782,-0.014910339549485249,,calibration fallback; exact uniform points=9
+42,uniform-prior calibrated selector: full_sample_z_rank_prior_10p0,yes,estimated q8 rate,12,1,1,-0.01123851571938476,-0.01083193660040808,,calibration fallback; exact uniform points=10
