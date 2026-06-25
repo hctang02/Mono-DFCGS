@@ -202,3 +202,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage29 is an oracle/proxy selector because it uses intermediate q8 anchors from the held-out video to choose keyframes. Do not present it as a deployable encoder-side selector yet.
 - The result is useful as an upper bound: aligned anchor-attribute costs improve 10/12 points, unlike Stage27's motion/RD heuristic.
 - Driving gap4 and gap8 remain negative, so anchor-attribute MSE alone is not a perfect surrogate for full-video rendered PSNR.
+
+## Stage 31 Notes
+
+- Stage31 raw bitstream size is not identical to Stage28's compact binary estimate because Stage31 intentionally uses a JSON header for prototype readability.
+- Roundtrip error is measured against direct q8 dequantized anchors, not original float anchors. The q8 quantization loss itself is already part of previous RD evaluations.
+- zlib-compressed size is a practical baseline, but it should not be described as a learned entropy-coded bitstream.

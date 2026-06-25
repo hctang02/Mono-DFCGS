@@ -2276,3 +2276,59 @@ experiments/stage29_anchor_attribute_oracle_selector_rd/stage29_delta_middle_psn
 - Stage27 negative result should be interpreted as heuristic-objective mismatch, not as proof that keyframe selection is useless.
 - Driving gap4/8 are still negative, so even oracle/proxy anchor-MSE selection is not universally reliable.
 - Next step: convert oracle/proxy signal into a deployable selector, likely by training a lightweight segment-cost predictor or deriving costs from transmitted keyframe anchors and low-cost video features.
+
+## 2026-06-25：阶段 31 Q8 Static Anchor Bitstream Prototype
+
+### 执行计划
+
+Stage31 将 Stage28 的 rate estimate 推进为真实 binary container prototype。该阶段编码 Stage26 uniform keyframe anchors：container 包含 magic/version、JSON header、frame indices、timestamps、per-anchor q8 min/scale 和 q8 payload。另输出 zlib-compressed payload 版本，用作 generic compression baseline。
+
+### 新增文件
+
+```text
+mono_dfcgs/anchor_bitstream.py
+scripts/run_stage31_anchor_bitstream_prototype.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile mono_dfcgs/anchor_bitstream.py scripts/run_stage31_anchor_bitstream_prototype.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage31_anchor_bitstream_prototype.py
+```
+
+该阶段是 CPU-only encode/decode roundtrip，不需要 GPU。
+
+### 输出文件
+
+仓库内轻量结果：
+
+```text
+experiments/stage31_anchor_bitstream_prototype/stage31_anchor_bitstream_prototype.csv
+experiments/stage31_anchor_bitstream_prototype/stage31_anchor_bitstream_prototype_summary.json
+```
+
+外部 bitstreams，不提交到 git：
+
+```text
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage31_anchor_bitstream_prototype
+```
+
+外部 bitstreams 总大小约 237M。
+
+### Aggregate 结果
+
+| metric | value |
+|---|---:|
+| rows | 16 |
+| mean raw overhead bytes vs Stage26 anchor bytes | 11492.4375 |
+| mean zlib savings percent vs raw bitstream | 34.75332282244801 |
+| max roundtrip abs diff vs direct q8 dequantized anchors | 0.0 |
+| mean roundtrip MSE vs direct q8 dequantized anchors | 0.0 |
+
+### 结论
+
+- Stage31 provides a real q8 static anchor container prototype and verifies lossless roundtrip relative to direct q8 dequantized anchors.
+- Raw bitstream is slightly larger than Stage26 primary anchor bytes because the prototype stores qparams/indices/timestamps in a JSON header.
+- zlib reduces raw bitstream size by about 34.75% on average, stronger than Stage28 zero-order entropy estimate because zlib exploits additional structure/repetition.
+- zlib is a generic compressor, not the final entropy model; report it as a practical compression baseline, not as the learned codec result.
