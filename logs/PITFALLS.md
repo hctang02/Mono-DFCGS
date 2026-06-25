@@ -126,3 +126,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 
 - Stage 19 is an aggregation stage, not a new inference stage. It reuses Stage1 quality and Stage2 q8 static-anchor rate estimates to avoid accidentally changing the pre-finetune baseline.
 - Keep `raw_pred_gs_mib_per_frame` separate from `estimated_q8_static_mib_per_frame`: the former is decoder output tensor size, while the latter is the transmitted keyframe-anchor rate used for codec RD comparisons.
+
+## Stage 20 Notes
+
+- `model.opt.output_frames` must be updated for every variable-length segment before rendering. Otherwise the dynamic renderer indexes beyond the provided timestamps, e.g. default `output_frames=6` with a 5-frame segment raises `IndexError: index 5 is out of bounds`.
+- For smoke training, save only trainable tensors outside the repo. The Stage20 trainable-state checkpoint is about 378M and should not be committed.
+- A few low-lr smoke steps validate the training path but are not enough to improve quality. Treat Stage20 as wiring verification, not a final fine-tuned decoder result.

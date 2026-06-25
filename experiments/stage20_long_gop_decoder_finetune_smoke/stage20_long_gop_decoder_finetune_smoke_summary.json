@@ -1,0 +1,251 @@
+{
+  "stage": 20,
+  "mode": "long-GOP Dynamic Decoder fine-tune smoke",
+  "checkpoint": "/mnt/hdd2tC/tmp/opencode/StreamSplat/checkpoints/streamsplat.safetensors",
+  "samples": [
+    "n3dv",
+    "robot"
+  ],
+  "train_gaps": [
+    2,
+    4,
+    8,
+    12,
+    16
+  ],
+  "eval_gaps": [
+    4,
+    8,
+    16
+  ],
+  "steps": 3,
+  "lr": 1e-06,
+  "seed": 42,
+  "freeze_summary": {
+    "train_prefixes": [
+      "model.decoder",
+      "model.gs_dynamic_predictor",
+      "model.encoder_proj"
+    ],
+    "freeze_prefixes": [
+      "model.gs_predictor",
+      "model.condition_encoder",
+      "model.gaussian_upsampler"
+    ],
+    "train_parameter_tensors": 150,
+    "freeze_parameter_tensors": 340,
+    "train_parameters": 98849861,
+    "freeze_parameters": 169422921,
+    "total_parameters": 268272782,
+    "train_parameter_percent": 36.84677225287804
+  },
+  "missing_keys_count": 0,
+  "unexpected_keys_count": 0,
+  "missing_keys_sample": [],
+  "unexpected_keys_sample": [],
+  "initial_eval": [
+    {
+      "sample": "n3dv",
+      "gap": 4,
+      "start": 40,
+      "end": 44,
+      "segment_length": 4,
+      "all_mse": 0.0004097637429367751,
+      "all_psnr": 33.874664718477185,
+      "middle_mse": 0.0004388552624732256,
+      "middle_psnr": 33.57678689492921,
+      "given_mse": 0.000366126507287845,
+      "given_psnr": 34.36368827381506
+    },
+    {
+      "sample": "n3dv",
+      "gap": 8,
+      "start": 40,
+      "end": 48,
+      "segment_length": 8,
+      "all_mse": 0.0005587146151810884,
+      "all_psnr": 32.52809967964196,
+      "middle_mse": 0.0006135062430985272,
+      "middle_psnr": 32.12181013492079,
+      "given_mse": 0.0003669439465738833,
+      "given_psnr": 34.35400272404314
+    },
+    {
+      "sample": "n3dv",
+      "gap": 16,
+      "start": 32,
+      "end": 48,
+      "segment_length": 16,
+      "all_mse": 0.0007335658883675933,
+      "all_psnr": 31.345608720465453,
+      "middle_mse": 0.0007820162572897971,
+      "middle_psnr": 31.067842183239634,
+      "given_mse": 0.00037018817965872586,
+      "given_psnr": 34.315774526575254
+    },
+    {
+      "sample": "robot",
+      "gap": 4,
+      "start": 36,
+      "end": 40,
+      "segment_length": 4,
+      "all_mse": 0.00619376078248024,
+      "all_psnr": 22.080455721234095,
+      "middle_mse": 0.010151171125471592,
+      "middle_psnr": 19.934838509537414,
+      "given_mse": 0.0002576460537966341,
+      "given_psnr": 35.889765049687554
+    },
+    {
+      "sample": "robot",
+      "gap": 8,
+      "start": 40,
+      "end": 48,
+      "segment_length": 8,
+      "all_mse": 0.01214269082993269,
+      "all_psnr": 19.15685062593611,
+      "middle_mse": 0.015536295250058174,
+      "middle_psnr": 18.086525340727434,
+      "given_mse": 0.0002650753012858331,
+      "given_psnr": 35.76630736299292
+    },
+    {
+      "sample": "robot",
+      "gap": 16,
+      "start": 32,
+      "end": 48,
+      "segment_length": 16,
+      "all_mse": 0.011010032147169113,
+      "all_psnr": 19.582114129703218,
+      "middle_mse": 0.012442906387150288,
+      "middle_psnr": 19.050781662307358,
+      "given_mse": 0.00026348172104917467,
+      "given_psnr": 35.792495084318354
+    }
+  ],
+  "final_eval": [
+    {
+      "sample": "n3dv",
+      "gap": 4,
+      "start": 40,
+      "end": 44,
+      "segment_length": 4,
+      "all_mse": 0.0004120541561860591,
+      "all_psnr": 33.85045700988462,
+      "middle_mse": 0.0004425835213623941,
+      "middle_psnr": 33.54004760120938,
+      "given_mse": 0.0003662600938696414,
+      "given_psnr": 34.36210397623555
+    },
+    {
+      "sample": "n3dv",
+      "gap": 8,
+      "start": 40,
+      "end": 48,
+      "segment_length": 8,
+      "all_mse": 0.0005590645596385002,
+      "all_psnr": 32.52538037774019,
+      "middle_mse": 0.0006139313918538392,
+      "middle_psnr": 32.118801594844356,
+      "given_mse": 0.00036703102523460984,
+      "given_psnr": 34.352972231629224
+    },
+    {
+      "sample": "n3dv",
+      "gap": 16,
+      "start": 32,
+      "end": 48,
+      "segment_length": 16,
+      "all_mse": 0.0007374242413789034,
+      "all_psnr": 31.322825899139985,
+      "middle_mse": 0.000786368444096297,
+      "middle_psnr": 31.04373922477318,
+      "given_mse": 0.0003703433903865516,
+      "given_psnr": 34.31395401908197
+    },
+    {
+      "sample": "robot",
+      "gap": 4,
+      "start": 36,
+      "end": 40,
+      "segment_length": 4,
+      "all_mse": 0.006214181426912546,
+      "all_psnr": 22.0661607139698,
+      "middle_mse": 0.010185128077864647,
+      "middle_psnr": 19.920335053815258,
+      "given_mse": 0.0002577606064733118,
+      "given_psnr": 35.887834550917454
+    },
+    {
+      "sample": "robot",
+      "gap": 8,
+      "start": 40,
+      "end": 48,
+      "segment_length": 8,
+      "all_mse": 0.012171984650194645,
+      "all_psnr": 19.14638603992146,
+      "middle_mse": 0.01557394303381443,
+      "middle_psnr": 18.076014181942107,
+      "given_mse": 0.0002651322865858674,
+      "given_psnr": 35.76537382669446
+    },
+    {
+      "sample": "robot",
+      "gap": 16,
+      "start": 32,
+      "end": 48,
+      "segment_length": 16,
+      "all_mse": 0.011031407862901688,
+      "all_psnr": 19.573690579975523,
+      "middle_mse": 0.012467124499380589,
+      "middle_psnr": 19.042337035429526,
+      "given_mse": 0.000263535650447011,
+      "given_psnr": 35.79160626200466
+    }
+  ],
+  "initial_eval_all_psnr_avg": 26.427965599243006,
+  "final_eval_all_psnr_avg": 26.414150103438597,
+  "initial_eval_middle_psnr_avg": 25.639764120943642,
+  "final_eval_middle_psnr_avg": 25.6235457820023,
+  "initial_eval_given_psnr_avg": 35.080338836905376,
+  "final_eval_given_psnr_avg": 35.078974144427214,
+  "train_losses_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage20_long_gop_decoder_finetune_smoke/stage20_train_losses.csv",
+  "train_rows": [
+    {
+      "step": 1,
+      "sample": "n3dv",
+      "gap": 8,
+      "start": 8,
+      "end": 16,
+      "segment_length": 8,
+      "loss": 0.0020479541271924973,
+      "psnr": 26.886797754941995
+    },
+    {
+      "step": 2,
+      "sample": "robot",
+      "gap": 2,
+      "start": 14,
+      "end": 16,
+      "segment_length": 2,
+      "loss": 0.0020044066477566957,
+      "psnr": 26.980141655587456
+    },
+    {
+      "step": 3,
+      "sample": "robot",
+      "gap": 2,
+      "start": 44,
+      "end": 46,
+      "segment_length": 2,
+      "loss": 0.005418718792498112,
+      "psnr": 22.661033863626244
+    }
+  ],
+  "external_trainable_checkpoint": {
+    "path": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage20_long_gop_decoder_finetune_smoke/stage20_trainable_state.safetensors",
+    "tensor_count": 150,
+    "parameter_count": 98849861
+  },
+  "notes": "Smoke only. Trains original StreamSplat temporal/dynamic decoder path from pretrained checkpoint; static encoder/predictor and condition encoder are frozen."
+}

@@ -1324,3 +1324,92 @@ experiments/stage19_original_decoder_variable_gop_baseline/stage19_original_deco
 - Stage 19 已给出 Stage 20 微调前的原始 decoder baseline，后续 fine-tune 结果应优先和该表对齐比较。
 - `given_keyframes` PSNR 基本稳定在 35.8 dB 左右，质量下降主要来自 non-keyframe middle reconstruction。
 - `raw_pred_gs_mib_per_frame` 是 decoder 输出诊断量，不是 transmitted bitstream；论文主 rate 应使用 `estimated_q8_static_mib_per_frame` 或后续真实 entropy-coded anchor payload。
+
+## 2026-06-25：阶段 20 Long-GOP Dynamic Decoder Fine-Tune Smoke
+
+### 执行计划
+
+阶段 20 的目标是验证“从 StreamSplat checkpoint 初始化，冻结 static path，只微调 temporal/dynamic decoder path”的训练链路是否可运行。该阶段是 smoke，不追求 RD 提升。
+
+### 新增文件
+
+```text
+scripts/run_stage20_long_gop_decoder_finetune_smoke.py
+```
+
+### 运行命令
+
+先运行了 1-step 最小 smoke，确认 backward/renderer 链路可用；随后运行正式 smoke：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage20_long_gop_decoder_finetune_smoke.py --samples n3dv robot --train_gaps 2 4 8 12 16 --eval_gaps 4 8 16 --steps 3 --lr 1e-6 --max_eval_pairs 6
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 2 有进程，GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage20_long_gop_decoder_finetune_smoke/stage20_long_gop_decoder_finetune_smoke_summary.json
+experiments/stage20_long_gop_decoder_finetune_smoke/stage20_train_losses.csv
+```
+
+外部 checkpoint：
+
+```text
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage20_long_gop_decoder_finetune_smoke/stage20_trainable_state.safetensors
+```
+
+外部 checkpoint 大小约 378M，只保存 trainable tensors，不提交到 git。
+
+### Freeze policy
+
+训练参数前缀：
+
+```text
+model.decoder
+model.gs_dynamic_predictor
+model.encoder_proj
+```
+
+冻结参数前缀：
+
+```text
+model.gs_predictor
+model.condition_encoder
+model.gaussian_upsampler
+```
+
+| item | value |
+|---|---:|
+| train parameter tensors | 150 |
+| freeze parameter tensors | 340 |
+| train parameters | 98849861 |
+| freeze parameters | 169422921 |
+| train parameter percent | 36.84677225287804 |
+| missing checkpoint keys | 0 |
+| unexpected checkpoint keys | 0 |
+
+### 训练记录
+
+| step | sample | gap | segment | loss | PSNR |
+|---:|---|---:|---:|---:|---:|
+| 1 | n3dv | 8 | 8 | 0.0020479541271924973 | 26.886797754941995 |
+| 2 | robot | 2 | 2 | 0.0020044066477566957 | 26.980141655587456 |
+| 3 | robot | 2 | 2 | 0.005418718792498112 | 22.661033863626244 |
+
+### Eval 结果
+
+| metric | initial | final | delta |
+|---|---:|---:|---:|
+| all PSNR avg | 26.427965599243006 | 26.414150103438597 | -0.013815495804408803 |
+| middle PSNR avg | 25.639764120943642 | 25.6235457820023 | -0.01621833894134192 |
+| given PSNR avg | 35.080338836905376 | 35.078974144427214 | -0.0013646924781619812 |
+
+### 结论
+
+- Stage 20 证明 pretrained checkpoint loading、freeze policy、variable-GOP forward/backward、RGB loss、trainable-state 保存链路可运行。
+- 3-step smoke 没有带来质量提升，且略微降低 eval PSNR；这符合 smoke 预期，不能作为有效 fine-tune 结论。
+- 后续 Stage 21/22 前应把训练扩展为更稳定的多-step/multi-sample schedule，并考虑 middle-frame weighted loss 或保留更多 gap16 样本。
