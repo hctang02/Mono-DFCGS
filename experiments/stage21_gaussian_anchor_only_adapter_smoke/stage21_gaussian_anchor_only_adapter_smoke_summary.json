@@ -1,0 +1,162 @@
+{
+  "stage": 21,
+  "mode": "Gaussian-anchor-only decoder adapter RGB smoke",
+  "manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage6_real_anchor_dataset/stage6_real_anchor_dataset_manifest.csv",
+  "samples": [
+    "n3dv",
+    "robot"
+  ],
+  "eval_samples": [
+    "robot"
+  ],
+  "frame_gap": 4,
+  "max_train_rows": 2,
+  "max_eval_rows": 2,
+  "targets_per_row": 1,
+  "train_task_count": 2,
+  "eval_task_count": 2,
+  "steps": 4,
+  "hidden_dim": 128,
+  "lr": 5e-05,
+  "quant_bits": 8,
+  "parameter_count": 102925,
+  "initial_train_model_psnr_avg": 25.625938109386198,
+  "final_train_model_psnr_avg": 25.97498316781515,
+  "initial_eval_model_psnr_avg": 20.602936330073554,
+  "final_eval_model_psnr_avg": 20.65887117994607,
+  "initial_eval_linear_psnr_avg": 21.07847795611209,
+  "final_eval_linear_psnr_avg": 21.07847795611209,
+  "initial_train_eval": [
+    {
+      "sample": "n3dv",
+      "frame_gap": 4,
+      "target_frame_index": 2,
+      "normalized_time": 0.5,
+      "model_mse": 0.002875811653211713,
+      "model_psnr": 25.41239560795898,
+      "linear_mse": 0.0014836011687293649,
+      "linear_psnr": 28.286828332212153
+    },
+    {
+      "sample": "n3dv",
+      "frame_gap": 4,
+      "target_frame_index": 6,
+      "normalized_time": 0.5,
+      "model_mse": 0.0026064652483910322,
+      "model_psnr": 25.83948061081341,
+      "linear_mse": 0.0011389475548639894,
+      "linear_psnr": 29.43496273425344
+    }
+  ],
+  "final_train_eval": [
+    {
+      "sample": "n3dv",
+      "frame_gap": 4,
+      "target_frame_index": 2,
+      "normalized_time": 0.5,
+      "model_mse": 0.0026677632704377174,
+      "model_psnr": 25.738527110763336,
+      "linear_mse": 0.0014836011687293649,
+      "linear_psnr": 28.286828332212153
+    },
+    {
+      "sample": "n3dv",
+      "frame_gap": 4,
+      "target_frame_index": 6,
+      "normalized_time": 0.5,
+      "model_mse": 0.002392522757872939,
+      "model_psnr": 26.211439224866965,
+      "linear_mse": 0.0011389475548639894,
+      "linear_psnr": 29.43496273425344
+    }
+  ],
+  "initial_eval": [
+    {
+      "sample": "robot",
+      "frame_gap": 4,
+      "target_frame_index": 2,
+      "normalized_time": 0.5,
+      "model_mse": 0.009050218388438225,
+      "model_psnr": 20.433409408225,
+      "linear_mse": 0.008223560638725758,
+      "linear_psnr": 20.8494010083836
+    },
+    {
+      "sample": "robot",
+      "frame_gap": 4,
+      "target_frame_index": 6,
+      "normalized_time": 0.5,
+      "model_mse": 0.008370543830096722,
+      "model_psnr": 20.77246325192211,
+      "linear_mse": 0.007400217931717634,
+      "linear_psnr": 21.30755490384058
+    }
+  ],
+  "final_eval": [
+    {
+      "sample": "robot",
+      "frame_gap": 4,
+      "target_frame_index": 2,
+      "normalized_time": 0.5,
+      "model_mse": 0.008949646726250648,
+      "model_psnr": 20.481941074626366,
+      "linear_mse": 0.008223560638725758,
+      "linear_psnr": 20.8494010083836
+    },
+    {
+      "sample": "robot",
+      "frame_gap": 4,
+      "target_frame_index": 6,
+      "normalized_time": 0.5,
+      "model_mse": 0.008249352686107159,
+      "model_psnr": 20.835801285265774,
+      "linear_mse": 0.007400217931717634,
+      "linear_psnr": 21.30755490384058
+    }
+  ],
+  "train_log": [
+    {
+      "step": 1,
+      "sample": "n3dv",
+      "frame_gap": 4,
+      "target_frame_index": 2,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.002875811653211713,
+      "rgb_psnr": 25.41239560795898
+    },
+    {
+      "step": 2,
+      "sample": "n3dv",
+      "frame_gap": 4,
+      "target_frame_index": 6,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.0025512068532407284,
+      "rgb_psnr": 25.932543271295398
+    },
+    {
+      "step": 3,
+      "sample": "n3dv",
+      "frame_gap": 4,
+      "target_frame_index": 2,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.0027694874443113804,
+      "rgb_psnr": 25.576005994209424
+    },
+    {
+      "step": 4,
+      "sample": "n3dv",
+      "frame_gap": 4,
+      "target_frame_index": 6,
+      "normalized_time": 0.5,
+      "rgb_mse": 0.0024442733265459538,
+      "rgb_psnr": 26.118502315008936
+    }
+  ],
+  "train_losses_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage21_gaussian_anchor_only_adapter_smoke/stage21_train_rgb_losses.csv",
+  "external_adapter_checkpoint": {
+    "path": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage21_gaussian_anchor_only_adapter_smoke/stage21_anchor_adapter.safetensors",
+    "tensor_count": 14,
+    "parameter_count": 102925
+  },
+  "notes": "Smoke only. Input payload is q8 static keyframe anchors plus timestamp; no non-keyframe RGB/Gaussian/motion/residual is transmitted."
+}

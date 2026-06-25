@@ -132,3 +132,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - `model.opt.output_frames` must be updated for every variable-length segment before rendering. Otherwise the dynamic renderer indexes beyond the provided timestamps, e.g. default `output_frames=6` with a 5-frame segment raises `IndexError: index 5 is out of bounds`.
 - For smoke training, save only trainable tensors outside the repo. The Stage20 trainable-state checkpoint is about 378M and should not be committed.
 - A few low-lr smoke steps validate the training path but are not enough to improve quality. Treat Stage20 as wiring verification, not a final fine-tuned decoder result.
+
+## Stage 21 Notes
+
+- The Gaussian-anchor-only adapter smoke is valid as a payload test only if inputs remain limited to transmitted q8 keyframe anchors plus timestamp. Do not accidentally feed target RGB/depth except as training supervision.
+- The current `GaussianAnchorDynamicPredictor` starts from random residual parameters, so early RGB quality can be worse than pure linear anchor interpolation. Future runs should add residual-zero initialization or initialize from the Stage9 proxy task.
+- Full-anchor rendering is feasible for small smoke runs, but multi-sample training should keep checkpoints outside git and may need task caching to avoid repeated `.pt` loads.

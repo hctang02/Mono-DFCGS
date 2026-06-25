@@ -1413,3 +1413,78 @@ model.gaussian_upsampler
 - Stage 20 证明 pretrained checkpoint loading、freeze policy、variable-GOP forward/backward、RGB loss、trainable-state 保存链路可运行。
 - 3-step smoke 没有带来质量提升，且略微降低 eval PSNR；这符合 smoke 预期，不能作为有效 fine-tune 结论。
 - 后续 Stage 21/22 前应把训练扩展为更稳定的多-step/multi-sample schedule，并考虑 middle-frame weighted loss 或保留更多 gap16 样本。
+
+## 2026-06-25：阶段 21 Gaussian-Anchor-Only Adapter RGB Smoke
+
+### 执行计划
+
+阶段 21 的目标是把 Stage 10b 的单 pair renderer differentiability smoke 扩展成最小 Gaussian-anchor-only adapter smoke。输入只包含 q8 keyframe static anchors 和 normalized timestamp；不输入 non-keyframe RGB、non-keyframe Gaussian、motion field、deformation payload 或 residual payload。
+
+### 新增文件
+
+```text
+scripts/run_stage21_gaussian_anchor_only_adapter_smoke.py
+```
+
+### 运行命令
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage21_gaussian_anchor_only_adapter_smoke.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 2 有进程，GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage21_gaussian_anchor_only_adapter_smoke/stage21_gaussian_anchor_only_adapter_smoke_summary.json
+experiments/stage21_gaussian_anchor_only_adapter_smoke/stage21_train_rgb_losses.csv
+```
+
+外部 adapter checkpoint：
+
+```text
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage21_gaussian_anchor_only_adapter_smoke/stage21_anchor_adapter.safetensors
+```
+
+外部 checkpoint 大小约 404K，不提交到 git。
+
+### 配置
+
+| item | value |
+|---|---:|
+| train samples | n3dv |
+| eval samples | robot |
+| frame_gap | 4 |
+| train tasks | 2 |
+| eval tasks | 2 |
+| steps | 4 |
+| hidden_dim | 128 |
+| lr | 5e-05 |
+| quant_bits | 8 |
+| parameter_count | 102925 |
+
+### 训练记录
+
+| step | sample | target frame | RGB MSE | PSNR |
+|---:|---|---:|---:|---:|
+| 1 | n3dv | 2 | 0.002875811653211713 | 25.41239560795898 |
+| 2 | n3dv | 6 | 0.0025512068532407284 | 25.932543271295398 |
+| 3 | n3dv | 2 | 0.0027694874443113804 | 25.576005994209424 |
+| 4 | n3dv | 6 | 0.0024442733265459538 | 26.118502315008936 |
+
+### Eval 结果
+
+| metric | initial | final | delta |
+|---|---:|---:|---:|
+| train model PSNR avg | 25.625938109386198 | 25.97498316781515 | 0.3490450584289518 |
+| eval model PSNR avg | 20.602936330073554 | 20.65887117994607 | 0.05593484987251577 |
+| eval linear PSNR avg | 21.07847795611209 | 21.07847795611209 | 0.0 |
+
+### 结论
+
+- Stage 21 证明 q8 keyframe anchors + timestamp 的 Gaussian-anchor-only RGB adapter 链路可训练并可保存 adapter checkpoint。
+- 4-step smoke 在 n3dv train tasks 和 robot eval tasks 上均有小幅提升。
+- 当前 MLP adapter 仍低于 linear anchor rendering baseline，说明需要更强初始化、更多训练、residual-zero init 或更贴近 StreamSplat dynamic Gaussian 格式的 adapter。
