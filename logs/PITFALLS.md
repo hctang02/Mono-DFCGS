@@ -43,3 +43,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - The manifest in git stores absolute paths to the external `.pt` files. If the dataset is moved, the manifest should be regenerated or path-remapped.
 - Frame cache filenames are one-indexed because they come from ffmpeg (`000001.png` for zero-based frame index 0). The manifest stores zero-based frame indices plus explicit paths, so downstream code should use the paths rather than reconstructing filenames.
 - Stage 6 exports static keyframe anchors only. It does not yet export intermediate teacher Gaussians; renderer/RGB supervision will be added in a later stage.
+
+## Stage 7 Notes
+
+- Full DAVIS / YouTube-VOS / RE10K / CO3D roots were not found in default candidate paths. Any DAVIS-based experiment needs a download/mount/preprocess step before anchor export.
+- `cv2.VideoCapture` reports `robot.mp4` as 79 frames, while previous ffmpeg extraction used by stage 1 produced 77 frames. For actual experiments, use extracted frame lists rather than container metadata alone.
+- StreamSplat's DAVIS provider expects `ImageSets/2017/*.txt`, `JPEGImages/Full-Resolution`, and `Annotations_unsupervised/Full-Resolution`; DAVIS 480p downloads may need path adaptation or a custom provider for Mono-DFCGS experiments.

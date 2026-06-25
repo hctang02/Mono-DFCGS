@@ -103,3 +103,13 @@ experiments/stage6_real_anchor_dataset
 ### 回答要求
 
 需要给出一段可直接复制给绘图模型的中文 prompt，重点表达 full video -> keyframe selection -> keyframe Gaussian anchors -> transmitted bitstream -> decoder dynamic Gaussian prediction -> rendering/reconstruction 的 pipeline。
+
+## 2026-06-25：继续执行后续阶段
+
+### 用户原始问题
+
+用户表示：如果不打断，就继续一直往下做。系统模式已从 plan 切换到 build，可以进行文件修改、运行命令和工具调用。
+
+### 当前执行决策
+
+从阶段 7 开始继续推进，优先整理 DAVIS / StreamSplat 数据集 inventory 和 manifest，然后再基于可用数据推进真实 anchor dataset 扩展和真实 predictor 训练。

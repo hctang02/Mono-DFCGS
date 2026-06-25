@@ -1,0 +1,5 @@
+dataset,sample,path,exists,readable,frames,width,height,fps
+current_sample,n3dv,/mnt/hdd2tC/tmp/opencode/gt_reference_videos/n3dv_input_81f_560x336.mp4,True,True,81,560,336,15.0
+current_sample,meetroom,/mnt/hdd2tC/tmp/opencode/gt_reference_videos/meetroom_input_81f_560x336.mp4,True,True,81,560,336,15.0
+current_sample,driving,/mnt/ssd2tB/haocheng/NeoVerse/examples/videos/driving.mp4,True,True,81,560,336,16.0
+current_sample,robot,/mnt/ssd2tB/haocheng/NeoVerse/examples/videos/robot.mp4,True,True,79,560,336,16.0

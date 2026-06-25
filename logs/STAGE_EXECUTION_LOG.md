@@ -418,3 +418,56 @@ experiments/stage6_real_anchor_dataset/stage6_real_anchor_dataset_manifest.json
 - 阶段 6 已形成真实 keyframe Gaussian anchor dataset。
 - 后续阶段 7 可以直接从 manifest 读取 `.pt` item，用真实左右 anchors 替代 synthetic anchors 训练 predictor。
 - 当前 dataset item 保存的是 static keyframe anchors 和 RGB/depth supervision 路径；尚未保存 intermediate teacher Gaussian。阶段 7 可先做 anchor interpolation/proxy training，阶段 8 再接入 renderer 和 RGB loss。
+
+## 2026-06-25：阶段 7 Dataset Inventory
+
+### 执行计划
+
+阶段 7 的目标是整理当前可用数据集和 StreamSplat/DAVIS 相关候选路径，明确后续扩展到 DAVIS / YouTube-VOS / RE10K / CO3D 时哪些数据已存在、哪些需要下载或挂载。
+
+### 新增脚本
+
+```text
+scripts/run_stage7_dataset_inventory.py
+```
+
+### 输出文件
+
+```text
+experiments/stage7_dataset_inventory/stage7_dataset_inventory_summary.json
+experiments/stage7_dataset_inventory/stage7_dataset_inventory_candidates.csv
+experiments/stage7_dataset_inventory/stage7_current_samples.csv
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 2 被占用，其余 GPU 基本空闲。该阶段为 CPU inventory 脚本，不占用 GPU。
+
+### 当前样本状态
+
+| sample | path | readable | frames | resolution | fps |
+|---|---|---:|---:|---|---:|
+| n3dv | `/mnt/hdd2tC/tmp/opencode/gt_reference_videos/n3dv_input_81f_560x336.mp4` | true | 81 | 560x336 | 15 |
+| meetroom | `/mnt/hdd2tC/tmp/opencode/gt_reference_videos/meetroom_input_81f_560x336.mp4` | true | 81 | 560x336 | 15 |
+| driving | `/mnt/ssd2tB/haocheng/NeoVerse/examples/videos/driving.mp4` | true | 81 | 560x336 | 16 |
+| robot | `/mnt/ssd2tB/haocheng/NeoVerse/examples/videos/robot.mp4` | true | 79 | 560x336 | 16 |
+
+### DAVIS / StreamSplat 数据状态
+
+默认候选路径下未检测到完整可用数据根目录：
+
+- DAVIS: 0 available candidates
+- YouTube-VOS: 0 available candidates
+- RE10K: 0 available candidates
+- CO3D: 0 available candidates
+
+已检查候选数量：
+
+- available candidates: `0`
+- missing candidates: `20`
+
+### 结论
+
+- 当前机器上可直接使用的是四个工作样本和已导出的 stage6 anchor dataset。
+- DAVIS / YouTube-VOS / StreamSplat 原始训练数据尚未在默认路径下就绪。
+- 下一步应先下载或挂载 DAVIS 2017 数据，并为 Mono-DFCGS 建立 frame/depth manifest，再扩展真实 anchor export。
