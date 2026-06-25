@@ -1,0 +1,11 @@
+module,parameters,default_trainable_parameters,parameter_percent
+TOTAL,268272782,181689998,100.0
+model.gs_predictor.encoder,71023104,71023104,26.474211610479365
+model.gs_predictor.gaussian_upsampler,5907648,5907648,2.2021048710040216
+model.gs_predictor.predictor,1737,1737,0.0006474752999728464
+model.condition_encoder,86582784,0,32.274158919334575
+model.decoder,98588928,98588928,36.74950819274689
+model.gaussian_upsampler,5907648,5907648,2.2021048710040216
+model.gs_dynamic_predictor,224069,224069,0.0835228226768081
+model.encoder_proj,36864,36864,0.013741237454346003
+OTHER,0,0,0.0

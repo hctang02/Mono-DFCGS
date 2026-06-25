@@ -1,0 +1,491 @@
+parameter,shape,numel,policy,matched_rule,reason
+model.decoder.transformer_decoder.positional_embedding,"[1, 4608, 768]",3538944,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.cls_embedding,"[1, 2, 768]",1536,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.layernorm1.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.0.self_attn.packed_proj.weight,"[2304, 768]",1769472,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.0.self_attn.packed_proj.bias,[2304],2304,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.0.self_attn.out_proj.weight,"[768, 768]",589824,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.0.self_attn.out_proj.bias,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.0.self_attn_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.0.cross_attn.packed_proj.weight,"[2304, 768]",1769472,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.0.cross_attn.packed_proj.bias,[2304],2304,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.0.cross_attn.out_proj.weight,"[768, 768]",589824,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.0.cross_attn.out_proj.bias,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.0.cross_attn_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.0.mlp.c_fc.weight,"[3072, 768]",2359296,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.0.mlp.c_proj.weight,"[768, 3072]",2359296,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.0.mlp_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.1.self_attn.packed_proj.weight,"[2304, 768]",1769472,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.1.self_attn.packed_proj.bias,[2304],2304,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.1.self_attn.out_proj.weight,"[768, 768]",589824,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.1.self_attn.out_proj.bias,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.1.self_attn_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.1.cross_attn.packed_proj.weight,"[2304, 768]",1769472,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.1.cross_attn.packed_proj.bias,[2304],2304,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.1.cross_attn.out_proj.weight,"[768, 768]",589824,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.1.cross_attn.out_proj.bias,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.1.cross_attn_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.1.mlp.c_fc.weight,"[3072, 768]",2359296,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.1.mlp.c_proj.weight,"[768, 3072]",2359296,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.1.mlp_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.2.self_attn.packed_proj.weight,"[2304, 768]",1769472,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.2.self_attn.packed_proj.bias,[2304],2304,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.2.self_attn.out_proj.weight,"[768, 768]",589824,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.2.self_attn.out_proj.bias,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.2.self_attn_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.2.cross_attn.packed_proj.weight,"[2304, 768]",1769472,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.2.cross_attn.packed_proj.bias,[2304],2304,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.2.cross_attn.out_proj.weight,"[768, 768]",589824,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.2.cross_attn.out_proj.bias,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.2.cross_attn_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.2.mlp.c_fc.weight,"[3072, 768]",2359296,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.2.mlp.c_proj.weight,"[768, 3072]",2359296,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.2.mlp_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.3.self_attn.packed_proj.weight,"[2304, 768]",1769472,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.3.self_attn.packed_proj.bias,[2304],2304,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.3.self_attn.out_proj.weight,"[768, 768]",589824,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.3.self_attn.out_proj.bias,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.3.self_attn_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.3.cross_attn.packed_proj.weight,"[2304, 768]",1769472,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.3.cross_attn.packed_proj.bias,[2304],2304,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.3.cross_attn.out_proj.weight,"[768, 768]",589824,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.3.cross_attn.out_proj.bias,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.3.cross_attn_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.3.mlp.c_fc.weight,"[3072, 768]",2359296,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.3.mlp.c_proj.weight,"[768, 3072]",2359296,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.3.mlp_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.4.self_attn.packed_proj.weight,"[2304, 768]",1769472,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.4.self_attn.packed_proj.bias,[2304],2304,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.4.self_attn.out_proj.weight,"[768, 768]",589824,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.4.self_attn.out_proj.bias,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.4.self_attn_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.4.cross_attn.packed_proj.weight,"[2304, 768]",1769472,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.4.cross_attn.packed_proj.bias,[2304],2304,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.4.cross_attn.out_proj.weight,"[768, 768]",589824,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.4.cross_attn.out_proj.bias,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.4.cross_attn_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.4.mlp.c_fc.weight,"[3072, 768]",2359296,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.4.mlp.c_proj.weight,"[768, 3072]",2359296,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.4.mlp_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.5.self_attn.packed_proj.weight,"[2304, 768]",1769472,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.5.self_attn.packed_proj.bias,[2304],2304,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.5.self_attn.out_proj.weight,"[768, 768]",589824,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.5.self_attn.out_proj.bias,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.5.self_attn_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.5.cross_attn.packed_proj.weight,"[2304, 768]",1769472,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.5.cross_attn.packed_proj.bias,[2304],2304,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.5.cross_attn.out_proj.weight,"[768, 768]",589824,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.5.cross_attn.out_proj.bias,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.5.cross_attn_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.5.mlp.c_fc.weight,"[3072, 768]",2359296,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.5.mlp.c_proj.weight,"[768, 3072]",2359296,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.5.mlp_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.6.self_attn.packed_proj.weight,"[2304, 768]",1769472,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.6.self_attn.packed_proj.bias,[2304],2304,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.6.self_attn.out_proj.weight,"[768, 768]",589824,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.6.self_attn.out_proj.bias,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.6.self_attn_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.6.cross_attn.packed_proj.weight,"[2304, 768]",1769472,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.6.cross_attn.packed_proj.bias,[2304],2304,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.6.cross_attn.out_proj.weight,"[768, 768]",589824,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.6.cross_attn.out_proj.bias,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.6.cross_attn_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.6.mlp.c_fc.weight,"[3072, 768]",2359296,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.6.mlp.c_proj.weight,"[768, 3072]",2359296,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.6.mlp_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.7.self_attn.packed_proj.weight,"[2304, 768]",1769472,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.7.self_attn.packed_proj.bias,[2304],2304,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.7.self_attn.out_proj.weight,"[768, 768]",589824,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.7.self_attn.out_proj.bias,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.7.self_attn_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.7.cross_attn.packed_proj.weight,"[2304, 768]",1769472,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.7.cross_attn.packed_proj.bias,[2304],2304,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.7.cross_attn.out_proj.weight,"[768, 768]",589824,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.7.cross_attn.out_proj.bias,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.7.cross_attn_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.7.mlp.c_fc.weight,"[3072, 768]",2359296,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.7.mlp.c_proj.weight,"[768, 3072]",2359296,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.7.mlp_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.8.self_attn.packed_proj.weight,"[2304, 768]",1769472,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.8.self_attn.packed_proj.bias,[2304],2304,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.8.self_attn.out_proj.weight,"[768, 768]",589824,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.8.self_attn.out_proj.bias,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.8.self_attn_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.8.cross_attn.packed_proj.weight,"[2304, 768]",1769472,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.8.cross_attn.packed_proj.bias,[2304],2304,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.8.cross_attn.out_proj.weight,"[768, 768]",589824,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.8.cross_attn.out_proj.bias,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.8.cross_attn_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.8.mlp.c_fc.weight,"[3072, 768]",2359296,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.8.mlp.c_proj.weight,"[768, 3072]",2359296,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.8.mlp_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.9.self_attn.packed_proj.weight,"[2304, 768]",1769472,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.9.self_attn.packed_proj.bias,[2304],2304,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.9.self_attn.out_proj.weight,"[768, 768]",589824,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.9.self_attn.out_proj.bias,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.9.self_attn_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.9.cross_attn.packed_proj.weight,"[2304, 768]",1769472,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.9.cross_attn.packed_proj.bias,[2304],2304,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.9.cross_attn.out_proj.weight,"[768, 768]",589824,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.9.cross_attn.out_proj.bias,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.9.cross_attn_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.9.mlp.c_fc.weight,"[3072, 768]",2359296,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.9.mlp.c_proj.weight,"[768, 3072]",2359296,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.transformer.resblocks.9.mlp_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.layernorm2.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.condition_proj.weight,"[768, 768]",589824,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.decoder.transformer_decoder.condition_ln.weight,[768],768,train,model.decoder,Temporal/dynamic token decoder for endpoint-conditioned long-GOP adaptation.
+model.gaussian_upsampler.upsampler_0.residual_fc.weight,"[1536, 768]",1179648,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.upsampler_0.residual_fc.bias,[1536],1536,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_0.resblocks.0.attn.packed_proj.weight,"[1152, 384]",442368,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_0.resblocks.0.attn.packed_proj.bias,[1152],1152,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_0.resblocks.0.attn.out_proj.weight,"[384, 384]",147456,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_0.resblocks.0.attn.out_proj.bias,[384],384,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_0.resblocks.0.layernorm1.weight,[384],384,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_0.resblocks.0.mlp.c_fc.weight,"[1536, 384]",589824,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_0.resblocks.0.mlp.c_proj.weight,"[384, 1536]",589824,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_0.resblocks.0.layernorm2.weight,[384],384,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_0.resblocks.1.attn.packed_proj.weight,"[1152, 384]",442368,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_0.resblocks.1.attn.packed_proj.bias,[1152],1152,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_0.resblocks.1.attn.out_proj.weight,"[384, 384]",147456,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_0.resblocks.1.attn.out_proj.bias,[384],384,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_0.resblocks.1.layernorm1.weight,[384],384,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_0.resblocks.1.mlp.c_fc.weight,"[1536, 384]",589824,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_0.resblocks.1.mlp.c_proj.weight,"[384, 1536]",589824,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_0.resblocks.1.layernorm2.weight,[384],384,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.upsampler_1.residual_fc.weight,"[768, 384]",294912,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.upsampler_1.residual_fc.bias,[768],768,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_1.resblocks.0.attn.packed_proj.weight,"[576, 192]",110592,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_1.resblocks.0.attn.packed_proj.bias,[576],576,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_1.resblocks.0.attn.out_proj.weight,"[192, 192]",36864,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_1.resblocks.0.attn.out_proj.bias,[192],192,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_1.resblocks.0.layernorm1.weight,[192],192,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_1.resblocks.0.mlp.c_fc.weight,"[768, 192]",147456,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_1.resblocks.0.mlp.c_proj.weight,"[192, 768]",147456,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_1.resblocks.0.layernorm2.weight,[192],192,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_1.resblocks.1.attn.packed_proj.weight,"[576, 192]",110592,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_1.resblocks.1.attn.packed_proj.bias,[576],576,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_1.resblocks.1.attn.out_proj.weight,"[192, 192]",36864,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_1.resblocks.1.attn.out_proj.bias,[192],192,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_1.resblocks.1.layernorm1.weight,[192],192,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_1.resblocks.1.mlp.c_fc.weight,"[768, 192]",147456,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_1.resblocks.1.mlp.c_proj.weight,"[192, 768]",147456,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.attention_1.resblocks.1.layernorm2.weight,[192],192,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gaussian_upsampler.layernorm2.weight,[192],192,freeze,model.gaussian_upsampler,Shared upsampler; freeze in first smoke to avoid destabilizing static Gaussian features.
+model.gs_predictor.encoder.transformer_encoder.layernorm1.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.0.attn.packed_proj.weight,"[2304, 768]",1769472,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.0.attn.packed_proj.bias,[2304],2304,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.0.attn.out_proj.weight,"[768, 768]",589824,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.0.attn.out_proj.bias,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.0.layernorm1.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.0.mlp.c_fc.weight,"[3072, 768]",2359296,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.0.mlp.c_proj.weight,"[768, 3072]",2359296,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.0.layernorm2.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.1.attn.packed_proj.weight,"[2304, 768]",1769472,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.1.attn.packed_proj.bias,[2304],2304,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.1.attn.out_proj.weight,"[768, 768]",589824,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.1.attn.out_proj.bias,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.1.layernorm1.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.1.mlp.c_fc.weight,"[3072, 768]",2359296,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.1.mlp.c_proj.weight,"[768, 3072]",2359296,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.1.layernorm2.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.2.attn.packed_proj.weight,"[2304, 768]",1769472,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.2.attn.packed_proj.bias,[2304],2304,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.2.attn.out_proj.weight,"[768, 768]",589824,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.2.attn.out_proj.bias,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.2.layernorm1.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.2.mlp.c_fc.weight,"[3072, 768]",2359296,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.2.mlp.c_proj.weight,"[768, 3072]",2359296,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.2.layernorm2.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.3.attn.packed_proj.weight,"[2304, 768]",1769472,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.3.attn.packed_proj.bias,[2304],2304,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.3.attn.out_proj.weight,"[768, 768]",589824,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.3.attn.out_proj.bias,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.3.layernorm1.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.3.mlp.c_fc.weight,"[3072, 768]",2359296,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.3.mlp.c_proj.weight,"[768, 3072]",2359296,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.3.layernorm2.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.4.attn.packed_proj.weight,"[2304, 768]",1769472,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.4.attn.packed_proj.bias,[2304],2304,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.4.attn.out_proj.weight,"[768, 768]",589824,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.4.attn.out_proj.bias,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.4.layernorm1.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.4.mlp.c_fc.weight,"[3072, 768]",2359296,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.4.mlp.c_proj.weight,"[768, 3072]",2359296,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.4.layernorm2.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.5.attn.packed_proj.weight,"[2304, 768]",1769472,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.5.attn.packed_proj.bias,[2304],2304,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.5.attn.out_proj.weight,"[768, 768]",589824,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.5.attn.out_proj.bias,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.5.layernorm1.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.5.mlp.c_fc.weight,"[3072, 768]",2359296,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.5.mlp.c_proj.weight,"[768, 3072]",2359296,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.5.layernorm2.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.6.attn.packed_proj.weight,"[2304, 768]",1769472,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.6.attn.packed_proj.bias,[2304],2304,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.6.attn.out_proj.weight,"[768, 768]",589824,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.6.attn.out_proj.bias,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.6.layernorm1.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.6.mlp.c_fc.weight,"[3072, 768]",2359296,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.6.mlp.c_proj.weight,"[768, 3072]",2359296,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.6.layernorm2.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.7.attn.packed_proj.weight,"[2304, 768]",1769472,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.7.attn.packed_proj.bias,[2304],2304,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.7.attn.out_proj.weight,"[768, 768]",589824,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.7.attn.out_proj.bias,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.7.layernorm1.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.7.mlp.c_fc.weight,"[3072, 768]",2359296,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.7.mlp.c_proj.weight,"[768, 3072]",2359296,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.7.layernorm2.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.8.attn.packed_proj.weight,"[2304, 768]",1769472,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.8.attn.packed_proj.bias,[2304],2304,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.8.attn.out_proj.weight,"[768, 768]",589824,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.8.attn.out_proj.bias,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.8.layernorm1.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.8.mlp.c_fc.weight,"[3072, 768]",2359296,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.8.mlp.c_proj.weight,"[768, 3072]",2359296,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.8.layernorm2.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.9.attn.packed_proj.weight,"[2304, 768]",1769472,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.9.attn.packed_proj.bias,[2304],2304,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.9.attn.out_proj.weight,"[768, 768]",589824,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.9.attn.out_proj.bias,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.9.layernorm1.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.9.mlp.c_fc.weight,"[3072, 768]",2359296,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.9.mlp.c_proj.weight,"[768, 3072]",2359296,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.transformer.resblocks.9.layernorm2.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.layernorm2.weight,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.encoder.transformer_encoder.conv.weight,"[768, 4, 8, 8]",196608,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.upsampler_0.residual_fc.weight,"[1536, 768]",1179648,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.upsampler_0.residual_fc.bias,[1536],1536,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_0.resblocks.0.attn.packed_proj.weight,"[1152, 384]",442368,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_0.resblocks.0.attn.packed_proj.bias,[1152],1152,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_0.resblocks.0.attn.out_proj.weight,"[384, 384]",147456,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_0.resblocks.0.attn.out_proj.bias,[384],384,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_0.resblocks.0.layernorm1.weight,[384],384,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_0.resblocks.0.mlp.c_fc.weight,"[1536, 384]",589824,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_0.resblocks.0.mlp.c_proj.weight,"[384, 1536]",589824,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_0.resblocks.0.layernorm2.weight,[384],384,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_0.resblocks.1.attn.packed_proj.weight,"[1152, 384]",442368,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_0.resblocks.1.attn.packed_proj.bias,[1152],1152,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_0.resblocks.1.attn.out_proj.weight,"[384, 384]",147456,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_0.resblocks.1.attn.out_proj.bias,[384],384,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_0.resblocks.1.layernorm1.weight,[384],384,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_0.resblocks.1.mlp.c_fc.weight,"[1536, 384]",589824,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_0.resblocks.1.mlp.c_proj.weight,"[384, 1536]",589824,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_0.resblocks.1.layernorm2.weight,[384],384,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.upsampler_1.residual_fc.weight,"[768, 384]",294912,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.upsampler_1.residual_fc.bias,[768],768,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_1.resblocks.0.attn.packed_proj.weight,"[576, 192]",110592,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_1.resblocks.0.attn.packed_proj.bias,[576],576,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_1.resblocks.0.attn.out_proj.weight,"[192, 192]",36864,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_1.resblocks.0.attn.out_proj.bias,[192],192,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_1.resblocks.0.layernorm1.weight,[192],192,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_1.resblocks.0.mlp.c_fc.weight,"[768, 192]",147456,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_1.resblocks.0.mlp.c_proj.weight,"[192, 768]",147456,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_1.resblocks.0.layernorm2.weight,[192],192,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_1.resblocks.1.attn.packed_proj.weight,"[576, 192]",110592,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_1.resblocks.1.attn.packed_proj.bias,[576],576,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_1.resblocks.1.attn.out_proj.weight,"[192, 192]",36864,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_1.resblocks.1.attn.out_proj.bias,[192],192,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_1.resblocks.1.layernorm1.weight,[192],192,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_1.resblocks.1.mlp.c_fc.weight,"[768, 192]",147456,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_1.resblocks.1.mlp.c_proj.weight,"[192, 768]",147456,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.attention_1.resblocks.1.layernorm2.weight,[192],192,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.gaussian_upsampler.layernorm2.weight,[192],192,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.predictor.gs_layer.rgb.weight,"[3, 192]",576,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.predictor.gs_layer.rgb.bias,[3],3,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.predictor.gs_layer.opacity.weight,"[1, 192]",192,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.predictor.gs_layer.opacity.bias,[1],1,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.predictor.gs_layer.scale.weight,"[2, 192]",384,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.predictor.gs_layer.scale.bias,[2],2,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.predictor.gs_layer.xyz_static.weight,"[3, 192]",576,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.gs_predictor.predictor.gs_layer.xyz_static.bias,[3],3,freeze,model.gs_predictor,Static encoder and static Gaussian predictor inherited from StreamSplat.
+model.condition_encoder.model.cls_token,"[1, 1, 768]",768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.pos_embed,"[1, 1370, 768]",1052160,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.register_tokens,"[1, 4, 768]",3072,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.patch_embed.proj.weight,"[768, 3, 14, 14]",451584,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.patch_embed.proj.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.0.norm1.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.0.norm1.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.0.attn.qkv.weight,"[2304, 768]",1769472,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.0.attn.qkv.bias,[2304],2304,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.0.attn.proj.weight,"[768, 768]",589824,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.0.attn.proj.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.0.ls1.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.0.norm2.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.0.norm2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.0.mlp.fc1.weight,"[3072, 768]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.0.mlp.fc1.bias,[3072],3072,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.0.mlp.fc2.weight,"[768, 3072]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.0.mlp.fc2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.0.ls2.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.1.norm1.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.1.norm1.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.1.attn.qkv.weight,"[2304, 768]",1769472,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.1.attn.qkv.bias,[2304],2304,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.1.attn.proj.weight,"[768, 768]",589824,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.1.attn.proj.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.1.ls1.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.1.norm2.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.1.norm2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.1.mlp.fc1.weight,"[3072, 768]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.1.mlp.fc1.bias,[3072],3072,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.1.mlp.fc2.weight,"[768, 3072]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.1.mlp.fc2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.1.ls2.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.2.norm1.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.2.norm1.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.2.attn.qkv.weight,"[2304, 768]",1769472,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.2.attn.qkv.bias,[2304],2304,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.2.attn.proj.weight,"[768, 768]",589824,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.2.attn.proj.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.2.ls1.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.2.norm2.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.2.norm2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.2.mlp.fc1.weight,"[3072, 768]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.2.mlp.fc1.bias,[3072],3072,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.2.mlp.fc2.weight,"[768, 3072]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.2.mlp.fc2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.2.ls2.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.3.norm1.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.3.norm1.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.3.attn.qkv.weight,"[2304, 768]",1769472,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.3.attn.qkv.bias,[2304],2304,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.3.attn.proj.weight,"[768, 768]",589824,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.3.attn.proj.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.3.ls1.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.3.norm2.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.3.norm2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.3.mlp.fc1.weight,"[3072, 768]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.3.mlp.fc1.bias,[3072],3072,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.3.mlp.fc2.weight,"[768, 3072]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.3.mlp.fc2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.3.ls2.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.4.norm1.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.4.norm1.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.4.attn.qkv.weight,"[2304, 768]",1769472,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.4.attn.qkv.bias,[2304],2304,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.4.attn.proj.weight,"[768, 768]",589824,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.4.attn.proj.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.4.ls1.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.4.norm2.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.4.norm2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.4.mlp.fc1.weight,"[3072, 768]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.4.mlp.fc1.bias,[3072],3072,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.4.mlp.fc2.weight,"[768, 3072]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.4.mlp.fc2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.4.ls2.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.5.norm1.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.5.norm1.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.5.attn.qkv.weight,"[2304, 768]",1769472,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.5.attn.qkv.bias,[2304],2304,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.5.attn.proj.weight,"[768, 768]",589824,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.5.attn.proj.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.5.ls1.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.5.norm2.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.5.norm2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.5.mlp.fc1.weight,"[3072, 768]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.5.mlp.fc1.bias,[3072],3072,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.5.mlp.fc2.weight,"[768, 3072]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.5.mlp.fc2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.5.ls2.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.6.norm1.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.6.norm1.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.6.attn.qkv.weight,"[2304, 768]",1769472,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.6.attn.qkv.bias,[2304],2304,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.6.attn.proj.weight,"[768, 768]",589824,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.6.attn.proj.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.6.ls1.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.6.norm2.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.6.norm2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.6.mlp.fc1.weight,"[3072, 768]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.6.mlp.fc1.bias,[3072],3072,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.6.mlp.fc2.weight,"[768, 3072]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.6.mlp.fc2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.6.ls2.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.7.norm1.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.7.norm1.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.7.attn.qkv.weight,"[2304, 768]",1769472,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.7.attn.qkv.bias,[2304],2304,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.7.attn.proj.weight,"[768, 768]",589824,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.7.attn.proj.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.7.ls1.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.7.norm2.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.7.norm2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.7.mlp.fc1.weight,"[3072, 768]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.7.mlp.fc1.bias,[3072],3072,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.7.mlp.fc2.weight,"[768, 3072]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.7.mlp.fc2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.7.ls2.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.8.norm1.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.8.norm1.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.8.attn.qkv.weight,"[2304, 768]",1769472,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.8.attn.qkv.bias,[2304],2304,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.8.attn.proj.weight,"[768, 768]",589824,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.8.attn.proj.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.8.ls1.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.8.norm2.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.8.norm2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.8.mlp.fc1.weight,"[3072, 768]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.8.mlp.fc1.bias,[3072],3072,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.8.mlp.fc2.weight,"[768, 3072]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.8.mlp.fc2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.8.ls2.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.9.norm1.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.9.norm1.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.9.attn.qkv.weight,"[2304, 768]",1769472,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.9.attn.qkv.bias,[2304],2304,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.9.attn.proj.weight,"[768, 768]",589824,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.9.attn.proj.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.9.ls1.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.9.norm2.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.9.norm2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.9.mlp.fc1.weight,"[3072, 768]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.9.mlp.fc1.bias,[3072],3072,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.9.mlp.fc2.weight,"[768, 3072]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.9.mlp.fc2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.9.ls2.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.10.norm1.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.10.norm1.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.10.attn.qkv.weight,"[2304, 768]",1769472,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.10.attn.qkv.bias,[2304],2304,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.10.attn.proj.weight,"[768, 768]",589824,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.10.attn.proj.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.10.ls1.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.10.norm2.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.10.norm2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.10.mlp.fc1.weight,"[3072, 768]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.10.mlp.fc1.bias,[3072],3072,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.10.mlp.fc2.weight,"[768, 3072]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.10.mlp.fc2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.10.ls2.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.11.norm1.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.11.norm1.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.11.attn.qkv.weight,"[2304, 768]",1769472,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.11.attn.qkv.bias,[2304],2304,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.11.attn.proj.weight,"[768, 768]",589824,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.11.attn.proj.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.11.ls1.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.11.norm2.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.11.norm2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.11.mlp.fc1.weight,"[3072, 768]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.11.mlp.fc1.bias,[3072],3072,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.11.mlp.fc2.weight,"[768, 3072]",2359296,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.11.mlp.fc2.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.blocks.11.ls2.gamma,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.norm.weight,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.condition_encoder.model.norm.bias,[768],768,freeze,model.condition_encoder,DINO condition encoder; expensive and not codec-specific for first fine-tune smoke.
+model.gs_dynamic_predictor.gs_layer.xyz_dynamic_scale.weight,"[3, 384]",1152,train,model.gs_dynamic_predictor,Predicts dynamic xyz / opacity terms; primary target for sparse-keyframe motion adaptation.
+model.gs_dynamic_predictor.gs_layer.xyz_dynamic.layers.1.weight,"[192, 384]",73728,train,model.gs_dynamic_predictor,Predicts dynamic xyz / opacity terms; primary target for sparse-keyframe motion adaptation.
+model.gs_dynamic_predictor.gs_layer.xyz_dynamic.layers.1.bias,[192],192,train,model.gs_dynamic_predictor,Predicts dynamic xyz / opacity terms; primary target for sparse-keyframe motion adaptation.
+model.gs_dynamic_predictor.gs_layer.xyz_dynamic.layers.4.weight,"[192, 192]",36864,train,model.gs_dynamic_predictor,Predicts dynamic xyz / opacity terms; primary target for sparse-keyframe motion adaptation.
+model.gs_dynamic_predictor.gs_layer.xyz_dynamic.layers.4.bias,[192],192,train,model.gs_dynamic_predictor,Predicts dynamic xyz / opacity terms; primary target for sparse-keyframe motion adaptation.
+model.gs_dynamic_predictor.gs_layer.xyz_dynamic.layers.7.weight,"[3, 192]",576,train,model.gs_dynamic_predictor,Predicts dynamic xyz / opacity terms; primary target for sparse-keyframe motion adaptation.
+model.gs_dynamic_predictor.gs_layer.xyz_dynamic.layers.7.bias,[3],3,train,model.gs_dynamic_predictor,Predicts dynamic xyz / opacity terms; primary target for sparse-keyframe motion adaptation.
+model.gs_dynamic_predictor.gs_layer.opacity_dynamic.layers.1.weight,"[192, 384]",73728,train,model.gs_dynamic_predictor,Predicts dynamic xyz / opacity terms; primary target for sparse-keyframe motion adaptation.
+model.gs_dynamic_predictor.gs_layer.opacity_dynamic.layers.1.bias,[192],192,train,model.gs_dynamic_predictor,Predicts dynamic xyz / opacity terms; primary target for sparse-keyframe motion adaptation.
+model.gs_dynamic_predictor.gs_layer.opacity_dynamic.layers.4.weight,"[192, 192]",36864,train,model.gs_dynamic_predictor,Predicts dynamic xyz / opacity terms; primary target for sparse-keyframe motion adaptation.
+model.gs_dynamic_predictor.gs_layer.opacity_dynamic.layers.4.bias,[192],192,train,model.gs_dynamic_predictor,Predicts dynamic xyz / opacity terms; primary target for sparse-keyframe motion adaptation.
+model.gs_dynamic_predictor.gs_layer.opacity_dynamic.layers.7.weight,"[2, 192]",384,train,model.gs_dynamic_predictor,Predicts dynamic xyz / opacity terms; primary target for sparse-keyframe motion adaptation.
+model.gs_dynamic_predictor.gs_layer.opacity_dynamic.layers.7.bias,[2],2,train,model.gs_dynamic_predictor,Predicts dynamic xyz / opacity terms; primary target for sparse-keyframe motion adaptation.
+model.encoder_proj.weight,"[192, 192]",36864,train,model.encoder_proj,Small projection before dynamic Gaussian predictor; keep trainable with dynamic path.

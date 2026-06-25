@@ -1,0 +1,93 @@
+{
+  "stage": 18,
+  "mode": "decoder freeze policy report",
+  "checkpoint": "/mnt/hdd2tC/tmp/opencode/StreamSplat/checkpoints/streamsplat.safetensors",
+  "device": "cuda",
+  "module_summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage18_decoder_freeze_policy/stage18_module_parameter_summary.csv",
+  "freeze_policy_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage18_decoder_freeze_policy/stage18_freeze_policy_parameters.csv",
+  "module_summary": [
+    {
+      "module": "TOTAL",
+      "parameters": 268272782,
+      "default_trainable_parameters": 181689998,
+      "parameter_percent": 100.0
+    },
+    {
+      "module": "model.gs_predictor.encoder",
+      "parameters": 71023104,
+      "default_trainable_parameters": 71023104,
+      "parameter_percent": 26.474211610479365
+    },
+    {
+      "module": "model.gs_predictor.gaussian_upsampler",
+      "parameters": 5907648,
+      "default_trainable_parameters": 5907648,
+      "parameter_percent": 2.2021048710040216
+    },
+    {
+      "module": "model.gs_predictor.predictor",
+      "parameters": 1737,
+      "default_trainable_parameters": 1737,
+      "parameter_percent": 0.0006474752999728464
+    },
+    {
+      "module": "model.condition_encoder",
+      "parameters": 86582784,
+      "default_trainable_parameters": 0,
+      "parameter_percent": 32.274158919334575
+    },
+    {
+      "module": "model.decoder",
+      "parameters": 98588928,
+      "default_trainable_parameters": 98588928,
+      "parameter_percent": 36.74950819274689
+    },
+    {
+      "module": "model.gaussian_upsampler",
+      "parameters": 5907648,
+      "default_trainable_parameters": 5907648,
+      "parameter_percent": 2.2021048710040216
+    },
+    {
+      "module": "model.gs_dynamic_predictor",
+      "parameters": 224069,
+      "default_trainable_parameters": 224069,
+      "parameter_percent": 0.0835228226768081
+    },
+    {
+      "module": "model.encoder_proj",
+      "parameters": 36864,
+      "default_trainable_parameters": 36864,
+      "parameter_percent": 0.013741237454346003
+    },
+    {
+      "module": "OTHER",
+      "parameters": 0,
+      "default_trainable_parameters": 0,
+      "parameter_percent": 0.0
+    }
+  ],
+  "freeze_policy_summary": {
+    "train_parameter_tensors": 150,
+    "freeze_parameter_tensors": 340,
+    "train_parameters": 98849861,
+    "freeze_parameters": 169422921,
+    "total_parameters": 268272782,
+    "train_parameter_percent": 36.84677225287804
+  },
+  "recommended_first_finetune_train_prefixes": [
+    "model.decoder",
+    "model.gs_dynamic_predictor",
+    "model.encoder_proj"
+  ],
+  "recommended_first_finetune_freeze_prefixes": [
+    "model.gs_predictor",
+    "model.condition_encoder",
+    "model.gaussian_upsampler"
+  ],
+  "missing_keys_count": 0,
+  "unexpected_keys_count": 0,
+  "missing_keys_sample": [],
+  "unexpected_keys_sample": [],
+  "notes": "First long-GOP adaptation should freeze static feature/Gaussian extraction and train only the temporal/dynamic decoder path."
+}

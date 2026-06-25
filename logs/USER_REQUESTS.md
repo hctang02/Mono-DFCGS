@@ -223,3 +223,13 @@ experiments/stage6_real_anchor_dataset
 ### 当前执行决策
 
 下一步先执行 Stage 16：实现 segment-error-aware keyframe selection，覆盖当前 4 个样本 `n3dv/meetroom/driving/robot`，为后续更多数据的 RD 曲线对比准备统一 selection CSV。随后执行 Stage 17：在可控范围内复用 selected-keyframe evaluator 跑扩展 RD reconstruction，并逐步扩展到更多样本。
+
+## 2026-06-25：Stage 18 long-GOP decoder 微调前参数审计
+
+### 用户原始问题
+
+用户要求：按照“先审计参数切分，再做 variable-GOP baseline，再做 long-GOP Dynamic Decoder 微调”的顺序继续操作。
+
+### 当前执行决策
+
+Stage 18 先不训练，只加载 StreamSplat checkpoint 并统计模块参数量、checkpoint 加载状态和推荐 freeze policy。首轮 long-GOP 微调建议冻结 static encoder / static Gaussian predictor / DINO condition encoder，只训练 temporal decoder、dynamic Gaussian predictor 和小的 projection adapter。

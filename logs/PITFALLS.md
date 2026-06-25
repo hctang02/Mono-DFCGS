@@ -115,3 +115,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - The first Stage 17 run completed all 24 reconstructions but failed during plotting because the plotting code expected flattened metric keys. The script now reads nested summary fields and reuses existing per-run JSON outputs.
 - `segment_rd` is promising on n3dv and driving but not consistently better than uniform across all current samples. Future selection should learn or calibrate segment difficulty per dataset/content type.
 - Stage 17 includes all four currently available samples, but final paper-level RD curves still need DAVIS / YouTube-VOS or broader StreamSplat protocol data once mounted.
+
+## Stage 18 Notes
+
+- `safetensors.torch.load_file` does not accept `device="cuda"`; use `cuda:0` or `cpu`. Stage 18 now maps CUDA devices to `cuda:0` under `CUDA_VISIBLE_DEVICES`.
+- Instantiating `SplatModel` with `use_dino=True` may trigger DINOv2 weight download if the cache is missing. This happened on first Stage 18 run and downloaded to the default torch cache.
+- The first module prefix list used `model.gs_predictor.upsampler`, but the actual static upsampler prefix is `model.gs_predictor.gaussian_upsampler`; the report was corrected and rerun.

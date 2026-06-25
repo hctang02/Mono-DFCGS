@@ -1182,3 +1182,83 @@ experiments/stage17_segment_error_rd_curve/*_summary.json
 - `segment_rd` 在 n3dv 的 gap4/gap16、driving 的 gap4 上超过 uniform，说明 segment-level objective 比 Stage 15 的 `rd_spaced` 更有潜力。
 - `segment_rd` 在 meetroom/robot 和部分低码率点仍低于 uniform，说明 selection objective 需要数据类型自适应，不能直接声明优于 uniform。
 - 当前结果仍是 StreamSplat RGB/depth-conditioned selected-pair inference，不是最终 Gaussian-anchor-only decoder。
+
+## 2026-06-25：阶段 18 Decoder Freeze Policy Report
+
+### 执行计划
+
+阶段 18 的目标是在开始 long-GOP Dynamic Decoder 微调前，明确 StreamSplat 模型的模块参数切分和推荐 freeze policy。该阶段只做参数审计，不训练。
+
+### 新增文件
+
+```text
+scripts/run_stage18_decoder_freeze_policy_report.py
+```
+
+### 运行命令
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage18_decoder_freeze_policy_report.py --device cuda
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 2 和 7 有进程；GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage18_decoder_freeze_policy/stage18_decoder_freeze_policy_summary.json
+experiments/stage18_decoder_freeze_policy/stage18_module_parameter_summary.csv
+experiments/stage18_decoder_freeze_policy/stage18_freeze_policy_parameters.csv
+```
+
+### 参数统计
+
+| module | parameters | percent |
+|---|---:|---:|
+| TOTAL | 268272782 | 100.0 |
+| model.gs_predictor.encoder | 71023104 | 26.474211610479365 |
+| model.gs_predictor.gaussian_upsampler | 5907648 | 2.2021048710040216 |
+| model.gs_predictor.predictor | 1737 | 0.0006474752999728464 |
+| model.condition_encoder | 86582784 | 32.274158919334575 |
+| model.decoder | 98588928 | 36.74950819274689 |
+| model.gaussian_upsampler | 5907648 | 2.2021048710040216 |
+| model.gs_dynamic_predictor | 224069 | 0.0835228226768081 |
+| model.encoder_proj | 36864 | 0.013741237454346003 |
+
+### 推荐 freeze policy
+
+首轮 long-GOP decoder adaptation 推荐训练：
+
+```text
+model.decoder
+model.gs_dynamic_predictor
+model.encoder_proj
+```
+
+首轮推荐冻结：
+
+```text
+model.gs_predictor
+model.condition_encoder
+model.gaussian_upsampler
+```
+
+按该策略：
+
+| item | value |
+|---|---:|
+| train parameter tensors | 150 |
+| freeze parameter tensors | 340 |
+| train parameters | 98849861 |
+| freeze parameters | 169422921 |
+| train parameter percent | 36.84677225287804 |
+| missing checkpoint keys | 0 |
+| unexpected checkpoint keys | 0 |
+
+### 结论
+
+- Stage 18 已明确后续微调不应从头训练，而应从 StreamSplat checkpoint 初始化。
+- 首轮 Stage 20 long-GOP 微调应冻结 static feature/Gaussian extraction，只训练 temporal/dynamic decoder path。
+- 下一步 Stage 19 应整理 original decoder variable-GOP baseline，作为微调前对照。
