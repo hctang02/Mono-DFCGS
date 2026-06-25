@@ -2206,3 +2206,73 @@ experiments/stage28_enhanced_rate_model_report/stage28_enhanced_rate_model_repor
 - Metadata/index/timestamp/quant-param overhead is tiny relative to q8 anchor payload under the current fixed-size anchor format: around 0.026% vs anchor bytes.
 - A simple zero-order q8 entropy estimate suggests roughly 20.6% anchor-byte savings, around 6.35 bits/value.
 - This is still an estimate, not an implemented entropy-coded bitstream. Paper/report should label it as auxiliary rate analysis.
+
+## 2026-06-25：阶段 29 Anchor-Attribute Oracle Selector RD
+
+### 执行计划
+
+Stage27 表明 Stage16-style motion/RD selector 在 anchor-only full-video RD 上不可靠。Stage29 改用 anchor-only quality proxy：对候选 segment 的内部 available anchors，计算 Stage25 leave-one-out adapter 预测 anchor 与真实 q8 intermediate anchor 的 attribute MSE，并用 DP 在同等 keyframe budget 下选择 keyframes。最后仍用 full-video renderer 评估。
+
+该方法使用 held-out sample 的 intermediate anchors 做选择信号，因此是 oracle/proxy upper-bound，不是可部署在线 selector。
+
+### 新增文件
+
+```text
+scripts/run_stage29_anchor_attribute_oracle_selector_rd.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage29_anchor_attribute_oracle_selector_rd.py
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage29_anchor_attribute_oracle_selector_rd.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi`。GPU 2 和 GPU 7 有进程，GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage29_anchor_attribute_oracle_selector_rd/stage29_anchor_attribute_oracle_selector_rd.csv
+experiments/stage29_anchor_attribute_oracle_selector_rd/stage29_selector_comparison.csv
+experiments/stage29_anchor_attribute_oracle_selector_rd/stage29_anchor_attribute_oracle_selector_rd_summary.json
+experiments/stage29_anchor_attribute_oracle_selector_rd/stage29_delta_all_psnr.png
+experiments/stage29_anchor_attribute_oracle_selector_rd/stage29_delta_middle_psnr.png
+```
+
+### Aggregate 结果
+
+| metric | value |
+|---|---:|
+| rows | 24 |
+| selector comparisons | 12 |
+| mean selector delta adapter all PSNR | 0.10438711548504376 |
+| mean selector delta adapter middle PSNR | 0.11370489576308233 |
+| positive selector all points | 10 / 12 |
+| positive selector middle points | 10 / 12 |
+
+### Selector-vs-uniform adapter PSNR delta
+
+| sample | gap | all PSNR delta | middle PSNR delta |
+|---|---:|---:|---:|
+| driving | 4 | -0.11853250341916066 | -0.1723524841032642 |
+| driving | 8 | -0.05872209625836078 | -0.06481953233621596 |
+| driving | 16 | 0.013726181865212794 | 0.013643069392585971 |
+| meetroom | 4 | 0.02046354546268958 | 0.02281636358922512 |
+| meetroom | 8 | 0.13670219109375736 | 0.15059972979703318 |
+| meetroom | 16 | 0.1622869984894848 | 0.17138314537946542 |
+| n3dv | 4 | 0.030343155369731534 | 0.03756564046165067 |
+| n3dv | 8 | 0.10804327417126558 | 0.12227120250641477 |
+| n3dv | 16 | 0.32269455633467103 | 0.34695686574367457 |
+| robot | 4 | 0.16593669099086839 | 0.22049183076908108 |
+| robot | 8 | 0.2550596166060153 | 0.28782964571153613 |
+| robot | 16 | 0.21464377511435018 | 0.2280732722458012 |
+
+### 结论
+
+- Stage29 strongly suggests keyframe selection can improve anchor-only RD if the objective is aligned with adapter/anchor reconstruction quality.
+- Stage27 negative result should be interpreted as heuristic-objective mismatch, not as proof that keyframe selection is useless.
+- Driving gap4/8 are still negative, so even oracle/proxy anchor-MSE selection is not universally reliable.
+- Next step: convert oracle/proxy signal into a deployable selector, likely by training a lightweight segment-cost predictor or deriving costs from transmitted keyframe anchors and low-cost video features.

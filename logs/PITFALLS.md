@@ -196,3 +196,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage28 does not replace the primary rate metric. Keep reporting primary q8 static anchor MiB/frame for continuity with Stage2/23/26.
 - Stage28 entropy numbers are zero-order symbol entropy estimates, not a real entropy-coded bitstream. They exclude entropy model/header details beyond the simple metadata budget.
 - Quantization parameter overhead is small only because anchors are large; if future pruning reduces Gaussian count substantially, overhead should be recomputed and may no longer be negligible.
+
+## Stage 29 Notes
+
+- Stage29 is an oracle/proxy selector because it uses intermediate q8 anchors from the held-out video to choose keyframes. Do not present it as a deployable encoder-side selector yet.
+- The result is useful as an upper bound: aligned anchor-attribute costs improve 10/12 points, unlike Stage27's motion/RD heuristic.
+- Driving gap4 and gap8 remain negative, so anchor-attribute MSE alone is not a perfect surrogate for full-video rendered PSNR.
