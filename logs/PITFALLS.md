@@ -73,3 +73,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - A freshly initialized predictor includes a random residual on top of linear interpolation, so initial RGB quality can be worse than the pure linear-anchor renderer smoke.
 - Stage 10b verifies differentiability only. For meaningful RGB training, initialize from stage 9 proxy training or suppress residual at initialization, then fine-tune on multiple pairs and samples.
 - Full 36864-Gaussian differentiable rendering is feasible on an empty L20 for a single pair, but this should not be scaled blindly without batching and memory checks.
+
+## Stage 11 Notes
+
+- Stage 11 keyframe selection is a selection/rate baseline only. It does not run reconstruction quality evaluation for non-uniform keyframes yet.
+- Motion-aware selection can cluster keyframes around high-motion bursts. Later evaluation may need minimum temporal spacing constraints to avoid wasting budget.
+- Gaussian-aware scores currently use stage6 gap=2 anchor MSE as a proxy. This requires the stage6 external `.pt` dataset to remain available at its manifest paths.

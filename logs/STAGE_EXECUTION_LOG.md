@@ -735,3 +735,67 @@ Per-step RGB MSE：
 - 阶段 10b 已验证 renderer RGB loss 可以反向传播到 `GaussianAnchorDynamicPredictor`。
 - 当前只是单 pair / 单中间帧 / 5 step smoke，不能代表最终重建质量。
 - 初始 predictor 带随机 residual，因此初始 PSNR 低于阶段 10 的纯 linear-anchor smoke；后续应先用阶段 9 proxy checkpoint 或 linear-residual 初始化，再做 RGB fine-tuning。
+
+## 2026-06-25：阶段 11 Keyframe Selection Baseline
+
+### 执行计划
+
+阶段 11 的目标是先生成 keyframe selection baseline，而不是立即重跑完整重建。脚本基于 stage1 frame cache 计算 motion score，基于 stage6 gap=2 anchors 计算 Gaussian attribute change score，然后输出 uniform / motion-aware / Gaussian-aware / RD-aware 的 keyframe indices 和 q8 static-anchor rate 估算。
+
+### 新增文件
+
+```text
+scripts/run_stage11_keyframe_selection_baseline.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage11_keyframe_selection_baseline.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。该阶段为 CPU selection/statistics 脚本，不占用 GPU。
+
+### 输出文件
+
+```text
+experiments/stage11_keyframe_selection/stage11_keyframe_selection_summary.csv
+experiments/stage11_keyframe_selection/stage11_keyframe_selection_summary.json
+```
+
+### 覆盖范围
+
+| item | value |
+|---|---:|
+| samples | n3dv, meetroom, driving, robot |
+| reference gaps | 4, 8, 16 |
+| methods | uniform, motion_aware, gaussian_aware, rd_aware |
+| output rows | 48 |
+
+### 示例 rate
+
+| sample | gap | keyframes | estimated_q8_static_mib_per_frame |
+|---|---:|---:|---:|
+| n3dv | 4 | 21 | 0.11848958333333333 |
+| n3dv | 8 | 11 | 0.062065972222222224 |
+| n3dv | 16 | 6 | 0.033854166666666664 |
+| robot | 4 | 20 | 0.11870887418831169 |
+| robot | 8 | 11 | 0.0652924788961039 |
+| robot | 16 | 6 | 0.03561444886363636 |
+
+### Score summary
+
+| sample | frames | motion_score_max | gaussian_score_max | gaussian_score_rows |
+|---|---:|---:|---:|---:|
+| n3dv | 81 | 0.004708124324679375 | 0.0009974667336791754 | 40 |
+| meetroom | 81 | 0.007059135008603334 | 0.001674364204518497 | 40 |
+| driving | 81 | 0.036478396505117416 | 0.005265535321086645 | 40 |
+| robot | 77 | 0.06726385653018951 | 0.013615783303976059 | 38 |
+
+### 结论
+
+- 阶段 11 已形成 keyframe selection baseline 和统一 rate 估算入口。
+- 当前只输出 keyframe indices，不代表 quality；后续需要把 selected indices 接入 reconstruction/evaluation pipeline，比较 selected-keyframe RD 曲线。
+- Gaussian-aware 分数目前来自 stage6 gap=2 pair anchor MSE，是轻量 proxy，不是最终 entropy/RD-aware optimization。
