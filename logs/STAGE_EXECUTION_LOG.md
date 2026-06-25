@@ -471,3 +471,71 @@ experiments/stage7_dataset_inventory/stage7_current_samples.csv
 - 当前机器上可直接使用的是四个工作样本和已导出的 stage6 anchor dataset。
 - DAVIS / YouTube-VOS / StreamSplat 原始训练数据尚未在默认路径下就绪。
 - 下一步应先下载或挂载 DAVIS 2017 数据，并为 Mono-DFCGS 建立 frame/depth manifest，再扩展真实 anchor export。
+
+## 2026-06-25：阶段 8 DAVIS / YouTube-VOS Manifest Preflight
+
+### 执行计划
+
+阶段 8 的目标是在 DAVIS / YouTube-VOS 原始数据尚未就绪的情况下，先建立可复用的 sequence manifest/preflight 入口。用户后续只要下载或挂载数据 root，即可通过脚本枚举序列、统计 RGB/depth 是否齐全，并判断是否可进入 depth preprocessing 和 anchor export。
+
+### 新增脚本
+
+```text
+scripts/run_stage8_davis_vos_manifest.py
+```
+
+### 输出文件
+
+```text
+experiments/stage8_davis_vos_manifest/stage8_preflight_summary.json
+experiments/stage8_davis_vos_manifest/stage8_root_preflight.csv
+experiments/stage8_davis_vos_manifest/stage8_sequence_manifest.csv
+experiments/stage8_davis_vos_manifest/stage8_dataset_setup_requirements.md
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 2 被占用，其余 GPU 基本空闲。该阶段为 CPU 文件系统 preflight，不占用 GPU。
+
+### 执行结果
+
+```text
+sequence_count: 0
+ready_for_depth_count: 0
+ready_for_anchor_export_count: 0
+```
+
+已检查 root 数量：
+
+- DAVIS: 7
+- YouTube-VOS: 5
+- total: 12
+
+### 目录要求
+
+DAVIS 推荐目录：
+
+```text
+DAVIS/
+  ImageSets/2017/train.txt
+  ImageSets/2017/val.txt
+  JPEGImages/Full-Resolution/<sequence>/*.jpg
+  Annotations_unsupervised/Full-Resolution/<sequence>/*.png
+  depthImages/Full-Resolution/<sequence>/*.png
+```
+
+YouTube-VOS 推荐目录：
+
+```text
+YouTube-VOS/
+  train/JPEGImages/<sequence>/*.jpg
+  valid/JPEGImages/<sequence>/*.jpg
+  train/Annotations/<sequence>/*.png
+  train/depthImages/<sequence>/*.png
+```
+
+### 结论
+
+- 当前默认路径仍未检测到可用 DAVIS / YouTube-VOS sequence。
+- 阶段 8 产物提供了明确的数据挂载/下载检查入口。
+- 后续如果用户提供 DAVIS root，可运行 `scripts/run_stage8_davis_vos_manifest.py --davis_roots /path/to/DAVIS` 生成 sequence manifest，然后接 depth preprocessing 和 anchor export。

@@ -113,3 +113,13 @@ experiments/stage6_real_anchor_dataset
 ### 当前执行决策
 
 从阶段 7 开始继续推进，优先整理 DAVIS / StreamSplat 数据集 inventory 和 manifest，然后再基于可用数据推进真实 anchor dataset 扩展和真实 predictor 训练。
+
+## 2026-06-25：继续推进下一步
+
+### 用户原始问题
+
+用户表示：如果有下一步就继续执行；如果不确定如何推进，再停下来询问。
+
+### 当前执行决策
+
+阶段 7 已完成并推送。由于默认路径下未检测到 DAVIS / YouTube-VOS / RE10K / CO3D 原始数据，阶段 8 先实现 DAVIS / YouTube-VOS sequence manifest 和 preflight 脚本，支持用户之后挂载或下载数据后直接生成可用于 depth preprocessing 和 anchor export 的 manifest。

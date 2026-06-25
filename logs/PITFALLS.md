@@ -49,3 +49,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Full DAVIS / YouTube-VOS / RE10K / CO3D roots were not found in default candidate paths. Any DAVIS-based experiment needs a download/mount/preprocess step before anchor export.
 - `cv2.VideoCapture` reports `robot.mp4` as 79 frames, while previous ffmpeg extraction used by stage 1 produced 77 frames. For actual experiments, use extracted frame lists rather than container metadata alone.
 - StreamSplat's DAVIS provider expects `ImageSets/2017/*.txt`, `JPEGImages/Full-Resolution`, and `Annotations_unsupervised/Full-Resolution`; DAVIS 480p downloads may need path adaptation or a custom provider for Mono-DFCGS experiments.
+
+## Stage 8 Notes
+
+- Stage 8 is intentionally non-strict by default. It writes empty manifests when no DAVIS / YouTube-VOS root exists, so the repo still records the required layout and a reproducible preflight result.
+- DAVIS depth images are not part of the standard RGB/annotation download. They must be generated before anchor export; otherwise `ready_for_depth=true` but `ready_for_anchor_export=false` will appear in the sequence manifest.
+- StreamSplat compatibility and Mono-DFCGS convenience differ slightly: the stage 8 script accepts DAVIS `480p` directories, but the original StreamSplat provider may still expect `Full-Resolution` unless adapted.

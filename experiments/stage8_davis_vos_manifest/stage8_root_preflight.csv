@@ -1,0 +1,13 @@
+dataset,root,exists,sequence_count,ready_for_depth_count,ready_for_anchor_export_count,frame_count,depth_count,required_layout
+DAVIS,/mnt/hdd2tC/tmp/opencode/datasets/DAVIS,False,0,0,0,0,0,"ImageSets/2017/*.txt, JPEGImages/{Full-Resolution or 480p}, optional Annotations*, depthImages generated before anchor export"
+DAVIS,/mnt/hdd2tC/tmp/opencode/datasets/davis,False,0,0,0,0,0,"ImageSets/2017/*.txt, JPEGImages/{Full-Resolution or 480p}, optional Annotations*, depthImages generated before anchor export"
+DAVIS,/mnt/hdd2tC/tmp/opencode/DAVIS,False,0,0,0,0,0,"ImageSets/2017/*.txt, JPEGImages/{Full-Resolution or 480p}, optional Annotations*, depthImages generated before anchor export"
+DAVIS,/mnt/hdd2tC/datasets/DAVIS,False,0,0,0,0,0,"ImageSets/2017/*.txt, JPEGImages/{Full-Resolution or 480p}, optional Annotations*, depthImages generated before anchor export"
+DAVIS,/mnt/hdd2tC/datasets/davis,False,0,0,0,0,0,"ImageSets/2017/*.txt, JPEGImages/{Full-Resolution or 480p}, optional Annotations*, depthImages generated before anchor export"
+DAVIS,/mnt/hdd2tC/haocheng/datasets/DAVIS,False,0,0,0,0,0,"ImageSets/2017/*.txt, JPEGImages/{Full-Resolution or 480p}, optional Annotations*, depthImages generated before anchor export"
+DAVIS,/mnt/hdd2tC/haocheng/datasets/davis,False,0,0,0,0,0,"ImageSets/2017/*.txt, JPEGImages/{Full-Resolution or 480p}, optional Annotations*, depthImages generated before anchor export"
+YouTube-VOS,/mnt/hdd2tC/tmp/opencode/datasets/YouTube-VOS,False,0,0,0,0,0,"train/valid JPEGImages, train Annotations, depthImages generated before anchor export"
+YouTube-VOS,/mnt/hdd2tC/tmp/opencode/datasets/youtube_vos,False,0,0,0,0,0,"train/valid JPEGImages, train Annotations, depthImages generated before anchor export"
+YouTube-VOS,/mnt/hdd2tC/tmp/opencode/YouTube-VOS,False,0,0,0,0,0,"train/valid JPEGImages, train Annotations, depthImages generated before anchor export"
+YouTube-VOS,/mnt/hdd2tC/datasets/YouTube-VOS,False,0,0,0,0,0,"train/valid JPEGImages, train Annotations, depthImages generated before anchor export"
+YouTube-VOS,/mnt/hdd2tC/haocheng/datasets/YouTube-VOS,False,0,0,0,0,0,"train/valid JPEGImages, train Annotations, depthImages generated before anchor export"
