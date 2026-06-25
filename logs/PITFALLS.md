@@ -184,3 +184,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage26 uses one adapter checkpoint per held-out sample. Do not accidentally evaluate all samples with the same Stage21d development checkpoint when reporting leave-one-out results.
 - The given keyframe rows still have zero delta by construction because both linear and adapter methods render transmitted q8 anchors directly for keyframes.
 - Stage26 full-video gains are smaller than Stage25 intermediate-task gains, especially on robot gap16. Report both but treat full-video held-out RD as the stronger metric.
+
+## Stage 27 Notes
+
+- Stage16 unconstrained selected indices cannot be directly used as transmitted keyframe anchors with the current Stage6 dataset because Stage6 only contains anchors for even endpoint frames.
+- Do not silently snap odd selected keyframes to nearby even anchors; that changes the selected frames and may duplicate/drop budget. Stage27 instead uses an explicit anchor-available constrained selector.
+- The current anchor-available `anchor_segment_rd` selector is a negative result: 4/12 points beat uniform and the mean adapter PSNR delta is negative. Treat this as evidence that the selector objective needs redesign.

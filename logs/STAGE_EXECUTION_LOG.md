@@ -2080,3 +2080,78 @@ experiments/stage26_leave_one_out_full_video_rd/stage26_delta_middle_psnr.png
 - 16/16 sample-gap full-video points have positive all-frame and middle-only PSNR gain.
 - Weakest point is robot gap16, but it is still positive: all +0.0039 dB, middle +0.0042 dB.
 - This is currently stronger evidence than Stage23/24 for cross-sample generalization, but still limited to the 4 available StreamSplat samples.
+
+## 2026-06-25：阶段 27 Anchor-Available Selector RD
+
+### 执行计划
+
+Stage27 将 keyframe selector 接入 anchor-only full-video RD。Stage16 的 unconstrained selector 会选择奇数帧，但 Stage6 当前只导出了偶数 endpoint anchors，因此不能直接传输和渲染奇数帧 keyframe anchors。为避免伪造 anchors，本阶段实现 anchor-available constrained selector：只允许在 Stage6 已有 q8 anchor 的帧上选择 keyframes。
+
+### 新增文件
+
+```text
+scripts/run_stage27_anchor_available_selector_rd.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage27_anchor_available_selector_rd.py
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage27_anchor_available_selector_rd.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi`。GPU 2 有进程，GPU 6 有较小进程，GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage27_anchor_available_selector_rd/stage27_anchor_available_selector_rd.csv
+experiments/stage27_anchor_available_selector_rd/stage27_anchor_available_selector_rd_summary.json
+experiments/stage27_anchor_available_selector_rd/stage27_selector_comparison.csv
+experiments/stage27_anchor_available_selector_rd/stage27_adapter_all_psnr_rd.png
+experiments/stage27_anchor_available_selector_rd/stage27_adapter_middle_psnr_rd.png
+```
+
+### 方法
+
+- `uniform`: standard uniform keyframes for reference gaps 4/8/16。
+- `anchor_segment_rd`: Stage16-style segment RD greedy split, but constrained to available anchor indices from Stage6。
+- 两者保持相同 keyframe budget，因此 `estimated_q8_static_mib_per_frame` 相同。
+- 每个 sample 使用 Stage25 leave-one-out best checkpoint。
+
+### Aggregate 结果
+
+| metric | value |
+|---|---:|
+| rows | 24 |
+| selector comparisons | 12 |
+| mean selector delta adapter all PSNR | -0.20779707265874 |
+| mean selector delta adapter middle PSNR | -0.2406135349164599 |
+| positive selector all points | 4 / 12 |
+| positive selector middle points | 4 / 12 |
+
+### Selector-vs-uniform adapter PSNR delta
+
+| sample | gap | all PSNR delta | middle PSNR delta |
+|---|---:|---:|---:|
+| driving | 4 | -0.15197060325413148 | -0.22026790420463982 |
+| driving | 8 | -0.1802804287917823 | -0.22121484799248847 |
+| driving | 16 | -0.2876096778301154 | -0.31447525772228957 |
+| meetroom | 4 | -0.11145015024705174 | -0.15895369488205446 |
+| meetroom | 8 | -0.29388987531305943 | -0.3411743742070712 |
+| meetroom | 16 | -0.4522215409554988 | -0.4884656047377298 |
+| n3dv | 4 | 0.007775012386190383 | 0.007723013074944163 |
+| n3dv | 8 | 0.005460986504893128 | 0.005656976020276261 |
+| n3dv | 16 | 0.1545368997013732 | 0.1661179274118325 |
+| robot | 4 | 0.08645680981740256 | 0.10042260480366139 |
+| robot | 8 | -0.41179171363082645 | -0.4907283482920093 |
+| robot | 16 | -0.8585805902922736 | -0.9320029082699506 |
+
+### 结论
+
+- Stage27 selector integration is functional but the current `anchor_segment_rd` heuristic is not a reliable improvement for anchor-only full-video RD。
+- It improves n3dv all gaps and robot gap4, but hurts driving/meetroom and robot long gaps.
+- This negative result suggests the selector objective is mismatched with anchor-only rendering quality, and Stage16-style motion/RD edge scores are insufficient.
+- 下一步应做 selector objective upgrade，而不是报告 Stage27 selector as win。

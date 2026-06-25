@@ -303,3 +303,13 @@ Stage21b 收益为正但极小，因此继续执行 Stage21c medium anchor adapt
 ### 当前执行决策
 
 Stage25 已完成并推送后，继续执行 Stage26。该阶段使用 Stage25 每个 held-out fold 的 best checkpoint，在对应 held-out sample 上做 full-video anchor-only RD 评估和绘图。
+
+## 2026-06-25：继续 Stage27 selector integration
+
+### 用户原始问题
+
+用户要求继续做后续步骤。
+
+### 当前执行决策
+
+继续执行 Stage27 anchor-only keyframe selector integration。由于 Stage6 当前只导出了偶数 endpoint anchors，而 Stage16 unconstrained selector 会选奇数帧，Stage27 采用 anchor-available constrained selector：只允许选择已有 transmitted anchor 的帧，再比较 uniform 和 constrained `anchor_segment_rd`。
