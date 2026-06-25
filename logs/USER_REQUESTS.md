@@ -293,3 +293,13 @@ Stage21b 收益为正但极小，因此继续执行 Stage21c medium anchor adapt
 ### 当前执行决策
 
 继续执行 Stage25 leave-one-sample-out adapter training。该阶段轮流 hold out `n3dv/meetroom/driving/robot`，每折使用其余三个样本训练并在 held-out 样本上 validation-based checkpoint selection，用于验证 adapter 的跨样本泛化。
+
+## 2026-06-25：继续 Stage26 held-out full-video RD
+
+### 用户原始问题
+
+用户要求：如果有下一步就继续，如果不确定再问。
+
+### 当前执行决策
+
+Stage25 已完成并推送后，继续执行 Stage26。该阶段使用 Stage25 每个 held-out fold 的 best checkpoint，在对应 held-out sample 上做 full-video anchor-only RD 评估和绘图。

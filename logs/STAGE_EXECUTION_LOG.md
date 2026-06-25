@@ -1994,3 +1994,89 @@ experiments/stage25_leave_one_out_adapter_training/<heldout>/stage25_best_gap_ev
 - Stage25 leave-one-out intermediate validation 全部 held-out sample 和全部 gap 都超过 q8 linear anchor baseline。
 - 最弱泛化点仍是 robot，但 best margin 仍为正，约 +0.0377 dB。
 - 下一步应做 Stage26：用每折 best checkpoint 做 held-out full-video anchor-only evaluation 和 RD plots。
+
+## 2026-06-25：阶段 26 Leave-One-Out Full-Video Anchor-Only RD
+
+### 执行计划
+
+Stage26 使用 Stage25 每个 held-out fold 的 best checkpoint，对相同 held-out sample 执行 full-video anchor-only RD 评估。该阶段比 Stage23/24 更严格：Stage23/24 使用开发集统一 adapter checkpoint，而 Stage26 每个样本只使用未在该样本上训练的 adapter。
+
+### 新增文件
+
+```text
+scripts/run_stage26_leave_one_out_full_video_rd.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage26_leave_one_out_full_video_rd.py
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage26_leave_one_out_full_video_rd.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 2 仍有进程，GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输入 checkpoint
+
+```text
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage25_leave_one_out_adapter_training/n3dv/stage25_best_anchor_adapter.safetensors
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage25_leave_one_out_adapter_training/meetroom/stage25_best_anchor_adapter.safetensors
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage25_leave_one_out_adapter_training/driving/stage25_best_anchor_adapter.safetensors
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage25_leave_one_out_adapter_training/robot/stage25_best_anchor_adapter.safetensors
+```
+
+### 输出文件
+
+```text
+experiments/stage26_leave_one_out_full_video_rd/stage26_leave_one_out_full_video_rd.csv
+experiments/stage26_leave_one_out_full_video_rd/stage26_leave_one_out_full_video_rd_summary.json
+experiments/stage26_leave_one_out_full_video_rd/stage26_sample_aggregate.csv
+experiments/stage26_leave_one_out_full_video_rd/stage26_gap_aggregate.csv
+experiments/stage26_leave_one_out_full_video_rd/stage26_per_sample_all_psnr_rd.png
+experiments/stage26_leave_one_out_full_video_rd/stage26_per_sample_middle_psnr_rd.png
+experiments/stage26_leave_one_out_full_video_rd/stage26_per_sample_all_ssim_rd.png
+experiments/stage26_leave_one_out_full_video_rd/stage26_per_sample_middle_ssim_rd.png
+experiments/stage26_leave_one_out_full_video_rd/stage26_mean_all_psnr_rd.png
+experiments/stage26_leave_one_out_full_video_rd/stage26_mean_middle_psnr_rd.png
+experiments/stage26_leave_one_out_full_video_rd/stage26_mean_all_ssim_rd.png
+experiments/stage26_leave_one_out_full_video_rd/stage26_mean_middle_ssim_rd.png
+experiments/stage26_leave_one_out_full_video_rd/stage26_delta_all_psnr.png
+experiments/stage26_leave_one_out_full_video_rd/stage26_delta_middle_psnr.png
+```
+
+### Aggregate 结果
+
+| metric | value |
+|---|---:|
+| rows | 16 |
+| mean delta all PSNR | 0.07979649123330468 |
+| mean delta middle PSNR | 0.1125053472768538 |
+| negative all PSNR points | 0 |
+| negative middle PSNR points | 0 |
+
+### Per-sample full-video gains
+
+| sample | mean delta all PSNR | mean delta middle PSNR | min delta all PSNR | min delta middle PSNR |
+|---|---:|---:|---:|---:|
+| driving | 0.05776937799917814 | 0.08509640721785772 | 0.03592102212179782 | 0.03879470389153994 |
+| meetroom | 0.0821721833379172 | 0.1171542035614479 | 0.06158812455336715 | 0.06651517451764022 |
+| n3dv | 0.15504572925967608 | 0.21038068394586507 | 0.11930499638465619 | 0.16722150693787086 |
+| robot | 0.02419867433644729 | 0.0373900943822445 | 0.003860517927481766 | 0.004186758879111352 |
+
+### Per-gap mean gains
+
+| gap | mean q8 MiB/frame | delta all PSNR | delta middle PSNR |
+|---:|---:|---:|---:|
+| 2 | 0.23137344426406925 | 0.07792147105782465 | 0.15780251136266443 |
+| 4 | 0.1185445413961039 | 0.09291990502712721 | 0.1254499815718253 |
+| 8 | 0.06287202380952381 | 0.08429349053606128 | 0.09758936011638486 |
+| 16 | 0.03429383116883117 | 0.06405109831220557 | 0.06917953605654059 |
+
+### 结论
+
+- Stage26 confirms Stage25 leave-one-out checkpoints also improve full-video anchor-only RD, not only sampled intermediate validation.
+- 16/16 sample-gap full-video points have positive all-frame and middle-only PSNR gain.
+- Weakest point is robot gap16, but it is still positive: all +0.0039 dB, middle +0.0042 dB.
+- This is currently stronger evidence than Stage23/24 for cross-sample generalization, but still limited to the 4 available StreamSplat samples.

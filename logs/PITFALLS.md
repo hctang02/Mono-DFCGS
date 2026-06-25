@@ -178,3 +178,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Leave-one-out validation is more meaningful than the previous fixed robot validation because every sample becomes held-out once.
 - Stage25 still validates on intermediate tasks; full-video held-out evaluation must be run separately using the per-fold best checkpoints.
 - In the current run, all best checkpoints are at the final step 384. Keep validation selection anyway for longer runs where overfitting may occur.
+
+## Stage 26 Notes
+
+- Stage26 uses one adapter checkpoint per held-out sample. Do not accidentally evaluate all samples with the same Stage21d development checkpoint when reporting leave-one-out results.
+- The given keyframe rows still have zero delta by construction because both linear and adapter methods render transmitted q8 anchors directly for keyframes.
+- Stage26 full-video gains are smaller than Stage25 intermediate-task gains, especially on robot gap16. Report both but treat full-video held-out RD as the stronger metric.
