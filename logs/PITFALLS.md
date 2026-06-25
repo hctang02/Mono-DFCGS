@@ -268,3 +268,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Sample/candidate normalization fixes part of the cross-sample scale problem, especially for full-feature rank prediction.
 - Predictor ranking quality must still be validated with actual DP selection and rendered RD; Stage39 showed that high Spearman alone can be misleading.
 - Rank targets are useful for within-sample selection but no longer represent calibrated distortion magnitudes. Any DP cost derived from ranks should be treated as a relative selector score.
+
+## Stage 41 Notes
+
+- Stage41 confirms that better predictor ranking does not guarantee full-video RD improvement. All normalized/rank predicted selectors underperform uniform on all 12 evaluated points.
+- Relative rank costs can distort DP layout under a fixed budget. Without a uniform prior or spacing regularization, DP may choose segments that look cheap under proxy cost but are bad for rendered PSNR.
+- Future selector work should report uniform as a strong baseline and include layout-level constraints or directly optimized rendered-RD validation before claiming deployable selection gains.

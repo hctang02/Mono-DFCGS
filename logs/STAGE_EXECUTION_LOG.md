@@ -2912,3 +2912,48 @@ experiments/stage40_normalized_cost_predictor_validation/stage40_normalized_cost
 - Rank target + sample-normalized full features gives the best predictor ranking: `full_sample_z_rank` mean Spearman log `0.9855087922482462`.
 - This substantially improves over Stage38 raw full-feature ridge mean Spearman `0.7734269107632606` and suggests scale normalization is necessary.
 - Stage40 predictor metrics alone are not enough; next step must run full-video RD selection using Stage40 predictions.
+
+## 2026-06-25：阶段 41 Normalized Predicted Selector RD
+
+### 执行计划
+
+Stage41 将 Stage40 的 normalized/rank predictor scores 作为 relative DP segment costs，重跑 full-video anchor-only RD。比较 uniform、`length_sample_z_rank`、`full_sample_z_rank`、`full_sample_z_zlog`。
+
+### 新增文件
+
+```text
+scripts/run_stage41_normalized_predicted_selector_rd.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage41_normalized_predicted_selector_rd.py
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage41_normalized_predicted_selector_rd.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi`。GPU 2 满载，GPU 3 有运行进程，GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage41_normalized_predicted_selector_rd/stage41_normalized_predicted_selector_rd.csv
+experiments/stage41_normalized_predicted_selector_rd/stage41_selector_comparison.csv
+experiments/stage41_normalized_predicted_selector_rd/stage41_normalized_predicted_selector_rd_summary.json
+```
+
+### Aggregate 结果
+
+| method | points | positive all PSNR | positive middle PSNR | mean delta all PSNR | mean delta middle PSNR |
+|---|---:|---:|---:|---:|---:|
+| length_sample_z_rank | 12 | 0 | 0 | -0.5054370606610267 | -0.5918630285707692 |
+| full_sample_z_rank | 12 | 0 | 0 | -0.847949115968393 | -0.9945000333189684 |
+| full_sample_z_zlog | 12 | 0 | 0 | -0.913330142784306 | -1.082226324905095 |
+
+### 结论
+
+- Stage41 是更强的负结果：即使 Stage40 predictor ranking 明显改善，直接把 predicted relative cost 放入 DP selection 仍然 0/12 点超过 uniform。
+- 当前 proxy label / predictor 与最终 rendered RD objective 存在明显 mismatch；rank/normalized cost 可能导致 DP 选择过度非均匀的 segment layout。
+- 下一步不应继续只优化 predictor correlation，而应加入 selector-level calibration，例如 spacing/fairness constraints、uniform-prior penalty、或直接学习/验证 keyframe layout 的 rendered RD objective。
