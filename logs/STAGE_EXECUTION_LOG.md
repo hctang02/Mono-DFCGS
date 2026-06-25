@@ -2645,3 +2645,68 @@ experiments/stage35_dense_anchor_attribute_oracle_selector_rd/stage35_delta_midd
 - Dense candidate coverage fixes Stage29's driving gap4/8 negative points.
 - Stage34 vs Stage35 cleanly shows the decisive factor is selector objective alignment, not just dense anchor availability.
 - Next step is Stage36: encode Stage35 selected keyframes with actual q8 bitstreams and report actual-bitstream RD.
+
+## 2026-06-25：阶段 36 Dense Oracle Actual-Bitstream RD
+
+### 执行计划
+
+Stage36 将 Stage35 的 `uniform` 和 `dense_anchor_attr_oracle` selected keyframes 编码为真实 q8 static anchor bitstream，分别输出 raw container 和 zlib container sizes。质量指标继承 Stage35 full-video rendering，rate 使用 Stage36 actual bitstream sizes。
+
+### 新增文件
+
+```text
+scripts/run_stage36_dense_oracle_actual_bitstream_rd.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage36_dense_oracle_actual_bitstream_rd.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage36_dense_oracle_actual_bitstream_rd.py
+```
+
+该阶段是 CPU-only bitstream encode/decode 和 plotting。
+
+### 输出文件
+
+仓库内轻量结果：
+
+```text
+experiments/stage36_dense_oracle_actual_bitstream_rd/stage36_dense_oracle_actual_bitstream_rd.csv
+experiments/stage36_dense_oracle_actual_bitstream_rd/stage36_raw_selector_comparison.csv
+experiments/stage36_dense_oracle_actual_bitstream_rd/stage36_zlib_selector_comparison.csv
+experiments/stage36_dense_oracle_actual_bitstream_rd/stage36_dense_oracle_actual_bitstream_rd_summary.json
+experiments/stage36_dense_oracle_actual_bitstream_rd/stage36_*_rd.png
+```
+
+外部 bitstreams，不提交到 git：
+
+```text
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage36_dense_oracle_actual_bitstream_rd
+```
+
+外部大小约 229M。
+
+### Aggregate 结果
+
+| metric | value |
+|---|---:|
+| rows | 24 |
+| mean selector delta adapter all PSNR | 0.19715194312405782 |
+| mean selector delta adapter middle PSNR | 0.22543596674489544 |
+| positive selector all points | 12 / 12 |
+| positive selector middle points | 12 / 12 |
+| mean zlib savings vs raw bitstream | 34.75464768969244% |
+| max roundtrip abs diff | 0.0 |
+
+### Rate observations
+
+- Raw bitstream rates for uniform and dense oracle are effectively equal at the same keyframe budget; differences are only header/JSON-length noise.
+- Zlib rates can differ slightly by selected keyframe content, but the differences are tiny compared with the PSNR gains.
+- Example: robot gap8 zlib rate decreases from 0.04393036 to 0.04386477 MiB/frame while adapter middle PSNR increases by +0.6283 dB.
+
+### 结论
+
+- Stage36 converts Stage35's oracle selector upper bound into actual-bitstream RD evidence.
+- Dense oracle improves all 12 points while preserving essentially the same keyframe-count bitstream budget.
+- This is the strongest selector upper-bound artifact so far, but still not a deployable selector because the keyframe decisions use dense intermediate anchors as oracle targets.

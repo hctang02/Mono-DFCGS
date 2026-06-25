@@ -238,3 +238,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage35 is still an oracle/proxy selector: it uses dense intermediate anchors from the same video to choose keyframes.
 - The 12/12 positive result should be reported as an upper bound and a training target for deployable selector research, not as the final encoder-side selector.
 - Stage35 uniform rows use Stage33 gap1 anchors, so they may differ slightly from Stage26 uniform rows that used Stage6 multi-gap anchors.
+
+## Stage 36 Notes
+
+- Stage36 bitstreams are generated from Stage35 selections and Stage33 dense anchors. They are actual q8 anchor containers, but selector decisions are still oracle/proxy.
+- Raw/zlib rate differences between uniform and oracle rows at equal keyframe count are caused by header length and selected-anchor compressibility, not by different keyframe counts.
+- Roundtrip is measured against q8 dequantized anchors, not original fp16 anchors.
