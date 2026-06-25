@@ -40,3 +40,26 @@
 ### 当前执行决策
 
 阶段 1-5 会按“先可运行最小闭环，再逐步扩展”的方式执行。阶段 4/5 涉及模型接口和训练，不直接启动大规模训练；先实现可运行的 Gaussian-anchor predictor smoke pipeline 和训练 smoke pipeline，避免资源失控。
+
+## 2026-06-25：阶段 6 执行要求
+
+### 用户原始要求摘要
+
+用户要求：
+
+- 按照前面设计，先执行阶段 6。
+- 阶段 6 的目标是导出真实 keyframe Gaussian anchor dataset，为后续真实 predictor 训练、renderer/RGB loss 和 keyframe selection 做准备。
+
+### 当前执行决策
+
+阶段 6 会导出真实 StreamSplat keyframe Gaussian anchors。实际 `.pt` tensor 文件较大，保存到 git 外部：
+
+```text
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage6_real_anchor_dataset
+```
+
+仓库内只保存脚本、manifest summary、CSV 和日志：
+
+```text
+experiments/stage6_real_anchor_dataset
+```

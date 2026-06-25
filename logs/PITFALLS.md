@@ -36,3 +36,10 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Scripts under `scripts/` need to insert repo root into `sys.path` when executed directly; otherwise `mono_dfcgs` cannot be imported.
 - PyTorch tensors do not have a `.softplus()` method. Use `torch.nn.functional.softplus` instead.
 - The stage-4 predictor is only a smoke interface. Its MSE is measured against a synthetic linear target and should not be interpreted as reconstruction quality.
+
+## Stage 6 Notes
+
+- Real anchor `.pt` files are large and must stay outside git. Stage 6 writes them to `/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage6_real_anchor_dataset`.
+- The manifest in git stores absolute paths to the external `.pt` files. If the dataset is moved, the manifest should be regenerated or path-remapped.
+- Frame cache filenames are one-indexed because they come from ffmpeg (`000001.png` for zero-based frame index 0). The manifest stores zero-based frame indices plus explicit paths, so downstream code should use the paths rather than reconstructing filenames.
+- Stage 6 exports static keyframe anchors only. It does not yet export intermediate teacher Gaussians; renderer/RGB supervision will be added in a later stage.

@@ -339,3 +339,82 @@ experiments/stage5_training_smoke/stage5_training_smoke_summary.json
 - Gaussian-anchor predictor 的训练路径已跑通。
 - q8 quantization-aware synthetic anchors 下，80-step smoke training 能显著降低 proxy loss。
 - 下一步应从 synthetic anchors 过渡到真实导出的 keyframe Gaussian anchors，并接入 renderer / RGB supervision。
+
+## 2026-06-25：阶段 6 Real Keyframe Gaussian Anchor Dataset Export
+
+### 执行计划
+
+阶段 6 的目标是从 StreamSplat checkpoint 导出真实 keyframe Gaussian anchor dataset，为后续真实 Gaussian-anchor predictor 训练和 renderer/RGB supervision 做准备。
+
+每个 dataset item 对应一个 keyframe pair，包含：
+
+- `left_anchor`: 左关键帧 static Gaussian anchor，float16
+- `right_anchor`: 右关键帧 static Gaussian anchor，float16
+- pair metadata: sample / gap / left index / right index / segment length
+- intermediate frame metadata: 中间帧 index、normalized time、RGB/depth path
+
+实际 `.pt` tensor 文件较大，保存到 git 外部；仓库内只保存 manifest 和 summary。
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 2 被重度占用，GPU 5 有小进程，GPU 1/3/4/6/7 空闲。阶段 6 使用 `CUDA_VISIBLE_DEVICES=1` 执行。
+
+### 新增脚本
+
+```text
+scripts/run_stage6_export_real_anchor_dataset.py
+```
+
+### 仓库内输出文件
+
+```text
+experiments/stage6_real_anchor_dataset/stage6_real_anchor_dataset_summary.json
+experiments/stage6_real_anchor_dataset/stage6_real_anchor_dataset_manifest.csv
+experiments/stage6_real_anchor_dataset/stage6_real_anchor_dataset_manifest.json
+```
+
+### git 外部重型数据目录
+
+```text
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage6_real_anchor_dataset
+```
+
+目录大小：
+
+```text
+546M
+```
+
+### 导出结果
+
+| sample | gap | pairs | middle frames | total anchor MiB | avg anchor MiB/pair |
+|---|---:|---:|---:|---:|---:|
+| n3dv | 2 | 40 | 40 | 73.125 | 1.828125 |
+| meetroom | 2 | 40 | 40 | 73.125 | 1.828125 |
+| driving | 2 | 40 | 40 | 73.125 | 1.828125 |
+| robot | 2 | 38 | 38 | 69.469 | 1.828125 |
+| n3dv | 4 | 20 | 60 | 36.562 | 1.828125 |
+| meetroom | 4 | 20 | 60 | 36.562 | 1.828125 |
+| driving | 4 | 20 | 60 | 36.562 | 1.828125 |
+| robot | 4 | 19 | 57 | 34.734 | 1.828125 |
+| n3dv | 8 | 10 | 70 | 18.281 | 1.828125 |
+| meetroom | 8 | 10 | 70 | 18.281 | 1.828125 |
+| driving | 8 | 10 | 70 | 18.281 | 1.828125 |
+| robot | 8 | 10 | 66 | 18.281 | 1.828125 |
+| n3dv | 16 | 5 | 75 | 9.141 | 1.828125 |
+| meetroom | 16 | 5 | 75 | 9.141 | 1.828125 |
+| driving | 16 | 5 | 75 | 9.141 | 1.828125 |
+| robot | 16 | 5 | 71 | 9.141 | 1.828125 |
+
+总计：
+
+- exported pair count: `297`
+- anchor fields: `rgb / opacity / scale / xyz / rot`
+- anchor dtype: `float16`
+- gaussians per anchor: `36864`
+
+### 结论
+
+- 阶段 6 已形成真实 keyframe Gaussian anchor dataset。
+- 后续阶段 7 可以直接从 manifest 读取 `.pt` item，用真实左右 anchors 替代 synthetic anchors 训练 predictor。
+- 当前 dataset item 保存的是 static keyframe anchors 和 RGB/depth supervision 路径；尚未保存 intermediate teacher Gaussian。阶段 7 可先做 anchor interpolation/proxy training，阶段 8 再接入 renderer 和 RGB loss。
