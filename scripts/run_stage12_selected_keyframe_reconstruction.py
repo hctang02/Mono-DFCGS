@@ -281,7 +281,11 @@ def parse_args():
     parser.add_argument(
         "--method",
         default="rd_aware",
-        choices=["uniform", "motion_aware", "gaussian_aware", "rd_aware", "motion_spaced", "gaussian_spaced", "rd_spaced"],
+        choices=[
+            "uniform", "motion_aware", "gaussian_aware", "rd_aware",
+            "motion_spaced", "gaussian_spaced", "rd_spaced",
+            "segment_motion", "segment_gaussian", "segment_rd",
+        ],
     )
     parser.add_argument("--reference_gap", type=int, default=4)
     parser.add_argument("--selection_csv", type=Path, default=DEFAULT_SELECTION_CSV)

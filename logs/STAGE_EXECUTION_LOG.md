@@ -1123,3 +1123,62 @@ experiments/stage16_segment_error_keyframe_selection/stage16_segment_error_keyfr
 - Stage 16 已生成 segment-error-aware keyframe selection baseline，覆盖当前 4 个样本。
 - 相比 Stage 13 的 frame-wise top-k / spaced fill，Stage 16 更直接优化 segment difficulty，选帧分布更像“切分难 segment”。
 - 下一步 Stage 17 应复用 selected-keyframe evaluator，对 `uniform` 与 `segment_rd` 进行 RD reconstruction 对比，并优先扩展到更多样本。
+
+## 2026-06-25：阶段 17 Four-Sample Segment-Error RD Curve
+
+### 执行计划
+
+阶段 17 的目标是响应“最终 RD 曲线对比要包括更多数据”的要求，将 Stage 16 的 `segment_rd` selection 接入 selected-keyframe evaluator，并覆盖当前 4 个样本 `n3dv/meetroom/driving/robot`。评估范围为 `4 samples × 2 methods × 3 gaps = 24` 组。
+
+### 新增/修改文件
+
+```text
+scripts/run_stage17_segment_error_rd_curve.py
+scripts/run_stage12_selected_keyframe_reconstruction.py
+```
+
+`run_stage12_selected_keyframe_reconstruction.py` 扩展支持 `segment_motion` / `segment_gaussian` / `segment_rd` 方法。
+
+### 运行命令
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage17_segment_error_rd_curve.py --batch_size 1 --max_segment_length 40
+```
+
+首次运行完成 24 组重建后，绘图阶段发现字段读取错误；修复后复用已生成的单组 JSON 重新汇总/绘图，未重复跑 24 组推理。
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 2 被占用；GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage17_segment_error_rd_curve/stage17_segment_error_rd_curve_summary.csv
+experiments/stage17_segment_error_rd_curve/stage17_segment_error_rd_curve_summary.json
+experiments/stage17_segment_error_rd_curve/stage17_rd_curve_all_psnr.png
+experiments/stage17_segment_error_rd_curve/stage17_rd_curve_middle_psnr.png
+experiments/stage17_segment_error_rd_curve/*_summary.json
+```
+
+### RD Summary
+
+| sample | method | gap | rate MiB/frame | all PSNR | middle PSNR | max segment |
+|---|---|---:|---:|---:|---:|---:|
+| n3dv | uniform | 4 | 0.11848958333333333 | 33.39609679886218 | 33.05215015387749 | 4 |
+| n3dv | segment_rd | 4 | 0.11848958333333333 | 33.428578143327144 | 33.084130548722 | 6 |
+| n3dv | uniform | 16 | 0.033854166666666664 | 30.881761283241584 | 30.60315188772239 | 16 |
+| n3dv | segment_rd | 16 | 0.033854166666666664 | 31.401522780566143 | 31.160727202005425 | 20 |
+| meetroom | uniform | 4 | 0.11848958333333333 | 32.426306092422514 | 31.164020411576498 | 4 |
+| meetroom | segment_rd | 4 | 0.11848958333333333 | 32.23470027048153 | 30.87014915711624 | 6 |
+| driving | uniform | 4 | 0.11848958333333333 | 30.194992473308346 | 27.836169561169633 | 4 |
+| driving | segment_rd | 4 | 0.11848958333333333 | 30.455521453965307 | 28.160586286253864 | 6 |
+| robot | uniform | 4 | 0.11870941558441558 | 26.48952399862992 | 23.178617517791157 | 4 |
+| robot | segment_rd | 4 | 0.11870941558441558 | 26.282488669614075 | 22.881804558757004 | 8 |
+
+### 结论
+
+- Stage 17 已完成 4 个当前样本的 expanded RD curve，对比范围比 Stage 15 更完整。
+- `segment_rd` 在 n3dv 的 gap4/gap16、driving 的 gap4 上超过 uniform，说明 segment-level objective 比 Stage 15 的 `rd_spaced` 更有潜力。
+- `segment_rd` 在 meetroom/robot 和部分低码率点仍低于 uniform，说明 selection objective 需要数据类型自适应，不能直接声明优于 uniform。
+- 当前结果仍是 StreamSplat RGB/depth-conditioned selected-pair inference，不是最终 Gaussian-anchor-only decoder。

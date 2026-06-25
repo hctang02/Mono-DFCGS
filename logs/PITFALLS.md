@@ -109,3 +109,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Segment-level greedy selection is less prone to wasting the budget on local frame clusters than frame-wise top-k selection.
 - The current segment cost is still a proxy based on image motion and stage6 Gaussian anchor differences, not measured reconstruction distortion.
 - For final dataset RD curves, the comparison must include more than n3dv/robot; Stage 16 already emits selections for n3dv, meetroom, driving, and robot.
+
+## Stage 17 Notes
+
+- The first Stage 17 run completed all 24 reconstructions but failed during plotting because the plotting code expected flattened metric keys. The script now reads nested summary fields and reuses existing per-run JSON outputs.
+- `segment_rd` is promising on n3dv and driving but not consistently better than uniform across all current samples. Future selection should learn or calibrate segment difficulty per dataset/content type.
+- Stage 17 includes all four currently available samples, but final paper-level RD curves still need DAVIS / YouTube-VOS or broader StreamSplat protocol data once mounted.

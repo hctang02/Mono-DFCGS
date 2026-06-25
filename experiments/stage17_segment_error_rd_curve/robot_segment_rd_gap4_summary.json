@@ -1,0 +1,116 @@
+{
+  "stage": 17,
+  "method": "segment-error-aware selected-keyframe RD curve",
+  "sample": "robot",
+  "selection_method": "segment_rd",
+  "reference_gap": 4,
+  "resolution": [
+    512,
+    288
+  ],
+  "total_frames": 77,
+  "selected_keyframes": [
+    0,
+    5,
+    9,
+    13,
+    19,
+    22,
+    24,
+    28,
+    34,
+    38,
+    40,
+    42,
+    44,
+    47,
+    52,
+    56,
+    59,
+    66,
+    74,
+    76
+  ],
+  "keyframe_count": 20,
+  "keyframe_ratio": 0.2597402597402597,
+  "segment_lengths": [
+    5,
+    4,
+    4,
+    6,
+    3,
+    2,
+    4,
+    6,
+    4,
+    2,
+    2,
+    2,
+    3,
+    5,
+    4,
+    3,
+    7,
+    8,
+    2
+  ],
+  "max_segment_length": 8,
+  "pair_count": 19,
+  "complete": true,
+  "all": {
+    "count": 77,
+    "psnr_avg": 26.282488669614075,
+    "psnr_min": 17.48052942676744,
+    "ssim_avg": 0.863784456407869,
+    "ssim_min": 0.7245489954948425
+  },
+  "middle_only": {
+    "count": 57,
+    "psnr_avg": 22.881804558757004,
+    "psnr_min": 17.48052942676744,
+    "ssim_avg": 0.8273834115580508,
+    "ssim_min": 0.7245489954948425
+  },
+  "given_keyframes": {
+    "count": 20,
+    "psnr_avg": 35.974438385556724,
+    "psnr_min": 35.485725335743126,
+    "ssim_avg": 0.9675274342298508,
+    "ssim_min": 0.9650843739509583
+  },
+  "estimated_q8_static_mib_per_frame": 0.11870941558441558,
+  "raw_pred_gs_mib": 117.5625,
+  "raw_pred_gs_mib_per_frame": 1.5267857142857142,
+  "pred_gs_shapes_last_batch": {
+    "rgb": [
+      1,
+      73728,
+      3
+    ],
+    "opacity": [
+      1,
+      73728,
+      3
+    ],
+    "scale": [
+      1,
+      73728,
+      2
+    ],
+    "xyz": [
+      1,
+      73728,
+      2,
+      3
+    ],
+    "rot": [
+      1,
+      73728,
+      2,
+      4
+    ]
+  },
+  "heavy_output_dir": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage17_segment_error_rd_curve/robot_segment_rd_gap4",
+  "per_frame_metrics": null,
+  "notes": "Smoke evaluation for selected keyframes. It still uses StreamSplat RGB/depth-conditioned inference for each selected pair, not the final Gaussian-anchor-only decoder."
+}
