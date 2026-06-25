@@ -1488,3 +1488,79 @@ experiments/stage21_gaussian_anchor_only_adapter_smoke/stage21_train_rgb_losses.
 - Stage 21 证明 q8 keyframe anchors + timestamp 的 Gaussian-anchor-only RGB adapter 链路可训练并可保存 adapter checkpoint。
 - 4-step smoke 在 n3dv train tasks 和 robot eval tasks 上均有小幅提升。
 - 当前 MLP adapter 仍低于 linear anchor rendering baseline，说明需要更强初始化、更多训练、residual-zero init 或更贴近 StreamSplat dynamic Gaussian 格式的 adapter。
+
+## 2026-06-25：阶段 21b Residual-Zero Anchor Adapter Training
+
+### 执行计划
+
+阶段 21b 的目标是修复 Stage 21 的主要问题：随机 residual 初始化导致 adapter 初始输出低于 linear anchor baseline。本阶段新增 residual-zero 初始化，使 adapter 在训练前严格等于 q8 linear anchor interpolation，然后用 RGB renderer loss 做更长的小规模训练。
+
+### 修改/新增文件
+
+```text
+mono_dfcgs/anchor_predictor.py
+scripts/run_stage21b_residual_zero_anchor_adapter_training.py
+```
+
+### 运行命令
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage21b_residual_zero_anchor_adapter_training.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 2 有进程，GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage21b_residual_zero_anchor_adapter_training/stage21b_residual_zero_anchor_adapter_training_summary.json
+experiments/stage21b_residual_zero_anchor_adapter_training/stage21b_train_rgb_losses.csv
+experiments/stage21b_residual_zero_anchor_adapter_training/stage21b_initial_eval.csv
+experiments/stage21b_residual_zero_anchor_adapter_training/stage21b_final_eval.csv
+```
+
+外部 adapter checkpoint：
+
+```text
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage21b_residual_zero_anchor_adapter_training/stage21b_residual_zero_anchor_adapter.safetensors
+```
+
+外部 checkpoint 大小约 404K，不提交到 git。
+
+### 配置
+
+| item | value |
+|---|---:|
+| samples | n3dv, meetroom, driving, robot |
+| eval samples | robot |
+| selected train samples | driving, meetroom, n3dv |
+| selected eval samples | robot |
+| frame_gap | 4 |
+| selected train rows | 8 |
+| selected eval rows | 4 |
+| targets per row | 3 |
+| train tasks | 24 |
+| eval tasks | 12 |
+| steps | 24 |
+| hidden_dim | 128 |
+| lr | 1e-05 |
+| quant_bits | 8 |
+| parameter_count | 102925 |
+
+### 结果
+
+| metric | initial | final | delta |
+|---|---:|---:|---:|
+| train model PSNR avg | 27.96271836837856 | 28.001963714263283 | 0.03924534588472239 |
+| train linear PSNR avg | 27.96271836837856 | 27.96271836837856 | 0.0 |
+| eval model PSNR avg | 21.300156836809595 | 21.301945998526975 | 0.0017891617173795282 |
+| eval linear PSNR avg | 21.300156836809595 | 21.300156836809595 | 0.0 |
+| eval margin over linear | 0.0 | 0.0017891617173795282 | 0.0017891617173795282 |
+
+### 结论
+
+- residual-zero 初始化有效：初始 model PSNR 与 q8 linear anchor baseline 完全一致。
+- 24-step 小规模训练后，train 集提升约 0.039 dB，robot eval 比 linear baseline 高约 0.0018 dB。
+- 这是方向正确但收益极小的结果，还不足以作为最终 RD curve 的 fine-tuned adapter。下一步需要扩大 steps、balanced rows、gap 覆盖，并加入更强 regularization/learning-rate schedule。

@@ -30,7 +30,13 @@ class GaussianAnchorDynamicPredictor(nn.Module):
     interpolation and keeps the output in the static anchor field format.
     """
 
-    def __init__(self, attr_dim: int = 13, hidden_dim: int = 128, apply_output_constraints: bool = True):
+    def __init__(
+        self,
+        attr_dim: int = 13,
+        hidden_dim: int = 128,
+        apply_output_constraints: bool = True,
+        zero_init_residual: bool = False,
+    ):
         super().__init__()
         self.apply_output_constraints = apply_output_constraints
         self.encoder = GaussianAnchorEncoder(attr_dim, hidden_dim)
@@ -47,6 +53,9 @@ class GaussianAnchorDynamicPredictor(nn.Module):
             nn.SiLU(),
             nn.Linear(hidden_dim, attr_dim),
         )
+        if zero_init_residual:
+            nn.init.zeros_(self.fuse[-1].weight)
+            nn.init.zeros_(self.fuse[-1].bias)
 
     @staticmethod
     def time_features(t: torch.Tensor, n: int) -> torch.Tensor:

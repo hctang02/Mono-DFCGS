@@ -138,3 +138,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - The Gaussian-anchor-only adapter smoke is valid as a payload test only if inputs remain limited to transmitted q8 keyframe anchors plus timestamp. Do not accidentally feed target RGB/depth except as training supervision.
 - The current `GaussianAnchorDynamicPredictor` starts from random residual parameters, so early RGB quality can be worse than pure linear anchor interpolation. Future runs should add residual-zero initialization or initialize from the Stage9 proxy task.
 - Full-anchor rendering is feasible for small smoke runs, but multi-sample training should keep checkpoints outside git and may need task caching to avoid repeated `.pt` loads.
+
+## Stage 21b Notes
+
+- Residual-zero initialization is necessary for fair comparison against linear anchor interpolation. Without it, a randomly initialized residual can make the adapter worse than the baseline before training.
+- Do not select training rows by raw manifest order for small runs; the manifest is grouped by sample, so `rows[:N]` can accidentally train only on n3dv. Stage21b now uses sample-balanced row selection.
+- The Stage21b improvement over linear on robot is positive but extremely small. Treat it as a validation of initialization/training direction, not as a meaningful final gain.
