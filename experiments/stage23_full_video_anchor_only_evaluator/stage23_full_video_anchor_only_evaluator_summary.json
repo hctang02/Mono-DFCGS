@@ -1,0 +1,968 @@
+{
+  "stage": 23,
+  "mode": "full-video anchor-only evaluator",
+  "samples": [
+    "n3dv",
+    "meetroom",
+    "driving",
+    "robot"
+  ],
+  "gaps": [
+    2,
+    4,
+    8,
+    16
+  ],
+  "adapter": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage21d_validated_anchor_adapter_training/stage21d_best_anchor_adapter.safetensors",
+  "quant_bits": 8,
+  "rows": [
+    {
+      "sample": "n3dv",
+      "frame_gap": 2,
+      "total_frames": 81,
+      "keyframe_count": 41,
+      "keyframe_ratio": 0.5061728395061729,
+      "middle_count": 40,
+      "linear": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 30.508679074632155,
+          "psnr_min": 29.11940844475435,
+          "ssim_avg": 0.9027119484948524,
+          "ssim_min": 0.8823788166046143
+        },
+        "middle_only": {
+          "count": 40,
+          "psnr_avg": 30.42136042860855,
+          "psnr_min": 29.11940844475435,
+          "ssim_avg": 0.9016240507364273,
+          "ssim_min": 0.8823788166046143
+        },
+        "given_keyframes": {
+          "count": 41,
+          "psnr_avg": 30.59386799758202,
+          "psnr_min": 30.50998518360405,
+          "ssim_avg": 0.9037733121616084,
+          "ssim_min": 0.9020386338233948
+        }
+      },
+      "adapter": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 30.629691480620625,
+          "psnr_min": 29.316289033277844,
+          "ssim_avg": 0.9089876435421131,
+          "ssim_min": 0.8953928351402283
+        },
+        "middle_only": {
+          "count": 40,
+          "psnr_avg": 30.666410550735208,
+          "psnr_min": 29.316289033277844,
+          "ssim_avg": 0.9143323332071305,
+          "ssim_min": 0.8953928351402283
+        },
+        "given_keyframes": {
+          "count": 41,
+          "psnr_avg": 30.59386799758202,
+          "psnr_min": 30.50998518360405,
+          "ssim_avg": 0.9037733121616084,
+          "ssim_min": 0.9020386338233948
+        }
+      },
+      "delta_all_psnr": 0.12101240598846985,
+      "delta_middle_psnr": 0.24505012212665633,
+      "delta_given_psnr": 0.0,
+      "estimated_q8_static_mib_per_frame": 0.23133680555555555,
+      "total_mib": 18.73828125
+    },
+    {
+      "sample": "n3dv",
+      "frame_gap": 4,
+      "total_frames": 81,
+      "keyframe_count": 21,
+      "keyframe_ratio": 0.25925925925925924,
+      "middle_count": 60,
+      "linear": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 30.262746842193057,
+          "psnr_min": 28.286828672994666,
+          "ssim_avg": 0.8998951654375336,
+          "ssim_min": 0.8726559281349182
+        },
+        "middle_only": {
+          "count": 60,
+          "psnr_avg": 30.151122621306758,
+          "psnr_min": 28.286828672994666,
+          "ssim_avg": 0.8986019253730774,
+          "ssim_min": 0.8726559281349182
+        },
+        "given_keyframes": {
+          "count": 21,
+          "psnr_avg": 30.58167318758247,
+          "psnr_min": 30.510021857286574,
+          "ssim_avg": 0.9035901370502654,
+          "ssim_min": 0.9020388126373291
+        }
+      },
+      "adapter": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 30.433338876385193,
+          "psnr_min": 28.460826041859985,
+          "ssim_avg": 0.9092782662238603,
+          "ssim_min": 0.8854377269744873
+        },
+        "middle_only": {
+          "count": 60,
+          "psnr_avg": 30.381421867466152,
+          "psnr_min": 28.460826041859985,
+          "ssim_avg": 0.9112691114346186,
+          "ssim_min": 0.8854377269744873
+        },
+        "given_keyframes": {
+          "count": 21,
+          "psnr_avg": 30.58167318758247,
+          "psnr_min": 30.510021857286574,
+          "ssim_avg": 0.9035901370502654,
+          "ssim_min": 0.9020388126373291
+        }
+      },
+      "delta_all_psnr": 0.1705920341921363,
+      "delta_middle_psnr": 0.2302992461593938,
+      "delta_given_psnr": 0.0,
+      "estimated_q8_static_mib_per_frame": 0.11848958333333333,
+      "total_mib": 9.59765625
+    },
+    {
+      "sample": "n3dv",
+      "frame_gap": 8,
+      "total_frames": 81,
+      "keyframe_count": 11,
+      "keyframe_ratio": 0.13580246913580246,
+      "middle_count": 70,
+      "linear": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 29.760235986151162,
+          "psnr_min": 26.99119055834707,
+          "ssim_avg": 0.8947301028687277,
+          "ssim_min": 0.8607065081596375
+        },
+        "middle_only": {
+          "count": 70,
+          "psnr_avg": 29.630924284776412,
+          "psnr_min": 26.99119055834707,
+          "ssim_avg": 0.893331162418638,
+          "ssim_min": 0.8607065081596375
+        },
+        "given_keyframes": {
+          "count": 11,
+          "psnr_avg": 30.58312863126316,
+          "psnr_min": 30.528629142303224,
+          "ssim_avg": 0.9036324511874806,
+          "ssim_min": 0.9025687575340271
+        }
+      },
+      "adapter": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 29.943230340797292,
+          "psnr_min": 27.125576999006398,
+          "ssim_avg": 0.9056822458902994,
+          "ssim_min": 0.8733451962471008
+        },
+        "middle_only": {
+          "count": 70,
+          "psnr_avg": 29.842674895152655,
+          "psnr_min": 27.125576999006398,
+          "ssim_avg": 0.9060043564864567,
+          "ssim_min": 0.8733451962471008
+        },
+        "given_keyframes": {
+          "count": 11,
+          "psnr_avg": 30.58312863126316,
+          "psnr_min": 30.528629142303224,
+          "ssim_avg": 0.9036324511874806,
+          "ssim_min": 0.9025687575340271
+        }
+      },
+      "delta_all_psnr": 0.18299435464613012,
+      "delta_middle_psnr": 0.21175061037624232,
+      "delta_given_psnr": 0.0,
+      "estimated_q8_static_mib_per_frame": 0.062065972222222224,
+      "total_mib": 5.02734375
+    },
+    {
+      "sample": "n3dv",
+      "frame_gap": 16,
+      "total_frames": 81,
+      "keyframe_count": 6,
+      "keyframe_ratio": 0.07407407407407407,
+      "middle_count": 75,
+      "linear": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 28.97164461220008,
+          "psnr_min": 26.069678613390064,
+          "ssim_avg": 0.8866400174152704,
+          "ssim_min": 0.8560639023780823
+        },
+        "middle_only": {
+          "count": 75,
+          "psnr_avg": 28.843296950587646,
+          "psnr_min": 26.069678613390064,
+          "ssim_avg": 0.8852978642781576,
+          "ssim_min": 0.8560639023780823
+        },
+        "given_keyframes": {
+          "count": 6,
+          "psnr_avg": 30.575990382355414,
+          "psnr_min": 30.528341924740378,
+          "ssim_avg": 0.9034169316291809,
+          "ssim_min": 0.9025705456733704
+        }
+      },
+      "adapter": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 29.1339733410253,
+          "psnr_min": 26.178665911930395,
+          "ssim_avg": 0.8983208662197913,
+          "ssim_min": 0.868628740310669
+        },
+        "middle_only": {
+          "count": 75,
+          "psnr_avg": 29.01861197771889,
+          "psnr_min": 26.178665911930395,
+          "ssim_avg": 0.8979131809870402,
+          "ssim_min": 0.868628740310669
+        },
+        "given_keyframes": {
+          "count": 6,
+          "psnr_avg": 30.575990382355414,
+          "psnr_min": 30.528341924740378,
+          "ssim_avg": 0.9034169316291809,
+          "ssim_min": 0.9025705456733704
+        }
+      },
+      "delta_all_psnr": 0.16232872882521932,
+      "delta_middle_psnr": 0.17531502713124425,
+      "delta_given_psnr": 0.0,
+      "estimated_q8_static_mib_per_frame": 0.033854166666666664,
+      "total_mib": 2.7421875
+    },
+    {
+      "sample": "meetroom",
+      "frame_gap": 2,
+      "total_frames": 81,
+      "keyframe_count": 41,
+      "keyframe_ratio": 0.5061728395061729,
+      "middle_count": 40,
+      "linear": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 30.80944977044778,
+          "psnr_min": 28.098277574023626,
+          "ssim_avg": 0.9089541435241699,
+          "ssim_min": 0.8899245858192444
+        },
+        "middle_only": {
+          "count": 40,
+          "psnr_avg": 30.111075582584174,
+          "psnr_min": 28.098277574023626,
+          "ssim_avg": 0.9029430076479912,
+          "ssim_min": 0.8899245858192444
+        },
+        "given_keyframes": {
+          "count": 41,
+          "psnr_avg": 31.490790441534234,
+          "psnr_min": 31.304285845350137,
+          "ssim_avg": 0.9148186663301979,
+          "ssim_min": 0.9119019508361816
+        }
+      },
+      "adapter": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 30.89567366591625,
+          "psnr_min": 28.20824655254369,
+          "ssim_avg": 0.9175809393694372,
+          "ssim_min": 0.9072482585906982
+        },
+        "middle_only": {
+          "count": 40,
+          "psnr_avg": 30.285678970907828,
+          "psnr_min": 28.20824655254369,
+          "ssim_avg": 0.9204122692346572,
+          "ssim_min": 0.9072482585906982
+        },
+        "given_keyframes": {
+          "count": 41,
+          "psnr_avg": 31.490790441534234,
+          "psnr_min": 31.304285845350137,
+          "ssim_avg": 0.9148186663301979,
+          "ssim_min": 0.9119019508361816
+        }
+      },
+      "delta_all_psnr": 0.08622389546846776,
+      "delta_middle_psnr": 0.17460338832365352,
+      "delta_given_psnr": 0.0,
+      "estimated_q8_static_mib_per_frame": 0.23133680555555555,
+      "total_mib": 18.73828125
+    },
+    {
+      "sample": "meetroom",
+      "frame_gap": 4,
+      "total_frames": 81,
+      "keyframe_count": 21,
+      "keyframe_ratio": 0.25925925925925924,
+      "middle_count": 60,
+      "linear": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 29.545271806231266,
+          "psnr_min": 26.20814896809117,
+          "ssim_avg": 0.8983131845792135,
+          "ssim_min": 0.8714787364006042
+        },
+        "middle_only": {
+          "count": 60,
+          "psnr_avg": 28.87550156728862,
+          "psnr_min": 26.20814896809117,
+          "ssim_avg": 0.8927158534526825,
+          "ssim_min": 0.8714787364006042
+        },
+        "given_keyframes": {
+          "count": 21,
+          "psnr_avg": 31.4589010603531,
+          "psnr_min": 31.30352198330412,
+          "ssim_avg": 0.9143055592264447,
+          "ssim_min": 0.9119053483009338
+        }
+      },
+      "adapter": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 29.645102902246254,
+          "psnr_min": 26.305427159137512,
+          "ssim_avg": 0.9111717078420851,
+          "ssim_min": 0.8889598846435547
+        },
+        "middle_only": {
+          "count": 60,
+          "psnr_avg": 29.010273546908863,
+          "psnr_min": 26.305427159137512,
+          "ssim_avg": 0.9100748598575592,
+          "ssim_min": 0.8889598846435547
+        },
+        "given_keyframes": {
+          "count": 21,
+          "psnr_avg": 31.4589010603531,
+          "psnr_min": 31.30352198330412,
+          "ssim_avg": 0.9143055592264447,
+          "ssim_min": 0.9119053483009338
+        }
+      },
+      "delta_all_psnr": 0.09983109601498796,
+      "delta_middle_psnr": 0.13477197962024334,
+      "delta_given_psnr": 0.0,
+      "estimated_q8_static_mib_per_frame": 0.11848958333333333,
+      "total_mib": 9.59765625
+    },
+    {
+      "sample": "meetroom",
+      "frame_gap": 8,
+      "total_frames": 81,
+      "keyframe_count": 11,
+      "keyframe_ratio": 0.13580246913580246,
+      "middle_count": 70,
+      "linear": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 27.836690878644642,
+          "psnr_min": 24.185229311485983,
+          "ssim_avg": 0.8845076340216177,
+          "ssim_min": 0.8516939282417297
+        },
+        "middle_only": {
+          "count": 70,
+          "psnr_avg": 27.2662964291608,
+          "psnr_min": 24.185229311485983,
+          "ssim_avg": 0.8798252837998527,
+          "ssim_min": 0.8516939282417297
+        },
+        "given_keyframes": {
+          "count": 11,
+          "psnr_avg": 31.466473738996346,
+          "psnr_min": 31.33532814694238,
+          "ssim_avg": 0.9143044081601229,
+          "ssim_min": 0.9119019508361816
+        }
+      },
+      "adapter": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 27.92265173617625,
+          "psnr_min": 24.20430976892714,
+          "ssim_avg": 0.8993902250572487,
+          "ssim_min": 0.8680221438407898
+        },
+        "middle_only": {
+          "count": 70,
+          "psnr_avg": 27.365765421447374,
+          "psnr_min": 24.20430976892714,
+          "ssim_avg": 0.8970465677125113,
+          "ssim_min": 0.8680221438407898
+        },
+        "given_keyframes": {
+          "count": 11,
+          "psnr_avg": 31.466473738996346,
+          "psnr_min": 31.33532814694238,
+          "ssim_avg": 0.9143044081601229,
+          "ssim_min": 0.9119019508361816
+        }
+      },
+      "delta_all_psnr": 0.08596085753160665,
+      "delta_middle_psnr": 0.09946899228657458,
+      "delta_given_psnr": 0.0,
+      "estimated_q8_static_mib_per_frame": 0.062065972222222224,
+      "total_mib": 5.02734375
+    },
+    {
+      "sample": "meetroom",
+      "frame_gap": 16,
+      "total_frames": 81,
+      "keyframe_count": 6,
+      "keyframe_ratio": 0.07407407407407407,
+      "middle_count": 75,
+      "linear": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 25.93109917220034,
+          "psnr_min": 22.524300004829026,
+          "ssim_avg": 0.8686569156470122,
+          "ssim_min": 0.8340994715690613
+        },
+        "middle_only": {
+          "count": 75,
+          "psnr_avg": 25.488520285000458,
+          "psnr_min": 22.524300004829026,
+          "ssim_avg": 0.8649849319458007,
+          "ssim_min": 0.8340994715690613
+        },
+        "given_keyframes": {
+          "count": 6,
+          "psnr_avg": 31.46333526219885,
+          "psnr_min": 31.39638219658844,
+          "ssim_avg": 0.9145567119121552,
+          "ssim_min": 0.9137786030769348
+        }
+      },
+      "adapter": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 25.99195815088074,
+          "psnr_min": 22.487177325241852,
+          "ssim_avg": 0.8843558651429636,
+          "ssim_min": 0.8500187993049622
+        },
+        "middle_only": {
+          "count": 75,
+          "psnr_avg": 25.554247981975298,
+          "psnr_min": 22.487177325241852,
+          "ssim_avg": 0.8819397974014282,
+          "ssim_min": 0.8500187993049622
+        },
+        "given_keyframes": {
+          "count": 6,
+          "psnr_avg": 31.46333526219885,
+          "psnr_min": 31.39638219658844,
+          "ssim_avg": 0.9145567119121552,
+          "ssim_min": 0.9137786030769348
+        }
+      },
+      "delta_all_psnr": 0.060858978680400355,
+      "delta_middle_psnr": 0.06572769697483949,
+      "delta_given_psnr": 0.0,
+      "estimated_q8_static_mib_per_frame": 0.033854166666666664,
+      "total_mib": 2.7421875
+    },
+    {
+      "sample": "driving",
+      "frame_gap": 2,
+      "total_frames": 81,
+      "keyframe_count": 41,
+      "keyframe_ratio": 0.5061728395061729,
+      "middle_count": 40,
+      "linear": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 30.21224053846697,
+          "psnr_min": 24.513228980468256,
+          "ssim_avg": 0.83679524174443,
+          "ssim_min": 0.619958221912384
+        },
+        "middle_only": {
+          "count": 40,
+          "psnr_avg": 27.905598030393833,
+          "psnr_min": 24.513228980468256,
+          "ssim_avg": 0.7781873360276222,
+          "ssim_min": 0.619958221912384
+        },
+        "given_keyframes": {
+          "count": 41,
+          "psnr_avg": 32.46262347317247,
+          "psnr_min": 31.939189533817128,
+          "ssim_avg": 0.8939736863461937,
+          "ssim_min": 0.8763020634651184
+        }
+      },
+      "adapter": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 30.31535222026487,
+          "psnr_min": 24.607108432497352,
+          "ssim_avg": 0.8423746161990695,
+          "ssim_min": 0.6322144865989685
+        },
+        "middle_only": {
+          "count": 40,
+          "psnr_avg": 28.114399186034586,
+          "psnr_min": 24.607108432497352,
+          "ssim_avg": 0.7894855692982674,
+          "ssim_min": 0.6322144865989685
+        },
+        "given_keyframes": {
+          "count": 41,
+          "psnr_avg": 32.46262347317247,
+          "psnr_min": 31.939189533817128,
+          "ssim_avg": 0.8939736863461937,
+          "ssim_min": 0.8763020634651184
+        }
+      },
+      "delta_all_psnr": 0.10311168179790187,
+      "delta_middle_psnr": 0.20880115564075297,
+      "delta_given_psnr": 0.0,
+      "estimated_q8_static_mib_per_frame": 0.23133680555555555,
+      "total_mib": 18.73828125
+    },
+    {
+      "sample": "driving",
+      "frame_gap": 4,
+      "total_frames": 81,
+      "keyframe_count": 21,
+      "keyframe_ratio": 0.25925925925925924,
+      "middle_count": 60,
+      "linear": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 27.918186053702325,
+          "psnr_min": 22.08653572264186,
+          "ssim_avg": 0.7710229254063264,
+          "ssim_min": 0.5247482657432556
+        },
+        "middle_only": {
+          "count": 60,
+          "psnr_avg": 26.337118289805513,
+          "psnr_min": 22.08653572264186,
+          "ssim_avg": 0.7283047705888748,
+          "ssim_min": 0.5247482657432556
+        },
+        "given_keyframes": {
+          "count": 21,
+          "psnr_avg": 32.43552252197891,
+          "psnr_min": 31.939189533817128,
+          "ssim_avg": 0.8930747963133312,
+          "ssim_min": 0.8825507760047913
+        }
+      },
+      "adapter": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 28.023854321394463,
+          "psnr_min": 22.083775991251994,
+          "ssim_avg": 0.7790667841463913,
+          "ssim_min": 0.5333921313285828
+        },
+        "middle_only": {
+          "count": 60,
+          "psnr_avg": 26.479770451189903,
+          "psnr_min": 22.083775991251994,
+          "ssim_avg": 0.7391639798879623,
+          "ssim_min": 0.5333921313285828
+        },
+        "given_keyframes": {
+          "count": 21,
+          "psnr_avg": 32.43552252197891,
+          "psnr_min": 31.939189533817128,
+          "ssim_avg": 0.8930747963133312,
+          "ssim_min": 0.8825507760047913
+        }
+      },
+      "delta_all_psnr": 0.10566826769213833,
+      "delta_middle_psnr": 0.1426521613843903,
+      "delta_given_psnr": 0.0,
+      "estimated_q8_static_mib_per_frame": 0.11848958333333333,
+      "total_mib": 9.59765625
+    },
+    {
+      "sample": "driving",
+      "frame_gap": 8,
+      "total_frames": 81,
+      "keyframe_count": 11,
+      "keyframe_ratio": 0.13580246913580246,
+      "middle_count": 70,
+      "linear": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 25.72229271347723,
+          "psnr_min": 20.578067612681057,
+          "ssim_avg": 0.7012455529636807,
+          "ssim_min": 0.4994034767150879
+        },
+        "middle_only": {
+          "count": 70,
+          "psnr_avg": 24.672483535818916,
+          "psnr_min": 20.578067612681057,
+          "ssim_avg": 0.6711270715509142,
+          "ssim_min": 0.4994034767150879
+        },
+        "given_keyframes": {
+          "count": 11,
+          "psnr_avg": 32.40289657130288,
+          "psnr_min": 31.939366532598395,
+          "ssim_avg": 0.8929086164994673,
+          "ssim_min": 0.8829935193061829
+        }
+      },
+      "adapter": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 25.80106948112563,
+          "psnr_min": 20.636830290539677,
+          "ssim_avg": 0.7101026280426684,
+          "ssim_min": 0.5070315003395081
+        },
+        "middle_only": {
+          "count": 70,
+          "psnr_avg": 24.763639509812062,
+          "psnr_min": 20.636830290539677,
+          "ssim_avg": 0.681375972713743,
+          "ssim_min": 0.5070315003395081
+        },
+        "given_keyframes": {
+          "count": 11,
+          "psnr_avg": 32.40289657130288,
+          "psnr_min": 31.939366532598395,
+          "ssim_avg": 0.8929086164994673,
+          "ssim_min": 0.8829935193061829
+        }
+      },
+      "delta_all_psnr": 0.07877676764839947,
+      "delta_middle_psnr": 0.09115597399314623,
+      "delta_given_psnr": 0.0,
+      "estimated_q8_static_mib_per_frame": 0.062065972222222224,
+      "total_mib": 5.02734375
+    },
+    {
+      "sample": "driving",
+      "frame_gap": 16,
+      "total_frames": 81,
+      "keyframe_count": 6,
+      "keyframe_ratio": 0.07407407407407407,
+      "middle_count": 75,
+      "linear": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 23.768742135243652,
+          "psnr_min": 19.69201624072733,
+          "ssim_avg": 0.6309826741983862,
+          "ssim_min": 0.4795135259628296
+        },
+        "middle_only": {
+          "count": 75,
+          "psnr_avg": 23.079596781403634,
+          "psnr_min": 19.69201624072733,
+          "ssim_avg": 0.6100991384188335,
+          "ssim_min": 0.4795135259628296
+        },
+        "given_keyframes": {
+          "count": 6,
+          "psnr_avg": 32.38305905824392,
+          "psnr_min": 31.939187558425004,
+          "ssim_avg": 0.8920268714427948,
+          "ssim_min": 0.8829876780509949
+        }
+      },
+      "adapter": {
+        "all": {
+          "count": 81,
+          "psnr_avg": 23.815281085037995,
+          "psnr_min": 19.725248704688248,
+          "ssim_avg": 0.6395639839731617,
+          "ssim_min": 0.48614302277565
+        },
+        "middle_only": {
+          "count": 75,
+          "psnr_avg": 23.129858847181524,
+          "psnr_min": 19.725248704688248,
+          "ssim_avg": 0.6193669529755911,
+          "ssim_min": 0.48614302277565
+        },
+        "given_keyframes": {
+          "count": 6,
+          "psnr_avg": 32.38305905824392,
+          "psnr_min": 31.939187558425004,
+          "ssim_avg": 0.8920268714427948,
+          "ssim_min": 0.8829876780509949
+        }
+      },
+      "delta_all_psnr": 0.0465389497943427,
+      "delta_middle_psnr": 0.05026206577788983,
+      "delta_given_psnr": 0.0,
+      "estimated_q8_static_mib_per_frame": 0.033854166666666664,
+      "total_mib": 2.7421875
+    },
+    {
+      "sample": "robot",
+      "frame_gap": 2,
+      "total_frames": 77,
+      "keyframe_count": 39,
+      "keyframe_ratio": 0.5064935064935064,
+      "middle_count": 38,
+      "linear": {
+        "all": {
+          "count": 77,
+          "psnr_avg": 27.92403842939931,
+          "psnr_min": 19.278553570759268,
+          "ssim_avg": 0.8366177205915575,
+          "ssim_min": 0.6829589009284973
+        },
+        "middle_only": {
+          "count": 38,
+          "psnr_avg": 23.942222105388915,
+          "psnr_min": 19.278553570759268,
+          "ssim_avg": 0.7829072083297529,
+          "ssim_min": 0.6829589009284973
+        },
+        "given_keyframes": {
+          "count": 39,
+          "psnr_avg": 31.803756898947903,
+          "psnr_min": 31.075252392456385,
+          "ssim_avg": 0.8889510402312646,
+          "ssim_min": 0.882699728012085
+        }
+      },
+      "adapter": {
+        "all": {
+          "count": 77,
+          "psnr_avg": 27.958972736839325,
+          "psnr_min": 19.267830227029833,
+          "ssim_avg": 0.8440160085628559,
+          "ssim_min": 0.695220947265625
+        },
+        "middle_only": {
+          "count": 38,
+          "psnr_avg": 24.013010044148956,
+          "psnr_min": 19.267830227029833,
+          "ssim_avg": 0.7978984760610681,
+          "ssim_min": 0.695220947265625
+        },
+        "given_keyframes": {
+          "count": 39,
+          "psnr_avg": 31.803756898947903,
+          "psnr_min": 31.075252392456385,
+          "ssim_avg": 0.8889510402312646,
+          "ssim_min": 0.882699728012085
+        }
+      },
+      "delta_all_psnr": 0.03493430744001458,
+      "delta_middle_psnr": 0.07078793876004141,
+      "delta_given_psnr": 0.0,
+      "estimated_q8_static_mib_per_frame": 0.2314833603896104,
+      "total_mib": 17.82421875
+    },
+    {
+      "sample": "robot",
+      "frame_gap": 4,
+      "total_frames": 77,
+      "keyframe_count": 20,
+      "keyframe_ratio": 0.2597402597402597,
+      "middle_count": 57,
+      "linear": {
+        "all": {
+          "count": 77,
+          "psnr_avg": 25.154367560029165,
+          "psnr_min": 16.11811230589604,
+          "ssim_avg": 0.7914328977659151,
+          "ssim_min": 0.6299052238464355
+        },
+        "middle_only": {
+          "count": 57,
+          "psnr_avg": 22.824303007556022,
+          "psnr_min": 16.11811230589604,
+          "ssim_avg": 0.7572286672759474,
+          "ssim_min": 0.6299052238464355
+        },
+        "given_keyframes": {
+          "count": 20,
+          "psnr_avg": 31.79505153457764,
+          "psnr_min": 31.075883543194198,
+          "ssim_avg": 0.888914954662323,
+          "ssim_min": 0.882716715335846
+        }
+      },
+      "adapter": {
+        "all": {
+          "count": 77,
+          "psnr_avg": 25.19099172008088,
+          "psnr_min": 16.058595978367748,
+          "ssim_avg": 0.8025607621514952,
+          "ssim_min": 0.6435561180114746
+        },
+        "middle_only": {
+          "count": 57,
+          "psnr_avg": 22.873777750082017,
+          "psnr_min": 16.058595978367748,
+          "ssim_avg": 0.7722610454810294,
+          "ssim_min": 0.6435561180114746
+        },
+        "given_keyframes": {
+          "count": 20,
+          "psnr_avg": 31.79505153457764,
+          "psnr_min": 31.075883543194198,
+          "ssim_avg": 0.888914954662323,
+          "ssim_min": 0.882716715335846
+        }
+      },
+      "delta_all_psnr": 0.03662416005171565,
+      "delta_middle_psnr": 0.049474742525994486,
+      "delta_given_psnr": 0.0,
+      "estimated_q8_static_mib_per_frame": 0.11870941558441558,
+      "total_mib": 9.140625
+    },
+    {
+      "sample": "robot",
+      "frame_gap": 8,
+      "total_frames": 77,
+      "keyframe_count": 11,
+      "keyframe_ratio": 0.14285714285714285,
+      "middle_count": 66,
+      "linear": {
+        "all": {
+          "count": 77,
+          "psnr_avg": 22.962147586893312,
+          "psnr_min": 15.571707843156075,
+          "ssim_avg": 0.7515525639831245,
+          "ssim_min": 0.6157629489898682
+        },
+        "middle_only": {
+          "count": 66,
+          "psnr_avg": 21.48821990655111,
+          "psnr_min": 15.571707843156075,
+          "ssim_avg": 0.7284961604710781,
+          "ssim_min": 0.6157629489898682
+        },
+        "given_keyframes": {
+          "count": 11,
+          "psnr_avg": 31.805713668946552,
+          "psnr_min": 31.07555937479081,
+          "ssim_avg": 0.8898909850554033,
+          "ssim_min": 0.8836891055107117
+        }
+      },
+      "adapter": {
+        "all": {
+          "count": 77,
+          "psnr_avg": 22.98273588905873,
+          "psnr_min": 15.500037068047497,
+          "ssim_avg": 0.7635477703887147,
+          "ssim_min": 0.6263066530227661
+        },
+        "middle_only": {
+          "count": 66,
+          "psnr_avg": 21.512239592410758,
+          "psnr_min": 15.500037068047497,
+          "ssim_avg": 0.7424905679442666,
+          "ssim_min": 0.6263066530227661
+        },
+        "given_keyframes": {
+          "count": 11,
+          "psnr_avg": 31.805713668946552,
+          "psnr_min": 31.07555937479081,
+          "ssim_avg": 0.8898909850554033,
+          "ssim_min": 0.8836891055107117
+        }
+      },
+      "delta_all_psnr": 0.02058830216541807,
+      "delta_middle_psnr": 0.024019685859649087,
+      "delta_given_psnr": 0.0,
+      "estimated_q8_static_mib_per_frame": 0.06529017857142858,
+      "total_mib": 5.02734375
+    },
+    {
+      "sample": "robot",
+      "frame_gap": 16,
+      "total_frames": 77,
+      "keyframe_count": 6,
+      "keyframe_ratio": 0.07792207792207792,
+      "middle_count": 71,
+      "linear": {
+        "all": {
+          "count": 77,
+          "psnr_avg": 21.422466563553254,
+          "psnr_min": 15.483181616877744,
+          "ssim_avg": 0.7221683859825134,
+          "ssim_min": 0.5955172181129456
+        },
+        "middle_only": {
+          "count": 71,
+          "psnr_avg": 20.550232700200223,
+          "psnr_min": 15.483181616877744,
+          "ssim_avg": 0.7080350165635767,
+          "ssim_min": 0.5955172181129456
+        },
+        "given_keyframes": {
+          "count": 6,
+          "psnr_avg": 31.743900613230764,
+          "psnr_min": 31.078887704667565,
+          "ssim_avg": 0.8894132574399313,
+          "ssim_min": 0.8836860060691833
+        }
+      },
+      "adapter": {
+        "all": {
+          "count": 77,
+          "psnr_avg": 21.425733270204347,
+          "psnr_min": 15.40560727490955,
+          "ssim_avg": 0.7349900881965439,
+          "ssim_min": 0.6062853336334229
+        },
+        "middle_only": {
+          "count": 71,
+          "psnr_avg": 20.553775466568315,
+          "psnr_min": 15.40560727490955,
+          "ssim_avg": 0.7219402429083703,
+          "ssim_min": 0.6062853336334229
+        },
+        "given_keyframes": {
+          "count": 6,
+          "psnr_avg": 31.743900613230764,
+          "psnr_min": 31.078887704667565,
+          "ssim_avg": 0.8894132574399313,
+          "ssim_min": 0.8836860060691833
+        }
+      },
+      "delta_all_psnr": 0.0032667066510931875,
+      "delta_middle_psnr": 0.003542766368092032,
+      "delta_given_psnr": 0.0,
+      "estimated_q8_static_mib_per_frame": 0.03561282467532467,
+      "total_mib": 2.7421875
+    }
+  ],
+  "csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage23_full_video_anchor_only_evaluator/stage23_full_video_anchor_only_evaluator.csv",
+  "mean_delta_all_psnr": 0.08745696841177764,
+  "mean_delta_middle_psnr": 0.12360522208180025,
+  "notes": "Given keyframes are rendered directly from transmitted q8 anchors for both methods. Adapter is used only for non-keyframe middle frames."
+}

@@ -1,0 +1,77 @@
+{
+  "stage": 23,
+  "mode": "full-video anchor-only evaluator",
+  "samples": [
+    "robot"
+  ],
+  "gaps": [
+    4
+  ],
+  "adapter": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage21d_validated_anchor_adapter_training/stage21d_best_anchor_adapter.safetensors",
+  "quant_bits": 8,
+  "rows": [
+    {
+      "sample": "robot",
+      "frame_gap": 4,
+      "total_frames": 77,
+      "keyframe_count": 20,
+      "keyframe_ratio": 0.2597402597402597,
+      "middle_count": 57,
+      "linear": {
+        "all": {
+          "count": 77,
+          "psnr_avg": 25.154367560029165,
+          "psnr_min": 16.11811230589604,
+          "ssim_avg": 0.7914328977659151,
+          "ssim_min": 0.6299052238464355
+        },
+        "middle_only": {
+          "count": 57,
+          "psnr_avg": 22.824303007556022,
+          "psnr_min": 16.11811230589604,
+          "ssim_avg": 0.7572286672759474,
+          "ssim_min": 0.6299052238464355
+        },
+        "given_keyframes": {
+          "count": 20,
+          "psnr_avg": 31.79505153457764,
+          "psnr_min": 31.075883543194198,
+          "ssim_avg": 0.888914954662323,
+          "ssim_min": 0.882716715335846
+        }
+      },
+      "adapter": {
+        "all": {
+          "count": 77,
+          "psnr_avg": 25.19099172008088,
+          "psnr_min": 16.058595978367748,
+          "ssim_avg": 0.8025607621514952,
+          "ssim_min": 0.6435561180114746
+        },
+        "middle_only": {
+          "count": 57,
+          "psnr_avg": 22.873777750082017,
+          "psnr_min": 16.058595978367748,
+          "ssim_avg": 0.7722610454810294,
+          "ssim_min": 0.6435561180114746
+        },
+        "given_keyframes": {
+          "count": 20,
+          "psnr_avg": 31.79505153457764,
+          "psnr_min": 31.075883543194198,
+          "ssim_avg": 0.888914954662323,
+          "ssim_min": 0.882716715335846
+        }
+      },
+      "delta_all_psnr": 0.03662416005171565,
+      "delta_middle_psnr": 0.049474742525994486,
+      "delta_given_psnr": 0.0,
+      "estimated_q8_static_mib_per_frame": 0.11870941558441558,
+      "total_mib": 9.140625
+    }
+  ],
+  "csv": "experiments/stage23_full_video_anchor_only_evaluator_smoke/stage23_full_video_anchor_only_evaluator.csv",
+  "mean_delta_all_psnr": 0.03662416005171565,
+  "mean_delta_middle_psnr": 0.049474742525994486,
+  "notes": "Given keyframes are rendered directly from transmitted q8 anchors for both methods. Adapter is used only for non-keyframe middle frames."
+}

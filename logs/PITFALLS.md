@@ -161,3 +161,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 
 - Stage22 RD uses Stage21d robot intermediate-target eval and Stage2 q8 static-anchor rate. It is not comparable one-to-one with Stage19 full-video all-frame PSNR.
 - Rate uses transmitted keyframe anchors only. The Stage21d adapter weights are reported separately and not counted in MiB/frame.
+
+## Stage 23 Notes
+
+- In full-video anchor-only evaluation, keyframes should be rendered directly from transmitted anchors for both methods. Do not pass keyframes through the adapter; the adapter is only for non-keyframe prediction.
+- Stage23 PSNR/SSIM is an anchor-only reconstruction metric. It should not be directly compared against Stage19 original StreamSplat RGB/depth-conditioned decoder metrics without clearly separating input conditions.
+- Stage23 full evaluation can be slow because it renders full 36k-Gaussian anchors for all middle frames across 16 sample-gap points. Run a single sample/gap smoke before full evaluation.

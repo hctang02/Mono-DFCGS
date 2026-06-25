@@ -273,3 +273,13 @@ Stage21b 收益为正但极小，因此继续执行 Stage21c medium anchor adapt
 ### 当前执行决策
 
 继续执行 Stage21d validated anchor adapter training 和 Stage22 anchor-only RD curve。Stage21d 解决 Stage21c 缺少 validation-based checkpoint selection 的问题；Stage22 将 Stage21d best checkpoint 的 robot intermediate-target quality 接入 Stage2 q8 static-anchor rate，形成 anchor-only RD 汇总和曲线图。
+
+## 2026-06-25：继续执行 Stage23 full-video evaluator
+
+### 用户原始问题
+
+用户要求：可以继续往后做后面的 stages。
+
+### 当前执行决策
+
+执行 Stage23 full-video anchor-only evaluator，将 Stage21d best adapter 从 intermediate-target RD 扩展到完整视频逐帧评估。优先验证 adapter 收益是否在 `n3dv/meetroom/driving/robot × gap 2/4/8/16` 的 all/middle PSNR 上持续为正。

@@ -1776,3 +1776,89 @@ experiments/stage22_anchor_only_rd_curve/stage22_anchor_only_delta_psnr.png
 - Stage22 anchor-only RD 中，Stage21d adapter 在 4 个 robot rate 点上都超过 q8 linear anchor baseline。
 - mean delta PSNR: 0.03584063934871651 dB。
 - 该 RD 是 intermediate-target anchor-only RD，不是 full-video all-frame PSNR/SSIM；后续 paper-level RD 还需要完整视频评估和更多数据集。
+
+## 2026-06-25：阶段 23 Full-Video Anchor-Only Evaluator
+
+### 执行计划
+
+阶段 23 的目标是把 Stage22 的 robot intermediate-target RD 扩展成 full-video anchor-only evaluator。使用 Stage21d best adapter checkpoint，对 `n3dv/meetroom/driving/robot × gap 2/4/8/16` 做逐帧重建评估。
+
+关键口径：
+
+- 输入 payload 仍仅为 q8 keyframe static anchors + timestamp。
+- given keyframes 直接由 transmitted q8 anchors 渲染。
+- adapter 只用于 non-keyframe middle frames，不改写已传输 keyframes。
+- 对比方法为 q8 linear anchor interpolation vs Stage21d adapter。
+
+### 新增文件
+
+```text
+scripts/run_stage23_full_video_anchor_only_evaluator.py
+```
+
+### 运行命令
+
+先做 smoke：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage23_full_video_anchor_only_evaluator.py --samples robot --gaps 4 --summary_root experiments/stage23_full_video_anchor_only_evaluator_smoke
+```
+
+再跑全量：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage23_full_video_anchor_only_evaluator.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi` 检查 GPU。GPU 0/2 有大进程，GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage23_full_video_anchor_only_evaluator/stage23_full_video_anchor_only_evaluator_summary.json
+experiments/stage23_full_video_anchor_only_evaluator/stage23_full_video_anchor_only_evaluator.csv
+```
+
+smoke 输出：
+
+```text
+experiments/stage23_full_video_anchor_only_evaluator_smoke/stage23_full_video_anchor_only_evaluator_summary.json
+experiments/stage23_full_video_anchor_only_evaluator_smoke/stage23_full_video_anchor_only_evaluator.csv
+```
+
+### 总体结果
+
+| metric | value |
+|---|---:|
+| rows | 16 |
+| mean delta all PSNR | 0.08745696841177764 |
+| mean delta middle PSNR | 0.12360522208180025 |
+| negative all-PSNR points | 0 |
+| negative middle-PSNR points | 0 |
+
+### Per-Sample 平均收益
+
+| sample | mean delta all PSNR | mean delta middle PSNR |
+|---|---:|---:|
+| n3dv | 0.1592318809129889 | 0.21560375144838417 |
+| meetroom | 0.08321870692386568 | 0.11864301430132773 |
+| driving | 0.08352391673319559 | 0.12321783919904483 |
+| robot | 0.02385336907706037 | 0.036956283378444255 |
+
+### 代表性结果
+
+| sample | gap | rate MiB/frame | linear all PSNR | adapter all PSNR | delta all | delta middle |
+|---|---:|---:|---:|---:|---:|---:|
+| n3dv | 4 | 0.11848958333333333 | 30.262746842193057 | 30.433338876385193 | 0.1705920341921363 | 0.2302992461593938 |
+| meetroom | 4 | 0.11848958333333333 | 29.545271806231266 | 29.645102902246254 | 0.09983109601498796 | 0.13477197962024334 |
+| driving | 4 | 0.11848958333333333 | 27.918186053702325 | 28.023854321394463 | 0.10566826769213833 | 0.1426521613843903 |
+| robot | 4 | 0.11870941558441558 | 25.154367560029165 | 25.19099172008088 | 0.03662416005171565 | 0.049474742525994486 |
+
+### 结论
+
+- Stage23 表明 Stage21d adapter 的收益能从 intermediate-target eval 转化到 full-video anchor-only evaluation。
+- 16 个 sample-gap 点的 all/middle PSNR 均为正收益。
+- given-keyframe delta 为 0，这是预期行为，因为 keyframes 直接使用 transmitted q8 anchors 渲染。
+- 注意：Stage23 的 full-video anchor-only PSNR 不等同于 Stage19 原 StreamSplat RGB/depth-conditioned full-video PSNR；二者输入 payload 和 decoder 条件不同。
