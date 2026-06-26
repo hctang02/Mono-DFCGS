@@ -3546,3 +3546,67 @@ experiments/stage50_multibit_anchor_bitstream_prototype/stage50_multibit_anchor_
 - Multi-bit bitstream roundtrip 已验证，所有 bits 的 max abs diff vs direct dequantized quantization 都是 `0.0`。
 - q10/q12/q16 现在能提供更高 zlib 码率点，适合 Stage51 生成 high-rate RD 曲线。
 - q6 当前不是 bitpacked raw storage，因此 raw rate 与 q8 接近；但 theoretical bitpacked rate 已报告，后续如要做低码率 compact bitstream 需实现真正 bit-packing。
+
+## 2026-06-26：阶段 51 High-Rate Multi-Bit RD
+
+### 执行计划
+
+Stage51 使用 Stage49 selections 和 Stage50 q8/q10/q12/q16 actual rates，重新渲染对应 bit-depth dequantized anchors 的 full-video quality，生成 high-rate RD 曲线。
+
+### 新增文件
+
+```text
+scripts/run_stage51_high_rate_multibit_rd.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage51_high_rate_multibit_rd.py
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage51_high_rate_multibit_rd.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi`。GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 重要修正
+
+首次 Stage51 渲染完成后写 CSV 失败，因为字段列表漏了 `estimated_q8_static_mib_per_frame`。已修复后重跑完成。
+
+### 输出文件
+
+```text
+experiments/stage51_high_rate_multibit_rd/stage51_high_rate_multibit_rd.csv
+experiments/stage51_high_rate_multibit_rd/stage51_raw_selector_comparison.csv
+experiments/stage51_high_rate_multibit_rd/stage51_zlib_selector_comparison.csv
+experiments/stage51_high_rate_multibit_rd/stage51_high_rate_multibit_rd_summary.json
+experiments/stage51_high_rate_multibit_rd/stage51_uniform_zlib_all_psnr_rd.png
+experiments/stage51_high_rate_multibit_rd/stage51_uniform_zlib_middle_psnr_rd.png
+experiments/stage51_high_rate_multibit_rd/stage51_rendered_prior_0p1_zlib_all_psnr_rd.png
+experiments/stage51_high_rate_multibit_rd/stage51_rendered_prior_0p1_zlib_middle_psnr_rd.png
+```
+
+### Uniform aggregate by bits
+
+| bits | mean zlib MiB/frame | mean all PSNR | mean middle PSNR |
+|---:|---:|---:|---:|
+| 8 | 0.11566981107966534 | 28.42804749723145 | 26.686021035212185 |
+| 10 | 0.17833053263585294 | 30.34450288854624 | 27.62072153468886 |
+| 12 | 0.2018442118125191 | 30.68936631000986 | 27.73308939548495 |
+| 16 | 0.23730023701348568 | 30.717664385570107 | 27.742100338359098 |
+
+### Adaptive aggregate by bits
+
+| bits | mean zlib MiB/frame | mean all PSNR | mean middle PSNR |
+|---:|---:|---:|---:|
+| 8 | 0.11566581273600074 | 28.48227138339992 | 26.771428902107147 |
+| 10 | 0.17832663197996754 | 30.402345435674107 | 27.71204335713491 |
+| 12 | 0.20184353326057725 | 30.748004954163406 | 27.82601646966399 |
+| 16 | 0.237295773141331 | 30.776381462437445 | 27.83515966997416 |
+
+### 结论
+
+- Stage51 明确解决“高码率点缺失”和“PSNR 太一般”的一部分问题：q10/q12/q16 让 mean all PSNR 从 q8 约 `28.4 dB` 提升到 q16 约 `30.7 dB`。
+- q12 到 q16 的提升已经很小，说明当前 quality 主要进入 anchor/model 上限区间，而不是纯量化瓶颈。
+- Adaptive `rendered_prior_0p1` 在各 bit-depth 下平均仍略高于 uniform，且 zlib rate 基本一致或略低。

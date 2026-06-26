@@ -334,3 +334,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage50 multi-bit payload is not bit-packed. `q6` uses uint8 storage, and q10/q12/q16 use uint16 storage. Label raw rates accordingly.
 - Theoretical bitpacked MiB/frame is reported separately and should not be mixed with actual prototype raw container size.
 - Stage50 validates container roundtrip only; quality at higher bit-depth needs Stage51 rendering with decoded/dequantized anchors.
+
+## Stage 51 Notes
+
+- Stage51 quality must be rerendered for each bit-depth; changing only the rate axis would be invalid.
+- CSV writers for flattened eval rows must include `estimated_q8_static_mib_per_frame` even when the main rate is multi-bit raw/zlib.
+- q12 to q16 gives limited extra PSNR, suggesting remaining quality is bounded by anchors/adapter/rendering rather than quantization alone.
