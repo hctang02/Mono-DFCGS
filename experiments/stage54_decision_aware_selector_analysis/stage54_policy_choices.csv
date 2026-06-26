@@ -1,0 +1,121 @@
+policy,sample,reference_gap,chosen_method,delta_all_psnr,delta_middle_psnr,chosen_reason,train_policy,jaccard_to_oracle,max_segment_ratio,mean_abs_len_error_ratio,indices
+uniform,driving,4,uniform,0.0,0.0,fallback baseline,always uniform,,1.0,0.0,
+uniform,driving,8,uniform,0.0,0.0,fallback baseline,always uniform,,1.0,0.0,
+uniform,driving,16,uniform,0.0,0.0,fallback baseline,always uniform,,1.0,0.0,
+uniform,meetroom,4,uniform,0.0,0.0,fallback baseline,always uniform,,1.0,0.0,
+uniform,meetroom,8,uniform,0.0,0.0,fallback baseline,always uniform,,1.0,0.0,
+uniform,meetroom,16,uniform,0.0,0.0,fallback baseline,always uniform,,1.0,0.0,
+uniform,n3dv,4,uniform,0.0,0.0,fallback baseline,always uniform,,1.0,0.0,
+uniform,n3dv,8,uniform,0.0,0.0,fallback baseline,always uniform,,1.0,0.0,
+uniform,n3dv,16,uniform,0.0,0.0,fallback baseline,always uniform,,1.0,0.0,
+uniform,robot,4,uniform,0.0,0.0,fallback baseline,always uniform,,1.0,0.0,
+uniform,robot,8,uniform,0.0,0.0,fallback baseline,always uniform,,1.0,0.0,
+uniform,robot,16,uniform,0.0,0.0,fallback baseline,always uniform,,1.0,0.0,
+oracle_best_candidate_pool,driving,4,uniform,0.0,0.0,oracle fallback chose uniform,uses actual RD outcome,,1.0,0.0,
+oracle_best_candidate_pool,driving,8,uniform,0.0,0.0,oracle fallback chose uniform,uses actual RD outcome,,1.0,0.0,
+oracle_best_candidate_pool,driving,16,uniform,0.0,0.0,oracle fallback chose uniform,uses actual RD outcome,,1.0,0.0,
+oracle_best_candidate_pool,meetroom,4,uniform,0.0,0.0,oracle fallback chose uniform,uses actual RD outcome,,1.0,0.0,
+oracle_best_candidate_pool,meetroom,8,uniform,0.0,0.0,oracle fallback chose uniform,uses actual RD outcome,,1.0,0.0,
+oracle_best_candidate_pool,meetroom,16,full_sample_z_rank_prior_0p3,0.011173527212974932,0.010047379193775186,oracle chose best actual candidate,uses actual RD outcome,0.2,1.125,0.1,0 18 36 52 68 80
+oracle_best_candidate_pool,n3dv,4,uniform,0.0,0.0,oracle fallback chose uniform,uses actual RD outcome,,1.0,0.0,
+oracle_best_candidate_pool,n3dv,8,full_sample_z_rank_prior_0p3,0.011565942337004032,0.009324726252547322,oracle chose best actual candidate,uses actual RD outcome,0.2222222222222222,1.125,0.05,0 8 17 25 33 41 49 57 64 71 80
+oracle_best_candidate_pool,n3dv,16,full_sample_z_rank_prior_0p1,0.05288881517569877,0.054342095015151415,oracle chose best actual candidate,uses actual RD outcome,0.2,1.25,0.175,0 17 35 55 69 80
+oracle_best_candidate_pool,robot,4,uniform,0.0,0.0,oracle fallback chose uniform,uses actual RD outcome,,1.0,0.0,
+oracle_best_candidate_pool,robot,8,uniform,0.0,0.0,oracle fallback chose uniform,uses actual RD outcome,,1.0,0.0,
+oracle_best_candidate_pool,robot,16,uniform,0.0,0.0,oracle fallback chose uniform,uses actual RD outcome,,1.0,0.0,
+oracle_layout_imitation,driving,4,uniform,0.0,0.0,uniform is at least as oracle-like by Jaccard,uses oracle layout,,1.0,0.0,
+oracle_layout_imitation,driving,8,uniform,0.0,0.0,uniform is at least as oracle-like by Jaccard,uses oracle layout,,1.0,0.0,
+oracle_layout_imitation,driving,16,uniform,0.0,0.0,uniform is at least as oracle-like by Jaccard,uses oracle layout,,1.0,0.0,
+oracle_layout_imitation,meetroom,4,uniform,0.0,0.0,uniform is at least as oracle-like by Jaccard,uses oracle layout,,1.0,0.0,
+oracle_layout_imitation,meetroom,8,uniform,0.0,0.0,uniform is at least as oracle-like by Jaccard,uses oracle layout,,1.0,0.0,
+oracle_layout_imitation,meetroom,16,uniform,0.0,0.0,uniform is at least as oracle-like by Jaccard,uses oracle layout,,1.0,0.0,
+oracle_layout_imitation,n3dv,4,uniform,0.0,0.0,uniform is at least as oracle-like by Jaccard,uses oracle layout,,1.0,0.0,
+oracle_layout_imitation,n3dv,8,uniform,0.0,0.0,uniform is at least as oracle-like by Jaccard,uses oracle layout,,1.0,0.0,
+oracle_layout_imitation,n3dv,16,uniform,0.0,0.0,uniform is at least as oracle-like by Jaccard,uses oracle layout,,1.0,0.0,
+oracle_layout_imitation,robot,4,uniform,0.0,0.0,uniform is at least as oracle-like by Jaccard,uses oracle layout,,1.0,0.0,
+oracle_layout_imitation,robot,8,uniform,0.0,0.0,uniform is at least as oracle-like by Jaccard,uses oracle layout,,1.0,0.0,
+oracle_layout_imitation,robot,16,uniform,0.0,0.0,uniform is at least as oracle-like by Jaccard,uses oracle layout,,1.0,0.0,
+loocv_layout_threshold,driving,4,uniform,0.0,0.0,trained policy chose uniform,always uniform,,1.0,0.0,
+loocv_layout_threshold,driving,8,uniform,0.0,0.0,trained policy chose uniform,always uniform,,1.0,0.0,
+loocv_layout_threshold,driving,16,uniform,0.0,0.0,trained policy chose uniform,always uniform,,1.0,0.0,
+loocv_layout_threshold,meetroom,4,uniform,0.0,0.0,trained policy chose uniform,always uniform,,1.0,0.0,
+loocv_layout_threshold,meetroom,8,uniform,0.0,0.0,trained policy chose uniform,always uniform,,1.0,0.0,
+loocv_layout_threshold,meetroom,16,uniform,0.0,0.0,trained policy chose uniform,always uniform,,1.0,0.0,
+loocv_layout_threshold,n3dv,4,uniform,0.0,0.0,layout threshold fallback to uniform,method=full_sample_z_rank_prior_0p3; max_segment_ratio<=1.125; mean_abs_len_error_ratio<=0.1,,1.0,0.0,
+loocv_layout_threshold,n3dv,8,full_sample_z_rank_prior_0p3,0.011565942337004032,0.009324726252547322,layout threshold accepted candidate,method=full_sample_z_rank_prior_0p3; max_segment_ratio<=1.125; mean_abs_len_error_ratio<=0.1,0.2222222222222222,1.125,0.05,0 8 17 25 33 41 49 57 64 71 80
+loocv_layout_threshold,n3dv,16,full_sample_z_rank_prior_0p3,-0.05991704624753069,-0.06729954282854322,layout threshold accepted candidate,method=full_sample_z_rank_prior_0p3; max_segment_ratio<=1.125; mean_abs_len_error_ratio<=0.1,0.2,1.0625,0.05,0 17 33 49 66 80
+loocv_layout_threshold,robot,4,uniform,0.0,0.0,trained policy chose uniform,always uniform,,1.0,0.0,
+loocv_layout_threshold,robot,8,uniform,0.0,0.0,trained policy chose uniform,always uniform,,1.0,0.0,
+loocv_layout_threshold,robot,16,uniform,0.0,0.0,trained policy chose uniform,always uniform,,1.0,0.0,
+fixed_length_raw_log_prior_0p1,driving,4,length_raw_log_prior_0p1,0.0,0.0,fixed method=length_raw_log_prior_0p1,fixed method,1.0,1.0,0.0,0 4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80
+fixed_length_raw_log_prior_0p1,driving,8,length_raw_log_prior_0p1,0.0,0.0,fixed method=length_raw_log_prior_0p1,fixed method,0.15789473684210525,1.0,0.0,0 8 16 24 32 40 48 56 64 72 80
+fixed_length_raw_log_prior_0p1,driving,16,length_raw_log_prior_0p1,0.0,0.0,fixed method=length_raw_log_prior_0p1,fixed method,0.2,1.0,0.0,0 16 32 48 64 80
+fixed_length_raw_log_prior_0p1,meetroom,4,length_raw_log_prior_0p1,0.0,0.0,fixed method=length_raw_log_prior_0p1,fixed method,1.0,1.0,0.0,0 4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80
+fixed_length_raw_log_prior_0p1,meetroom,8,length_raw_log_prior_0p1,0.0,0.0,fixed method=length_raw_log_prior_0p1,fixed method,0.29411764705882354,1.0,0.0,0 8 16 24 32 40 48 56 64 72 80
+fixed_length_raw_log_prior_0p1,meetroom,16,length_raw_log_prior_0p1,0.0,0.0,fixed method=length_raw_log_prior_0p1,fixed method,0.5,1.0,0.0,0 16 32 48 64 80
+fixed_length_raw_log_prior_0p1,n3dv,4,length_raw_log_prior_0p1,0.0,0.0,fixed method=length_raw_log_prior_0p1,fixed method,1.0,1.0,0.0,0 4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80
+fixed_length_raw_log_prior_0p1,n3dv,8,length_raw_log_prior_0p1,0.0,0.0,fixed method=length_raw_log_prior_0p1,fixed method,1.0,1.0,0.0,0 8 16 24 32 40 48 56 64 72 80
+fixed_length_raw_log_prior_0p1,n3dv,16,length_raw_log_prior_0p1,0.0,0.0,fixed method=length_raw_log_prior_0p1,fixed method,0.2,1.0,0.0,0 16 32 48 64 80
+fixed_length_raw_log_prior_0p1,robot,4,length_raw_log_prior_0p1,0.0,0.0,fixed method=length_raw_log_prior_0p1,fixed method,0.2903225806451613,1.0,0.0,0 4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76
+fixed_length_raw_log_prior_0p1,robot,8,length_raw_log_prior_0p1,-0.10538194927685396,-0.12334361923028325,fixed method=length_raw_log_prior_0p1,fixed method,0.1,1.0,0.05,0 7 15 23 30 37 44 52 60 68 76
+fixed_length_raw_log_prior_0p1,robot,16,length_raw_log_prior_0p1,-0.3857680749438721,-0.4210539440496923,fixed method=length_raw_log_prior_0p1,fixed method,0.2,1.0,0.05,0 15 30 45 60 76
+fixed_full_raw_log_prior_0p1,driving,4,full_raw_log_prior_0p1,-0.286983769689396,-0.40384484656089725,fixed method=full_raw_log_prior_0p1,fixed method,0.23529411764705882,1.75,0.375,0 2 4 5 8 13 18 24 30 34 37 39 41 44 47 54 59 64 69 76 80
+fixed_full_raw_log_prior_0p1,driving,8,full_raw_log_prior_0p1,-0.24986489026645486,-0.2884833101320403,fixed method=full_raw_log_prior_0p1,fixed method,0.15789473684210525,1.5,0.35,0 6 12 24 34 38 40 49 58 68 80
+fixed_full_raw_log_prior_0p1,driving,16,full_raw_log_prior_0p1,-0.3718167109823227,-0.3974979410612285,fixed method=full_raw_log_prior_0p1,fixed method,0.2,2.0,0.4,0 6 20 52 68 80
+fixed_full_raw_log_prior_0p1,meetroom,4,full_raw_log_prior_0p1,-0.3263193993469393,-0.4608484054485231,fixed method=full_raw_log_prior_0p1,fixed method,0.2,2.0,0.375,0 4 11 19 24 29 34 39 42 44 48 54 59 61 63 65 67 72 74 77 80
+fixed_full_raw_log_prior_0p1,meetroom,8,full_raw_log_prior_0p1,-0.3668919441660812,-0.43347203094544184,fixed method=full_raw_log_prior_0p1,fixed method,0.29411764705882354,1.875,0.425,0 11 26 39 45 55 61 64 66 73 80
+fixed_full_raw_log_prior_0p1,meetroom,16,full_raw_log_prior_0p1,-0.4152974337125741,-0.4503275355586318,fixed method=full_raw_log_prior_0p1,fixed method,0.2,1.9375,0.375,0 31 44 59 70 80
+fixed_full_raw_log_prior_0p1,n3dv,4,full_raw_log_prior_0p1,0.0,0.0,fixed method=full_raw_log_prior_0p1,fixed method,1.0,1.0,0.0,0 4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80
+fixed_full_raw_log_prior_0p1,n3dv,8,full_raw_log_prior_0p1,0.0,0.0,fixed method=full_raw_log_prior_0p1,fixed method,1.0,1.0,0.0,0 8 16 24 32 40 48 56 64 72 80
+fixed_full_raw_log_prior_0p1,n3dv,16,full_raw_log_prior_0p1,0.0,0.0,fixed method=full_raw_log_prior_0p1,fixed method,0.2,1.0,0.0,0 16 32 48 64 80
+fixed_full_raw_log_prior_0p1,robot,4,full_raw_log_prior_0p1,0.0,0.0,fixed method=full_raw_log_prior_0p1,fixed method,0.2903225806451613,1.0,0.0,0 4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76
+fixed_full_raw_log_prior_0p1,robot,8,full_raw_log_prior_0p1,-0.12550927249403543,-0.14123660546810868,fixed method=full_raw_log_prior_0p1,fixed method,0.15789473684210525,1.0,0.05,0 8 16 23 30 38 46 54 61 69 76
+fixed_full_raw_log_prior_0p1,robot,16,full_raw_log_prior_0p1,-0.3857680749438721,-0.4210539440496923,fixed method=full_raw_log_prior_0p1,fixed method,0.2,1.0,0.05,0 15 30 45 60 76
+fixed_length_sample_z_rank_prior_0p1,driving,4,length_sample_z_rank_prior_0p1,0.0,0.0,fixed method=length_sample_z_rank_prior_0p1,fixed method,1.0,1.0,0.0,0 4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80
+fixed_length_sample_z_rank_prior_0p1,driving,8,length_sample_z_rank_prior_0p1,0.0,0.0,fixed method=length_sample_z_rank_prior_0p1,fixed method,0.15789473684210525,1.0,0.0,0 8 16 24 32 40 48 56 64 72 80
+fixed_length_sample_z_rank_prior_0p1,driving,16,length_sample_z_rank_prior_0p1,0.0,0.0,fixed method=length_sample_z_rank_prior_0p1,fixed method,0.2,1.0,0.0,0 16 32 48 64 80
+fixed_length_sample_z_rank_prior_0p1,meetroom,4,length_sample_z_rank_prior_0p1,0.0,0.0,fixed method=length_sample_z_rank_prior_0p1,fixed method,1.0,1.0,0.0,0 4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80
+fixed_length_sample_z_rank_prior_0p1,meetroom,8,length_sample_z_rank_prior_0p1,0.0,0.0,fixed method=length_sample_z_rank_prior_0p1,fixed method,0.29411764705882354,1.0,0.0,0 8 16 24 32 40 48 56 64 72 80
+fixed_length_sample_z_rank_prior_0p1,meetroom,16,length_sample_z_rank_prior_0p1,0.0,0.0,fixed method=length_sample_z_rank_prior_0p1,fixed method,0.5,1.0,0.0,0 16 32 48 64 80
+fixed_length_sample_z_rank_prior_0p1,n3dv,4,length_sample_z_rank_prior_0p1,0.0,0.0,fixed method=length_sample_z_rank_prior_0p1,fixed method,1.0,1.0,0.0,0 4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80
+fixed_length_sample_z_rank_prior_0p1,n3dv,8,length_sample_z_rank_prior_0p1,0.0,0.0,fixed method=length_sample_z_rank_prior_0p1,fixed method,1.0,1.0,0.0,0 8 16 24 32 40 48 56 64 72 80
+fixed_length_sample_z_rank_prior_0p1,n3dv,16,length_sample_z_rank_prior_0p1,0.0,0.0,fixed method=length_sample_z_rank_prior_0p1,fixed method,0.2,1.0,0.0,0 16 32 48 64 80
+fixed_length_sample_z_rank_prior_0p1,robot,4,length_sample_z_rank_prior_0p1,0.0,0.0,fixed method=length_sample_z_rank_prior_0p1,fixed method,0.2903225806451613,1.0,0.0,0 4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76
+fixed_length_sample_z_rank_prior_0p1,robot,8,length_sample_z_rank_prior_0p1,-0.07496667682116964,-0.08511768950697274,fixed method=length_sample_z_rank_prior_0p1,fixed method,0.1,1.0,0.05,0 8 16 24 32 40 47 54 61 68 76
+fixed_length_sample_z_rank_prior_0p1,robot,16,length_sample_z_rank_prior_0p1,-0.3857680749438721,-0.4210539440496923,fixed method=length_sample_z_rank_prior_0p1,fixed method,0.2,1.0,0.05,0 15 30 45 60 76
+fixed_full_sample_z_rank,driving,4,full_sample_z_rank,-1.4640881364480514,-1.975043343481822,fixed method=full_sample_z_rank,fixed method,0.23529411764705882,2.0,0.8,0 8 16 17 19 20 28 29 37 38 46 47 55 56 64 65 73 74 78 79 80
+fixed_full_sample_z_rank,driving,8,full_sample_z_rank,-1.2330494767686808,-1.4161338696290962,fixed method=full_sample_z_rank,fixed method,0.15789473684210525,2.0,0.7,0 16 17 27 37 38 54 66 78 79 80
+fixed_full_sample_z_rank,driving,16,full_sample_z_rank,-1.1321277342914264,-1.2160505631505565,fixed method=full_sample_z_rank,fixed method,0.2,1.6875,0.75,0 27 54 78 79 80
+fixed_full_sample_z_rank,meetroom,4,full_sample_z_rank,-1.195055357599351,-1.6410774919004574,fixed method=full_sample_z_rank,fixed method,0.2727272727272727,2.0,0.75,0 7 15 16 24 29 30 31 39 45 46 47 48 49 50 51 52 60 68 72 80
+fixed_full_sample_z_rank,meetroom,8,full_sample_z_rank,-1.2521075621959916,-1.457057439003048,fixed method=full_sample_z_rank,fixed method,0.15789473684210525,2.0,0.8,0 16 28 29 45 46 47 48 52 68 80
+fixed_full_sample_z_rank,meetroom,16,full_sample_z_rank,-1.296348980127295,-1.4050664039428682,fixed method=full_sample_z_rank,fixed method,0.2,2.0,0.75,0 29 46 47 48 80
+fixed_full_sample_z_rank,n3dv,4,full_sample_z_rank,-0.27458992677499694,-0.3856783074551835,fixed method=full_sample_z_rank,fixed method,0.07692307692307693,2.0,0.75,0 6 14 21 26 27 33 41 49 57 65 66 67 68 69 70 71 77 78 79 80
+fixed_full_sample_z_rank,n3dv,8,full_sample_z_rank,-0.445272026460394,-0.5215300799868174,fixed method=full_sample_z_rank,fixed method,0.1,1.875,0.7,0 14 26 41 55 66 67 68 69 79 80
+fixed_full_sample_z_rank,n3dv,16,full_sample_z_rank,-0.3516266540635691,-0.3817689317609094,fixed method=full_sample_z_rank,fixed method,0.2,1.75,0.725,0 27 55 77 78 80
+fixed_full_sample_z_rank,robot,4,full_sample_z_rank,-1.0984827132258275,-1.3824764873185664,fixed method=full_sample_z_rank,fixed method,0.25,2.0,0.7105263157894737,0 3 5 13 14 15 16 17 18 19 20 21 25 31 37 45 53 60 68 76
+fixed_full_sample_z_rank,robot,8,full_sample_z_rank,-1.1019300377930357,-1.2306048042702287,fixed method=full_sample_z_rank,fixed method,0.1,2.0,0.775,0 14 15 17 18 19 21 34 50 60 76
+fixed_full_sample_z_rank,robot,16,full_sample_z_rank,-1.7778923913320988,-1.9377910952068227,fixed method=full_sample_z_rank,fixed method,0.2,1.6875,0.65,0 27 29 31 55 76
+fixed_full_sample_z_rank_prior_0p1,driving,4,full_sample_z_rank_prior_0p1,-0.288252642181277,-0.38207662886180316,fixed method=full_sample_z_rank_prior_0p1,fixed method,0.10526315789473684,1.75,0.225,0 6 13 16 21 26 29 33 37 38 43 46 50 54 57 60 65 69 73 77 80
+fixed_full_sample_z_rank_prior_0p1,driving,8,full_sample_z_rank_prior_0p1,-0.1479478310054283,-0.16309732265082388,fixed method=full_sample_z_rank_prior_0p1,fixed method,0.15789473684210525,1.75,0.2,0 14 21 28 38 46 54 60 66 73 80
+fixed_full_sample_z_rank_prior_0p1,driving,16,full_sample_z_rank_prior_0p1,-0.2219506133165936,-0.23223242900630225,fixed method=full_sample_z_rank_prior_0p1,fixed method,0.2,1.625,0.25,0 26 38 54 66 80
+fixed_full_sample_z_rank_prior_0p1,meetroom,4,full_sample_z_rank_prior_0p1,-0.2112172665577141,-0.29654075870706365,fixed method=full_sample_z_rank_prior_0p1,fixed method,0.5,1.5,0.2,0 4 9 13 16 19 24 29 32 36 40 45 46 48 52 56 62 68 72 76 80
+fixed_full_sample_z_rank_prior_0p1,meetroom,8,full_sample_z_rank_prior_0p1,-0.3424509443572248,-0.39963703935554307,fixed method=full_sample_z_rank_prior_0p1,fixed method,0.2222222222222222,1.5,0.3,0 9 16 28 36 46 47 56 68 72 80
+fixed_full_sample_z_rank_prior_0p1,meetroom,16,full_sample_z_rank_prior_0p1,-0.36706375153085347,-0.39872398438902223,fixed method=full_sample_z_rank_prior_0p1,fixed method,0.3333333333333333,1.5,0.2,0 16 28 40 56 80
+fixed_full_sample_z_rank_prior_0p1,n3dv,4,full_sample_z_rank_prior_0p1,-0.05747334981325025,-0.08840457040911787,fixed method=full_sample_z_rank_prior_0p1,fixed method,0.13513513513513514,1.5,0.125,0 5 9 12 17 21 25 29 33 37 41 45 49 53 56 59 64 67 71 77 80
+fixed_full_sample_z_rank_prior_0p1,n3dv,8,full_sample_z_rank_prior_0p1,-0.07561886355765779,-0.09083124290247824,fixed method=full_sample_z_rank_prior_0p1,fixed method,0.15789473684210525,1.25,0.15,0 6 14 21 27 35 45 55 64 71 80
+fixed_full_sample_z_rank_prior_0p1,n3dv,16,full_sample_z_rank_prior_0p1,0.05288881517569877,0.054342095015151415,fixed method=full_sample_z_rank_prior_0p1,fixed method,0.2,1.25,0.175,0 17 35 55 69 80
+fixed_full_sample_z_rank_prior_0p1,robot,4,full_sample_z_rank_prior_0p1,-0.3040319467207624,-0.37958380563006244,fixed method=full_sample_z_rank_prior_0p1,fixed method,0.17647058823529413,1.5,0.15789473684210525,0 3 7 12 15 18 21 25 29 32 35 40 45 49 53 59 63 68 72 76
+fixed_full_sample_z_rank_prior_0p1,robot,8,full_sample_z_rank_prior_0p1,-0.4239767363377389,-0.4861411377183238,fixed method=full_sample_z_rank_prior_0p1,fixed method,0.15789473684210525,1.375,0.225,0 11 18 21 29 35 45 50 59 68 76
+fixed_full_sample_z_rank_prior_0p1,robot,16,full_sample_z_rank_prior_0p1,-1.7752712058738709,-1.935344833486937,fixed method=full_sample_z_rank_prior_0p1,fixed method,0.2,1.3125,0.25,0 8 25 37 55 76
+fixed_full_sample_z_rank_prior_0p3,driving,4,full_sample_z_rank_prior_0p3,-0.011774425907965735,-0.023318718068686906,fixed method=full_sample_z_rank_prior_0p3,fixed method,0.10526315789473684,1.25,0.05,0 4 8 13 17 21 26 30 34 38 42 46 50 54 57 61 65 69 73 77 80
+fixed_full_sample_z_rank_prior_0p3,driving,8,full_sample_z_rank_prior_0p3,-0.13310212531781218,-0.14955863458452612,fixed method=full_sample_z_rank_prior_0p3,fixed method,0.15789473684210525,1.625,0.15,0 13 21 29 38 46 54 60 66 73 80
+fixed_full_sample_z_rank_prior_0p3,driving,16,full_sample_z_rank_prior_0p3,-0.08754476364805086,-0.09008781983048308,fixed method=full_sample_z_rank_prior_0p3,fixed method,0.2,1.1875,0.15,0 19 38 54 66 80
+fixed_full_sample_z_rank_prior_0p3,meetroom,4,full_sample_z_rank_prior_0p3,-0.03390630720769039,-0.05189382438849677,fixed method=full_sample_z_rank_prior_0p3,fixed method,0.75,1.25,0.05,0 4 9 13 16 20 24 28 32 36 40 45 48 52 56 60 64 68 72 76 80
+fixed_full_sample_z_rank_prior_0p3,meetroom,8,full_sample_z_rank_prior_0p3,-0.15634364309904214,-0.18644142865828428,fixed method=full_sample_z_rank_prior_0p3,fixed method,0.1,1.25,0.125,0 9 18 28 36 45 52 60 68 73 80
+fixed_full_sample_z_rank_prior_0p3,meetroom,16,full_sample_z_rank_prior_0p3,0.011173527212974932,0.010047379193775186,fixed method=full_sample_z_rank_prior_0p3,fixed method,0.2,1.125,0.1,0 18 36 52 68 80
+fixed_full_sample_z_rank_prior_0p3,n3dv,4,full_sample_z_rank_prior_0p3,-0.008145086457815864,-0.02333512012671335,fixed method=full_sample_z_rank_prior_0p3,fixed method,0.05,1.25,0.025,0 5 9 13 17 21 25 29 33 37 41 45 49 53 57 61 65 69 73 77 80
+fixed_full_sample_z_rank_prior_0p3,n3dv,8,full_sample_z_rank_prior_0p3,0.011565942337004032,0.009324726252547322,fixed method=full_sample_z_rank_prior_0p3,fixed method,0.2222222222222222,1.125,0.05,0 8 17 25 33 41 49 57 64 71 80
+fixed_full_sample_z_rank_prior_0p3,n3dv,16,full_sample_z_rank_prior_0p3,-0.05991704624753069,-0.06729954282854322,fixed method=full_sample_z_rank_prior_0p3,fixed method,0.2,1.0625,0.05,0 17 33 49 66 80
+fixed_full_sample_z_rank_prior_0p3,robot,4,full_sample_z_rank_prior_0p3,-0.30472949648636316,-0.38494163178856056,fixed method=full_sample_z_rank_prior_0p3,fixed method,0.21212121212121213,1.5,0.13157894736842105,0 3 7 10 14 18 21 25 29 32 35 40 45 49 53 59 63 68 72 76
+fixed_full_sample_z_rank_prior_0p3,robot,8,full_sample_z_rank_prior_0p3,-0.0992044129002636,-0.10558469327040498,fixed method=full_sample_z_rank_prior_0p3,fixed method,0.15789473684210525,1.25,0.1,0 8 15 21 29 35 45 53 60 68 76
+fixed_full_sample_z_rank_prior_0p3,robot,16,full_sample_z_rank_prior_0p3,-1.690961134155529,-1.844427120483921,fixed method=full_sample_z_rank_prior_0p3,fixed method,0.2,1.3125,0.225,0 11 25 37 55 76

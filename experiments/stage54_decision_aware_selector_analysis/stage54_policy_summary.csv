@@ -1,0 +1,11 @@
+policy,count,accepted_adaptive_points,exact_uniform_points,positive_all_points,positive_middle_points,mean_delta_all_psnr,mean_delta_middle_psnr,min_delta_all_psnr,min_delta_middle_psnr,notes
+uniform,12,0,12,0,0,0.0,0.0,0.0,0.0,baseline fallback
+oracle_best_candidate_pool,12,3,9,3,3,0.0063023570604731445,0.00614285003845616,0.0,0.0,upper bound over Stage48 candidate layouts plus uniform
+oracle_layout_imitation,12,0,12,0,0,0.0,0.0,0.0,0.0,upper bound using Stage49 oracle layout similarity
+loocv_layout_threshold,12,2,10,1,1,-0.004029258659210555,-0.0048312347146663255,-0.05991704624753069,-0.06729954282854322,leave-one-sample-out layout-threshold fallback
+fixed_length_raw_log_prior_0p1,12,12,10,0,0,-0.0409291686850605,-0.04536646360666463,-0.3857680749438721,-0.4210539440496923,fixed Stage48 predicted method
+fixed_full_raw_log_prior_0p1,12,12,4,0,0,-0.21070429130013965,-0.24973038493538033,-0.4152974337125741,-0.4608484054485231,fixed Stage48 predicted method
+fixed_length_sample_z_rank_prior_0p1,12,12,10,0,0,-0.038394562647086815,-0.04218096946305542,-0.3857680749438721,-0.4210539440496923,fixed Stage48 predicted method
+fixed_full_sample_z_rank,12,12,0,0,0,-1.051880916423393,-1.245856568092198,-1.7778923913320988,-1.975043343481822,fixed Stage48 predicted method
+fixed_full_sample_z_rank_prior_0p1,12,12,0,1,1,-0.34686386133972275,-0.3998559715085272,-1.7752712058738709,-1.935344833486937,fixed Stage48 predicted method
+fixed_full_sample_z_rank_prior_0p3,12,12,0,2,2,-0.2135740809898404,-0.24229303571519148,-1.690961134155529,-1.844427120483921,fixed Stage48 predicted method

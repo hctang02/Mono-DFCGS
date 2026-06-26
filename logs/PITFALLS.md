@@ -354,3 +354,10 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - The unified scaffold intentionally keeps two rate units: Mono-DFCGS anchor-only MiB/frame and full FCGS/D-FCGS codec MiB/frame. Do not plot them together without explicit labeling.
 - For rows with dummy references, leave input-video PSNR/SSIM blank and keep `diagnostic_codec_psnr` separate.
 - Use generic `secondary_rate_value` plus `secondary_rate_unit`; external rows may store total sequence MiB while Mono-DFCGS rows store raw anchor MiB/frame.
+
+## Stage 54 Notes
+
+- Stage54 is an analysis-only reuse of Stage48/49 RD outputs. It should not be described as a new rendered evaluation.
+- The Stage48 predicted candidate layout pool has a very low oracle upper bound over uniform (`+0.0063 dB` mean all PSNR), so a better fallback policy alone cannot create large gains from these candidates.
+- Layout imitation via simple overlap/Jaccard to the rendered-oracle layout collapses to uniform on all current points; oracle-layout similarity is not a deployable selector objective by itself.
+- Leave-one-sample-out layout-threshold fallback remains slightly negative, so the final feed-forward selector likely needs decision-aware training/calibration on more samples rather than only segment-cost regression.

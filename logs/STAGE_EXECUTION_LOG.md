@@ -3728,3 +3728,65 @@ experiments/stage53_baseline_comparison_scaffold/stage53_baseline_comparison_sca
 - Mono-DFCGS rows 使用 `actual zlib Gaussian-anchor bitstream MiB/frame`，外部 baseline rows 使用 `full FCGS/D-FCGS codec MiB/frame`。
 - 当前外部 baseline 的 `fair_local_run=false`，因为 rate scope、source Gaussian generation 和 protocol 仍不匹配；可作为 local protocol-reference，不应混入主 anchor-only RD 曲线而不标注。
 - Adaptive Mono-DFCGS rows 仍标注为 rendered-oracle calibrated selector，不是最终 fully feed-forward selector。
+
+## 2026-06-26：阶段 54 Decision-Aware Selector Analysis
+
+### 执行计划
+
+Stage54 复用已有 Stage48/49 RD 结果，不重新渲染。目标是诊断 fully feed-forward predicted selector 的负结果：当前问题是候选 adaptive layouts 本身缺乏上界，还是缺少一个 reliable adaptive-or-uniform decision policy。
+
+### 新增文件
+
+```text
+scripts/run_stage54_decision_aware_selector_analysis.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage54_decision_aware_selector_analysis.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage54_decision_aware_selector_analysis.py
+```
+
+### GPU 检查
+
+运行和 compile 前使用 `nvidia-smi`。Stage54 是 CPU-only CSV/JSON 分析，未占用 CUDA。
+
+### 输出文件
+
+```text
+experiments/stage54_decision_aware_selector_analysis/stage54_decision_records.csv
+experiments/stage54_decision_aware_selector_analysis/stage54_policy_choices.csv
+experiments/stage54_decision_aware_selector_analysis/stage54_policy_summary.csv
+experiments/stage54_decision_aware_selector_analysis/stage54_decision_aware_selector_analysis_summary.json
+experiments/stage54_decision_aware_selector_analysis/stage54_decision_aware_selector_analysis_report.md
+```
+
+### 结果摘要
+
+| item | value |
+|---|---:|
+| common points | 12 |
+| candidate records | 72 |
+
+### Policy Summary
+
+| policy | mean all delta PSNR | positive all | min all delta | accepted adaptive |
+|---|---:|---:|---:|---:|
+| uniform | 0.0 | 0/12 | 0.0 | 0 |
+| oracle_best_candidate_pool | 0.0063023570604731445 | 3/12 | 0.0 | 3 |
+| oracle_layout_imitation | 0.0 | 0/12 | 0.0 | 0 |
+| loocv_layout_threshold | -0.004029258659210555 | 1/12 | -0.05991704624753069 | 2 |
+| fixed_length_raw_log_prior_0p1 | -0.0409291686850605 | 0/12 | -0.3857680749438721 | 12 |
+| fixed_full_raw_log_prior_0p1 | -0.21070429130013965 | 0/12 | -0.4152974337125741 | 12 |
+| fixed_length_sample_z_rank_prior_0p1 | -0.038394562647086815 | 0/12 | -0.3857680749438721 | 12 |
+| fixed_full_sample_z_rank | -1.051880916423393 | 0/12 | -1.7778923913320988 | 12 |
+| fixed_full_sample_z_rank_prior_0p1 | -0.34686386133972275 | 1/12 | -1.7752712058738709 | 12 |
+| fixed_full_sample_z_rank_prior_0p3 | -0.2135740809898404 | 2/12 | -1.690961134155529 | 12 |
+
+### 结论
+
+- `oracle_best_candidate_pool` 在 Stage48 candidate layouts 加 uniform fallback 的上界也只有 `+0.0063 dB` mean all PSNR，说明当前 predicted candidate layout pool 本身很弱。
+- `oracle_layout_imitation` 全部 fallback 到 uniform，说明简单模仿 Stage49 rendered-oracle layout 的 overlap/Jaccard 不是有效的 deployable decision rule。
+- `loocv_layout_threshold` 仍为负平均收益，说明当前 12 个点样本太少且 layout-only threshold fallback 不够稳健。
+- 下一步 selector 方向应优先做 decision-aware objective / adaptive-or-uniform classifier / DP-aware calibration，而不是只继续提升 segment-cost correlation。
