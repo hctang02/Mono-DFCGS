@@ -3495,3 +3495,54 @@ experiments/stage49_extended_adaptive_rd/stage49_zlib_adapter_middle_psnr_rd.png
 - Stage49 已解决“RD 点太少”和“只有极低码率点”的第一步问题：all-frame 6 点，middle-only 5 点。
 - `rendered_prior_0p1` adaptive 在扩展码率范围下保持正平均收益，但许多高码率点与 uniform 相同或接近，说明高码率区主要提升来自更密 keyframes。
 - 下一步需要 Stage50/51 支持 q10/q12/q16/fp16，进一步拓展高码率和更高 PSNR 区域。
+
+## 2026-06-26：阶段 50 Multi-Bit Anchor Bitstream Prototype
+
+### 执行计划
+
+Stage50 将 `mono_dfcgs/anchor_bitstream.py` 从 q8-only 扩展到 q1-q16。当前实现：
+
+- `bits <= 8`：uint8 payload
+- `bits > 8`：uint16 payload
+- 不做 bit-packing
+
+该阶段读取 Stage49 selections，统计 q6/q8/q10/q12/q16 raw/zlib rate 和 decode roundtrip，不写出所有 bitstream 文件，避免外部目录过大。
+
+### 修改/新增文件
+
+```text
+mono_dfcgs/anchor_bitstream.py
+scripts/run_stage50_multibit_anchor_bitstream_prototype.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage50_multibit_anchor_bitstream_prototype.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage50_multibit_anchor_bitstream_prototype.py
+```
+
+Stage50 是 CPU-only bitstream prototype。运行前仍按要求检查 `nvidia-smi`。
+
+### 输出文件
+
+```text
+experiments/stage50_multibit_anchor_bitstream_prototype/stage50_multibit_anchor_bitstream_prototype.csv
+experiments/stage50_multibit_anchor_bitstream_prototype/stage50_multibit_anchor_bitstream_prototype_summary.json
+```
+
+### Aggregate by bits
+
+| bits | payload dtype | mean raw MiB/frame | mean zlib MiB/frame | mean theoretical bitpacked MiB/frame | zlib savings | max roundtrip abs diff |
+|---:|---|---:|---:|---:|---:|---:|
+| 6 | uint8 | 0.1773370041424699 | 0.07782511427989783 | 0.1328336377164502 | 56.10827191340124% | 0.0 |
+| 8 | uint8 | 0.17733660490188816 | 0.11566781190783303 | 0.17711151695526697 | 34.76602168045661% | 0.0 |
+| 10 | uint16 | 0.35445224868958825 | 0.17832858230791024 | 0.22138939619408368 | 49.68088952479985% | 0.0 |
+| 12 | uint16 | 0.3544541104180982 | 0.2018438725365482 | 0.2656672754329004 | 43.04832569609213% | 0.0 |
+| 16 | uint16 | 0.3544558074255042 | 0.2372980050774083 | 0.35422303391053395 | 33.0456680053366% | 0.0 |
+
+### 结论
+
+- Multi-bit bitstream roundtrip 已验证，所有 bits 的 max abs diff vs direct dequantized quantization 都是 `0.0`。
+- q10/q12/q16 现在能提供更高 zlib 码率点，适合 Stage51 生成 high-rate RD 曲线。
+- q6 当前不是 bitpacked raw storage，因此 raw rate 与 q8 接近；但 theoretical bitpacked rate 已报告，后续如要做低码率 compact bitstream 需实现真正 bit-packing。

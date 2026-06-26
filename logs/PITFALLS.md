@@ -328,3 +328,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - `gap1` has no middle frames. Evaluators and comparison helpers must explicitly support empty middle metrics instead of subtracting `None` values.
 - Stage49 all-frame RD can include `gap1`, but middle-only RD should exclude `gap1` by definition.
 - For long rendering stages, write robust finalize/reuse paths. Stage49 now supports `--reuse_existing_csv` to regenerate summary and plots without rerendering.
+
+## Stage 50 Notes
+
+- Stage50 multi-bit payload is not bit-packed. `q6` uses uint8 storage, and q10/q12/q16 use uint16 storage. Label raw rates accordingly.
+- Theoretical bitpacked MiB/frame is reported separately and should not be mixed with actual prototype raw container size.
+- Stage50 validates container roundtrip only; quality at higher bit-depth needs Stage51 rendering with decoded/dequantized anchors.

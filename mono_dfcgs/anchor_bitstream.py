@@ -35,8 +35,8 @@ def encode_anchor_bitstream(
     bits: int = 8,
     compression: str = "none",
 ) -> bytes:
-    if bits != 8:
-        raise ValueError("Stage31 prototype currently supports q8 payloads only")
+    if bits <= 0 or bits > 16:
+        raise ValueError(f"bits should be in [1, 16], got {bits}")
     anchors = list(anchors)
     frame_indices = [int(idx) for idx in frame_indices]
     if timestamps is None:
@@ -51,13 +51,19 @@ def encode_anchor_bitstream(
     for anchor, frame_index, timestamp in zip(anchors, frame_indices, timestamps):
         attrs = flatten_static_anchor(anchor).detach().float().cpu()
         q, mins, scales = uniform_quantize(attrs, bits=bits)
-        q_np = q.squeeze(0).to(torch.uint8).contiguous().numpy()
+        if bits <= 8:
+            payload_dtype = "uint8"
+            q_np = q.squeeze(0).contiguous().numpy().astype(np.uint8)
+        else:
+            payload_dtype = "uint16"
+            q_np = q.squeeze(0).contiguous().numpy().astype(np.uint16)
         q_bytes = q_np.tobytes(order="C")
         payload_parts.append(q_bytes)
         records.append({
             "frame_index": frame_index,
             "timestamp": timestamp,
             "shape": list(q_np.shape),
+            "payload_dtype": payload_dtype,
             "payload_offset": payload_offset,
             "payload_length": len(q_bytes),
             "mins": [float(v) for v in mins.reshape(-1).tolist()],
@@ -87,8 +93,9 @@ def encode_anchor_bitstream(
 
 def decode_anchor_bitstream(blob: bytes) -> Tuple[List[Dict[str, torch.Tensor]], dict]:
     header, encoded_payload = _split_container(blob)
-    if int(header["bits"]) != 8:
-        raise ValueError("Stage31 prototype currently supports q8 payloads only")
+    bits = int(header["bits"])
+    if bits <= 0 or bits > 16:
+        raise ValueError(f"Unsupported quantization bits: {bits}")
     compression = header["compression"]
     if compression == "none":
         payload = encoded_payload
@@ -104,7 +111,14 @@ def decode_anchor_bitstream(blob: bytes) -> Tuple[List[Dict[str, torch.Tensor]],
         offset = int(record["payload_offset"])
         length = int(record["payload_length"])
         shape = tuple(int(v) for v in record["shape"])
-        q_np = np.frombuffer(payload[offset: offset + length], dtype=np.uint8).reshape(shape)
+        payload_dtype = record.get("payload_dtype", "uint8")
+        if payload_dtype == "uint8":
+            dtype = np.uint8
+        elif payload_dtype == "uint16":
+            dtype = np.uint16
+        else:
+            raise ValueError(f"Unsupported payload dtype: {payload_dtype}")
+        q_np = np.frombuffer(payload[offset: offset + length], dtype=dtype).reshape(shape)
         q = torch.from_numpy(q_np.astype(np.int32)).unsqueeze(0)
         mins = torch.tensor(record["mins"], dtype=torch.float32).reshape(1, 1, -1)
         scales = torch.tensor(record["scales"], dtype=torch.float32).reshape(1, 1, -1)
