@@ -304,3 +304,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - A small uniform segment-length prior improves robustness more than hard minimum segment length. `alpha=0.1` removes large negative points while preserving a positive mean gain.
 - Exact-uniform fallback must be counted explicitly; a robust selector may look safe because some points collapse to uniform.
 - `minhalf` can be harmful despite sounding safer, producing a larger worst-case negative than raw rendered oracle.
+
+## Stage 46 Notes
+
+- Stage46 quality comes from Stage45b; only the rate axis changes to actual raw/zlib q8 anchor bitstream sizes.
+- The calibrated adaptive selector is still rendered-oracle based. Do not call it fully feed-forward until Stage47/48 predictor selection is trained and evaluated.
+- Rate deltas at equal keyframe count are tiny and mainly reflect header length and zlib compressibility of selected anchors, not different keyframe budgets.

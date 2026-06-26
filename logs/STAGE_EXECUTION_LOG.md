@@ -3231,3 +3231,70 @@ experiments/stage45b_calibrated_rendered_oracle_selector_rd/stage45b_calibrated_
 - `rendered_prior_0p1` 是目前最稳的 rendered-oracle selector variant：mean Δall PSNR 提高到 `+0.06035 dB`，最坏点收敛到约 `-0.019 dB`。
 - 代价是 4/12 点回退到 exact uniform，positive count 从 raw 的 8/12 变成 7/12。
 - 这说明 uniform prior 是必要的 layout regularization；下一步可以用该 variant 生成 actual q8/zlib bitstream RD，同时继续研究 all-middle-frame labels 或 predictor training。
+
+## 2026-06-26：阶段 46 Calibrated Adaptive Actual-Bitstream RD
+
+### 执行计划
+
+Stage46 使用 Stage45b 的 `rendered_prior_0p1` adaptive selector，与 uniform 在相同 keyframe budget 下生成真实 q8 anchor bitstreams，并输出 raw/zlib MiB/frame RD 曲线。
+
+### 新增文件
+
+```text
+scripts/run_stage46_calibrated_adaptive_actual_bitstream_rd.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage46_calibrated_adaptive_actual_bitstream_rd.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage46_calibrated_adaptive_actual_bitstream_rd.py
+```
+
+Stage46 是 CPU bitstream 生成/汇总脚本。运行前仍按要求检查 `nvidia-smi`。
+
+### 输出文件
+
+仓库内：
+
+```text
+experiments/stage46_calibrated_adaptive_actual_bitstream_rd/stage46_calibrated_adaptive_actual_bitstream_rd.csv
+experiments/stage46_calibrated_adaptive_actual_bitstream_rd/stage46_raw_selector_comparison.csv
+experiments/stage46_calibrated_adaptive_actual_bitstream_rd/stage46_zlib_selector_comparison.csv
+experiments/stage46_calibrated_adaptive_actual_bitstream_rd/stage46_calibrated_adaptive_actual_bitstream_rd_summary.json
+experiments/stage46_calibrated_adaptive_actual_bitstream_rd/stage46_raw_adapter_all_psnr_rd.png
+experiments/stage46_calibrated_adaptive_actual_bitstream_rd/stage46_raw_adapter_middle_psnr_rd.png
+experiments/stage46_calibrated_adaptive_actual_bitstream_rd/stage46_zlib_adapter_all_psnr_rd.png
+experiments/stage46_calibrated_adaptive_actual_bitstream_rd/stage46_zlib_adapter_middle_psnr_rd.png
+```
+
+外部 bitstreams：
+
+```text
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage46_calibrated_adaptive_actual_bitstream_rd
+```
+
+### 关键结果
+
+| metric | value |
+|---|---:|
+| adaptive method | rendered_prior_0p1 |
+| mean selector delta all PSNR | 0.06034847377870989 |
+| mean selector delta middle PSNR | 0.07079248329613523 |
+| positive selector all points | 7/12 |
+| mean zlib rate delta MiB/frame | -7.57253900776373e-06 |
+| mean zlib savings vs raw | 34.75185096242701% |
+| max roundtrip abs diff | 0.0 |
+
+### Zlib RD point observations
+
+- Exact-uniform fallback points: driving gap4, meetroom gap4, n3dv gap4, n3dv gap8.
+- Positive adaptive points: driving gap8/16, meetroom gap8/16, n3dv gap16, robot gap4/8.
+- Only negative point: robot gap16, all PSNR `-0.01896 dB`, middle PSNR `-0.01899 dB`.
+- Mean zlib rate is essentially unchanged and slightly lower than uniform on average.
+
+### 结论
+
+- Stage46 提供了第一版 actual-bitstream Adaptive Keyframe Selection RD 曲线。
+- 该方法仍是 rendered-oracle calibrated selector，不是最终 feed-forward predictor，但已经显示 adaptive-or-uniform fallback 可以在真实 bitstream rate 下取得正平均 RD gain。
+- 下一步需要把 `rendered_prior_0p1` 的 oracle cost 学成 feed-forward predictor，并在更大数据上训练/验证。
