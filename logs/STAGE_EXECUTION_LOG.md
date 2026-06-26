@@ -3116,3 +3116,64 @@ experiments/stage44_rendered_segment_distortion_dataset/stage44_rendered_segment
 - Stage44 生成了第一版 rendered-distortion segment cost labels，可直接用于 Stage45 rendered-oracle DP selector。
 - 当前 label 仍与 segment length 高相关，但它来自实际 adapter-rendered RGB distortion，目标比 Stage37 anchor-MSE proxy 更接近最终 RD。
 - 该版本为快速 RD 曲线使用 sampled targets；大规模精确版本可用 `--max_targets_per_segment=0` 计算所有中间帧。
+
+## 2026-06-26：阶段 45 Rendered-Oracle Adaptive Selector RD
+
+### 执行计划
+
+Stage45 使用 Stage44 `adapter_mse_sum_est` 作为 rendered-distortion oracle segment cost，通过 DP 在固定 keyframe budget 下选择 adaptive keyframes，并与 uniform keyframes 做 full-video anchor-only RD 对比。
+
+### 新增文件
+
+```text
+scripts/run_stage45_rendered_oracle_adaptive_selector_rd.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage45_rendered_oracle_adaptive_selector_rd.py
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage45_rendered_oracle_adaptive_selector_rd.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi`。GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage45_rendered_oracle_adaptive_selector_rd/stage45_rendered_oracle_adaptive_selector_rd.csv
+experiments/stage45_rendered_oracle_adaptive_selector_rd/stage45_selector_comparison.csv
+experiments/stage45_rendered_oracle_adaptive_selector_rd/stage45_rendered_oracle_adaptive_selector_rd_summary.json
+experiments/stage45_rendered_oracle_adaptive_selector_rd/stage45_adapter_all_psnr_rd.png
+experiments/stage45_rendered_oracle_adaptive_selector_rd/stage45_adapter_middle_psnr_rd.png
+experiments/stage45_rendered_oracle_adaptive_selector_rd/stage45_adapter_all_ssim_rd.png
+experiments/stage45_rendered_oracle_adaptive_selector_rd/stage45_adapter_middle_ssim_rd.png
+```
+
+### Aggregate 结果
+
+| metric | value |
+|---|---:|
+| points | 12 |
+| positive all PSNR points | 8 |
+| positive middle PSNR points | 8 |
+| mean delta all PSNR | 0.04996005587468311 |
+| mean delta middle PSNR | 0.06134006884884169 |
+
+### Per-point delta all PSNR
+
+| sample | gap4 | gap8 | gap16 |
+|---|---:|---:|---:|
+| n3dv | 0.06333816052883279 | 0.12809375694453706 | 0.2627643201104988 |
+| meetroom | 0.09904846893396524 | 0.16468754240036532 | -0.14085700247952815 |
+| driving | 0.030211703498583375 | -0.15137123254497098 | -0.08618988760293078 |
+| robot | 0.17423209197442446 | 0.2969394033681816 | -0.2413766546357614 |
+
+### 结论
+
+- Stage45 给出了第一版 Adaptive Keyframe Selection RD 曲线：rendered-distortion oracle 明显优于之前 predicted selector，8/12 点正收益。
+- 该结果说明把 selector label 从 anchor-attribute proxy 改为 rendered distortion 是有效方向。
+- 但 gap16 的 meetroom/robot 和 driving gap8/16 仍为负，当前 sampled-label oracle 还不足以作为最终成功结果。
+- 下一步建议优先做 Stage45b/Stage46：对 rendered oracle 加 min-gap/uniform-prior calibration 或用 all-middle-frame label 重算关键负点，再生成 actual bitstream RD。

@@ -292,3 +292,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Rendered segment distortion is an offline label for selector training/oracle analysis, not an inference-time input. The final adaptive selector must use a frozen feed-forward predictor.
 - The first Stage44 run produced a tensor shape warning because target RGB lacked the singleton time dimension. Fix target tensors to `[1, 1, 3, H, W]` before trusting MSE labels.
 - The default Stage44 label is sampled for speed: mean sampled adapter MSE multiplied by full middle-frame count. Rerun with `--max_targets_per_segment=0` for all-middle-frame labels when scaling or finalizing results.
+
+## Stage 45 Notes
+
+- Rendered-distortion oracle is a stronger selector target than anchor-attribute proxy, but the sampled Stage44 label still has negative gap8/gap16 cases.
+- Do not yet claim adaptive selector solved. Current result is promising first RD evidence: 8/12 positive and modest mean PSNR gain.
+- Large negative gap16 points suggest adding min-gap/layout regularization or using all-middle-frame segment labels before moving to final predicted selector training.
