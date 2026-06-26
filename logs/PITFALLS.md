@@ -322,3 +322,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage48 confirms that feed-forward cost prediction still does not guarantee adaptive RD gains, even with rendered-distortion supervision.
 - The best-looking rank predictor by correlation can produce very poor keyframe layouts. Selector training likely needs decision-aware objectives, not only segment-level regression/ranking.
 - For current claims, keep Stage46 as oracle/calibrated upper-bound evidence and Stage48 as a deployable-selector gap that motivates the next research step.
+
+## Stage 49 Notes
+
+- `gap1` has no middle frames. Evaluators and comparison helpers must explicitly support empty middle metrics instead of subtracting `None` values.
+- Stage49 all-frame RD can include `gap1`, but middle-only RD should exclude `gap1` by definition.
+- For long rendering stages, write robust finalize/reuse paths. Stage49 now supports `--reuse_existing_csv` to regenerate summary and plots without rerendering.

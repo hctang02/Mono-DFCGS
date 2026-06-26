@@ -3403,3 +3403,95 @@ experiments/stage48_predicted_adaptive_selector_rd/stage48_best_adapter_middle_p
 - Stage48 是关键负结果：当前第一版 fully feed-forward predicted adaptive selector 尚未超过 uniform。
 - Stage47 predictor 的 high correlation 没有转化为 RD gain，再次说明 selector objective 需要 decision-aware training 或更大规模数据。
 - 目前 adaptive selector 可作为主创新路线继续推进，但严谨表述应区分：Stage46 是 rendered-oracle calibrated actual-bitstream RD 正平均收益；Stage48 deployable predicted selector 仍未成功。
+
+## 2026-06-26：阶段 49 Extended Adaptive RD
+
+### 执行计划
+
+Stage49 扩展 adaptive RD 曲线点数和码率范围。使用：
+
+```text
+gap = 1, 2, 3, 4, 8, 16
+method = uniform, rendered_prior_0p1
+rate = estimated q8, actual raw q8, actual zlib q8
+```
+
+`gap1` 作为全关键帧高码率点进入 all-frame RD；middle-only RD 排除 `gap1`。
+
+### 新增文件
+
+```text
+scripts/run_stage49_extended_adaptive_rd.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage49_extended_adaptive_rd.py
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage49_extended_adaptive_rd.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage49_extended_adaptive_rd.py --reuse_existing_csv
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi`。GPU 1 空闲，因此渲染阶段使用 `CUDA_VISIBLE_DEVICES=1`。`--reuse_existing_csv` 是 CPU-only finalize。
+
+### 重要修正
+
+- `gap1` 没有 middle frames，旧 evaluator 会计算 `None - None` 并报错；Stage49 增加 keyframe-only evaluation path，all-frame 可用、middle-only 自动跳过。
+- Stage49 首次写 CSV 时漏了 `checkpoint` 字段，已修复。
+- Stage49 comparison helper 也需要支持 `gap1` 的 empty middle，已改用支持 `None` 的 actual comparison helper。
+- 为避免重复长时间渲染，Stage49 增加 `--reuse_existing_csv` finalize 模式，用已写出的 CSV 生成 comparison、summary 和 plots。
+
+### 输出文件
+
+仓库内：
+
+```text
+experiments/stage49_extended_adaptive_rd/stage49_extended_adaptive_rd.csv
+experiments/stage49_extended_adaptive_rd/stage49_estimated_selector_comparison.csv
+experiments/stage49_extended_adaptive_rd/stage49_raw_selector_comparison.csv
+experiments/stage49_extended_adaptive_rd/stage49_zlib_selector_comparison.csv
+experiments/stage49_extended_adaptive_rd/stage49_extended_adaptive_rd_summary.json
+experiments/stage49_extended_adaptive_rd/stage49_estimated_adapter_all_psnr_rd.png
+experiments/stage49_extended_adaptive_rd/stage49_estimated_adapter_middle_psnr_rd.png
+experiments/stage49_extended_adaptive_rd/stage49_raw_adapter_all_psnr_rd.png
+experiments/stage49_extended_adaptive_rd/stage49_raw_adapter_middle_psnr_rd.png
+experiments/stage49_extended_adaptive_rd/stage49_zlib_adapter_all_psnr_rd.png
+experiments/stage49_extended_adaptive_rd/stage49_zlib_adapter_middle_psnr_rd.png
+```
+
+外部 bitstreams：
+
+```text
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage49_extended_adaptive_rd
+```
+
+### Zlib Aggregate 结果
+
+| metric | value |
+|---|---:|
+| all-frame points | 24 |
+| middle-only points | 20 |
+| positive all points | 11 |
+| positive middle points | 11 |
+| mean delta all PSNR | 0.05422388616846652 |
+| mean delta middle PSNR | 0.08540786689496276 |
+| min delta all PSNR | -0.018963597365331708 |
+| min delta middle PSNR | -0.01899001734383532 |
+| mean rate delta MiB/frame | -3.998343664604002e-06 |
+| mean zlib savings vs raw | 34.76776063305336% |
+| max roundtrip abs diff | 0.0 |
+
+### 码率范围
+
+- zlib `gap1` 高码率点约 `0.29-0.31 MiB/frame`。
+- zlib `gap2` 约 `0.147-0.156 MiB/frame`。
+- zlib `gap3` 约 `0.100-0.108 MiB/frame`。
+- 现有低码率 `gap4/8/16` 保留。
+
+### 结论
+
+- Stage49 已解决“RD 点太少”和“只有极低码率点”的第一步问题：all-frame 6 点，middle-only 5 点。
+- `rendered_prior_0p1` adaptive 在扩展码率范围下保持正平均收益，但许多高码率点与 uniform 相同或接近，说明高码率区主要提升来自更密 keyframes。
+- 下一步需要 Stage50/51 支持 q10/q12/q16/fp16，进一步拓展高码率和更高 PSNR 区域。
