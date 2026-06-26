@@ -3918,3 +3918,23 @@ logs/RECENT_TRAINING_INNOVATION_AND_QA_2026-06-26.md
 - 当前 selector 训练状态：oracle/calibrated 有正结果，fully feed-forward selector 未解决。
 - 后续必须探索：fully feed-forward keyframe selection 和可计入码率的 optional non-keyframe side information。
 - 当前创新点和主要限制。
+
+## 2026-06-26：Stage56-68 计划落盘与 Stage Records 目录
+
+### 执行计划
+
+根据用户要求，将最新完整后续计划落盘，并建立后续每个 stage 的独立记录目录。后续每次 plan 完成后也需要整理记录。
+
+### 新增文件
+
+```text
+logs/FUTURE_WORK_PLAN_STAGE56_68.md
+logs/stage_records/README.md
+logs/stage_records/00_previous_rounds_summary.md
+```
+
+### 结论
+
+- Stage56-68 后续计划正式固定为三条核心贡献线：compression contribution、Gaussian adapter contribution、feed-forward keyframe selector contribution。
+- Optional side information 作为增强线探索，所有传输信息必须计入 rate。
+- 后续每个 stage 都需要在 `logs/stage_records/` 下记录过程、输出、结果、结论、caveat 和 commit。

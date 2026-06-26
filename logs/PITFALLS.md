@@ -381,3 +381,5 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage3 PSNR must be described as an early StreamSplat-conditioned upper-reference, not as strict compressed Gaussian-anchor-only decoder quality.
 - Future plans must explicitly include both deployable feed-forward keyframe selection and optional rate-counted side-information exploration.
 - If depth, motion hints, residuals, or other side information are transmitted for non-keyframes, they must be included in the rate and clearly separated from the current keyframe-Gaussian-only main rate.
+- Future plans should be logged before implementation, and each stage should get an individual record under `logs/stage_records/`.
+- Treat short runs as smoke/infrastructure checks only. Medium and long training runs are required before making strong claims about adapter or selector gains.
