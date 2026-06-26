@@ -436,3 +436,13 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Use `cuda:0` under `CUDA_VISIBLE_DEVICES=...` for `safetensors.torch.load_file`; plain `cuda` may fail in some safetensors versions.
 - External Stage61 `.pt` files must stay under `/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage61_davis_anchor_export` and must not be committed.
 - DAVIS gap16 train+val export is feasible on the current mount and produced 425 pair records, but it still reduced free space to only about `3.3G`. Avoid additional gap exports until storage is freed.
+
+## /data DAVIS Root Notes
+
+- `/data` has enough free space for full DAVIS expansion and large anchor exports; prefer `/data/hctang/tmp/opencode/...` for new heavy outputs.
+- The official DAVIS Full-Resolution root under `/data` includes 2017 semi-supervised train/val/test splits, 2017 unsupervised trainval annotations, 2019 unsupervised test splits, semantics, and scribbles.
+- The official test-dev/test-challenge splits have frames but limited or no full masks. Use them carefully for anchor export or encoder-side evaluation, not supervised mask/RGB training claims unless protocol is explicit.
+- Keep `/mnt/hdd2tC` for source, logs, and small summaries only; it is too full for more data or anchors.
+- `/data` DAVIS train/val frames match the previous `/mnt/hdd2tC` DAVIS root exactly, so the generated train/val depth can be copied instead of recomputed. Do not assume this for test-dev/test-challenge; they still need depth generation if used.
+- Long Stage61 exports should run with `--skip_existing` enabled. A timeout after 11311/12007 pairs was recovered by rerunning the same command.
+- Avoid loading RGB/depth for already-complete sequence/gap pairs during resume; this was optimized in the Stage61 exporter.

@@ -4374,3 +4374,158 @@ External heavy outputs remain outside git under:
 - Stage61 full all-gap export 当前被磁盘空间阻塞，不应在 `/mnt/hdd2tC` 只剩几 GiB 时启动。
 - DAVIS-aware anchor export code path 已通过 smoke，并已完成 DAVIS train+val gap16 partial large-scale export。
 - 后续若要导出 gap1/2/4/8 或 YouTube-VOS，需要先释放更多空间或提供其他外部挂载点。
+
+## 2026-06-27：完整 DAVIS 数据下载与 /data 迁移计划
+
+### 执行背景
+
+用户要求查看其他磁盘空间，继续下载更完整 DAVIS 数据集，并暂时不处理 YouTube-VOS。随后用户要求使用新数据集继续后续 stages。
+
+### 空间检查
+
+- `/data`：约 `1.1T` free。
+- `/mnt/hdd2tC`：约 `3.4G` free，继续作为代码仓库位置，不适合再放大数据。
+- `/mnt/hdd2tB`：约 `54G` free。
+- `/mnt/pool-sdd/containers/haocheng`：约 `208G` free。
+
+### 下载结果
+
+DAVIS 官方 Full-Resolution 数据已下载并解压：
+
+```text
+/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS
+```
+
+zip 保留：
+
+```text
+/data/hctang/tmp/opencode/datasets/DAVIS_official_zips
+```
+
+已下载 zip：
+
+- `DAVIS-2017-trainval-Full-Resolution.zip`
+- `DAVIS-2017-test-dev-Full-Resolution.zip`
+- `DAVIS-2017-test-challenge-Full-Resolution.zip`
+- `DAVIS-2017-Unsupervised-trainval-Full-Resolution.zip`
+- `DAVIS-2019-Unsupervised-test-dev-Full-Resolution.zip`
+- `DAVIS-2019-Unsupervised-test-challenge-Full-Resolution.zip`
+- `DAVIS-2017_semantics-Full-resolution.zip`
+- `DAVIS-2017-scribbles-trainval.zip`
+
+Zip integrity test passed for all 8 files.
+
+### New Root Layout Summary
+
+`/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS` contains:
+
+- `JPEGImages/Full-Resolution`
+- `Annotations/Full-Resolution`
+- `Annotations_unsupervised/Full-Resolution`
+- `Annotations_semantics/Full-Resolution`
+- `ImageSets/2017/{train,val,test-dev,test-challenge}.txt`
+- `ImageSets/2019/{test-dev,test-challenge}.txt`
+- `Scribbles`
+- `categories.json`
+- `davis_semantics.json`
+
+Initial split statistics before depth generation:
+
+| year | split | sequences | frames | depth | unsup masks | semi masks |
+|---|---|---:|---:|---:|---:|---:|
+| 2017 | train | 60 | 4209 | 0 | 4209 | 4209 |
+| 2017 | val | 30 | 1999 | 0 | 1999 | 1999 |
+| 2017 | test-dev | 30 | 2086 | 0 | 0 | 30 |
+| 2017 | test-challenge | 30 | 2180 | 0 | 0 | 30 |
+| 2019 | test-dev | 30 | 2294 | 0 | 0 | 0 |
+| 2019 | test-challenge | 30 | 2229 | 0 | 0 | 0 |
+
+### Updated Execution Plan
+
+- Treat `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS` as the main DAVIS root for subsequent stages.
+- Put new large anchors/checkpoints under `/data/hctang/tmp/opencode/mono_dfcgs_runs/`.
+- Reuse existing train/val depth when safe, or run Stage60 depth preprocessing on `/data`.
+- Export train/val multi-gap anchors on `/data` before Stage62 adapter training infra.
+- Keep YouTube-VOS paused per user request.
+
+## 2026-06-27：Stage61 /data DAVIS Train/Val All-Gap Anchor Export
+
+### 目标
+
+把新下载的 `/data` DAVIS official root 接入现有 Stage61 anchor export pipeline，并在 `/data` 上完成 DAVIS train/val gaps `1/2/4/8/16` 的大规模 Gaussian anchor export，为 Stage62 adapter training infra v2 提供大规模 anchor manifest。
+
+### Depth Reuse
+
+`/data` official root 初始没有 depth。比较 `/mnt/hdd2tC/tmp/opencode/datasets/DAVIS` 和 `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS` 的 2017 train/val split 后确认：
+
+- train：`60` sequences，frame/depth/frame-name mismatch `0`。
+- val：`30` sequences，frame/depth/frame-name mismatch `0`。
+
+因此直接复制已生成的 train/val depth：
+
+```text
+cp -a /mnt/hdd2tC/tmp/opencode/datasets/DAVIS/depthImages /data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS/
+```
+
+复制后 `/data` DAVIS train/val depth readiness：
+
+| split | sequences | frames | depth | ready |
+|---|---:|---:|---:|---|
+| train | 60 | 4209 | 4209 | true |
+| val | 30 | 1999 | 1999 | true |
+
+test-dev/test-challenge depth remains absent and is not used for Stage61 supervised train/val export.
+
+### Code Update
+
+`scripts/run_stage61_davis_anchor_export.py` 新增 `--skip_existing/--no-skip_existing`，默认 `true`。长时间导出第一次在 gap8 阶段触发 shell timeout；续跑时跳过已存在 `.pt` 并补齐剩余 pairs。脚本还优化了完全已存在的 sequence/gap，不再加载 RGB/depth arrays。
+
+### Preflight
+
+Command：
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage61_davis_anchor_export_preflight.py --davis_root /data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS --heavy_root /data/hctang/tmp/opencode/mono_dfcgs_runs/stage61_davis_anchor_export_full --summary_root experiments/stage61_davis_anchor_export_data_full_preflight
+```
+
+Result：
+
+- ready sequences：`90 / 90`。
+- frames：`6208`。
+- free MiB at `/data` heavy root：`1059217.48828125`。
+- needed MiB including 2GiB reserve：`23998.296875`。
+- safe to full export：`true`。
+
+### Full Export
+
+Command：
+
+```text
+CUDA_VISIBLE_DEVICES=3 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage61_davis_anchor_export.py --davis_root /data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS --heavy_root /data/hctang/tmp/opencode/mono_dfcgs_runs/stage61_davis_anchor_export_full --summary_root experiments/stage61_davis_anchor_export_data_full --splits train val --gaps 1 2 4 8 16 --max_sequences 0 --max_pairs_per_sequence 0 --batch_size 2 --device cuda:0
+```
+
+The first run timed out after generating `11311` `.pt` files. Resume command with the same arguments completed the remaining pairs.
+
+Final results：
+
+- splits：`train val`。
+- sequences：`90`。
+- gaps：`1, 2, 4, 8, 16`。
+- exported pair rows：`12007`。
+- total anchor tensor payload：`21950.296875 MiB`。
+- external heavy root disk usage：about `22G`。
+- tracked summary/manifest size：about `8.7M`。
+- `/data` free after export：about `1013G`。
+
+Tracked outputs：
+
+```text
+experiments/stage61_davis_anchor_export_data_full_preflight/
+experiments/stage61_davis_anchor_export_data_full/
+```
+
+External heavy outputs, not tracked by git：
+
+```text
+/data/hctang/tmp/opencode/mono_dfcgs_runs/stage61_davis_anchor_export_full/DAVIS/{train,val}/<sequence>/gap*/pair_*.pt
+```

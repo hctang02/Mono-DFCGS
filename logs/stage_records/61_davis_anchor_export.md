@@ -142,3 +142,74 @@ External `.pt` files are under:
 ## Next Step
 
 Use the DAVIS gap16 anchor manifest for limited Stage62 adapter-infra testing. Free additional storage before gap1/2/4/8 exports or YouTube-VOS preparation.
+
+## /data Full Export Update
+
+Date: 2026-06-27
+
+After the official DAVIS Full-Resolution root was downloaded to `/data`, Stage61 was extended to export train/val multi-gap anchors on the larger mount.
+
+### Data Root
+
+```text
+/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS
+```
+
+Existing train/val depth from `/mnt/hdd2tC/tmp/opencode/datasets/DAVIS/depthImages` was copied into the `/data` root after verifying train/val frame-name equality.
+
+### Heavy Root
+
+```text
+/data/hctang/tmp/opencode/mono_dfcgs_runs/stage61_davis_anchor_export_full
+```
+
+### Preflight
+
+`/data` preflight reported:
+
+| Metric | Value |
+|---|---:|
+| ready sequences | 90 / 90 |
+| frames | 6208 |
+| free MiB | 1059217.48828125 |
+| estimated all-gap pair-pt MiB | 21950.296875 |
+| needed MiB with reserve | 23998.296875 |
+| safe to full export | true |
+
+### Export Command
+
+```text
+CUDA_VISIBLE_DEVICES=3 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage61_davis_anchor_export.py --davis_root /data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS --heavy_root /data/hctang/tmp/opencode/mono_dfcgs_runs/stage61_davis_anchor_export_full --summary_root experiments/stage61_davis_anchor_export_data_full --splits train val --gaps 1 2 4 8 16 --max_sequences 0 --max_pairs_per_sequence 0 --batch_size 2 --device cuda:0
+```
+
+The first run timed out after writing `11311` `.pt` files. The same command was rerun with `--skip_existing` enabled by default and completed successfully.
+
+### Final Results
+
+| Metric | Value |
+|---|---:|
+| splits | train, val |
+| sequences | 90 |
+| gaps | 1, 2, 4, 8, 16 |
+| exported pairs | 12007 |
+| total anchor MiB | 21950.296875 |
+| external heavy root size | about 22G |
+| tracked manifest/summary size | about 8.7M |
+| `/data` free after export | about 1013G |
+
+Tracked outputs:
+
+```text
+experiments/stage61_davis_anchor_export_data_full_preflight/
+experiments/stage61_davis_anchor_export_data_full/
+```
+
+External `.pt` outputs:
+
+```text
+/data/hctang/tmp/opencode/mono_dfcgs_runs/stage61_davis_anchor_export_full/DAVIS/{train,val}/<sequence>/gap*/pair_*.pt
+```
+
+### Conclusion
+
+Stage61 is now complete for DAVIS train/val all-gap anchors on `/data`. This is the main large-scale anchor manifest for Stage62 adapter training infra.

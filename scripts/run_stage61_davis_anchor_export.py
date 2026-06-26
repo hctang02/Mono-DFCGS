@@ -99,29 +99,67 @@ def build_pairs(total_frames, gap):
 
 
 def load_sequence_arrays(root, split, sequence, opt):
-    image_dir = Path(root) / "JPEGImages/Full-Resolution" / sequence
-    frame_files = sorted_images(image_dir)
-    depth_files = [depth_path_for_frame(path) for path in frame_files]
-    missing_depth = [path for path in depth_files if not path.exists()]
-    if missing_depth:
-        raise FileNotFoundError(f"Missing {len(missing_depth)} depth files for DAVIS {split}/{sequence}")
+    frame_files, depth_files = list_sequence_paths(root, sequence)
     frames = [get_image(path, opt.image_height, opt.image_width) for path in frame_files]
     depths = [get_depth(path, opt.image_height, opt.image_width) for path in depth_files]
     return frame_files, depth_files, frames, depths
 
 
+def list_sequence_paths(root, sequence):
+    image_dir = Path(root) / "JPEGImages/Full-Resolution" / sequence
+    frame_files = sorted_images(image_dir)
+    depth_files = [depth_path_for_frame(path) for path in frame_files]
+    missing_depth = [path for path in depth_files if not path.exists()]
+    if missing_depth:
+        raise FileNotFoundError(f"Missing {len(missing_depth)} depth files for DAVIS sequence {sequence}")
+    return frame_files, depth_files
+
+
 def run_sequence_gap(root, split, sequence, gap, args, model, opt, device):
-    frame_files, depth_files, frames_all, depths_all = load_sequence_arrays(root, split, sequence, opt)
+    frame_files, depth_files = list_sequence_paths(root, sequence)
     _selected, pairs = build_pairs(len(frame_files), gap)
     if args.max_pairs_per_sequence > 0:
         pairs = pairs[: args.max_pairs_per_sequence]
 
-    pairs_by_len = defaultdict(list)
-    for pair in pairs:
-        pairs_by_len[pair[1] - pair[0]].append(pair)
+    skipped_existing = []
+    pending_pairs = []
+    for a, b in pairs:
+        rel_path = Path("DAVIS") / split / sequence / f"gap{gap}" / f"pair_{a:06d}_{b:06d}.pt"
+        out_path = args.heavy_root / rel_path
+        if args.skip_existing and out_path.exists():
+            skipped_existing.append((a, b, rel_path, out_path))
+        else:
+            pending_pairs.append((a, b))
 
+    per_pair_anchor_mib = 1.828125
     manifest_rows = []
     total_mib = 0.0
+    for a, b, rel_path, out_path in skipped_existing:
+        manifest_rows.append({
+            "dataset": "DAVIS",
+            "split": split,
+            "sequence": sequence,
+            "frame_gap": gap,
+            "left_index": a,
+            "right_index": b,
+            "segment_length": b - a,
+            "middle_frame_count": max(b - a - 1, 0),
+            "dataset_item": str(out_path),
+            "dataset_item_relative": str(rel_path),
+            "anchor_mib": per_pair_anchor_mib,
+            "gaussians_per_anchor": 36864,
+        })
+        total_mib += per_pair_anchor_mib
+    if not pending_pairs:
+        return len(frame_files), manifest_rows, total_mib
+
+    frames_all = [get_image(path, opt.image_height, opt.image_width) for path in frame_files]
+    depths_all = [get_depth(path, opt.image_height, opt.image_width) for path in depth_files]
+
+    pairs_by_len = defaultdict(list)
+    for pair in pending_pairs:
+        pairs_by_len[pair[1] - pair[0]].append(pair)
+
     sample_id = f"DAVIS/{split}/{sequence}"
     with torch.no_grad():
         for _seg_len, seg_pairs in sorted(pairs_by_len.items()):
@@ -187,6 +225,7 @@ def parse_args():
     parser.add_argument("--batch_size", type=int, default=1)
     parser.add_argument("--max_sequences", type=int, default=1, help="0 means all selected sequences")
     parser.add_argument("--max_pairs_per_sequence", type=int, default=1, help="0 means all pairs")
+    parser.add_argument("--skip_existing", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--device", default="cuda:0" if torch.cuda.is_available() else "cpu")
     return parser.parse_args()
 
@@ -263,6 +302,7 @@ def main():
         "batch_size": args.batch_size,
         "max_sequences": args.max_sequences,
         "max_pairs_per_sequence": args.max_pairs_per_sequence,
+        "skip_existing": args.skip_existing,
         "manifest_csv": str(manifest_csv),
         "summary_csv": str(summary_csv),
         "total_rows": len(all_rows),
