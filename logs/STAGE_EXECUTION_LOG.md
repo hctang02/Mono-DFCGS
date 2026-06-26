@@ -3850,3 +3850,46 @@ experiments/stage55_large_scale_data_preflight/stage55_large_scale_data_prefligh
 - DAVIS 和 YouTube-VOS 是最适合 Mono-DFCGS 下一步大规模单目扩展的数据集，但需要用户先 mount/download，并生成 `depthImages/*_pred.png`。
 - RE10K/CO3D 可以作为潜在 pretraining source，但不能在最终单目 codec claim 中使用多视角/camera 信息，除非先定义单目序列抽取协议。
 - 当前 Stage33 dense anchors 覆盖 4 个本地样本，可继续用于 selector/adapter 开发，但不足以作为 paper-scale dataset evidence。
+
+## 2026-06-26：阶段 51b Clean All-PSNR RD Plots
+
+### 执行计划
+
+Stage51b 不重跑任何渲染，只读取 Stage51 high-rate RD CSV，重画更清晰的 all-frame PSNR RD 曲线。新版图避免把 q 和 gap 全部画成同色折线：颜色表示 quant bits，点标签表示 reference gap。
+
+### 新增文件
+
+```text
+scripts/run_stage51b_clean_all_psnr_rd_plots.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage51b_clean_all_psnr_rd_plots.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage51b_clean_all_psnr_rd_plots.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi`。Stage51b 是 CPU-only CSV plotting，未占用 CUDA。
+
+### 输出文件
+
+```text
+experiments/stage51_high_rate_multibit_rd/stage51_clean_mean_all_psnr_rd.csv
+experiments/stage51_high_rate_multibit_rd/stage51_clean_adaptive_delta_all_psnr.csv
+experiments/stage51_high_rate_multibit_rd/stage51_clean_adaptive_all_psnr_by_bits.png
+experiments/stage51_high_rate_multibit_rd/stage51_clean_uniform_all_psnr_by_bits.png
+experiments/stage51_high_rate_multibit_rd/stage51_clean_mean_all_psnr_by_bits.png
+experiments/stage51_high_rate_multibit_rd/stage51_clean_adaptive_delta_all_psnr_heatmap.png
+experiments/stage51_high_rate_multibit_rd/stage51_clean_all_psnr_rd_plots_summary.json
+```
+
+### 结论
+
+- 新图只展示 all-frame PSNR，符合后续默认汇报口径。
+- `stage51_clean_adaptive_all_psnr_by_bits.png` 按样本展示 adaptive RD，每条线对应一个 q bit-depth，点标签为 gap。
+- `stage51_clean_mean_all_psnr_by_bits.png` 给出 uniform 和 adaptive 的跨样本均值 RD。
+- `stage51_clean_adaptive_delta_all_psnr_heatmap.png` 直接展示 adaptive 相比 uniform 的 all-frame PSNR 增益。
+- `rendered_prior_0p1` 仍只能作为 oracle/calibrated selector 上限参考；最终 selector 必须改为 fully feed-forward。

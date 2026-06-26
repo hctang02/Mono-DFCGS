@@ -368,3 +368,10 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - StreamSplat `provider_davis.py` is stricter than the Stage8 convenience manifest: it expects `JPEGImages/Full-Resolution`, `Annotations_unsupervised/Full-Resolution`, `ImageSets/2017/*.txt`, and provider-derived `depthImages/*_pred.png` at access time.
 - StreamSplat `provider_vos.py` expects `train/valid/JPEGImages`; training split needs `train/Annotations`, while valid split uses dummy masks. Depth files are still expected as `depthImages/*_pred.png`.
 - RE10K and CO3D should be treated as possible pretraining sources only unless a single-view extraction/evaluation protocol is explicitly defined. They must not leak multiview/camera information into final monocular codec claims.
+
+## Stage 51b Notes
+
+- Stage51b is plotting-only and reuses existing Stage51 CSV results. Do not describe it as rerendered quality or a new RD experiment.
+- For future user-facing summaries, default to all-frame PSNR only unless middle-only PSNR is explicitly requested.
+- Plot quantization bits and keyframe gaps with separate visual encodings. Mixing all q/g points into one same-color line makes the RD curve hard to read and can imply a false traversal order.
+- Keep labeling `rendered_prior_0p1` as oracle/calibrated; it is not a deployable feed-forward selector.

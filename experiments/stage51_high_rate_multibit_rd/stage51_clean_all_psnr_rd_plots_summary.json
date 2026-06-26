@@ -1,0 +1,18 @@
+{
+  "stage": "51b",
+  "mode": "clean all-frame PSNR RD plots from existing Stage51 CSV",
+  "stage51_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage51_high_rate_multibit_rd/stage51_high_rate_multibit_rd.csv",
+  "mean_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage51_high_rate_multibit_rd/stage51_clean_mean_all_psnr_rd.csv",
+  "delta_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage51_high_rate_multibit_rd/stage51_clean_adaptive_delta_all_psnr.csv",
+  "plots": [
+    "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage51_high_rate_multibit_rd/stage51_clean_adaptive_all_psnr_by_bits.png",
+    "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage51_high_rate_multibit_rd/stage51_clean_uniform_all_psnr_by_bits.png",
+    "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage51_high_rate_multibit_rd/stage51_clean_mean_all_psnr_by_bits.png",
+    "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage51_high_rate_multibit_rd/stage51_clean_adaptive_delta_all_psnr_heatmap.png"
+  ],
+  "notes": [
+    "No rendering is rerun; this only replots existing Stage51 all-frame PSNR results.",
+    "Colors distinguish quantization bits; point labels show keyframe gap.",
+    "The adaptive method rendered_prior_0p1 remains an oracle/calibrated selector, not a fully feed-forward selector."
+  ]
+}
