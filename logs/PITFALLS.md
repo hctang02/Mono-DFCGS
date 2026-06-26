@@ -453,3 +453,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage62 smoke validates infra only. A `+0.0044 dB` margin after 5 tiny steps is not a meaningful adapter contribution claim.
 - Keep best/final checkpoints and resume `.pt` state under `/data/hctang/tmp/opencode/mono_dfcgs_runs`; do not commit them.
 - Resume runs can overwrite tracked summary CSV/JSON with the resumed run configuration. Record `start_step` and `resume_state` context in the summary before interpreting the logs.
+
+## Stage63 Medium Pilot Notes
+
+- Stage63 pilot reuses the Stage62 script, so output filenames still start with `stage62_` inside `experiments/stage63_medium_adapter_training_pilot`. Treat the directory name and stage record as the authoritative stage context.
+- The 128-step pilot shows monotonic eval gain but covers only 16 train rows and 8 eval tasks. It is evidence that longer training is worth trying, not a final medium-training claim.
+- Gap16 gains remain smaller than gap2/4 gains, suggesting longer-GOP behavior still needs more data, more steps, or stronger adapter architecture.

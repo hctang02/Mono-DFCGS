@@ -4609,3 +4609,69 @@ External outputs：
 ### 结论
 
 Stage62 infrastructure is functional: DAVIS manifest reading, train/val split, q8 anchor input, RGB rendering loss, best checkpoint, final checkpoint, and resume state all work. This is a smoke/infrastructure validation, not a medium/long adapter quality result.
+
+## 2026-06-27：Stage63 DAVIS Medium Adapter Training Pilot
+
+### 目标
+
+使用 Stage62 infrastructure 在 DAVIS all-gap anchors 上运行一个 medium-training pilot，验证更大 row/task 覆盖和更长 step 后的训练曲线，再决定是否进入 5k+ step 中长训。
+
+### 执行
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage62_adapter_training_infra_v2.py --device cuda --summary_root experiments/stage63_medium_adapter_training_pilot --heavy_root /data/hctang/tmp/opencode/mono_dfcgs_runs/stage63_medium_adapter_training_pilot --steps 128 --eval_interval 32 --frame_gaps 2 4 8 16 --max_train_rows_per_gap 4 --max_eval_rows_per_gap 2 --targets_per_row 1
+```
+
+### 输出
+
+Tracked outputs：
+
+```text
+experiments/stage63_medium_adapter_training_pilot/
+```
+
+External outputs：
+
+```text
+/data/hctang/tmp/opencode/mono_dfcgs_runs/stage63_medium_adapter_training_pilot/stage62_best_anchor_adapter.safetensors
+/data/hctang/tmp/opencode/mono_dfcgs_runs/stage63_medium_adapter_training_pilot/stage62_final_anchor_adapter.safetensors
+/data/hctang/tmp/opencode/mono_dfcgs_runs/stage63_medium_adapter_training_pilot/stage62_latest_training_state.pt
+```
+
+### Results
+
+- Available train rows：`3926`。
+- Available eval rows：`1853`。
+- Selected train rows：`16`。
+- Selected eval rows：`8`。
+- Steps：`128`。
+- Best step：`128`。
+- Initial eval model/linear PSNR：`20.90521679961685`。
+- Final/best eval model PSNR：`20.93635879151969`。
+- Best margin over linear：`0.031141991902842392 dB`。
+- External checkpoint root size：about `2.0M`。
+
+Validation curve：
+
+| step | model PSNR | linear PSNR | margin over linear |
+|---:|---:|---:|---:|
+| 0 | 20.90521679961685 | 20.90521679961685 | 0.0 |
+| 32 | 20.913996462661025 | 20.90521679961685 | 0.008779663044176544 |
+| 64 | 20.92152115695736 | 20.90521679961685 | 0.01630435734051261 |
+| 96 | 20.929940697543877 | 20.90521679961685 | 0.02472389792702856 |
+| 128 | 20.93635879151969 | 20.90521679961685 | 0.031141991902842392 |
+
+Gap-wise best margins：
+
+| gap | margin over linear |
+|---:|---:|
+| 2 | 0.04881351193215622 |
+| 4 | 0.03418816116420231 |
+| 8 | 0.024005080795515 |
+| 16 | 0.017561213719488933 |
+
+### 结论
+
+Stage63 pilot shows a small but monotonic validation gain across all tested gaps. It remains a pilot with only 128 steps and 8 eval tasks; it supports running a longer Stage63/65 training job, but should not be presented as the final medium/long adapter result.

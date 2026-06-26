@@ -1,0 +1,207 @@
+{
+  "stage": 62,
+  "mode": "adapter training infra v2 on DAVIS anchors",
+  "manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage61_davis_anchor_export_data_full/stage61_davis_anchor_export_manifest.csv",
+  "train_splits": [
+    "train"
+  ],
+  "eval_splits": [
+    "val"
+  ],
+  "frame_gaps": [
+    2,
+    4,
+    8,
+    16
+  ],
+  "available_train_rows": 3926,
+  "available_eval_rows": 1853,
+  "selected_train_row_count": 16,
+  "selected_eval_row_count": 8,
+  "train_task_count": 16,
+  "eval_task_count": 8,
+  "rows_by_gap": {
+    "2": {
+      "available_train_rows": 2055,
+      "available_eval_rows": 974,
+      "selected_train_rows": 4,
+      "selected_eval_rows": 2,
+      "selected_train_sequences": [
+        "bear",
+        "bmx-bumps",
+        "boat",
+        "boxing-fisheye"
+      ],
+      "selected_eval_sequences": [
+        "bike-packing",
+        "blackswan"
+      ]
+    },
+    "4": {
+      "available_train_rows": 1048,
+      "available_eval_rows": 495,
+      "selected_train_rows": 4,
+      "selected_eval_rows": 2,
+      "selected_train_sequences": [
+        "bear",
+        "bmx-bumps",
+        "boat",
+        "boxing-fisheye"
+      ],
+      "selected_eval_sequences": [
+        "bike-packing",
+        "blackswan"
+      ]
+    },
+    "8": {
+      "available_train_rows": 540,
+      "available_eval_rows": 252,
+      "selected_train_rows": 4,
+      "selected_eval_rows": 2,
+      "selected_train_sequences": [
+        "bear",
+        "bmx-bumps",
+        "boat",
+        "boxing-fisheye"
+      ],
+      "selected_eval_sequences": [
+        "bike-packing",
+        "blackswan"
+      ]
+    },
+    "16": {
+      "available_train_rows": 283,
+      "available_eval_rows": 132,
+      "selected_train_rows": 4,
+      "selected_eval_rows": 2,
+      "selected_train_sequences": [
+        "bear",
+        "bmx-bumps",
+        "boat",
+        "boxing-fisheye"
+      ],
+      "selected_eval_sequences": [
+        "bike-packing",
+        "blackswan"
+      ]
+    }
+  },
+  "steps": 128,
+  "eval_interval": 32,
+  "hidden_dim": 128,
+  "lr": 8e-06,
+  "quant_bits": 8,
+  "targets_per_row": 1,
+  "zero_init_residual": true,
+  "parameter_count": 102925,
+  "start_step": 0,
+  "best_step": 128,
+  "initial_train": {
+    "model_psnr_avg": 19.195843704174173,
+    "linear_psnr_avg": 19.195843704174173,
+    "margin_over_linear_psnr": 0.0,
+    "model_psnr_by_gap": {
+      "2": 21.37395162338412,
+      "4": 19.49111819506591,
+      "8": 17.90263678530845,
+      "16": 18.01566821293822
+    },
+    "linear_psnr_by_gap": {
+      "2": 21.37395162338412,
+      "4": 19.49111819506591,
+      "8": 17.90263678530845,
+      "16": 18.01566821293822
+    }
+  },
+  "initial_eval": {
+    "model_psnr_avg": 20.90521679961685,
+    "linear_psnr_avg": 20.90521679961685,
+    "margin_over_linear_psnr": 0.0,
+    "model_psnr_by_gap": {
+      "2": 22.775455967542836,
+      "4": 21.531502922308917,
+      "8": 20.118804914647942,
+      "16": 19.1951033939677
+    },
+    "linear_psnr_by_gap": {
+      "2": 22.775455967542836,
+      "4": 21.531502922308917,
+      "8": 20.118804914647942,
+      "16": 19.1951033939677
+    }
+  },
+  "final_train": {
+    "model_psnr_avg": 19.218344743157918,
+    "linear_psnr_avg": 19.195843704174173,
+    "margin_over_linear_psnr": 0.022501038983744337,
+    "model_psnr_by_gap": {
+      "2": 21.415096879785054,
+      "4": 19.516627754140547,
+      "8": 17.913659183439123,
+      "16": 18.027995155266936
+    },
+    "linear_psnr_by_gap": {
+      "2": 21.37395162338412,
+      "4": 19.49111819506591,
+      "8": 17.90263678530845,
+      "16": 18.01566821293822
+    }
+  },
+  "final_eval": {
+    "model_psnr_avg": 20.93635879151969,
+    "linear_psnr_avg": 20.90521679961685,
+    "margin_over_linear_psnr": 0.031141991902842392,
+    "model_psnr_by_gap": {
+      "2": 22.824269479474992,
+      "4": 21.56569108347312,
+      "8": 20.142809995443457,
+      "16": 19.212664607687188
+    },
+    "linear_psnr_by_gap": {
+      "2": 22.775455967542836,
+      "4": 21.531502922308917,
+      "8": 20.118804914647942,
+      "16": 19.1951033939677
+    }
+  },
+  "best_eval": {
+    "model_psnr_avg": 20.93635879151969,
+    "linear_psnr_avg": 20.90521679961685,
+    "margin_over_linear_psnr": 0.031141991902842392,
+    "model_psnr_by_gap": {
+      "2": 22.824269479474992,
+      "4": 21.56569108347312,
+      "8": 20.142809995443457,
+      "16": 19.212664607687188
+    },
+    "linear_psnr_by_gap": {
+      "2": 22.775455967542836,
+      "4": 21.531502922308917,
+      "8": 20.118804914647942,
+      "16": 19.1951033939677
+    }
+  },
+  "train_losses_csv": "experiments/stage63_medium_adapter_training_pilot/stage62_train_rgb_losses.csv",
+  "validation_csv": "experiments/stage63_medium_adapter_training_pilot/stage62_validation_log.csv",
+  "selected_rows_csv": "experiments/stage63_medium_adapter_training_pilot/stage62_selected_rows.csv",
+  "initial_eval_csv": "experiments/stage63_medium_adapter_training_pilot/stage62_initial_eval.csv",
+  "final_eval_csv": "experiments/stage63_medium_adapter_training_pilot/stage62_final_eval.csv",
+  "best_eval_csv": "experiments/stage63_medium_adapter_training_pilot/stage62_best_eval.csv",
+  "best_gap_eval_csv": "experiments/stage63_medium_adapter_training_pilot/stage62_best_gap_eval_summary.csv",
+  "external_best_checkpoint": {
+    "path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage63_medium_adapter_training_pilot/stage62_best_anchor_adapter.safetensors",
+    "tensor_count": 14,
+    "parameter_count": 102925
+  },
+  "external_final_checkpoint": {
+    "path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage63_medium_adapter_training_pilot/stage62_final_anchor_adapter.safetensors",
+    "tensor_count": 14,
+    "parameter_count": 102925
+  },
+  "external_latest_training_state": {
+    "path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage63_medium_adapter_training_pilot/stage62_latest_training_state.pt",
+    "step": 128,
+    "best_step": 128
+  },
+  "notes": "Stage62 is infrastructure validation, not a medium/long training result. Inputs remain quantized keyframe Gaussian anchors plus timestamp only."
+}
