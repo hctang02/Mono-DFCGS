@@ -3790,3 +3790,63 @@ experiments/stage54_decision_aware_selector_analysis/stage54_decision_aware_sele
 - `oracle_layout_imitation` 全部 fallback 到 uniform，说明简单模仿 Stage49 rendered-oracle layout 的 overlap/Jaccard 不是有效的 deployable decision rule。
 - `loocv_layout_threshold` 仍为负平均收益，说明当前 12 个点样本太少且 layout-only threshold fallback 不够稳健。
 - 下一步 selector 方向应优先做 decision-aware objective / adaptive-or-uniform classifier / DP-aware calibration，而不是只继续提升 segment-cost correlation。
+
+## 2026-06-26：阶段 55 Large-Scale Data Preflight
+
+### 执行计划
+
+Stage55 做只读数据扩展 preflight。目标是明确下一步是否能直接扩展到 DAVIS / YouTube-VOS / RE10K / CO3D，并记录 StreamSplat 官方 provider 期望路径、Mono-DFCGS anchor export readiness、以及单目 codec claim 的使用边界。
+
+### 新增文件
+
+```text
+scripts/run_stage55_large_scale_data_preflight.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage55_large_scale_data_preflight.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage55_large_scale_data_preflight.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi`。Stage55 是 CPU-only 文件系统 preflight，未占用 CUDA。
+
+### 输出文件
+
+```text
+experiments/stage55_large_scale_data_preflight/stage55_root_preflight.csv
+experiments/stage55_large_scale_data_preflight/stage55_sequence_preflight_sample.csv
+experiments/stage55_large_scale_data_preflight/stage55_current_anchor_assets.csv
+experiments/stage55_large_scale_data_preflight/stage55_protocol_matrix.csv
+experiments/stage55_large_scale_data_preflight/stage55_large_scale_data_preflight_summary.json
+experiments/stage55_large_scale_data_preflight/stage55_large_scale_data_preflight_report.md
+```
+
+### 结果摘要
+
+| item | value |
+|---|---:|
+| root candidates checked | 20 |
+| provider-layout-ready roots | 0 |
+| anchor-export-ready roots | 0 |
+| DAVIS/YouTube-VOS sampled sequence rows | 0 |
+| current local anchor samples | 4 |
+
+### Current Anchor Assets
+
+| sample | gap1 pair rows | unique anchor frames | external paths exist |
+|---|---:|---:|---:|
+| driving | 80 | 81 | 80 |
+| meetroom | 80 | 81 | 80 |
+| n3dv | 80 | 81 | 80 |
+| robot | 76 | 77 | 76 |
+
+### 结论
+
+- 默认路径下仍未发现可直接用于 StreamSplat provider 的 DAVIS / YouTube-VOS / RE10K / CO3D root。
+- DAVIS 和 YouTube-VOS 是最适合 Mono-DFCGS 下一步大规模单目扩展的数据集，但需要用户先 mount/download，并生成 `depthImages/*_pred.png`。
+- RE10K/CO3D 可以作为潜在 pretraining source，但不能在最终单目 codec claim 中使用多视角/camera 信息，除非先定义单目序列抽取协议。
+- 当前 Stage33 dense anchors 覆盖 4 个本地样本，可继续用于 selector/adapter 开发，但不足以作为 paper-scale dataset evidence。

@@ -1,0 +1,5 @@
+asset,sample,row_count,unique_anchor_frames,min_frame,max_frame,external_path_exists_count,notes
+stage33_dense_gap1_anchor_manifest,driving,80,81,0,80,80,Current local dense anchors; useful for development but not large-scale dataset expansion.
+stage33_dense_gap1_anchor_manifest,meetroom,80,81,0,80,80,Current local dense anchors; useful for development but not large-scale dataset expansion.
+stage33_dense_gap1_anchor_manifest,n3dv,80,81,0,80,80,Current local dense anchors; useful for development but not large-scale dataset expansion.
+stage33_dense_gap1_anchor_manifest,robot,76,77,0,76,76,Current local dense anchors; useful for development but not large-scale dataset expansion.

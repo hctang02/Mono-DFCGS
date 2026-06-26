@@ -361,3 +361,10 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - The Stage48 predicted candidate layout pool has a very low oracle upper bound over uniform (`+0.0063 dB` mean all PSNR), so a better fallback policy alone cannot create large gains from these candidates.
 - Layout imitation via simple overlap/Jaccard to the rendered-oracle layout collapses to uniform on all current points; oracle-layout similarity is not a deployable selector objective by itself.
 - Leave-one-sample-out layout-threshold fallback remains slightly negative, so the final feed-forward selector likely needs decision-aware training/calibration on more samples rather than only segment-cost regression.
+
+## Stage 55 Notes
+
+- Stage55 is read-only preflight. Do not describe it as a dataset expansion run, depth preprocessing run, anchor export, or training stage.
+- StreamSplat `provider_davis.py` is stricter than the Stage8 convenience manifest: it expects `JPEGImages/Full-Resolution`, `Annotations_unsupervised/Full-Resolution`, `ImageSets/2017/*.txt`, and provider-derived `depthImages/*_pred.png` at access time.
+- StreamSplat `provider_vos.py` expects `train/valid/JPEGImages`; training split needs `train/Annotations`, while valid split uses dummy masks. Depth files are still expected as `depthImages/*_pred.png`.
+- RE10K and CO3D should be treated as possible pretraining sources only unless a single-view extraction/evaluation protocol is explicitly defined. They must not leak multiview/camera information into final monocular codec claims.

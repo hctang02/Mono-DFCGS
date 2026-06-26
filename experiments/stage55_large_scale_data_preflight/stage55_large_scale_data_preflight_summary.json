@@ -1,0 +1,22 @@
+{
+  "stage": 55,
+  "mode": "large-scale dataset expansion preflight",
+  "root_candidate_count": 20,
+  "provider_layout_ready_root_count": 0,
+  "anchor_export_ready_root_count": 0,
+  "sequence_row_count": 0,
+  "current_anchor_sample_count": 4,
+  "root_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage55_large_scale_data_preflight/stage55_root_preflight.csv",
+  "sequence_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage55_large_scale_data_preflight/stage55_sequence_preflight_sample.csv",
+  "asset_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage55_large_scale_data_preflight/stage55_current_anchor_assets.csv",
+  "protocol_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage55_large_scale_data_preflight/stage55_protocol_matrix.csv",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage55_large_scale_data_preflight/stage55_large_scale_data_preflight_summary.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage55_large_scale_data_preflight/stage55_large_scale_data_preflight_report.md",
+  "streamsplat_root": "/mnt/hdd2tC/tmp/opencode/StreamSplat",
+  "stage33_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage33_dense_gap1_anchor_export/stage33_dense_gap1_anchor_manifest.csv",
+  "notes": [
+    "This preflight is read-only and does not download or preprocess datasets.",
+    "DAVIS/YouTube-VOS are single-view video expansion targets for Mono-DFCGS.",
+    "RE10K/CO3D should be treated as possible pretraining sources only unless converted to a single-view protocol."
+  ]
+}
