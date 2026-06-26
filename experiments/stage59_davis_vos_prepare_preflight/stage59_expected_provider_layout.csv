@@ -1,11 +1,11 @@
 dataset,component,expected_path,required_for,exists,notes
-DAVIS,train split,/mnt/hdd2tC/tmp/opencode/datasets/DAVIS/ImageSets/2017/train.txt,provider init,false,Expected by StreamSplat provider_davis.py
-DAVIS,val split,/mnt/hdd2tC/tmp/opencode/datasets/DAVIS/ImageSets/2017/val.txt,provider init,false,Expected by StreamSplat provider_davis.py
-DAVIS,frames,/mnt/hdd2tC/tmp/opencode/datasets/DAVIS/JPEGImages/Full-Resolution/<sequence>/*.jpg,depth preprocess and training,false,Expected by StreamSplat provider_davis.py
-DAVIS,masks,/mnt/hdd2tC/tmp/opencode/datasets/DAVIS/Annotations_unsupervised/Full-Resolution/<sequence>/*.png,training supervision,false,Expected by StreamSplat provider_davis.py
-DAVIS,predicted depth,/mnt/hdd2tC/tmp/opencode/datasets/DAVIS/depthImages/Full-Resolution/<sequence>/*_pred.png,training and anchor export,false,Expected by StreamSplat provider_davis.py
+DAVIS,train split,/mnt/hdd2tC/tmp/opencode/datasets/DAVIS/ImageSets/2017/train.txt,provider init,true,Expected by StreamSplat provider_davis.py
+DAVIS,val split,/mnt/hdd2tC/tmp/opencode/datasets/DAVIS/ImageSets/2017/val.txt,provider init,true,Expected by StreamSplat provider_davis.py
+DAVIS,frames,/mnt/hdd2tC/tmp/opencode/datasets/DAVIS/JPEGImages/Full-Resolution/<sequence>/*.jpg,depth preprocess and training,true,Expected by StreamSplat provider_davis.py
+DAVIS,masks,/mnt/hdd2tC/tmp/opencode/datasets/DAVIS/Annotations_unsupervised/Full-Resolution/<sequence>/*.png,training supervision,true,Expected by StreamSplat provider_davis.py
+DAVIS,predicted depth,/mnt/hdd2tC/tmp/opencode/datasets/DAVIS/depthImages/Full-Resolution/<sequence>/*_pred.png,training and anchor export,true,Expected by StreamSplat provider_davis.py
 YouTube-VOS,train frames,/mnt/hdd2tC/tmp/opencode/datasets/YouTube-VOS/train/JPEGImages/<sequence>/*.jpg,depth preprocess and training,false,Expected by StreamSplat provider_vos.py
 YouTube-VOS,train masks,/mnt/hdd2tC/tmp/opencode/datasets/YouTube-VOS/train/Annotations/<sequence>/*.png,training supervision,false,Expected by StreamSplat provider_vos.py
 YouTube-VOS,train predicted depth,/mnt/hdd2tC/tmp/opencode/datasets/YouTube-VOS/train/depthImages/<sequence>/*_pred.png,training and anchor export,false,Expected by StreamSplat provider_vos.py
-YouTube-VOS,valid frames,/mnt/hdd2tC/tmp/opencode/datasets/YouTube-VOS/valid/JPEGImages/<sequence>/*.jpg,validation depth preprocess,false,Expected by StreamSplat provider_vos.py
+YouTube-VOS,valid frames,/mnt/hdd2tC/tmp/opencode/datasets/YouTube-VOS/valid/JPEGImages/<sequence>/*.jpg,validation depth preprocess,true,Expected by StreamSplat provider_vos.py
 YouTube-VOS,valid predicted depth,/mnt/hdd2tC/tmp/opencode/datasets/YouTube-VOS/valid/depthImages/<sequence>/*_pred.png,validation and anchor export,false,Expected by StreamSplat provider_vos.py

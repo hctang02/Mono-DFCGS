@@ -1,0 +1,21 @@
+{
+  "stage": 60,
+  "mode": "DepthAnything V2 depth preprocessing for DAVIS/YouTube-VOS",
+  "streamsplat_root": "/mnt/hdd2tC/tmp/opencode/StreamSplat",
+  "davis_root": "/mnt/hdd2tC/tmp/opencode/datasets/DAVIS",
+  "vos_root": "/mnt/hdd2tC/tmp/opencode/datasets/YouTube-VOS",
+  "datasets": [
+    "davis"
+  ],
+  "include_vos_train": false,
+  "include_vos_valid": false,
+  "model_name": "vitl",
+  "device": "cuda",
+  "target_short_side": 518,
+  "skip_existing": true,
+  "candidate_frames": 6208,
+  "processed_frames": 6206,
+  "skipped_frames": 2,
+  "failed_frames": 0,
+  "frame_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage60_depth_preprocess/stage60_depth_preprocess_frames.csv"
+}

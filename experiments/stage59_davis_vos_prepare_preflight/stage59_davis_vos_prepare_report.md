@@ -2,8 +2,8 @@
 
 ## Summary
 
-- DAVIS provider-ready roots: `0`.
-- DAVIS anchor-export-ready roots: `0`.
+- DAVIS provider-ready roots: `1`.
+- DAVIS anchor-export-ready roots: `1`.
 - YouTube-VOS provider-ready roots: `0`.
 - YouTube-VOS anchor-export-ready roots: `0`.
 
@@ -11,12 +11,12 @@
 
 | Dataset | Root | Exists | Provider-ready | Depth-preprocess-ready | Anchor-export-ready | Missing | Next action |
 |---|---|---|---|---|---|---|---|
-| DAVIS | `/mnt/hdd2tC/tmp/opencode/datasets/DAVIS` | false | false | false | false | root | download or mount missing DAVIS files |
+| DAVIS | `/mnt/hdd2tC/tmp/opencode/datasets/DAVIS` | true | true | true | true |  | ready for Stage61 anchor export |
 | DAVIS | `/mnt/hdd2tC/tmp/opencode/datasets/davis` | false | false | false | false | root | download or mount missing DAVIS files |
 | DAVIS | `/mnt/hdd2tC/tmp/opencode/DAVIS` | false | false | false | false | root | download or mount missing DAVIS files |
 | DAVIS | `/mnt/hdd2tC/datasets/DAVIS` | false | false | false | false | root | download or mount missing DAVIS files |
 | DAVIS | `/mnt/hdd2tC/haocheng/datasets/DAVIS` | false | false | false | false | root | download or mount missing DAVIS files |
-| YouTube-VOS | `/mnt/hdd2tC/tmp/opencode/datasets/YouTube-VOS` | false | false | false | false | root | download or mount missing YouTube-VOS files |
+| YouTube-VOS | `/mnt/hdd2tC/tmp/opencode/datasets/YouTube-VOS` | true | false | false | false | train/JPEGImages; train/Annotations | download or mount missing YouTube-VOS files |
 | YouTube-VOS | `/mnt/hdd2tC/tmp/opencode/datasets/youtube_vos` | false | false | false | false | root | download or mount missing YouTube-VOS files |
 | YouTube-VOS | `/mnt/hdd2tC/tmp/opencode/YouTube-VOS` | false | false | false | false | root | download or mount missing YouTube-VOS files |
 | YouTube-VOS | `/mnt/hdd2tC/datasets/YouTube-VOS` | false | false | false | false | root | download or mount missing YouTube-VOS files |

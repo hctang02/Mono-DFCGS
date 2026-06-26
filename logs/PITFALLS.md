@@ -413,3 +413,18 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage59 does not download DAVIS or YouTube-VOS. Official datasets may require manual download, login, or acceptance of terms.
 - StreamSplat provider files exist, but no checked candidate root is provider-ready or anchor-export-ready.
 - Stage60/61 cannot run on DAVIS/YouTube-VOS until frames, annotations, split files, and then predicted depth files are present.
+
+## Stage59 Data Acquisition Notes
+
+- DAVIS Full-Resolution unsupervised trainval can be prepared under `/mnt/hdd2tC/tmp/opencode/datasets/DAVIS` and becomes StreamSplat provider-ready after depth images are generated.
+- YouTube-VOS `valid.tar` alone is not enough for StreamSplat provider readiness. The provider still expects `train/JPEGImages` and `train/Annotations` to exist.
+- YouTube-VOS 2019 `train.tar` is about `9.26G` before extraction. Do not start it when `/mnt/hdd2tC` has only a few GiB free; extraction requires additional headroom.
+- Remove partial `.part`, zip, and tar files after failed or completed downloads to avoid silently consuming scarce `/mnt/hdd2tC` space.
+
+## Stage60 Depth Preprocess Notes
+
+- Depth preprocessing writes many `*_pred.png` files into dataset roots and can consume several GiB. Always check `df -h /mnt/hdd2tC` before full runs.
+- Stage60 uses DepthAnything V2 `vitl` through StreamSplat `DepthAnythingWrapper`; keep the checkpoint under the external StreamSplat checkout and do not commit it.
+- DAVIS smoke frames should be skipped on the full run when `--skip_existing` is enabled; this explains `skipped_frames=2` in the formal DAVIS summary.
+- A provider-ready dataset is not necessarily anchor-export-ready until depth files exist. Rerun Stage59 after Stage60 to confirm the transition.
+- Python `csv.DictWriter` defaults to CRLF line endings. Use `lineterminator="\n"` for tracked experiment CSVs so `git diff --check` does not report trailing whitespace from carriage returns.

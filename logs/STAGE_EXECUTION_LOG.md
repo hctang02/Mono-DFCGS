@@ -4136,3 +4136,108 @@ logs/stage_records/59_davis_vos_prepare_preflight.md
 ### 阻塞
 
 Stage60 depth preprocessing 和 Stage61 large-scale anchor export 需要用户下载或挂载 DAVIS / YouTube-VOS 数据到 expected roots，或后续通过脚本参数提供等价 root。
+
+## 2026-06-27：Stage59 后续数据下载和准备状态更新
+
+### 执行背景
+
+用户要求后续大规模训练纳入 DAVIS 和 YouTube-VOS。Stage59 初始 preflight 发现默认候选 root 均未 ready 后，继续尝试官方数据下载和准备。
+
+### 已完成下载/解压
+
+- DAVIS Full-Resolution unsupervised trainval 已下载并解压到 `/mnt/hdd2tC/tmp/opencode/datasets/DAVIS`。
+- DAVIS zip `Content-Length` 为 `2957815900`，解压统计约 `12607` files / `2994587439` bytes uncompressed。
+- DAVIS zip 已删除，避免占用额外空间。
+- YouTube-VOS 2019 `valid.tar` 已通过 Google Drive id `1bw8KcpzfrT08HYbuROZmY0bp4TkYl4_g` 下载、解压到 `/mnt/hdd2tC/tmp/opencode/datasets/YouTube-VOS/valid`，随后删除 tar。
+- `gdown` 已安装在 `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`。
+
+### 被空间阻塞的部分
+
+- YouTube-VOS 2019 `train.tar` Google Drive id 为 `1lU9jCX-H0ntwh87tt2cA0xEPeWOJzD6S`。
+- `gdown` 探测 `train.tar` 大小约 `9.26G`，而当前 `/mnt/hdd2tC` 剩余空间不足，未继续完整下载。
+- partial `.part` 文件已删除。
+- 当前数据集目录占用约：DAVIS `4.8G`，YouTube-VOS valid `1.3G`，downloads `4.0K`。
+
+### 重跑 Stage59 状态
+
+重跑命令：
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage59_davis_vos_prepare_preflight.py
+```
+
+最新结果：
+
+- DAVIS provider-ready roots：`1`。
+- DAVIS anchor-export-ready roots：`1`。
+- YouTube-VOS provider-ready roots：`0`。
+- YouTube-VOS anchor-export-ready roots：`0`。
+- YouTube-VOS primary root 存在，但缺少 `train/JPEGImages` 和 `train/Annotations`。
+
+## 2026-06-27：阶段 60 DAVIS Depth Preprocess
+
+### 目标
+
+实现并运行 DepthAnything V2 preprocessing，把 DAVIS / YouTube-VOS RGB frames 转为 StreamSplat provider 需要的 `*_pred.png` depth images。本次正式运行只覆盖 DAVIS，因为 YouTube-VOS train split 尚未下载完成。
+
+### 代码
+
+新增：
+
+```text
+scripts/run_stage60_depth_preprocess.py
+```
+
+脚本支持：
+
+- DAVIS `JPEGImages/Full-Resolution/<sequence>/*.jpg` -> `depthImages/Full-Resolution/<sequence>/*_pred.png`。
+- YouTube-VOS `train/valid/JPEGImages/<sequence>/*.jpg` -> `train/valid/depthImages/<sequence>/*_pred.png`。
+- `--skip_existing`、`--max_frames`、`--datasets`、`--include_vos_train`、`--include_vos_valid`。
+- StreamSplat `DepthAnythingWrapper`，默认 `model_name=vitl`、`target_short_side=518`。
+
+### 执行
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 基本空闲，因此 smoke 和 full DAVIS run 使用：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage60_depth_preprocess.py --datasets davis --max_frames 2 --device cuda --log_every 1
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage60_depth_preprocess.py --datasets davis --device cuda --log_every 500
+```
+
+Stage60 收尾时又执行了脚本编译和 diff whitespace 检查：
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage59_davis_vos_prepare_preflight.py scripts/run_stage60_depth_preprocess.py
+git diff --check
+```
+
+验证通过。Stage59/60 CSV writer 均固定 `lineterminator="\n"`，避免生成 CRLF 后被 `git diff --check` 标记为 trailing whitespace。
+
+### 输出
+
+仓库内只保存小型统计文件：
+
+```text
+experiments/stage60_depth_preprocess/stage60_depth_preprocess_frames.csv
+experiments/stage60_depth_preprocess/stage60_depth_preprocess_summary.json
+logs/stage_records/60_depth_preprocess.md
+```
+
+实际 depth PNG 写入 git 外部：
+
+```text
+/mnt/hdd2tC/tmp/opencode/datasets/DAVIS/depthImages/Full-Resolution/<sequence>/*_pred.png
+```
+
+### 结果
+
+- DAVIS candidate frames：`6208`。
+- Processed frames：`6206`。
+- Skipped frames：`2`，来自 smoke run 已生成的 bear 前两帧。
+- Failed frames：`0`。
+- 重跑 Stage59 后，DAVIS 已 ready for Stage61 anchor export。
+
+### 当前限制
+
+- YouTube-VOS 只下载了 valid split；train split 因空间不足未下载。
+- `/mnt/hdd2tC` 当前仅约 `4.1G` free，Stage61 大规模 anchor export 前必须先评估输出规模或释放空间。

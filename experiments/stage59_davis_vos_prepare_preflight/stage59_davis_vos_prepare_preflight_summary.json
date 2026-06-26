@@ -9,8 +9,8 @@
   "provider_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage59_davis_vos_prepare_preflight/stage59_streamsplat_provider_check.csv",
   "checklist_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage59_davis_vos_prepare_preflight/stage59_download_prepare_checklist.csv",
   "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage59_davis_vos_prepare_preflight/stage59_davis_vos_prepare_report.md",
-  "davis_provider_ready_roots": 0,
-  "davis_anchor_ready_roots": 0,
+  "davis_provider_ready_roots": 1,
+  "davis_anchor_ready_roots": 1,
   "vos_provider_ready_roots": 0,
   "vos_anchor_ready_roots": 0,
   "notes": "This stage does not download data. Official datasets may require manual download, login, or acceptance of terms."
