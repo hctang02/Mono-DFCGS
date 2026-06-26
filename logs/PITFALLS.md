@@ -375,3 +375,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - For future user-facing summaries, default to all-frame PSNR only unless middle-only PSNR is explicitly requested.
 - Plot quantization bits and keyframe gaps with separate visual encodings. Mixing all q/g points into one same-color line makes the RD curve hard to read and can imply a false traversal order.
 - Keep labeling `rendered_prior_0p1` as oracle/calibrated; it is not a deployable feed-forward selector.
+
+## Recent Q&A Notes
+
+- Stage3 PSNR must be described as an early StreamSplat-conditioned upper-reference, not as strict compressed Gaussian-anchor-only decoder quality.
+- Future plans must explicitly include both deployable feed-forward keyframe selection and optional rate-counted side-information exploration.
+- If depth, motion hints, residuals, or other side information are transmitted for non-keyframes, they must be included in the rate and clearly separated from the current keyframe-Gaussian-only main rate.

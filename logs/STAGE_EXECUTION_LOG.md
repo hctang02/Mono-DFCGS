@@ -3893,3 +3893,28 @@ experiments/stage51_high_rate_multibit_rd/stage51_clean_all_psnr_rd_plots_summar
 - `stage51_clean_mean_all_psnr_by_bits.png` 给出 uniform 和 adaptive 的跨样本均值 RD。
 - `stage51_clean_adaptive_delta_all_psnr_heatmap.png` 直接展示 adaptive 相比 uniform 的 all-frame PSNR 增益。
 - `rendered_prior_0p1` 仍只能作为 oracle/calibrated selector 上限参考；最终 selector 必须改为 fully feed-forward。
+
+## 2026-06-26：近期训练设计与创新点问答整理
+
+### 执行计划
+
+用户要求将最近关于训练过程、创新点、Stage3 PSNR 口径、RD 术语和未来 selector/side-information 设计的解释单独落盘。
+
+### 新增文件
+
+```text
+logs/RECENT_TRAINING_INNOVATION_AND_QA_2026-06-26.md
+```
+
+### 记录内容
+
+- Stage3 PSNR 为什么比当前 anchor-only pipeline 高。
+- Stage3 使用 StreamSplat RGB/depth-conditioned reconstruction，不是严格 Gaussian-anchor-only 解码。
+- Stage51 当前最佳 all-frame PSNR / rate 表和 clean RD 图路径。
+- `bits`、`gap`、`zlib` 的含义。
+- `uniform` 和 adaptive `rendered_prior_0p1` 的区别。
+- 当前主码流传输内容：关键帧 quantized Gaussian anchors + metadata，不传 non-keyframe RGB/depth/Gaussian/motion/residual。
+- 已完成训练：Gaussian adapter 小规模训练、leave-one-out、full-video anchor-only evaluation。
+- 当前 selector 训练状态：oracle/calibrated 有正结果，fully feed-forward selector 未解决。
+- 后续必须探索：fully feed-forward keyframe selection 和可计入码率的 optional non-keyframe side information。
+- 当前创新点和主要限制。
