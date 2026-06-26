@@ -4241,3 +4241,101 @@ logs/stage_records/60_depth_preprocess.md
 
 - YouTube-VOS 只下载了 valid split；train split 因空间不足未下载。
 - `/mnt/hdd2tC` 当前仅约 `4.1G` free，Stage61 大规模 anchor export 前必须先评估输出规模或释放空间。
+
+## 2026-06-27：阶段 61 DAVIS Anchor Export Preflight And Smoke
+
+### 目标
+
+在 DAVIS 已 provider-ready / anchor-export-ready 后，先安全评估大规模 Gaussian anchor export 的空间需求，并验证 DAVIS RGB/depth 到 StreamSplat Gaussian anchor `.pt` 的导出闭环。
+
+### 代码
+
+新增：
+
+```text
+scripts/run_stage61_davis_anchor_export_preflight.py
+scripts/run_stage61_davis_anchor_export.py
+```
+
+`run_stage61_davis_anchor_export_preflight.py` 只做 CPU filesystem/size preflight，不导出 `.pt`。`run_stage61_davis_anchor_export.py` 是 full-capable DAVIS anchor exporter，但默认限制为 `max_sequences=1` 和 `max_pairs_per_sequence=1`，防止误触发大规模输出。
+
+### 执行
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。
+
+Preflight command：
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage61_davis_anchor_export_preflight.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage61_davis_anchor_export_preflight.py
+```
+
+Smoke export command：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage61_davis_anchor_export.py
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage61_davis_anchor_export.py --splits train --gaps 16 --max_sequences 1 --max_pairs_per_sequence 1 --batch_size 1 --device cuda:0
+```
+
+### 输出
+
+Repository-tracked preflight outputs：
+
+```text
+experiments/stage61_davis_anchor_export_preflight/stage61_davis_sequences.csv
+experiments/stage61_davis_anchor_export_preflight/stage61_davis_anchor_export_plan.csv
+experiments/stage61_davis_anchor_export_preflight/stage61_davis_anchor_export_totals.csv
+experiments/stage61_davis_anchor_export_preflight/stage61_davis_anchor_export_preflight_summary.json
+experiments/stage61_davis_anchor_export_preflight/stage61_davis_anchor_export_preflight_report.md
+```
+
+Repository-tracked smoke outputs：
+
+```text
+experiments/stage61_davis_anchor_export/stage61_davis_anchor_export_manifest.csv
+experiments/stage61_davis_anchor_export/stage61_davis_anchor_export_manifest.json
+experiments/stage61_davis_anchor_export/stage61_davis_anchor_export_summary.csv
+experiments/stage61_davis_anchor_export/stage61_davis_anchor_export_summary.json
+```
+
+External heavy output, not tracked by git：
+
+```text
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage61_davis_anchor_export/DAVIS/train/bear/gap16/pair_000000_000016.pt
+```
+
+### Preflight Results
+
+- DAVIS ready sequences：`90 / 90`。
+- DAVIS frames：`6208`。
+- Estimated pair-pt output for gaps `[1, 2, 4, 8, 16]`：`21950.296875 MiB`。
+- Estimated deduplicated static-anchor payload for the same gaps：`11386.4765625 MiB`。
+- Current free space at heavy root mount：`4034.95703125 MiB`。
+- Needed with `2048 MiB` reserve：`23998.296875 MiB`。
+- Full all-gap export safe：`false`。
+
+Key per-gap estimates：
+
+| gap | pairs | pair-pt MiB | dedup static-anchor MiB |
+|---:|---:|---:|---:|
+| 1 | 6118 | 11184.46875 | 5674.5 |
+| 2 | 3089 | 5647.078125 | 2905.8046875 |
+| 4 | 1568 | 2866.5 | 1515.515625 |
+| 8 | 807 | 1475.296875 | 819.9140625 |
+| 16 | 425 | 776.953125 | 470.7421875 |
+
+### Smoke Export Results
+
+- Sequence：DAVIS `train/bear`。
+- Gap：`16`。
+- Exported pair：`0 -> 16`。
+- Rows：`1`。
+- Anchor tensor payload：`1.828125 MiB`。
+- Gaussians per anchor：`36864`。
+- External heavy root size after smoke：about `1.9M`.
+
+### 结论
+
+- DAVIS 数据和 depth 已满足 anchor export 输入条件。
+- Stage61 full all-gap export 当前被磁盘空间阻塞，不应在 `/mnt/hdd2tC` 只剩约 `4 GiB` 时启动。
+- DAVIS-aware anchor export code path 已通过 smoke，后续释放空间后可以用显式参数运行更大范围导出。

@@ -428,3 +428,10 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - DAVIS smoke frames should be skipped on the full run when `--skip_existing` is enabled; this explains `skipped_frames=2` in the formal DAVIS summary.
 - A provider-ready dataset is not necessarily anchor-export-ready until depth files exist. Rerun Stage59 after Stage60 to confirm the transition.
 - Python `csv.DictWriter` defaults to CRLF line endings. Use `lineterminator="\n"` for tracked experiment CSVs so `git diff --check` does not report trailing whitespace from carriage returns.
+
+## Stage61 DAVIS Anchor Export Notes
+
+- Do not launch full DAVIS all-gap anchor export without a storage preflight. With 90 sequences and gaps `1/2/4/8/16`, Stage61 estimates about `21950 MiB` of pair `.pt` anchor payload, before a safety reserve.
+- The default DAVIS exporter args intentionally run a one-sequence one-pair smoke export. Full export requires explicit `--max_sequences 0 --max_pairs_per_sequence 0` and enough external space.
+- Use `cuda:0` under `CUDA_VISIBLE_DEVICES=...` for `safetensors.torch.load_file`; plain `cuda` may fail in some safetensors versions.
+- External Stage61 `.pt` files must stay under `/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage61_davis_anchor_export` and must not be committed.

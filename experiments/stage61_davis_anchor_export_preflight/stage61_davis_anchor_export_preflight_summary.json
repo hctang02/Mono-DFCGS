@@ -1,0 +1,30 @@
+{
+  "stage": 61,
+  "mode": "DAVIS large-scale anchor export preflight",
+  "davis_root": "/mnt/hdd2tC/tmp/opencode/datasets/DAVIS",
+  "heavy_root": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage61_davis_anchor_export",
+  "summary_root": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage61_davis_anchor_export_preflight",
+  "gaps": [
+    1,
+    2,
+    4,
+    8,
+    16
+  ],
+  "pair_anchor_mib": 1.828125,
+  "per_anchor_mib": 0.9140625,
+  "reserve_mib": 2048.0,
+  "free_mib": 4034.95703125,
+  "needed_mib_all_gaps_plus_reserve": 23998.296875,
+  "safe_to_full_export": "false",
+  "sequence_count": 90,
+  "ready_sequence_count": 90,
+  "frame_count": 6208,
+  "estimated_all_gaps_pair_pt_mib": 21950.296875,
+  "estimated_all_gaps_dedup_static_anchor_mib": 11386.4765625,
+  "sequence_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage61_davis_anchor_export_preflight/stage61_davis_sequences.csv",
+  "plan_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage61_davis_anchor_export_preflight/stage61_davis_anchor_export_plan.csv",
+  "totals_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage61_davis_anchor_export_preflight/stage61_davis_anchor_export_totals.csv",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage61_davis_anchor_export_preflight/stage61_davis_anchor_export_preflight_report.md",
+  "decision": "Do not launch full DAVIS all-gap anchor export on this mount yet; free space is below the estimated output plus reserve."
+}

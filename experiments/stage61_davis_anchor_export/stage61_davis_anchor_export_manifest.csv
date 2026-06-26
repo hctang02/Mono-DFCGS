@@ -1,0 +1,2 @@
+dataset,split,sequence,frame_gap,left_index,right_index,segment_length,middle_frame_count,dataset_item,dataset_item_relative,anchor_mib,gaussians_per_anchor
+DAVIS,train,bear,16,0,16,16,15,/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage61_davis_anchor_export/DAVIS/train/bear/gap16/pair_000000_000016.pt,DAVIS/train/bear/gap16/pair_000000_000016.pt,1.828125,36864

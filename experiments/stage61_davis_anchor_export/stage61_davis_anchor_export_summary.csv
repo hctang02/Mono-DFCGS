@@ -1,0 +1,2 @@
+dataset,split,sequence,frame_gap,total_frames,exported_pair_count,total_middle_frames,total_anchor_mib,avg_anchor_mib_per_pair,heavy_root
+DAVIS,train,bear,16,82,1,15,1.828125,1.828125,/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage61_davis_anchor_export
