@@ -4042,3 +4042,52 @@ logs/stage_records/57_compact_anchor_codec.md
 ### 注意
 
 全默认 coverage 和一个 128-row 代表性 run 在当前 CPU 时间限制下超时；Stage57 记录 compact codec correctness 和代表性 size trends，Stage58 再做 RD 集成和更有针对性的 ablation。
+
+## 2026-06-26：阶段 58 Compression RD Ablation
+
+### 目标
+
+将 Stage57 compact anchor codec 接入 all-frame PSNR RD 报告，不重新渲染，复用 Stage51 all-frame PSNR 和 Stage57 actual compact rate。
+
+### 代码
+
+新增：
+
+```text
+scripts/run_stage58_compression_rd_ablation.py
+```
+
+### 执行
+
+- 运行前已检查 `nvidia-smi`。
+- `compileall` 通过。
+- Stage58 仅读 CSV 和画图，不使用 CUDA。
+
+### 输出
+
+```text
+experiments/stage58_compression_rd_ablation/stage58_compression_rd_ablation.csv
+experiments/stage58_compression_rd_ablation/stage58_mean_compression_rd.csv
+experiments/stage58_compression_rd_ablation/stage58_codec_summary.csv
+experiments/stage58_compression_rd_ablation/stage58_actual_compact_savings.csv
+experiments/stage58_compression_rd_ablation/stage58_actual_compact_savings_by_bits.csv
+experiments/stage58_compression_rd_ablation/stage58_compression_rd_ablation_summary.json
+experiments/stage58_compression_rd_ablation/stage58_full_mean_compression_rd.png
+experiments/stage58_compression_rd_ablation/stage58_actual_compact_subset_rd.png
+logs/stage_records/58_compression_rd_ablation.md
+```
+
+### 关键结果
+
+- Stage51 input rows：`192`。
+- Stage57 compact input rows：`32`。
+- RD rows：`608`。
+- Mean RD rows：`152`。
+- Actual Stage57 compact subset 中 q10 compact+zlib 比 legacy dtype+zlib 平均节省 `13.21108787307025%` rate。
+- Actual Stage57 compact subset 中 q12 compact+zlib 比 legacy dtype+zlib 平均节省 `9.3464515290433%` rate。
+- q8/q16 基本持平，因 byte-aligned payload 本身不变，差异主要来自 v2 metadata/header。
+
+### 限制
+
+- `compact_bitpack_raw_payload_estimate` 是 payload-only estimate，不含 metadata/header。
+- actual compact raw/zlib 目前只覆盖 Stage57 formal subset：uniform gap16 q8/q10/q12/q16 joined with Stage51 PSNR。

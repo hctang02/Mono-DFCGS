@@ -401,3 +401,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - q8 and q16 are byte-aligned; compact payload size is identical to dtype storage, and only small metadata/header differences remain.
 - Full Stage57 default coverage was CPU-time limited. Use scoped representative runs for codec correctness, then do broader RD integration in Stage58.
 - Stage50 is intentionally pinned to `payload_encoding="dtype"`; otherwise rerunning Stage50 after Stage57 would silently change the meaning of its historical prototype table.
+
+## Stage58 Compression RD Notes
+
+- Stage58 does not rerender. All quality values are Stage51 `adapter_all_psnr`; codec variants only change the x-axis rate.
+- `compact_bitpack_raw_payload_estimate` is payload-only and should not be mixed with actual container rates without labeling.
+- Actual Stage57 compact raw/zlib rates are currently available only for the Stage57 formal subset, so their mean PSNR reflects uniform gap16 quality, not the full Stage51 distribution.

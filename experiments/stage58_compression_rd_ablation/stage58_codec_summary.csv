@@ -1,0 +1,6 @@
+codec_variant,rows,mean_rate_mib_per_frame,min_rate_mib_per_frame,max_rate_mib_per_frame,mean_all_psnr,rate_scope
+compact_bitpack_raw_payload_estimate,192,0.2545978056231963,0.033854166666666664,0.9140625,30.073573039629064,"theoretical bitpacked payload only, no metadata/header"
+legacy_dtype_raw,192,0.3101746928587697,0.03389788262638045,0.9146653163580247,30.073573039629064,actual Stage50 dtype raw container including metadata
+legacy_dtype_zlib,192,0.18328456795742495,0.02158020160816334,0.6203737135057326,30.073573039629064,actual Stage50 dtype zlib container including metadata
+stage57_compact_raw_actual,16,0.04934554386161852,0.033900567042974776,0.07127656565084085,25.744420008373275,actual Stage57 bitpacked raw container including metadata
+stage57_compact_zlib_actual,16,0.033466064482712304,0.02158594720157576,0.04837407694234477,25.744420008373275,actual Stage57 bitpacked zlib container including metadata

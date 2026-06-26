@@ -1,0 +1,149 @@
+{
+  "stage": 58,
+  "mode": "compression RD ablation from existing all-frame PSNR rows",
+  "stage51_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage51_high_rate_multibit_rd/stage51_high_rate_multibit_rd.csv",
+  "stage57_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage57_compact_anchor_codec/stage57_compact_anchor_codec.csv",
+  "rd_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage58_compression_rd_ablation/stage58_compression_rd_ablation.csv",
+  "mean_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage58_compression_rd_ablation/stage58_mean_compression_rd.csv",
+  "codec_summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage58_compression_rd_ablation/stage58_codec_summary.csv",
+  "saving_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage58_compression_rd_ablation/stage58_actual_compact_savings.csv",
+  "saving_summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage58_compression_rd_ablation/stage58_actual_compact_savings_by_bits.csv",
+  "plots": [
+    "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage58_compression_rd_ablation/stage58_full_mean_compression_rd.png",
+    "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage58_compression_rd_ablation/stage58_actual_compact_subset_rd.png"
+  ],
+  "stage51_rows": 192,
+  "stage57_rows": 32,
+  "rd_rows": 608,
+  "mean_rows": 152,
+  "codec_summary_rows": [
+    {
+      "codec_variant": "compact_bitpack_raw_payload_estimate",
+      "rows": 192,
+      "mean_rate_mib_per_frame": 0.2545978056231963,
+      "min_rate_mib_per_frame": 0.033854166666666664,
+      "max_rate_mib_per_frame": 0.9140625,
+      "mean_all_psnr": 30.073573039629064,
+      "rate_scope": "theoretical bitpacked payload only, no metadata/header"
+    },
+    {
+      "codec_variant": "legacy_dtype_raw",
+      "rows": 192,
+      "mean_rate_mib_per_frame": 0.3101746928587697,
+      "min_rate_mib_per_frame": 0.03389788262638045,
+      "max_rate_mib_per_frame": 0.9146653163580247,
+      "mean_all_psnr": 30.073573039629064,
+      "rate_scope": "actual Stage50 dtype raw container including metadata"
+    },
+    {
+      "codec_variant": "legacy_dtype_zlib",
+      "rows": 192,
+      "mean_rate_mib_per_frame": 0.18328456795742495,
+      "min_rate_mib_per_frame": 0.02158020160816334,
+      "max_rate_mib_per_frame": 0.6203737135057326,
+      "mean_all_psnr": 30.073573039629064,
+      "rate_scope": "actual Stage50 dtype zlib container including metadata"
+    },
+    {
+      "codec_variant": "stage57_compact_raw_actual",
+      "rows": 16,
+      "mean_rate_mib_per_frame": 0.04934554386161852,
+      "min_rate_mib_per_frame": 0.033900567042974776,
+      "max_rate_mib_per_frame": 0.07127656565084085,
+      "mean_all_psnr": 25.744420008373275,
+      "rate_scope": "actual Stage57 bitpacked raw container including metadata"
+    },
+    {
+      "codec_variant": "stage57_compact_zlib_actual",
+      "rows": 16,
+      "mean_rate_mib_per_frame": 0.033466064482712304,
+      "min_rate_mib_per_frame": 0.02158594720157576,
+      "max_rate_mib_per_frame": 0.04837407694234477,
+      "mean_all_psnr": 25.744420008373275,
+      "rate_scope": "actual Stage57 bitpacked zlib container including metadata"
+    }
+  ],
+  "actual_compact_savings_by_bits": [
+    {
+      "baseline_variant": "legacy_dtype_raw",
+      "compact_variant": "stage57_compact_raw_actual",
+      "bits": 8,
+      "rows": 4,
+      "mean_rate_saving_percent": -0.0078843090532823,
+      "mean_baseline_rate_mib_per_frame": 0.03433849090220207,
+      "mean_compact_rate_mib_per_frame": 0.034341198254686636,
+      "mean_all_psnr": 25.08719681572384
+    },
+    {
+      "baseline_variant": "legacy_dtype_raw",
+      "compact_variant": "stage57_compact_raw_actual",
+      "bits": 10,
+      "rows": 4,
+      "mean_rate_saving_percent": 37.471310438888885,
+      "mean_baseline_rate_mib_per_frame": 0.06863314577530491,
+      "mean_compact_rate_mib_per_frame": 0.04291540819118855,
+      "mean_all_psnr": 25.88434351291017
+    },
+    {
+      "baseline_variant": "legacy_dtype_raw",
+      "compact_variant": "stage57_compact_raw_actual",
+      "bits": 12,
+      "rows": 4,
+      "mean_rate_saving_percent": 24.979487140749605,
+      "mean_baseline_rate_mib_per_frame": 0.06863343851371742,
+      "mean_compact_rate_mib_per_frame": 0.05148915872180884,
+      "mean_all_psnr": 25.99829100228245
+    },
+    {
+      "baseline_variant": "legacy_dtype_raw",
+      "compact_variant": "stage57_compact_raw_actual",
+      "bits": 16,
+      "rows": 4,
+      "mean_rate_saving_percent": -0.0038403725683813852,
+      "mean_baseline_rate_mib_per_frame": 0.06863377448628302,
+      "mean_compact_rate_mib_per_frame": 0.06863641027879004,
+      "mean_all_psnr": 26.007848702576645
+    },
+    {
+      "baseline_variant": "legacy_dtype_zlib",
+      "compact_variant": "stage57_compact_zlib_actual",
+      "bits": 8,
+      "rows": 4,
+      "mean_rate_saving_percent": -0.012082983041822714,
+      "mean_baseline_rate_mib_per_frame": 0.022424947227330017,
+      "mean_compact_rate_mib_per_frame": 0.02242765457981459,
+      "mean_all_psnr": 25.08719681572384
+    },
+    {
+      "baseline_variant": "legacy_dtype_zlib",
+      "compact_variant": "stage57_compact_zlib_actual",
+      "bits": 10,
+      "rows": 4,
+      "mean_rate_saving_percent": 13.21108787307025,
+      "mean_baseline_rate_mib_per_frame": 0.03456558694972506,
+      "mean_compact_rate_mib_per_frame": 0.029996156310240045,
+      "mean_all_psnr": 25.88434351291017
+    },
+    {
+      "baseline_variant": "legacy_dtype_zlib",
+      "compact_variant": "stage57_compact_zlib_actual",
+      "bits": 12,
+      "rows": 4,
+      "mean_rate_saving_percent": 9.3464515290433,
+      "mean_baseline_rate_mib_per_frame": 0.03911430598337413,
+      "mean_compact_rate_mib_per_frame": 0.035456150641172995,
+      "mean_all_psnr": 25.99829100228245
+    },
+    {
+      "baseline_variant": "legacy_dtype_zlib",
+      "compact_variant": "stage57_compact_zlib_actual",
+      "bits": 16,
+      "rows": 4,
+      "mean_rate_saving_percent": -0.005733974631345334,
+      "mean_baseline_rate_mib_per_frame": 0.045981660607114554,
+      "mean_compact_rate_mib_per_frame": 0.045984296399621566,
+      "mean_all_psnr": 26.007848702576645
+    }
+  ],
+  "notes": "Full rows use Stage51 all-frame PSNR and Stage50 legacy/theoretical rates. Actual Stage57 compact raw/zlib rates are available only for the Stage57 formal subset."
+}
