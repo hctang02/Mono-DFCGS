@@ -4003,3 +4003,42 @@ logs/stage_records/01_updated_plan_stage56_70.md
 - Stage60 变为 DAVIS/YouTube-VOS depth preprocessing。
 - Stage61 变为 large-scale anchor export。
 - Adapter / selector / side-info / final package 后移到 Stage62-70。
+
+## 2026-06-26：阶段 57 Compact Anchor Codec
+
+### 目标
+
+实现真正 q1-q16 bit-packing，替代 Stage50 中 q6 用 uint8、q10/q12 用 uint16 的 storage prototype。
+
+### 代码变更
+
+- `mono_dfcgs/anchor_bitstream.py` 新增 bitpacked payload encode/decode，`encode_anchor_bitstream` 默认 `payload_encoding="bitpack"`。
+- `payload_encoding="dtype"` 保留 legacy storage，方便 size ablation 和旧 header decode。
+- `scripts/run_stage50_multibit_anchor_bitstream_prototype.py` 显式固定 `payload_encoding="dtype"`，保留历史 Stage50 语义。
+- 新增 `scripts/run_stage57_compact_anchor_codec.py` 输出 legacy vs compact raw/zlib size table 和 roundtrip correctness。
+
+### 验证
+
+- 运行前已检查 `nvidia-smi`。
+- `compileall` 通过。
+- smoke：`n3dv/uniform/gap16`，q1/q6/q8/q10/q12/q16，`--verify_encodings all`，max roundtrip abs diff `0.0`。
+- formal：4 samples、uniform、gap16、q1/q2/q4/q6/q8/q10/q12/q16，共 `32` rows，max roundtrip abs diff `0.0`。
+
+### 输出
+
+```text
+experiments/stage57_compact_anchor_codec/stage57_compact_anchor_codec.csv
+experiments/stage57_compact_anchor_codec/stage57_compact_anchor_codec_summary.json
+logs/stage_records/57_compact_anchor_codec.md
+```
+
+### 关键结果
+
+- q1 compact raw mean：`0.004331399600475631 MiB/frame`，legacy raw mean：`0.03433817985330386 MiB/frame`。
+- q10 compact+zlib mean：`0.029996156310240045 MiB/frame`，legacy+zlib mean：`0.034567841089018385 MiB/frame`。
+- q12 compact+zlib mean：`0.035456150641172995 MiB/frame`，legacy+zlib mean：`0.039116560122667454 MiB/frame`。
+- q6 compact raw payload saving 为 `25%`，但 compact+zlib 比 legacy+zlib 更大，说明 bit-packing 后不一定更利于 generic zlib。
+
+### 注意
+
+全默认 coverage 和一个 128-row 代表性 run 在当前 CPU 时间限制下超时；Stage57 记录 compact codec correctness 和代表性 size trends，Stage58 再做 RD 集成和更有针对性的 ablation。

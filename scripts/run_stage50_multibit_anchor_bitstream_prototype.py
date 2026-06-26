@@ -123,8 +123,12 @@ def main():
     for row in source_rows:
         anchors = [anchor_maps[row["sample"]][idx] for idx in row["indices"]]
         for bits in args.bits:
-            raw_blob = encode_anchor_bitstream(anchors, row["indices"], timestamps=row["indices"], bits=bits, compression="none")
-            zlib_blob = encode_anchor_bitstream(anchors, row["indices"], timestamps=row["indices"], bits=bits, compression="zlib")
+            raw_blob = encode_anchor_bitstream(
+                anchors, row["indices"], timestamps=row["indices"], bits=bits, compression="none", payload_encoding="dtype"
+            )
+            zlib_blob = encode_anchor_bitstream(
+                anchors, row["indices"], timestamps=row["indices"], bits=bits, compression="zlib", payload_encoding="dtype"
+            )
             decoded, header = decode_anchor_bitstream(raw_blob)
             if int(header["bits"]) != bits or int(header["anchor_count"]) != len(row["indices"]):
                 raise RuntimeError("Decoded header mismatch")

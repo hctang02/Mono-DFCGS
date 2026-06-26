@@ -1,0 +1,123 @@
+{
+  "stage": 57,
+  "mode": "compact anchor codec true bit-packing",
+  "stage49_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage49_extended_adaptive_rd/stage49_extended_adaptive_rd.csv",
+  "stage33_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage33_dense_gap1_anchor_export/stage33_dense_gap1_anchor_manifest.csv",
+  "samples": [
+    "n3dv",
+    "meetroom",
+    "driving",
+    "robot"
+  ],
+  "methods": [
+    "uniform"
+  ],
+  "gaps": [
+    16
+  ],
+  "bits": [
+    1,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    16
+  ],
+  "verify_encodings": "compact",
+  "rows": 32,
+  "csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage57_compact_anchor_codec/stage57_compact_anchor_codec.csv",
+  "aggregates_by_bits": {
+    "1": {
+      "rows": 4,
+      "mean_legacy_raw_mib_per_frame": 0.03433817985330386,
+      "mean_legacy_zlib_mib_per_frame": 0.0010658563167712082,
+      "mean_compact_raw_mib_per_frame": 0.004331399600475631,
+      "mean_compact_zlib_mib_per_frame": 0.0009784991301193592,
+      "mean_compact_payload_savings_percent_vs_legacy_payload": 87.5,
+      "mean_compact_raw_savings_percent_vs_legacy_raw": 87.38606723625716,
+      "mean_compact_zlib_savings_percent_vs_legacy_zlib": 8.612936337775304,
+      "max_roundtrip_abs_diff": 0.0
+    },
+    "2": {
+      "rows": 4,
+      "mean_legacy_raw_mib_per_frame": 0.034339528483650295,
+      "mean_legacy_zlib_mib_per_frame": 0.0024068143785582804,
+      "mean_compact_raw_mib_per_frame": 0.008619560613566453,
+      "mean_compact_zlib_mib_per_frame": 0.002325710203664051,
+      "mean_compact_payload_savings_percent_vs_legacy_payload": 75.0,
+      "mean_compact_raw_savings_percent_vs_legacy_raw": 74.89902660031166,
+      "mean_compact_zlib_savings_percent_vs_legacy_zlib": 3.4976338942978846,
+      "max_roundtrip_abs_diff": 0.0
+    },
+    "4": {
+      "rows": 4,
+      "mean_legacy_raw_mib_per_frame": 0.03434024117821319,
+      "mean_legacy_zlib_mib_per_frame": 0.007907483943555721,
+      "mean_compact_raw_mib_per_frame": 0.017193754953662994,
+      "mean_compact_zlib_mib_per_frame": 0.007540968417433261,
+      "mean_compact_payload_savings_percent_vs_legacy_payload": 50.0,
+      "mean_compact_raw_savings_percent_vs_legacy_raw": 49.931180788605445,
+      "mean_compact_zlib_savings_percent_vs_legacy_zlib": 4.605790262408465,
+      "max_roundtrip_abs_diff": 0.0
+    },
+    "6": {
+      "rows": 4,
+      "mean_legacy_raw_mib_per_frame": 0.03434082092106562,
+      "mean_legacy_zlib_mib_per_frame": 0.015097553958987625,
+      "mean_compact_raw_mib_per_frame": 0.025767816342049082,
+      "mean_compact_zlib_mib_per_frame": 0.016897197142040306,
+      "mean_compact_payload_savings_percent_vs_legacy_payload": 25.0,
+      "mean_compact_raw_savings_percent_vs_legacy_raw": 24.96447526466144,
+      "mean_compact_zlib_savings_percent_vs_legacy_zlib": -11.983035440949726,
+      "max_roundtrip_abs_diff": 0.0
+    },
+    "8": {
+      "rows": 4,
+      "mean_legacy_raw_mib_per_frame": 0.034340745041495396,
+      "mean_legacy_zlib_mib_per_frame": 0.022427201366623337,
+      "mean_compact_raw_mib_per_frame": 0.03434119825468665,
+      "mean_compact_zlib_mib_per_frame": 0.02242765457981459,
+      "mean_compact_payload_savings_percent_vs_legacy_payload": 0.0,
+      "mean_compact_raw_savings_percent_vs_legacy_raw": -0.001319753647230492,
+      "mean_compact_zlib_savings_percent_vs_legacy_zlib": -0.0020224984468543783,
+      "max_roundtrip_abs_diff": 0.0
+    },
+    "10": {
+      "rows": 4,
+      "mean_legacy_raw_mib_per_frame": 0.06863539991459824,
+      "mean_legacy_zlib_mib_per_frame": 0.034567841089018385,
+      "mean_compact_raw_mib_per_frame": 0.04291540819118855,
+      "mean_compact_zlib_mib_per_frame": 0.029996156310240045,
+      "mean_compact_payload_savings_percent_vs_legacy_payload": 37.5,
+      "mean_compact_raw_savings_percent_vs_legacy_raw": 37.47336402034505,
+      "mean_compact_zlib_savings_percent_vs_legacy_zlib": 13.216750008373802,
+      "max_roundtrip_abs_diff": 0.0
+    },
+    "12": {
+      "rows": 4,
+      "mean_legacy_raw_mib_per_frame": 0.06863569265301074,
+      "mean_legacy_zlib_mib_per_frame": 0.039116560122667454,
+      "mean_compact_raw_mib_per_frame": 0.05148915872180884,
+      "mean_compact_zlib_mib_per_frame": 0.035456150641172995,
+      "mean_compact_payload_savings_percent_vs_legacy_payload": 25.0,
+      "mean_compact_raw_savings_percent_vs_legacy_raw": 24.981950971020773,
+      "mean_compact_zlib_savings_percent_vs_legacy_zlib": 9.35167743481183,
+      "max_roundtrip_abs_diff": 0.0
+    },
+    "16": {
+      "rows": 4,
+      "mean_legacy_raw_mib_per_frame": 0.06863602862557636,
+      "mean_legacy_zlib_mib_per_frame": 0.04598391474640788,
+      "mean_compact_raw_mib_per_frame": 0.06863641027879003,
+      "mean_compact_zlib_mib_per_frame": 0.045984296399621566,
+      "mean_compact_payload_savings_percent_vs_legacy_payload": 0.0,
+      "mean_compact_raw_savings_percent_vs_legacy_raw": -0.0005560537836237743,
+      "mean_compact_zlib_savings_percent_vs_legacy_zlib": -0.0008302180533818683,
+      "max_roundtrip_abs_diff": 0.0
+    }
+  },
+  "max_roundtrip_abs_diff": 0.0,
+  "notes": "compact uses payload_encoding=bitpack for q1-q16; legacy uses dtype storage matching the Stage50 prototype behavior. Roundtrip error is measured against direct quantize-dequantize anchors."
+}

@@ -394,3 +394,10 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 
 - DAVIS and YouTube-VOS preparation must be explicit in the plan because they are StreamSplat-scale video datasets needed for medium/long training.
 - Keep dataset downloads and extracted roots outside git, preferably under `/mnt/hdd2tC/tmp/opencode/datasets`.
+
+## Stage57 Compact Codec Notes
+
+- True bit-packing reduces raw payload for non-byte-aligned bit depths, but it can reduce generic zlib effectiveness. In the Stage57 formal table, q6 compact raw saves 25% payload while compact+zlib is worse than legacy dtype+zlib.
+- q8 and q16 are byte-aligned; compact payload size is identical to dtype storage, and only small metadata/header differences remain.
+- Full Stage57 default coverage was CPU-time limited. Use scoped representative runs for codec correctness, then do broader RD integration in Stage58.
+- Stage50 is intentionally pinned to `payload_encoding="dtype"`; otherwise rerunning Stage50 after Stage57 would silently change the meaning of its historical prototype table.
