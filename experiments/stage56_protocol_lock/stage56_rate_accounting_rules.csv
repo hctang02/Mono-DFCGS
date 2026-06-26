@@ -1,0 +1,6 @@
+rate_name,counted_in_main_rate,counted_in_total_rate,unit,description
+anchor_bitstream_rate,yes,yes,MiB/frame,Compressed transmitted keyframe Gaussian anchor payload plus required anchor container metadata.
+keyframe_indices_timestamps_metadata,yes,yes,MiB/frame or bytes/sequence,"Keyframe indices, timestamps, quantization bits, tensor shapes, field schema, and codec header metadata."
+side_information_rate,no_for_keyframe_gaussian_only; yes_for_side_info_variant_total,yes_if_transmitted,MiB/frame,"Any transmitted non-keyframe depth, motion hint, residual, importance map, or correction payload."
+decoder_model_weights,no,reported_separately,MiB/model,"Shared decoder/adapter weights are not counted as per-video payload, but must be reported separately where relevant."
+non_keyframe_rgb_depth_or_gaussians,not_allowed_in_current_main_method,yes_if_future_variant_transmits_it,MiB/frame,Current Mono-DFCGS-KG does not transmit these. Future side-info variants must count them if used.

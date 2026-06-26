@@ -1,0 +1,15 @@
+{
+  "stage": 56,
+  "mode": "protocol lock",
+  "default_quality_metric": "all-frame PSNR",
+  "main_rate_metric": "transmitted Gaussian anchor bitstream MiB/frame",
+  "final_selector_requirement": "fully feed-forward frozen predictor plus deterministic selection/DP; no rendered oracle at test time",
+  "side_information_rule": "if transmitted, count in side-info rate and total rate",
+  "training_scale_rule": "short runs are smoke only; medium/long runs required for final adapter/selector claims",
+  "rate_accounting_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage56_protocol_lock/stage56_rate_accounting_rules.csv",
+  "method_deployability_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage56_protocol_lock/stage56_method_deployability_rules.csv",
+  "standard_table_schema_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage56_protocol_lock/stage56_standard_table_schemas.csv",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage56_protocol_lock/stage56_protocol_lock_summary.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage56_protocol_lock/stage56_protocol_lock_report.md",
+  "next_stage": "Stage57 compact Gaussian anchor codec"
+}

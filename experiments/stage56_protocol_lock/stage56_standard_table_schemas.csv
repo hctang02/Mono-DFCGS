@@ -1,0 +1,6 @@
+table_name,required_fields,notes
+main_rd_table,"method, compression, adapter, selector, side_info, anchor_rate_mib_per_frame, side_info_rate_mib_per_frame, total_rate_mib_per_frame, all_psnr",Main paper/user-facing table. Do not include middle-only metrics unless requested.
+compression_ablation_table,"codec, bits_or_profile, raw_rate_mib_per_frame, compressed_rate_mib_per_frame, rate_saving_percent, all_psnr",Shows compression contribution.
+adapter_ablation_table,"adapter_variant, training_steps, train_dataset, val_dataset, best_step, all_psnr, delta_vs_linear",Shows adapter contribution and training scale.
+selector_ablation_table,"selector_variant, deployable, oracle_used_at_test_time, rate_mib_per_frame, all_psnr, delta_vs_uniform, negative_point_count",Separates oracle upper bounds from final feed-forward selectors.
+training_run_summary,"run_id, stage, model_variant, dataset, steps, best_step, checkpoint_path_external, validation_all_psnr, notes",Used for medium/long training runs. Checkpoints stay outside git.

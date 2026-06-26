@@ -1,0 +1,6 @@
+method_family,deployable_final_claim,allowed_test_time_inputs,forbidden_test_time_inputs,notes
+uniform_keyframes,yes,"video length, fixed gap, transmitted keyframe Gaussian anchors","rendered error, PSNR, reconstructed output lookahead",Baseline for all adaptive comparisons.
+rendered_prior_0p1_oracle_calibrated,no,offline analysis labels only,must not be used as final deployed selector because it relies on rendered-error-related information,Upper bound / training target only.
+feed_forward_selector,yes_if_frozen_and_deterministic,"original input video, encoder-side features, endpoint keyframe candidate stats, deterministic DP output","rendered oracle, PSNR labels, test-time optimization over reconstructed frames",Final adaptive selector target.
+teacher_distilled_adapter,yes_if_teacher_not_used_at_test_time,"transmitted keyframe anchors, timestamps, optional counted side information",StreamSplat RGB/depth-conditioned teacher output at test time,Training may use teacher supervision; deployment may not depend on teacher inputs.
+side_information_variant,yes_if_all_side_info_is_transmitted_and_counted,anchor bitstream plus explicitly counted side-information bitstream,free non-keyframe RGB/depth/motion/residual inputs,"Report anchor rate, side-info rate, total rate, and all-frame PSNR separately."

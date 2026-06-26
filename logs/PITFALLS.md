@@ -383,3 +383,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - If depth, motion hints, residuals, or other side information are transmitted for non-keyframes, they must be included in the rate and clearly separated from the current keyframe-Gaussian-only main rate.
 - Future plans should be logged before implementation, and each stage should get an individual record under `logs/stage_records/`.
 - Treat short runs as smoke/infrastructure checks only. Medium and long training runs are required before making strong claims about adapter or selector gains.
+
+## Stage 56 Notes
+
+- Stage56 is a protocol-lock stage only. It does not change codec behavior or produce new RD numbers.
+- Future side-information variants must report anchor rate, side-info rate, and total rate; do not mix them with keyframe-Gaussian-only main rate without labeling.
+- `rendered_prior_0p1` remains an oracle/calibrated upper bound, not a deployable method.

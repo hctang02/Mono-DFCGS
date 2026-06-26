@@ -3938,3 +3938,46 @@ logs/stage_records/00_previous_rounds_summary.md
 - Stage56-68 后续计划正式固定为三条核心贡献线：compression contribution、Gaussian adapter contribution、feed-forward keyframe selector contribution。
 - Optional side information 作为增强线探索，所有传输信息必须计入 rate。
 - 后续每个 stage 都需要在 `logs/stage_records/` 下记录过程、输出、结果、结论、caveat 和 commit。
+
+## 2026-06-26：阶段 56 Protocol Lock
+
+### 执行计划
+
+Stage56 锁定后续实验协议和报告口径，为 compression、adapter、selector、side-info 后续贡献线提供统一评价标准。
+
+### 新增文件
+
+```text
+scripts/run_stage56_protocol_lock.py
+logs/stage_records/56_protocol_lock.md
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage56_protocol_lock.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage56_protocol_lock.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi`。Stage56 是 CPU-only 协议生成，未占用 CUDA。
+
+### 输出文件
+
+```text
+experiments/stage56_protocol_lock/stage56_protocol_lock_summary.json
+experiments/stage56_protocol_lock/stage56_protocol_lock_report.md
+experiments/stage56_protocol_lock/stage56_rate_accounting_rules.csv
+experiments/stage56_protocol_lock/stage56_method_deployability_rules.csv
+experiments/stage56_protocol_lock/stage56_standard_table_schemas.csv
+```
+
+### 结论
+
+- 默认质量指标锁定为 all-frame PSNR。
+- 主 rate 锁定为 transmitted Gaussian anchor bitstream MiB/frame。
+- side information 如传输，必须报告 side-info rate 和 total rate。
+- `rendered_prior_0p1` 锁定为 oracle/calibrated upper bound，不可作为最终 deployed selector claim。
+- 最终 adaptive selector 必须是 frozen feed-forward predictor + deterministic selection/DP，不能使用 rendered oracle、PSNR lookahead 或 test-time reconstruction optimization。
+- 强 adapter/selector claim 必须依赖 medium/long training，短训只作 smoke。
