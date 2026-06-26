@@ -340,3 +340,10 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage51 quality must be rerendered for each bit-depth; changing only the rate axis would be invalid.
 - CSV writers for flattened eval rows must include `estimated_q8_static_mib_per_frame` even when the main rate is multi-bit raw/zlib.
 - q12 to q16 gives limited extra PSNR, suggesting remaining quality is bounded by anchors/adapter/rendering rather than quantization alone.
+
+## Stage 52 Notes
+
+- D-FCGS `.log` files are single P-frame compression/decompression records. They expose motion/prior bits and P-frame metrics but are not complete video RD points without I-frame accounting and aggregation.
+- FCGS/D-FCGS GOP summaries report full codec MiB/frame. Do not mix this rate with Mono-DFCGS transmitted keyframe Gaussian-anchor MiB/frame without labeling the protocol difference.
+- `dummy_reference_images=true` summaries do not provide input-video PSNR/SSIM; use their `codec_psnr` only for compression-fidelity diagnostics.
+- When classifying external result paths, use the most specific matching root. A broad `/mnt/hdd2tC/tmp/opencode` root can otherwise swallow multisequence or lowrate FCGS summaries into the wrong source group.

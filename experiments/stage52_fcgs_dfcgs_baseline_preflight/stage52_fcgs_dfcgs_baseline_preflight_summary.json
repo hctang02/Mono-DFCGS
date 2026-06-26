@@ -1,0 +1,171 @@
+{
+  "stage": 52,
+  "mode": "FCGS/D-FCGS baseline ingestion preflight",
+  "availability": [
+    {
+      "source_group": "legacy_driving_dfcgs_logs",
+      "root": "/mnt/hdd2tC/tmp/opencode/dfcgs_fcgs_i_model/driving",
+      "pattern": "D-FCGS_20260620_*.log",
+      "root_exists": true,
+      "file_count": 40
+    },
+    {
+      "source_group": "multisequence_dfcgs_logs",
+      "root": "/mnt/hdd2tC/tmp/opencode/multisequence_rd/rd_sweep/dfcgs_model",
+      "pattern": "**/D-FCGS_20260626_*.log",
+      "root_exists": true,
+      "file_count": 159
+    },
+    {
+      "source_group": "multisequence_dfcgs_fcgs_i_summaries",
+      "root": "/mnt/hdd2tC/tmp/opencode/multisequence_rd/rd_sweep/dfcgs_fcgs_i",
+      "pattern": "**/dfcgs_gop2_target_topology_summary.json",
+      "root_exists": true,
+      "file_count": 15
+    },
+    {
+      "source_group": "compactworld_dfcgs_fcgs_i_lambda_sweep",
+      "root": "/mnt/hdd2tC/tmp/opencode/dfcgs_fcgs_i_lambda_sweep",
+      "pattern": "**/dfcgs_gop2_target_topology_summary.json",
+      "root_exists": true,
+      "file_count": 12
+    },
+    {
+      "source_group": "compactworld_dfcgs_raw_i_rate_sweep",
+      "root": "/mnt/hdd2tC/tmp/opencode/dfcgs_codec_rd_sweep",
+      "pattern": "**/dfcgs_gop2_target_topology_summary.json",
+      "root_exists": true,
+      "file_count": 12
+    },
+    {
+      "source_group": "compactworld_dfcgs_fcgs_i_gop2",
+      "root": "/mnt/hdd2tC/tmp/opencode/dfcgs_fcgs_i_gop2",
+      "pattern": "**/dfcgs_gop2_target_topology_summary.json",
+      "root_exists": true,
+      "file_count": 4
+    },
+    {
+      "source_group": "lowrate_dfcgs_fcgs_i_summaries",
+      "root": "/mnt/hdd2tC/tmp/opencode/lowrate_rd_sweep/dfcgs_fcgs_i",
+      "pattern": "**/dfcgs_gop2_target_topology_summary.json",
+      "root_exists": true,
+      "file_count": 16
+    },
+    {
+      "source_group": "compactworld_standalone_fcgs_summaries",
+      "root": "/mnt/hdd2tC/tmp/opencode",
+      "pattern": "fcgs_*_out/fcgs_sequence_summary.json",
+      "root_exists": true,
+      "file_count": 6
+    },
+    {
+      "source_group": "multisequence_standalone_fcgs_summaries",
+      "root": "/mnt/hdd2tC/tmp/opencode/multisequence_rd/rd_sweep/fcgs",
+      "pattern": "**/fcgs_sequence_summary.json",
+      "root_exists": true,
+      "file_count": 33
+    },
+    {
+      "source_group": "lowrate_standalone_fcgs_summaries",
+      "root": "/mnt/hdd2tC/tmp/opencode/lowrate_rd_sweep/fcgs",
+      "pattern": "**/fcgs_sequence_summary.json",
+      "root_exists": true,
+      "file_count": 17
+    }
+  ],
+  "log_records": 199,
+  "log_parse_status": {
+    "ok": 199
+  },
+  "log_records_with_all_key_fields": 199,
+  "summary_records": 199,
+  "summary_parse_status": {
+    "ok": 199
+  },
+  "summary_records_with_rate": 199,
+  "summary_records_with_input_video_quality": 173,
+  "stage53_candidate_summary_records": 173,
+  "summary_records_by_codec_mode": {
+    "fcgs_i_plus_dfcgs_p_gop2": 47,
+    "fcgs_per_frame": 140,
+    "raw_i_plus_dfcgs_p_gop2": 12
+  },
+  "summary_records_by_source": {
+    "compactworld_dfcgs_fcgs_i_gop2": 4,
+    "compactworld_dfcgs_fcgs_i_lambda_sweep": 12,
+    "compactworld_dfcgs_raw_i_rate_sweep": 12,
+    "compactworld_standalone_fcgs_summaries": 22,
+    "lowrate_dfcgs_fcgs_i_summaries": 16,
+    "lowrate_standalone_fcgs_summaries": 19,
+    "multisequence_dfcgs_fcgs_i_summaries": 15,
+    "multisequence_standalone_fcgs_summaries": 99
+  },
+  "log_records_by_source": {
+    "legacy_driving_dfcgs_logs": 40,
+    "multisequence_dfcgs_logs": 159
+  },
+  "summary_sample_coverage": {
+    "compactworld_dfcgs_fcgs_i_gop2": {
+      "driving": 1,
+      "meetroom": 1,
+      "n3dv": 1,
+      "robot": 1
+    },
+    "compactworld_dfcgs_fcgs_i_lambda_sweep": {
+      "driving": 3,
+      "meetroom": 3,
+      "n3dv": 3,
+      "robot": 3
+    },
+    "compactworld_dfcgs_raw_i_rate_sweep": {
+      "driving": 3,
+      "meetroom": 3,
+      "n3dv": 3,
+      "robot": 3
+    },
+    "compactworld_standalone_fcgs_summaries": {
+      "driving": 6,
+      "meetroom": 5,
+      "n3dv": 6,
+      "robot": 5
+    },
+    "lowrate_dfcgs_fcgs_i_summaries": {
+      "meetroom": 2,
+      "n3dv": 5,
+      "shaky_video": 2,
+      "tree_and_building": 3,
+      "video_editing_case1": 4
+    },
+    "lowrate_standalone_fcgs_summaries": {
+      "driving": 2,
+      "meetroom": 2,
+      "n3dv": 5,
+      "shaky_video": 2,
+      "tree_and_building": 4,
+      "video_editing_case1": 4
+    },
+    "multisequence_dfcgs_fcgs_i_summaries": {
+      "n3dv": 15
+    },
+    "multisequence_standalone_fcgs_summaries": {
+      "meetroom": 45,
+      "n3dv": 54
+    }
+  },
+  "log_sample_coverage": {
+    "legacy_driving_dfcgs_logs": {
+      "driving": 40
+    },
+    "multisequence_dfcgs_logs": {
+      "n3dv": 159
+    }
+  },
+  "notes": [
+    "D-FCGS log rows are single P-frame compression/decompression records; they are not complete video RD points without I-frame and aggregation accounting.",
+    "GOP summary rows expose video-level MiB/frame and quality; their rate includes FCGS or raw I-frames plus D-FCGS P-frames, unlike Mono-DFCGS keyframe-anchor-only rate.",
+    "Rows with dummy_reference_images=true are excluded from Stage53 input-video quality candidates; codec_psnr remains useful for codec fidelity diagnostics only."
+  ],
+  "log_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage52_fcgs_dfcgs_baseline_preflight/stage52_dfcgs_log_records.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage52_fcgs_dfcgs_baseline_preflight/stage52_baseline_summary_records.csv",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage52_fcgs_dfcgs_baseline_preflight/stage52_fcgs_dfcgs_baseline_preflight_report.md"
+}

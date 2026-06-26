@@ -3610,3 +3610,60 @@ experiments/stage51_high_rate_multibit_rd/stage51_rendered_prior_0p1_zlib_middle
 - Stage51 明确解决“高码率点缺失”和“PSNR 太一般”的一部分问题：q10/q12/q16 让 mean all PSNR 从 q8 约 `28.4 dB` 提升到 q16 约 `30.7 dB`。
 - q12 到 q16 的提升已经很小，说明当前 quality 主要进入 anchor/model 上限区间，而不是纯量化瓶颈。
 - Adaptive `rendered_prior_0p1` 在各 bit-depth 下平均仍略高于 uniform，且 zlib rate 基本一致或略低。
+
+## 2026-06-26：阶段 52 FCGS/D-FCGS Baseline Preflight
+
+### 执行计划
+
+Stage52 解析本机已有 FCGS / D-FCGS 候选结果，生成 availability report、CSV records 和 summary JSON。该阶段只做文本/JSON 解析，不运行 GPU 渲染或训练。
+
+### 新增文件
+
+```text
+scripts/run_stage52_fcgs_dfcgs_baseline_preflight.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage52_fcgs_dfcgs_baseline_preflight.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi`。GPU 上已有若干 Python 进程，但 Stage52 是 CPU-only 解析，未占用 CUDA。
+
+### 输出文件
+
+```text
+experiments/stage52_fcgs_dfcgs_baseline_preflight/stage52_dfcgs_log_records.csv
+experiments/stage52_fcgs_dfcgs_baseline_preflight/stage52_baseline_summary_records.csv
+experiments/stage52_fcgs_dfcgs_baseline_preflight/stage52_fcgs_dfcgs_baseline_preflight_summary.json
+experiments/stage52_fcgs_dfcgs_baseline_preflight/stage52_fcgs_dfcgs_baseline_preflight_report.md
+```
+
+### 解析结果
+
+| item | value |
+|---|---:|
+| D-FCGS log records | 199 |
+| D-FCGS log records with all key fields | 199 |
+| baseline summary records | 199 |
+| summary records with rate | 199 |
+| summary records with input-video quality | 173 |
+| Stage53 candidate summary records | 173 |
+
+### Codec mode coverage
+
+| codec mode | records |
+|---|---:|
+| `fcgs_i_plus_dfcgs_p_gop2` | 47 |
+| `fcgs_per_frame` | 140 |
+| `raw_i_plus_dfcgs_p_gop2` | 12 |
+
+### 关键结论
+
+- 本机已有足够的 FCGS / D-FCGS 候选 summary 用于 Stage53 生成 baseline comparison scaffold。
+- 可直接优先使用 video-level GOP summary rows，而不是单个 D-FCGS P-frame logs。
+- 这些 baseline 的 rate 是完整 FCGS/D-FCGS codec MiB/frame，包含 FCGS 或 raw I-frame 加 D-FCGS P-frame payload，不等同于 Mono-DFCGS 的 transmitted keyframe Gaussian anchor MiB/frame。
+- `dummy_reference_images=true` 的 rows 不能用于 input-video PSNR/SSIM 主对比，只能保留 `codec_psnr` 作为 compression fidelity 诊断。
