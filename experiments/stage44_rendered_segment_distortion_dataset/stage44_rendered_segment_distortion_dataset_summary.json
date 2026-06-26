@@ -1,0 +1,69 @@
+{
+  "stage": 44,
+  "mode": "rendered segment distortion dataset",
+  "stage33_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage33_dense_gap1_anchor_export/stage33_dense_gap1_anchor_manifest.csv",
+  "samples": [
+    "n3dv",
+    "meetroom",
+    "driving",
+    "robot"
+  ],
+  "max_segment_length": 32,
+  "max_targets_per_segment": 3,
+  "base_segment_rows": 8128,
+  "expanded_leave_one_out_rows": 32512,
+  "rendered_target_evaluations": 22504,
+  "csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage44_rendered_segment_distortion_dataset/stage44_rendered_segment_distortion_dataset.csv",
+  "sample_summaries": [
+    {
+      "sample": "n3dv",
+      "row_count": 2064,
+      "rendered_target_evaluations": 5716,
+      "label_mean": 0.014895839439636203,
+      "label_min": 0.0,
+      "label_max": 0.04597786716961612,
+      "nonzero_segment_rows": 1984,
+      "corr_endpoint_anchor_mse": 0.7870665258926746,
+      "corr_rgb_motion_mean": -0.05354426673864032,
+      "corr_segment_length": 0.9862524358485771
+    },
+    {
+      "sample": "meetroom",
+      "row_count": 2064,
+      "rendered_target_evaluations": 5716,
+      "label_mean": 0.03329636638431375,
+      "label_min": 0.0,
+      "label_max": 0.09466822538524866,
+      "nonzero_segment_rows": 1984,
+      "corr_endpoint_anchor_mse": 0.7107057762991904,
+      "corr_rgb_motion_mean": 0.08907297566321296,
+      "corr_segment_length": 0.9703062757077143
+    },
+    {
+      "sample": "driving",
+      "row_count": 2064,
+      "rendered_target_evaluations": 5716,
+      "label_mean": 0.05687899679995837,
+      "label_min": 0.0,
+      "label_max": 0.2161321323364973,
+      "nonzero_segment_rows": 1984,
+      "corr_endpoint_anchor_mse": 0.8078750784857266,
+      "corr_rgb_motion_mean": 0.08271829957254055,
+      "corr_segment_length": 0.9566332944035877
+    },
+    {
+      "sample": "robot",
+      "row_count": 1936,
+      "rendered_target_evaluations": 5356,
+      "label_mean": 0.13955990905128163,
+      "label_min": 0.0,
+      "label_max": 0.7303019681324561,
+      "nonzero_segment_rows": 1860,
+      "corr_endpoint_anchor_mse": 0.5965624603408157,
+      "corr_rgb_motion_mean": 0.23088073370512416,
+      "corr_segment_length": 0.8824542788008414
+    }
+  ],
+  "label_note": "adapter_mse_sum_est = mean adapter RGB MSE over sampled middle targets multiplied by full middle-frame count. This approximates rendered segment distortion for fast selector research; rerun with max_targets_per_segment=0 for all middle frames.",
+  "feature_note": "Features use only encoder-side endpoint RGB/Gaussian/temporal signals. Rendered distortion is used only as an offline training/oracle label."
+}

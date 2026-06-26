@@ -286,3 +286,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Keep three claims separate: adapter improvement over linear interpolation, oracle/proxy selector upper bound, and deployable predicted selector performance.
 - The current deployable predicted selector result is negative; do not present Stage36 oracle gains as if they were deployable encoder-side selection.
 - Stage43 Markdown is the safest source for current selector claim wording.
+
+## Stage 44 Notes
+
+- Rendered segment distortion is an offline label for selector training/oracle analysis, not an inference-time input. The final adaptive selector must use a frozen feed-forward predictor.
+- The first Stage44 run produced a tensor shape warning because target RGB lacked the singleton time dimension. Fix target tensors to `[1, 1, 3, H, W]` before trusting MSE labels.
+- The default Stage44 label is sampled for speed: mean sampled adapter MSE multiplied by full middle-frame count. Rerun with `--max_targets_per_segment=0` for all-middle-frame labels when scaling or finalizing results.

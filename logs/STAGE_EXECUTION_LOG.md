@@ -3057,3 +3057,62 @@ experiments/stage43_selector_evidence_synthesis/stage43_selector_evidence_synthe
 - 当前 strongest deployable codec evidence 是 Stage26：leave-one-out adapter 在 uniform keyframes 下 16/16 点优于 linear interpolation。
 - 当前 strongest selector evidence 是 Stage36：dense oracle/proxy selector 12/12 正收益，并有 actual zlib q8 anchor bitstream rate，但不是 deployable selector。
 - 当前 deployable predicted selector 尚未超过 uniform，后续必须诚实报告为负结果，并把它作为改进 selector objective / 扩数据的动机。
+
+## 2026-06-26：阶段 44 Rendered Segment Distortion Dataset
+
+### 执行计划
+
+Stage44 构建新的 Adaptive Keyframe Selection 训练/分析数据集。与 Stage37 的 anchor-attribute proxy label 不同，Stage44 直接使用 frozen Stage25 leave-one-out adapter 渲染候选 segment 的中间帧，并用 RGB MSE 形成 rendered distortion label。
+
+### 新增文件
+
+```text
+scripts/run_stage44_rendered_segment_distortion_dataset.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage44_rendered_segment_distortion_dataset.py
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage44_rendered_segment_distortion_dataset.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi`。GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 重要修正
+
+首轮运行发现 target RGB tensor 是 `[1, 3, H, W]`，而 renderer output 是 `[1, 1, 3, H, W]`，PyTorch 会 broadcasting 并给出 warning。已修正 target tensor 为 `[1, 1, 3, H, W]` 后重新运行，覆盖错误输出。
+
+### 输出文件
+
+```text
+experiments/stage44_rendered_segment_distortion_dataset/stage44_rendered_segment_distortion_dataset.csv
+experiments/stage44_rendered_segment_distortion_dataset/stage44_rendered_segment_distortion_dataset_summary.json
+```
+
+### Dataset 规模
+
+| metric | value |
+|---|---:|
+| max segment length | 32 |
+| max sampled targets per segment | 3 |
+| base segment rows | 8128 |
+| expanded leave-one-out rows | 32512 |
+| rendered target evaluations | 22504 |
+
+### Per-sample label statistics
+
+| sample | rows | rendered target evals | label mean | label max | corr endpoint anchor MSE | corr RGB motion mean | corr segment length |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| n3dv | 2064 | 5716 | 0.014895839439636203 | 0.04597786716961612 | 0.7870665258926746 | -0.05354426673864032 | 0.9862524358485771 |
+| meetroom | 2064 | 5716 | 0.03329636638431375 | 0.09466822538524866 | 0.7107057762991904 | 0.08907297566321296 | 0.9703062757077143 |
+| driving | 2064 | 5716 | 0.05687899679995837 | 0.2161321323364973 | 0.8078750784857266 | 0.08271829957254055 | 0.9566332944035877 |
+| robot | 1936 | 5356 | 0.13955990905128163 | 0.7303019681324561 | 0.5965624603408157 | 0.23088073370512416 | 0.8824542788008414 |
+
+### 结论
+
+- Stage44 生成了第一版 rendered-distortion segment cost labels，可直接用于 Stage45 rendered-oracle DP selector。
+- 当前 label 仍与 segment length 高相关，但它来自实际 adapter-rendered RGB distortion，目标比 Stage37 anchor-MSE proxy 更接近最终 RD。
+- 该版本为快速 RD 曲线使用 sampled targets；大规模精确版本可用 `--max_targets_per_segment=0` 计算所有中间帧。
