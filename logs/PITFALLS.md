@@ -316,3 +316,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - High rendered-cost prediction correlation is necessary but not sufficient. Stage48 must validate the final DP-selected keyframes with rendered full-video RD.
 - Segment length remains a very strong predictor even for rendered distortion labels. Always compare against length-only predictor variants.
 - Sample-normalized rank predictors produce relative costs, not calibrated physical distortion. DP selection may need the same uniform prior used in Stage45b.
+
+## Stage 48 Notes
+
+- Stage48 confirms that feed-forward cost prediction still does not guarantee adaptive RD gains, even with rendered-distortion supervision.
+- The best-looking rank predictor by correlation can produce very poor keyframe layouts. Selector training likely needs decision-aware objectives, not only segment-level regression/ranking.
+- For current claims, keep Stage46 as oracle/calibrated upper-bound evidence and Stage48 as a deployable-selector gap that motivates the next research step.

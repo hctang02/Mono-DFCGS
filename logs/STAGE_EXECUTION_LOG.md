@@ -3343,3 +3343,63 @@ experiments/stage47_rendered_cost_predictor_validation/stage47_rendered_cost_pre
 - `full_sample_z_rank` 是当前最好的 feed-forward rendered-cost predictor candidate，mean Spearman log `0.9760`，mean Pearson cost `0.9556`。
 - Length-only 仍然很强，说明 segment length 是 rendered distortion 的主导因素；Stage48 必须验证 predictor 是否能真正产生 RD gain，而不能只看预测相关性。
 - Stage47 输出的 predictions 将用于 Stage48 fully feed-forward adaptive selector RD。
+
+## 2026-06-26：阶段 48 Predicted Adaptive Selector RD
+
+### 执行计划
+
+Stage48 使用 Stage47 feed-forward predictions 驱动 DP keyframe selection。测试以下 variants：
+
+- `length_raw_log_prior_0p1`
+- `full_raw_log_prior_0p1`
+- `length_sample_z_rank_prior_0p1`
+- `full_sample_z_rank`
+- `full_sample_z_rank_prior_0p1`
+- `full_sample_z_rank_prior_0p3`
+
+该阶段不使用 rendered oracle cost，是第一版 fully feed-forward predicted adaptive selector RD。
+
+### 新增文件
+
+```text
+scripts/run_stage48_predicted_adaptive_selector_rd.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage48_predicted_adaptive_selector_rd.py
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage48_predicted_adaptive_selector_rd.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi`。GPU 1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+### 输出文件
+
+```text
+experiments/stage48_predicted_adaptive_selector_rd/stage48_predicted_adaptive_selector_rd.csv
+experiments/stage48_predicted_adaptive_selector_rd/stage48_selector_comparison.csv
+experiments/stage48_predicted_adaptive_selector_rd/stage48_selector_aggregates.csv
+experiments/stage48_predicted_adaptive_selector_rd/stage48_predicted_adaptive_selector_rd_summary.json
+experiments/stage48_predicted_adaptive_selector_rd/stage48_best_adapter_all_psnr_rd.png
+experiments/stage48_predicted_adaptive_selector_rd/stage48_best_adapter_middle_psnr_rd.png
+```
+
+### Aggregate 结果
+
+| method | positive all | mean delta all PSNR | min delta all PSNR | exact uniform points |
+|---|---:|---:|---:|---:|
+| full_raw_log_prior_0p1 | 0/12 | -0.21070429130013965 | -0.4152974337125741 | 4 |
+| full_sample_z_rank | 0/12 | -1.051880916423393 | -1.7778923913320988 | 0 |
+| full_sample_z_rank_prior_0p1 | 1/12 | -0.34686386133972275 | -1.7752712058738709 | 0 |
+| full_sample_z_rank_prior_0p3 | 2/12 | -0.2135740809898404 | -1.690961134155529 | 0 |
+| length_raw_log_prior_0p1 | 0/12 | -0.0409291686850605 | -0.3857680749438721 | 10 |
+| length_sample_z_rank_prior_0p1 | 0/12 | -0.038394562647086815 | -0.3857680749438721 | 10 |
+
+### 结论
+
+- Stage48 是关键负结果：当前第一版 fully feed-forward predicted adaptive selector 尚未超过 uniform。
+- Stage47 predictor 的 high correlation 没有转化为 RD gain，再次说明 selector objective 需要 decision-aware training 或更大规模数据。
+- 目前 adaptive selector 可作为主创新路线继续推进，但严谨表述应区分：Stage46 是 rendered-oracle calibrated actual-bitstream RD 正平均收益；Stage48 deployable predicted selector 仍未成功。
