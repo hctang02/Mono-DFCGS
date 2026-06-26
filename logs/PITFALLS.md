@@ -310,3 +310,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage46 quality comes from Stage45b; only the rate axis changes to actual raw/zlib q8 anchor bitstream sizes.
 - The calibrated adaptive selector is still rendered-oracle based. Do not call it fully feed-forward until Stage47/48 predictor selection is trained and evaluated.
 - Rate deltas at equal keyframe count are tiny and mainly reflect header length and zlib compressibility of selected anchors, not different keyframe budgets.
+
+## Stage 47 Notes
+
+- High rendered-cost prediction correlation is necessary but not sufficient. Stage48 must validate the final DP-selected keyframes with rendered full-video RD.
+- Segment length remains a very strong predictor even for rendered distortion labels. Always compare against length-only predictor variants.
+- Sample-normalized rank predictors produce relative costs, not calibrated physical distortion. DP selection may need the same uniform prior used in Stage45b.

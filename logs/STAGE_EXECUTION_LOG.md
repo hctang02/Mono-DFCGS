@@ -3298,3 +3298,48 @@ experiments/stage46_calibrated_adaptive_actual_bitstream_rd/stage46_zlib_adapter
 - Stage46 提供了第一版 actual-bitstream Adaptive Keyframe Selection RD 曲线。
 - 该方法仍是 rendered-oracle calibrated selector，不是最终 feed-forward predictor，但已经显示 adaptive-or-uniform fallback 可以在真实 bitstream rate 下取得正平均 RD gain。
 - 下一步需要把 `rendered_prior_0p1` 的 oracle cost 学成 feed-forward predictor，并在更大数据上训练/验证。
+
+## 2026-06-26：阶段 47 Feed-Forward Rendered Cost Predictor Validation
+
+### 执行计划
+
+Stage47 使用 Stage44 rendered segment distortion labels 训练 leave-one-sample-out feed-forward segment cost predictor。Features 只包含 encoder-side 信息：segment length、normalized time、endpoint q8 Gaussian attribute differences、RGB endpoint/motion features。
+
+### 新增文件
+
+```text
+scripts/run_stage47_rendered_cost_predictor_validation.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage47_rendered_cost_predictor_validation.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage47_rendered_cost_predictor_validation.py
+```
+
+Stage47 是 CPU-only regression validation。运行前仍按要求检查 `nvidia-smi`。
+
+### 输出文件
+
+```text
+experiments/stage47_rendered_cost_predictor_validation/stage47_predictor_metrics.csv
+experiments/stage47_rendered_cost_predictor_validation/stage47_predictor_predictions.csv
+experiments/stage47_rendered_cost_predictor_validation/stage47_rendered_cost_predictor_validation_summary.json
+```
+
+### Aggregate 结果
+
+| model | mean Spearman log | mean Pearson log | mean Pearson cost |
+|---|---:|---:|---:|
+| length_raw_log | 0.9705666891537404 | 0.4973834017016663 | 0.7248967616006826 |
+| full_raw_log | 0.5683448234806368 | 0.4261146695061767 | 0.3921679030153338 |
+| length_sample_z_rank | 0.9705666891537404 | 0.497383401701666 | 0.9516328490520204 |
+| full_sample_z_rank | 0.9760206600953013 | 0.5200300873753056 | 0.9556364554249628 |
+| full_sample_z_zlog | 0.516585818211339 | 0.557012364009426 | 0.47937910569214154 |
+
+### 结论
+
+- `full_sample_z_rank` 是当前最好的 feed-forward rendered-cost predictor candidate，mean Spearman log `0.9760`，mean Pearson cost `0.9556`。
+- Length-only 仍然很强，说明 segment length 是 rendered distortion 的主导因素；Stage48 必须验证 predictor 是否能真正产生 RD gain，而不能只看预测相关性。
+- Stage47 输出的 predictions 将用于 Stage48 fully feed-forward adaptive selector RD。
