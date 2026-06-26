@@ -1,0 +1,2 @@
+step,sample,frame_gap,target_frame_index,normalized_time,rgb_mse,rgb_psnr
+5,DAVIS/train/bear,4,2,0.5,0.011479849927127361,19.40063789311432

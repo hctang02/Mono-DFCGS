@@ -1,0 +1,5 @@
+selection,sample,dataset,split,sequence,frame_gap,left_index,right_index,segment_length,middle_frame_count,dataset_item,anchor_mib,gaussians_per_anchor
+train,DAVIS/train/bear,DAVIS,train,bear,2,0,2,2,1,/data/hctang/tmp/opencode/mono_dfcgs_runs/stage61_davis_anchor_export_full/DAVIS/train/bear/gap2/pair_000000_000002.pt,1.828125,36864
+train,DAVIS/train/bear,DAVIS,train,bear,4,0,4,4,3,/data/hctang/tmp/opencode/mono_dfcgs_runs/stage61_davis_anchor_export_full/DAVIS/train/bear/gap4/pair_000000_000004.pt,1.828125,36864
+eval,DAVIS/val/bike-packing,DAVIS,val,bike-packing,2,0,2,2,1,/data/hctang/tmp/opencode/mono_dfcgs_runs/stage61_davis_anchor_export_full/DAVIS/val/bike-packing/gap2/pair_000000_000002.pt,1.828125,36864
+eval,DAVIS/val/bike-packing,DAVIS,val,bike-packing,4,0,4,4,3,/data/hctang/tmp/opencode/mono_dfcgs_runs/stage61_davis_anchor_export_full/DAVIS/val/bike-packing/gap4/pair_000000_000004.pt,1.828125,36864

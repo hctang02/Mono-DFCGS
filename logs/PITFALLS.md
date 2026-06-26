@@ -446,3 +446,10 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - `/data` DAVIS train/val frames match the previous `/mnt/hdd2tC` DAVIS root exactly, so the generated train/val depth can be copied instead of recomputed. Do not assume this for test-dev/test-challenge; they still need depth generation if used.
 - Long Stage61 exports should run with `--skip_existing` enabled. A timeout after 11311/12007 pairs was recovered by rerunning the same command.
 - Avoid loading RGB/depth for already-complete sequence/gap pairs during resume; this was optimized in the Stage61 exporter.
+
+## Stage62 Adapter Infra Notes
+
+- Stage61 DAVIS manifest rows use `dataset/split/sequence`, while Stage21 helper functions expect `sample`. Stage62 maps them to `sample=DAVIS/<split>/<sequence>` before task construction.
+- Stage62 smoke validates infra only. A `+0.0044 dB` margin after 5 tiny steps is not a meaningful adapter contribution claim.
+- Keep best/final checkpoints and resume `.pt` state under `/data/hctang/tmp/opencode/mono_dfcgs_runs`; do not commit them.
+- Resume runs can overwrite tracked summary CSV/JSON with the resumed run configuration. Record `start_step` and `resume_state` context in the summary before interpreting the logs.

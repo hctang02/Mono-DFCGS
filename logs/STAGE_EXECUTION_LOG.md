@@ -4529,3 +4529,83 @@ External heavy outputs, not tracked by git：
 ```text
 /data/hctang/tmp/opencode/mono_dfcgs_runs/stage61_davis_anchor_export_full/DAVIS/{train,val}/<sequence>/gap*/pair_*.pt
 ```
+
+## 2026-06-27：Stage62 Adapter Training Infra v2 Smoke
+
+### 目标
+
+实现 Stage62 adapter training infrastructure v2，支持 DAVIS Stage61 manifest、train/val split、best checkpoint、resume state、外部 checkpoint root 和 storage-safe small summaries。
+
+### 代码
+
+新增：
+
+```text
+scripts/run_stage62_adapter_training_infra_v2.py
+```
+
+核心能力：
+
+- 读取 Stage61 DAVIS manifest，并将 `dataset/split/sequence` 映射为 Stage21-compatible `sample`。
+- 默认使用 `train` split 训练、`val` split 验证。
+- 支持多 gap selection、balanced row sampling、q8 anchor input、RGB render loss。
+- 保存 best/final adapter checkpoint 到 `/data`。
+- 保存 latest training state `.pt` 以支持 resume。
+- CSV writer 固定 LF，避免 `git diff --check` CRLF 问题。
+
+### 执行
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage62_adapter_training_infra_v2.py
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage62_adapter_training_infra_v2.py --device cuda --steps 4 --eval_interval 2 --frame_gaps 2 4 --max_train_rows_per_gap 1 --max_eval_rows_per_gap 1 --targets_per_row 1
+```
+
+Resume validation command：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage62_adapter_training_infra_v2.py --device cuda --steps 5 --eval_interval 1 --frame_gaps 2 4 --max_train_rows_per_gap 1 --max_eval_rows_per_gap 1 --targets_per_row 1 --resume_state /data/hctang/tmp/opencode/mono_dfcgs_runs/stage62_adapter_training_infra_v2/stage62_latest_training_state.pt
+```
+
+### 输出
+
+Tracked outputs：
+
+```text
+experiments/stage62_adapter_training_infra_v2/stage62_adapter_training_infra_v2_summary.json
+experiments/stage62_adapter_training_infra_v2/stage62_train_rgb_losses.csv
+experiments/stage62_adapter_training_infra_v2/stage62_validation_log.csv
+experiments/stage62_adapter_training_infra_v2/stage62_selected_rows.csv
+experiments/stage62_adapter_training_infra_v2/stage62_initial_eval.csv
+experiments/stage62_adapter_training_infra_v2/stage62_final_eval.csv
+experiments/stage62_adapter_training_infra_v2/stage62_best_eval.csv
+experiments/stage62_adapter_training_infra_v2/stage62_best_gap_eval_summary.csv
+```
+
+External outputs：
+
+```text
+/data/hctang/tmp/opencode/mono_dfcgs_runs/stage62_adapter_training_infra_v2/stage62_best_anchor_adapter.safetensors
+/data/hctang/tmp/opencode/mono_dfcgs_runs/stage62_adapter_training_infra_v2/stage62_final_anchor_adapter.safetensors
+/data/hctang/tmp/opencode/mono_dfcgs_runs/stage62_adapter_training_infra_v2/stage62_latest_training_state.pt
+```
+
+### Results
+
+- Available train rows for gaps `2,4`：`3103`。
+- Available eval rows for gaps `2,4`：`1469`。
+- Smoke selected train rows：`2`。
+- Smoke selected eval rows：`2`。
+- Train tasks：`2`。
+- Eval tasks：`2`。
+- Resume start step：`4`。
+- Final/best step after resume：`5`。
+- Best eval model PSNR avg：`23.256934739494863`。
+- Linear PSNR avg：`23.252508732675636`。
+- Best margin over linear：`0.004426006819226558 dB`。
+- External checkpoint root size：about `2.0M`。
+
+### 结论
+
+Stage62 infrastructure is functional: DAVIS manifest reading, train/val split, q8 anchor input, RGB rendering loss, best checkpoint, final checkpoint, and resume state all work. This is a smoke/infrastructure validation, not a medium/long adapter quality result.
