@@ -4091,3 +4091,48 @@ logs/stage_records/58_compression_rd_ablation.md
 
 - `compact_bitpack_raw_payload_estimate` 是 payload-only estimate，不含 metadata/header。
 - actual compact raw/zlib 目前只覆盖 Stage57 formal subset：uniform gap16 q8/q10/q12/q16 joined with Stage51 PSNR。
+
+## 2026-06-26：阶段 59 DAVIS/YouTube-VOS Prepare Preflight
+
+### 目标
+
+执行 DAVIS 和 YouTube-VOS 下载/准备 preflight，检查 StreamSplat provider layout、候选数据 root、缺失项和下一步 checklist。
+
+### 代码
+
+新增：
+
+```text
+scripts/run_stage59_davis_vos_prepare_preflight.py
+```
+
+### 执行
+
+- 运行前已检查 `nvidia-smi`。
+- `compileall` 通过。
+- Stage59 只做 filesystem/provider preflight，不下载数据、不使用 CUDA。
+
+### 输出
+
+```text
+experiments/stage59_davis_vos_prepare_preflight/stage59_dataset_root_status.csv
+experiments/stage59_davis_vos_prepare_preflight/stage59_expected_provider_layout.csv
+experiments/stage59_davis_vos_prepare_preflight/stage59_streamsplat_provider_check.csv
+experiments/stage59_davis_vos_prepare_preflight/stage59_download_prepare_checklist.csv
+experiments/stage59_davis_vos_prepare_preflight/stage59_davis_vos_prepare_report.md
+experiments/stage59_davis_vos_prepare_preflight/stage59_davis_vos_prepare_preflight_summary.json
+logs/stage_records/59_davis_vos_prepare_preflight.md
+```
+
+### 结果
+
+- DAVIS provider-ready roots：`0`。
+- DAVIS anchor-export-ready roots：`0`。
+- YouTube-VOS provider-ready roots：`0`。
+- YouTube-VOS anchor-export-ready roots：`0`。
+- StreamSplat `provider_davis.py` 存在。
+- StreamSplat `provider_vos.py` 存在。
+
+### 阻塞
+
+Stage60 depth preprocessing 和 Stage61 large-scale anchor export 需要用户下载或挂载 DAVIS / YouTube-VOS 数据到 expected roots，或后续通过脚本参数提供等价 root。

@@ -1,0 +1,17 @@
+{
+  "stage": 59,
+  "mode": "DAVIS/YouTube-VOS download and prepare preflight",
+  "streamsplat_root": "/mnt/hdd2tC/tmp/opencode/StreamSplat",
+  "davis_primary_root": "/mnt/hdd2tC/tmp/opencode/datasets/DAVIS",
+  "vos_primary_root": "/mnt/hdd2tC/tmp/opencode/datasets/YouTube-VOS",
+  "root_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage59_davis_vos_prepare_preflight/stage59_dataset_root_status.csv",
+  "layout_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage59_davis_vos_prepare_preflight/stage59_expected_provider_layout.csv",
+  "provider_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage59_davis_vos_prepare_preflight/stage59_streamsplat_provider_check.csv",
+  "checklist_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage59_davis_vos_prepare_preflight/stage59_download_prepare_checklist.csv",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage59_davis_vos_prepare_preflight/stage59_davis_vos_prepare_report.md",
+  "davis_provider_ready_roots": 0,
+  "davis_anchor_ready_roots": 0,
+  "vos_provider_ready_roots": 0,
+  "vos_anchor_ready_roots": 0,
+  "notes": "This stage does not download data. Official datasets may require manual download, login, or acceptance of terms."
+}

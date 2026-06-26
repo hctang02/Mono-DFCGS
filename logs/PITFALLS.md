@@ -407,3 +407,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage58 does not rerender. All quality values are Stage51 `adapter_all_psnr`; codec variants only change the x-axis rate.
 - `compact_bitpack_raw_payload_estimate` is payload-only and should not be mixed with actual container rates without labeling.
 - Actual Stage57 compact raw/zlib rates are currently available only for the Stage57 formal subset, so their mean PSNR reflects uniform gap16 quality, not the full Stage51 distribution.
+
+## Stage59 Dataset Prepare Notes
+
+- Stage59 does not download DAVIS or YouTube-VOS. Official datasets may require manual download, login, or acceptance of terms.
+- StreamSplat provider files exist, but no checked candidate root is provider-ready or anchor-export-ready.
+- Stage60/61 cannot run on DAVIS/YouTube-VOS until frames, annotations, split files, and then predicted depth files are present.

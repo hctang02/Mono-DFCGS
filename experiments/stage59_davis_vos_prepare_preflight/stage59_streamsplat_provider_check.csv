@@ -1,0 +1,3 @@
+dataset,provider_file,exists,provider_class,image_root_rule,mask_root_rule,depth_path_rule
+DAVIS,/mnt/hdd2tC/tmp/opencode/StreamSplat/datasets/provider_davis.py,true,DAVISDataset,<root>/JPEGImages/Full-Resolution,<root>/Annotations_unsupervised/Full-Resolution,"image_path.replace('JPEGImages', 'depthImages') + '_pred.png'"
+YouTube-VOS,/mnt/hdd2tC/tmp/opencode/StreamSplat/datasets/provider_vos.py,true,VOSDataset,<root>/train_or_valid/JPEGImages,<root>/train/Annotations; valid uses all-one masks,"image_path.replace('JPEGImages', 'depthImages') + '_pred.png'"

@@ -1,0 +1,11 @@
+dataset,root,exists,provider_layout_ready,ready_for_depth_preprocess,ready_for_anchor_export,sequence_count,sampled_sequence_count,sampled_frame_count,sampled_mask_count,sampled_depth_pred_count,missing_items,next_action
+DAVIS,/mnt/hdd2tC/tmp/opencode/datasets/DAVIS,false,false,false,false,0,0,0,0,0,root,download or mount missing DAVIS files
+DAVIS,/mnt/hdd2tC/tmp/opencode/datasets/davis,false,false,false,false,0,0,0,0,0,root,download or mount missing DAVIS files
+DAVIS,/mnt/hdd2tC/tmp/opencode/DAVIS,false,false,false,false,0,0,0,0,0,root,download or mount missing DAVIS files
+DAVIS,/mnt/hdd2tC/datasets/DAVIS,false,false,false,false,0,0,0,0,0,root,download or mount missing DAVIS files
+DAVIS,/mnt/hdd2tC/haocheng/datasets/DAVIS,false,false,false,false,0,0,0,0,0,root,download or mount missing DAVIS files
+YouTube-VOS,/mnt/hdd2tC/tmp/opencode/datasets/YouTube-VOS,false,false,false,false,0,0,0,0,0,root,download or mount missing YouTube-VOS files
+YouTube-VOS,/mnt/hdd2tC/tmp/opencode/datasets/youtube_vos,false,false,false,false,0,0,0,0,0,root,download or mount missing YouTube-VOS files
+YouTube-VOS,/mnt/hdd2tC/tmp/opencode/YouTube-VOS,false,false,false,false,0,0,0,0,0,root,download or mount missing YouTube-VOS files
+YouTube-VOS,/mnt/hdd2tC/datasets/YouTube-VOS,false,false,false,false,0,0,0,0,0,root,download or mount missing YouTube-VOS files
+YouTube-VOS,/mnt/hdd2tC/haocheng/datasets/YouTube-VOS,false,false,false,false,0,0,0,0,0,root,download or mount missing YouTube-VOS files
