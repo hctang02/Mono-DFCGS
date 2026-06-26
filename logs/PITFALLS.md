@@ -435,3 +435,4 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - The default DAVIS exporter args intentionally run a one-sequence one-pair smoke export. Full export requires explicit `--max_sequences 0 --max_pairs_per_sequence 0` and enough external space.
 - Use `cuda:0` under `CUDA_VISIBLE_DEVICES=...` for `safetensors.torch.load_file`; plain `cuda` may fail in some safetensors versions.
 - External Stage61 `.pt` files must stay under `/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage61_davis_anchor_export` and must not be committed.
+- DAVIS gap16 train+val export is feasible on the current mount and produced 425 pair records, but it still reduced free space to only about `3.3G`. Avoid additional gap exports until storage is freed.

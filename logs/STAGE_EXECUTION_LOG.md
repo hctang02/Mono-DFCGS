@@ -4334,8 +4334,43 @@ Key per-gap estimates：
 - Gaussians per anchor：`36864`。
 - External heavy root size after smoke：about `1.9M`.
 
+### Gap16 Partial Large-Scale Export Update
+
+After the smoke run, Stage61 preflight showed that DAVIS `gap16` alone was small enough to fit on the current mount, while all-gap export remained unsafe. A partial large-scale export was run with:
+
+```text
+CUDA_VISIBLE_DEVICES=4 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage61_davis_anchor_export.py --splits train val --gaps 16 --max_sequences 0 --max_pairs_per_sequence 0 --batch_size 2 --device cuda:0
+```
+
+Results:
+
+- Splits：`train val`。
+- Sequences：`90`.
+- Gap：`16`。
+- Exported pair rows：`425`。
+- Anchor tensor payload：`776.953125 MiB`。
+- Heavy root disk usage after export：about `781M`。
+- Repository summary size：about `360K`。
+- `/mnt/hdd2tC` free space after export：about `3.3G`。
+
+Updated tracked outputs:
+
+```text
+experiments/stage61_davis_anchor_export/stage61_davis_anchor_export_manifest.csv
+experiments/stage61_davis_anchor_export/stage61_davis_anchor_export_manifest.json
+experiments/stage61_davis_anchor_export/stage61_davis_anchor_export_summary.csv
+experiments/stage61_davis_anchor_export/stage61_davis_anchor_export_summary.json
+```
+
+External heavy outputs remain outside git under:
+
+```text
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage61_davis_anchor_export/DAVIS/{train,val}/<sequence>/gap16/*.pt
+```
+
 ### 结论
 
 - DAVIS 数据和 depth 已满足 anchor export 输入条件。
-- Stage61 full all-gap export 当前被磁盘空间阻塞，不应在 `/mnt/hdd2tC` 只剩约 `4 GiB` 时启动。
-- DAVIS-aware anchor export code path 已通过 smoke，后续释放空间后可以用显式参数运行更大范围导出。
+- Stage61 full all-gap export 当前被磁盘空间阻塞，不应在 `/mnt/hdd2tC` 只剩几 GiB 时启动。
+- DAVIS-aware anchor export code path 已通过 smoke，并已完成 DAVIS train+val gap16 partial large-scale export。
+- 后续若要导出 gap1/2/4/8 或 YouTube-VOS，需要先释放更多空间或提供其他外部挂载点。

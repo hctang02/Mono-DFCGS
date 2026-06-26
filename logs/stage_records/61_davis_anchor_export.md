@@ -96,12 +96,49 @@ Per-gap all-DAVIS estimates:
 | anchor MiB | 1.828125 |
 | gaussians per anchor | 36864 |
 
+## Gap16 Partial Large-Scale Export
+
+After the smoke run, the Stage61 preflight table showed that DAVIS `gap16` alone was feasible while all-gap export was not. The following command exported gap16 anchors for all DAVIS train/val sequences:
+
+```text
+CUDA_VISIBLE_DEVICES=4 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage61_davis_anchor_export.py --splits train val --gaps 16 --max_sequences 0 --max_pairs_per_sequence 0 --batch_size 2 --device cuda:0
+```
+
+Results:
+
+| Metric | Value |
+|---|---:|
+| splits | train, val |
+| sequences | 90 |
+| gap | 16 |
+| exported pairs | 425 |
+| total anchor MiB | 776.953125 |
+| external heavy root size | about 781M |
+| tracked summary size | about 360K |
+| free space after export | about 3.3G |
+
+Updated tracked files:
+
+```text
+experiments/stage61_davis_anchor_export/stage61_davis_anchor_export_manifest.csv
+experiments/stage61_davis_anchor_export/stage61_davis_anchor_export_manifest.json
+experiments/stage61_davis_anchor_export/stage61_davis_anchor_export_summary.csv
+experiments/stage61_davis_anchor_export/stage61_davis_anchor_export_summary.json
+```
+
+External `.pt` files are under:
+
+```text
+/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage61_davis_anchor_export/DAVIS/{train,val}/<sequence>/gap16/*.pt
+```
+
 ## Conclusions
 
 - DAVIS depth preprocessing is sufficient for StreamSplat Gaussian anchor export.
 - Full DAVIS all-gap export is blocked by current free space, not by data layout or code wiring.
-- The DAVIS export code path is verified on a small smoke output. Full export should wait until at least the estimated output plus safety reserve is available on an external mount.
+- The DAVIS export code path is verified by smoke and by the full DAVIS train+val gap16 partial export.
+- Further gap exports should wait until storage is freed or a larger external mount is available.
 
 ## Next Step
 
-Free additional storage or select a narrower export scope, then run Stage61 full or partial DAVIS export with explicit limits. YouTube-VOS remains blocked until train split is available.
+Use the DAVIS gap16 anchor manifest for limited Stage62 adapter-infra testing. Free additional storage before gap1/2/4/8 exports or YouTube-VOS preparation.
