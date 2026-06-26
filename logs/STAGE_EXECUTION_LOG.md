@@ -3177,3 +3177,57 @@ experiments/stage45_rendered_oracle_adaptive_selector_rd/stage45_adapter_middle_
 - 该结果说明把 selector label 从 anchor-attribute proxy 改为 rendered distortion 是有效方向。
 - 但 gap16 的 meetroom/robot 和 driving gap8/16 仍为负，当前 sampled-label oracle 还不足以作为最终成功结果。
 - 下一步建议优先做 Stage45b/Stage46：对 rendered oracle 加 min-gap/uniform-prior calibration 或用 all-middle-frame label 重算关键负点，再生成 actual bitstream RD。
+
+## 2026-06-26：阶段 45b Calibrated Rendered-Oracle Selector RD
+
+### 执行计划
+
+Stage45b 在 Stage45 rendered-oracle segment cost 上增加 layout calibration：
+
+- uniform segment-length prior：`cost += alpha * ((length - gap) / gap)^2`
+- minimum segment length：`min2` 和 `minhalf`
+
+目标是减少 Stage45 的大负点，同时保留 adaptive selection 的正收益。
+
+### 新增文件
+
+```text
+scripts/run_stage45b_calibrated_rendered_oracle_selector_rd.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage45b_calibrated_rendered_oracle_selector_rd.py
+CUDA_VISIBLE_DEVICES=3 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage45b_calibrated_rendered_oracle_selector_rd.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi`。GPU 1/2 有运行进程，GPU 3 空闲，因此使用 `CUDA_VISIBLE_DEVICES=3`。
+
+### 输出文件
+
+```text
+experiments/stage45b_calibrated_rendered_oracle_selector_rd/stage45b_calibrated_rendered_oracle_selector_rd.csv
+experiments/stage45b_calibrated_rendered_oracle_selector_rd/stage45b_selector_comparison.csv
+experiments/stage45b_calibrated_rendered_oracle_selector_rd/stage45b_selector_aggregates.csv
+experiments/stage45b_calibrated_rendered_oracle_selector_rd/stage45b_calibrated_rendered_oracle_selector_rd_summary.json
+```
+
+### Aggregate 结果
+
+| method | positive all | mean delta all PSNR | min delta all PSNR | exact uniform points |
+|---|---:|---:|---:|---:|
+| rendered_raw | 8/12 | 0.04996005587468311 | -0.2413766546357614 | 0 |
+| rendered_prior_0p1 | 7/12 | 0.06034847377870989 | -0.018963597365331708 | 4 |
+| rendered_prior_0p3 | 5/12 | 0.028495041208740208 | 0.0 | 7 |
+| rendered_prior_1p0 | 1/12 | 0.0013992107446666087 | -0.0177131536988 | 10 |
+| rendered_min2 | 8/12 | 0.04582177347634975 | -0.2413766546357614 | 0 |
+| rendered_minhalf | 8/12 | 0.023650366089849644 | -0.5249054201293362 | 0 |
+
+### 结论
+
+- `rendered_prior_0p1` 是目前最稳的 rendered-oracle selector variant：mean Δall PSNR 提高到 `+0.06035 dB`，最坏点收敛到约 `-0.019 dB`。
+- 代价是 4/12 点回退到 exact uniform，positive count 从 raw 的 8/12 变成 7/12。
+- 这说明 uniform prior 是必要的 layout regularization；下一步可以用该 variant 生成 actual q8/zlib bitstream RD，同时继续研究 all-middle-frame labels 或 predictor training。

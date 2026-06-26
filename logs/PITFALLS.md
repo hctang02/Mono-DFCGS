@@ -298,3 +298,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Rendered-distortion oracle is a stronger selector target than anchor-attribute proxy, but the sampled Stage44 label still has negative gap8/gap16 cases.
 - Do not yet claim adaptive selector solved. Current result is promising first RD evidence: 8/12 positive and modest mean PSNR gain.
 - Large negative gap16 points suggest adding min-gap/layout regularization or using all-middle-frame segment labels before moving to final predicted selector training.
+
+## Stage 45b Notes
+
+- A small uniform segment-length prior improves robustness more than hard minimum segment length. `alpha=0.1` removes large negative points while preserving a positive mean gain.
+- Exact-uniform fallback must be counted explicitly; a robust selector may look safe because some points collapse to uniform.
+- `minhalf` can be harmful despite sounding safer, producing a larger worst-case negative than raw rendered oracle.
