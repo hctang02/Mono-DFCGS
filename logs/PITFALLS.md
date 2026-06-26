@@ -347,3 +347,10 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - FCGS/D-FCGS GOP summaries report full codec MiB/frame. Do not mix this rate with Mono-DFCGS transmitted keyframe Gaussian-anchor MiB/frame without labeling the protocol difference.
 - `dummy_reference_images=true` summaries do not provide input-video PSNR/SSIM; use their `codec_psnr` only for compression-fidelity diagnostics.
 - When classifying external result paths, use the most specific matching root. A broad `/mnt/hdd2tC/tmp/opencode` root can otherwise swallow multisequence or lowrate FCGS summaries into the wrong source group.
+
+## Stage 53 Notes
+
+- A comparison scaffold is not a final fair comparison. Keep `fair_local_run=false` for external FCGS/D-FCGS rows until inputs, frame sets, source Gaussian generation, and rate accounting are matched.
+- The unified scaffold intentionally keeps two rate units: Mono-DFCGS anchor-only MiB/frame and full FCGS/D-FCGS codec MiB/frame. Do not plot them together without explicit labeling.
+- For rows with dummy references, leave input-video PSNR/SSIM blank and keep `diagnostic_codec_psnr` separate.
+- Use generic `secondary_rate_value` plus `secondary_rate_unit`; external rows may store total sequence MiB while Mono-DFCGS rows store raw anchor MiB/frame.

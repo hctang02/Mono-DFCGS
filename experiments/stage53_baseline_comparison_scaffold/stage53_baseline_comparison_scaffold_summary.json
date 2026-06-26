@@ -1,0 +1,46 @@
+{
+  "stage": 53,
+  "mode": "baseline comparison scaffold",
+  "stage51_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage51_high_rate_multibit_rd/stage51_high_rate_multibit_rd.csv",
+  "stage52_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage52_fcgs_dfcgs_baseline_preflight/stage52_baseline_summary_records.csv",
+  "rows_total": 391,
+  "ours_rows": 192,
+  "external_rows": 199,
+  "external_stage53_candidate_rows": 173,
+  "fair_external_rows": 0,
+  "rows_by_family": {
+    "external_baseline": 199,
+    "ours": 192
+  },
+  "rows_by_method": {
+    "FCGS": 140,
+    "FCGS-I + D-FCGS-P": 47,
+    "Mono-DFCGS adaptive": 96,
+    "Mono-DFCGS uniform": 96,
+    "Raw-I + D-FCGS-P": 12
+  },
+  "rows_by_comparison_status": {
+    "local external diagnostic only; dummy references do not provide input-video quality": 25,
+    "local external incomplete candidate": 1,
+    "local external protocol reference; rate/quality available but not apples-to-apples with Mono-DFCGS": 173,
+    "our local deployable uniform-keyframe baseline": 96,
+    "our local oracle-calibrated selector; not final deployable selector": 96
+  },
+  "rows_by_rate_unit": {
+    "actual zlib Gaussian-anchor bitstream MiB/frame": 192,
+    "full FCGS/D-FCGS codec MiB/frame": 199
+  },
+  "outputs": {
+    "ours_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage53_baseline_comparison_scaffold/stage53_mono_dfcgs_rows.csv",
+    "external_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage53_baseline_comparison_scaffold/stage53_external_baseline_rows.csv",
+    "scaffold_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage53_baseline_comparison_scaffold/stage53_baseline_comparison_scaffold.csv",
+    "aggregate_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage53_baseline_comparison_scaffold/stage53_method_sample_aggregate.csv",
+    "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage53_baseline_comparison_scaffold/stage53_baseline_comparison_scaffold_summary.json",
+    "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage53_baseline_comparison_scaffold/stage53_baseline_comparison_scaffold_report.md"
+  },
+  "notes": [
+    "This stage normalizes existing records into a comparison scaffold; it does not make FCGS/D-FCGS apples-to-apples with Mono-DFCGS.",
+    "External fair_local_run remains false because rate scope, source Gaussian generation, and protocol differ from Mono-DFCGS.",
+    "Use this scaffold to choose Stage54/Stage57 tables and to identify missing fair-run requirements."
+  ]
+}

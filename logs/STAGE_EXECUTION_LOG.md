@@ -3667,3 +3667,64 @@ experiments/stage52_fcgs_dfcgs_baseline_preflight/stage52_fcgs_dfcgs_baseline_pr
 - 可直接优先使用 video-level GOP summary rows，而不是单个 D-FCGS P-frame logs。
 - 这些 baseline 的 rate 是完整 FCGS/D-FCGS codec MiB/frame，包含 FCGS 或 raw I-frame 加 D-FCGS P-frame payload，不等同于 Mono-DFCGS 的 transmitted keyframe Gaussian anchor MiB/frame。
 - `dummy_reference_images=true` 的 rows 不能用于 input-video PSNR/SSIM 主对比，只能保留 `codec_psnr` 作为 compression fidelity 诊断。
+
+## 2026-06-26：阶段 53 Baseline Comparison Scaffold
+
+### 执行计划
+
+Stage53 将 Stage51 的 Mono-DFCGS rows 和 Stage52 的 FCGS/D-FCGS candidate rows 统一到一个 comparison scaffold。目标是生成字段完整、口径明确的对比表框架，而不是把当前外部 baseline 直接声明为 fair apples-to-apples 主结果。
+
+### 新增文件
+
+```text
+scripts/run_stage53_baseline_comparison_scaffold.py
+```
+
+### 运行命令
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage53_baseline_comparison_scaffold.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage53_baseline_comparison_scaffold.py
+```
+
+### GPU 检查
+
+运行前使用 `nvidia-smi`。Stage53 是 CPU-only CSV/JSON 汇总，未占用 CUDA。
+
+### 输出文件
+
+```text
+experiments/stage53_baseline_comparison_scaffold/stage53_baseline_comparison_scaffold.csv
+experiments/stage53_baseline_comparison_scaffold/stage53_mono_dfcgs_rows.csv
+experiments/stage53_baseline_comparison_scaffold/stage53_external_baseline_rows.csv
+experiments/stage53_baseline_comparison_scaffold/stage53_method_sample_aggregate.csv
+experiments/stage53_baseline_comparison_scaffold/stage53_baseline_comparison_scaffold_summary.json
+experiments/stage53_baseline_comparison_scaffold/stage53_baseline_comparison_scaffold_report.md
+```
+
+### 结果摘要
+
+| item | value |
+|---|---:|
+| unified rows | 391 |
+| Mono-DFCGS rows | 192 |
+| external baseline rows | 199 |
+| external rows with input-video quality and rate | 173 |
+| fair external apples-to-apples rows | 0 |
+
+### Method coverage
+
+| method | rows |
+|---|---:|
+| FCGS | 140 |
+| FCGS-I + D-FCGS-P | 47 |
+| Raw-I + D-FCGS-P | 12 |
+| Mono-DFCGS uniform | 96 |
+| Mono-DFCGS adaptive | 96 |
+
+### 结论
+
+- Stage53 已提供统一字段 scaffold，包含 method、variant、sample、protocol、rate unit、quality fields、local/literature status、fairness flag 和 notes。
+- Mono-DFCGS rows 使用 `actual zlib Gaussian-anchor bitstream MiB/frame`，外部 baseline rows 使用 `full FCGS/D-FCGS codec MiB/frame`。
+- 当前外部 baseline 的 `fair_local_run=false`，因为 rate scope、source Gaussian generation 和 protocol 仍不匹配；可作为 local protocol-reference，不应混入主 anchor-only RD 曲线而不标注。
+- Adaptive Mono-DFCGS rows 仍标注为 rendered-oracle calibrated selector，不是最终 fully feed-forward selector。
