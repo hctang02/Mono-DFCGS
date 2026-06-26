@@ -1,5 +1,7 @@
 # Future Work Plan: Stage56-68
 
+Superseded note: the latest plan is now `logs/FUTURE_WORK_PLAN_STAGE56_70.md`, updated to include DAVIS and YouTube-VOS download/preparation stages before large-scale training.
+
 Date: 2026-06-26
 
 This plan records the next execution path requested by the user. Future planning discussions should also be written into logs before implementation.

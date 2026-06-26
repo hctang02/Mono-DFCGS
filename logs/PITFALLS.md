@@ -389,3 +389,8 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage56 is a protocol-lock stage only. It does not change codec behavior or produce new RD numbers.
 - Future side-information variants must report anchor rate, side-info rate, and total rate; do not mix them with keyframe-Gaussian-only main rate without labeling.
 - `rendered_prior_0p1` remains an oracle/calibrated upper bound, not a deployable method.
+
+## Stage56-70 Plan Update Notes
+
+- DAVIS and YouTube-VOS preparation must be explicit in the plan because they are StreamSplat-scale video datasets needed for medium/long training.
+- Keep dataset downloads and extracted roots outside git, preferably under `/mnt/hdd2tC/tmp/opencode/datasets`.

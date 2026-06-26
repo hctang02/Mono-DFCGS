@@ -3981,3 +3981,25 @@ experiments/stage56_protocol_lock/stage56_standard_table_schemas.csv
 - `rendered_prior_0p1` 锁定为 oracle/calibrated upper bound，不可作为最终 deployed selector claim。
 - 最终 adaptive selector 必须是 frozen feed-forward predictor + deterministic selection/DP，不能使用 rendered oracle、PSNR lookahead 或 test-time reconstruction optimization。
 - 强 adapter/selector claim 必须依赖 medium/long training，短训只作 smoke。
+
+## 2026-06-26：Stage56-70 计划更新
+
+### 执行计划
+
+根据用户新要求，将 DAVIS 和 YouTube-VOS 下载/准备/预处理/anchor export 纳入后续大规模训练计划，然后继续 Stage57。
+
+### 新增文件
+
+```text
+logs/FUTURE_WORK_PLAN_STAGE56_70.md
+logs/stage_records/01_updated_plan_stage56_70.md
+```
+
+### 关键更新
+
+- 新计划加入 DAVIS：`https://davischallenge.org/`。
+- 新计划加入 YouTube-VOS：`https://youtube-vos.org/`。
+- Stage59 变为 dataset download/prepare preflight。
+- Stage60 变为 DAVIS/YouTube-VOS depth preprocessing。
+- Stage61 变为 large-scale anchor export。
+- Adapter / selector / side-info / final package 后移到 Stage62-70。
