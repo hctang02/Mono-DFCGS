@@ -845,3 +845,17 @@ Stage67 predictor validation 已完成：`full_feature_ridge` 最好，eval RMSE
 ### 后续执行更新
 
 Stage68 rendered validation 已完成：在 DAVIS eval sequences `bmx-trees/car-shadow/goat/soapbox` 和 gaps `4/8/16` 上共 `12` 个对比点，`predicted_full_feature_dp` 相对 uniform 的 adapter all-frame PSNR 平均提升 `+0.030738190041048163 dB`，其中 `7/12` 个点为正。结果是 mixed-positive，不足以作为最终 selector claim；`goat gap8` 为明显负例，下一步需要 rendered-distortion labels 或 fallback calibration。
+
+## 2026-06-27：执行 Stage69 selector fallback calibration analysis
+
+### 用户原始问题
+
+用户要求：好的，继续一直往下做。
+
+### 当前执行决策
+
+Stage68 暴露 selector 不稳定问题，因此 Stage69 先做 fallback calibration analysis，而不是直接进入 side-info。该阶段不重渲染，复用 Stage68 rendered outcomes 作为离线 calibration labels，比较 always-uniform、always-predicted、oracle-positive fallback 和 leave-one-sequence-out threshold fallback。目标是判断简单 fallback 是否能降低负点风险。
+
+### 后续执行更新
+
+Stage69 fallback calibration analysis 已完成：fixed predicted mean all-frame PSNR delta 为 `+0.030738190041048163 dB`，但最差点 `-0.10978492809701024 dB`；oracle-positive fallback 上界为 `+0.04350771650468873 dB` 且无负点；same-data threshold 上界为 `+0.03745316604097404 dB` 且无负点；leave-one-sequence-out threshold fallback 反而为 `-0.01170162890067535 dB`。结论是简单 threshold fallback 不稳定，下一步需要更多 rendered labels 或 decision-aware fallback classifier。

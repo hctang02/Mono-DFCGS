@@ -1,0 +1,82 @@
+{
+  "stage": 69,
+  "mode": "selector fallback calibration analysis",
+  "comparison_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage68_davis_feedforward_selector_rendered_validation/stage68_davis_selector_comparison.csv",
+  "selection_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage68_davis_feedforward_selector_rendered_validation/stage68_davis_selector_selections.csv",
+  "decision_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage69_selector_fallback_calibration/stage69_selector_decision_records.csv",
+  "choices_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage69_selector_fallback_calibration/stage69_selector_policy_choices.csv",
+  "policy_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage69_selector_fallback_calibration/stage69_selector_policy_summary.csv",
+  "policy_summaries": [
+    {
+      "policy": "uniform",
+      "count": 12,
+      "accepted_predicted_points": 0,
+      "positive_all_points": 0,
+      "mean_delta_all_psnr": 0.0,
+      "min_delta_all_psnr": 0.0,
+      "max_delta_all_psnr": 0.0,
+      "train_policy": "always uniform",
+      "notes": "deployable baseline"
+    },
+    {
+      "policy": "fixed_predicted",
+      "count": 12,
+      "accepted_predicted_points": 12,
+      "positive_all_points": 7,
+      "mean_delta_all_psnr": 0.030738190041048163,
+      "min_delta_all_psnr": -0.10978492809701024,
+      "max_delta_all_psnr": 0.26277712715562274,
+      "train_policy": "always predicted",
+      "notes": "deployable but unstable Stage68 selector"
+    },
+    {
+      "policy": "oracle_positive_fallback",
+      "count": 12,
+      "accepted_predicted_points": 7,
+      "positive_all_points": 7,
+      "mean_delta_all_psnr": 0.04350771650468873,
+      "min_delta_all_psnr": 0.0,
+      "max_delta_all_psnr": 0.26277712715562274,
+      "train_policy": "uses actual rendered outcome",
+      "notes": "oracle upper bound; not deployable"
+    },
+    {
+      "policy": "same_data_threshold_fallback",
+      "count": 12,
+      "accepted_predicted_points": 5,
+      "positive_all_points": 5,
+      "mean_delta_all_psnr": 0.03745316604097404,
+      "min_delta_all_psnr": 0.0,
+      "max_delta_all_psnr": 0.26277712715562274,
+      "train_policy": "trained and evaluated on Stage68",
+      "notes": "analysis upper bound; not deployable"
+    },
+    {
+      "policy": "loocv_threshold_fallback",
+      "count": 12,
+      "accepted_predicted_points": 4,
+      "positive_all_points": 1,
+      "mean_delta_all_psnr": -0.01170162890067535,
+      "min_delta_all_psnr": -0.10978492809701024,
+      "max_delta_all_psnr": 0.0055252224122490645,
+      "train_policy": "leave-one-sequence-out threshold",
+      "notes": "deployable-style small-sample calibration"
+    }
+  ],
+  "best_deployable_style_policy": {
+    "policy": "fixed_predicted",
+    "count": 12,
+    "accepted_predicted_points": 12,
+    "positive_all_points": 7,
+    "mean_delta_all_psnr": 0.030738190041048163,
+    "min_delta_all_psnr": -0.10978492809701024,
+    "max_delta_all_psnr": 0.26277712715562274,
+    "train_policy": "always predicted",
+    "notes": "deployable but unstable Stage68 selector"
+  },
+  "notes": [
+    "This stage reuses Stage68 rendered outcomes and does not rerender.",
+    "oracle_positive_fallback and same_data_threshold_fallback are analysis upper bounds, not deployable claims.",
+    "loocv_threshold_fallback is deployable-style but trained from only the Stage68 rendered outcome set."
+  ]
+}

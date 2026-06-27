@@ -5050,3 +5050,55 @@ Per-point adapter all-frame PSNR delta：
 - 结果平均为正，但不稳定：`7/12` 点为正，`5/12` 点非正。
 - `goat gap8` 是明显负例，说明 anchor-space proxy predictor 仍与 rendered all-frame objective 存在 mismatch。
 - 下一步需要 rendered-distortion labels 或 fallback calibration，再做更稳健的 selector validation。
+
+## 2026-06-27：Stage69 Selector Fallback Calibration Analysis
+
+### 目标
+
+分析 Stage68 mixed-positive selector 结果能否通过简单 fallback-to-uniform policy 稳定下来。Stage69 不重渲染，复用 Stage68 rendered outcomes 作为离线 calibration labels。
+
+### 代码
+
+新增：
+
+```text
+scripts/run_stage69_selector_fallback_calibration.py
+```
+
+### 执行
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。Stage69 是 CPU analysis，但仍完成 GPU 状态检查。
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage69_selector_fallback_calibration.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage69_selector_fallback_calibration.py
+```
+
+### Results
+
+| policy | accepted predicted | positive points | mean all PSNR delta | min all PSNR delta | status |
+|---|---:|---:|---:|---:|---|
+| `uniform` | `0 / 12` | `0 / 12` | `0.0` | `0.0` | deployable baseline |
+| `fixed_predicted` | `12 / 12` | `7 / 12` | `+0.030738190041048163` | `-0.10978492809701024` | deployable but unstable |
+| `oracle_positive_fallback` | `7 / 12` | `7 / 12` | `+0.04350771650468873` | `0.0` | oracle upper bound, not deployable |
+| `same_data_threshold_fallback` | `5 / 12` | `5 / 12` | `+0.03745316604097404` | `0.0` | same-data upper bound, not deployable |
+| `loocv_threshold_fallback` | `4 / 12` | `1 / 12` | `-0.01170162890067535` | `-0.10978492809701024` | deployable-style small-sample calibration |
+
+### 输出
+
+Tracked outputs：
+
+```text
+experiments/stage69_selector_fallback_calibration/stage69_selector_decision_records.csv
+experiments/stage69_selector_fallback_calibration/stage69_selector_policy_choices.csv
+experiments/stage69_selector_fallback_calibration/stage69_selector_policy_summary.csv
+experiments/stage69_selector_fallback_calibration/stage69_selector_fallback_calibration_summary.json
+```
+
+Output size：`28K`。
+
+### 结论
+
+- Oracle/same-data fallback 说明避开负点有潜在收益，但不是 deployable claim。
+- Leave-one-sequence-out threshold fallback 在当前 4 个 eval sequences 上反而变差，mean all PSNR delta `-0.01170162890067535 dB`。
+- 简单 layout/cost threshold 不足以稳定 selector；下一步需要更多 rendered labels 或 decision-aware fallback classifier。

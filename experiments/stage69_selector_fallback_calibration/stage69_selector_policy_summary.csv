@@ -1,0 +1,6 @@
+policy,count,accepted_predicted_points,positive_all_points,mean_delta_all_psnr,min_delta_all_psnr,max_delta_all_psnr,train_policy,notes
+uniform,12,0,0,0.0,0.0,0.0,always uniform,deployable baseline
+fixed_predicted,12,12,7,0.030738190041048163,-0.10978492809701024,0.26277712715562274,always predicted,deployable but unstable Stage68 selector
+oracle_positive_fallback,12,7,7,0.04350771650468873,0.0,0.26277712715562274,uses actual rendered outcome,oracle upper bound; not deployable
+same_data_threshold_fallback,12,5,5,0.03745316604097404,0.0,0.26277712715562274,trained and evaluated on Stage68,analysis upper bound; not deployable
+loocv_threshold_fallback,12,4,1,-0.01170162890067535,-0.10978492809701024,0.0055252224122490645,leave-one-sequence-out threshold,deployable-style small-sample calibration

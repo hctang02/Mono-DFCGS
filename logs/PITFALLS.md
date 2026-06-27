@@ -493,3 +493,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - The predicted selector can collapse exactly to uniform for some settings, as in `DAVIS/val/bmx-trees gap16`.
 - `DAVIS/val/goat gap8` is a clear negative case and should be inspected before final selector claims.
 - Future selector stages should add rendered-distortion labels or a calibrated fallback-to-uniform policy rather than relying only on anchor-space proxy cost.
+
+## Stage69 Fallback Calibration Notes
+
+- Same-data threshold fallback can remove Stage68 negatives, but it is an analysis upper bound because it is trained and evaluated on the same rendered outcomes.
+- Leave-one-sequence-out threshold fallback is worse than fixed predicted on the small Stage68 set. Do not claim that simple layout/cost fallback solves selector instability.
+- The useful conclusion is negative/diagnostic: robust selector fallback needs more rendered labels or a stronger decision-aware objective.
