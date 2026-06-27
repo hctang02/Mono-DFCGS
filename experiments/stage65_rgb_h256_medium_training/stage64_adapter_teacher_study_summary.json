@@ -1,0 +1,77 @@
+{
+  "stage": 64,
+  "mode": "adapter architecture and dense-anchor teacher study",
+  "manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage61_davis_anchor_export_data_full/stage61_davis_anchor_export_manifest.csv",
+  "train_splits": [
+    "train"
+  ],
+  "eval_splits": [
+    "val"
+  ],
+  "frame_gaps": [
+    2,
+    4,
+    8,
+    16
+  ],
+  "available_train_rows": 3926,
+  "available_eval_rows": 1853,
+  "selected_train_rows": 128,
+  "selected_eval_rows": 32,
+  "train_tasks": 128,
+  "eval_tasks": 32,
+  "steps": 5000,
+  "eval_interval": 500,
+  "quant_bits": 8,
+  "targets_per_row": 1,
+  "rows_by_gap": {
+    "2": {
+      "available_train_rows": 2055,
+      "available_eval_rows": 974,
+      "selected_train_rows": 32,
+      "selected_eval_rows": 8
+    },
+    "4": {
+      "available_train_rows": 1048,
+      "available_eval_rows": 495,
+      "selected_train_rows": 32,
+      "selected_eval_rows": 8
+    },
+    "8": {
+      "available_train_rows": 540,
+      "available_eval_rows": 252,
+      "selected_train_rows": 32,
+      "selected_eval_rows": 8
+    },
+    "16": {
+      "available_train_rows": 283,
+      "available_eval_rows": 132,
+      "selected_train_rows": 32,
+      "selected_eval_rows": 8
+    }
+  },
+  "variant_summary_csv": "experiments/stage65_rgb_h256_medium_training/stage64_variant_summary.csv",
+  "train_log_csv": "experiments/stage65_rgb_h256_medium_training/stage64_train_log.csv",
+  "validation_log_csv": "experiments/stage65_rgb_h256_medium_training/stage64_validation_log.csv",
+  "best_eval_csv": "experiments/stage65_rgb_h256_medium_training/stage64_best_eval_rows.csv",
+  "variant_rows": [
+    {
+      "variant": "rgb_h256",
+      "loss": "rgb",
+      "hidden_dim": 256,
+      "lr": 8e-06,
+      "parameter_count": 402445,
+      "best_step": 4000,
+      "initial_margin_over_linear_psnr": 0.0,
+      "final_margin_over_linear_psnr": 0.21907000507035335,
+      "best_margin_over_linear_psnr": 0.2734731971829376,
+      "initial_teacher_mse": 0.008337386469065677,
+      "final_teacher_mse": 0.037839895812794566,
+      "best_teacher_mse": 0.031187284272164106,
+      "linear_teacher_mse": 0.008337386469065677,
+      "best_checkpoint": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors",
+      "final_checkpoint": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/final_adapter.safetensors"
+    }
+  ],
+  "notes": "Teacher variants use dense gap1 anchors as offline training targets only. Test-time inputs remain q8 endpoint Gaussian anchors plus timestamp."
+}

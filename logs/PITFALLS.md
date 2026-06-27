@@ -466,3 +466,10 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - In the 48-step Stage64 ablation, teacher loss improves teacher-anchor MSE but does not beat RGB render loss on rendered PSNR. Do not assume anchor-space teacher MSE is a sufficient proxy for final rendered quality.
 - Hidden dim `256` is the better short-run architecture for both RGB and teacher variants, at about `402445` adapter parameters versus `102925` for hidden dim `128`.
 - Stage64 is a small ablation over 16 train rows and 8 eval tasks. Use it to choose the next training route, not as a final adapter quality result.
+
+## Stage65 Medium Training Notes
+
+- Stage65 reuses the Stage64 training harness, so files inside `experiments/stage65_*` still start with `stage64_`. Treat the Stage65 directories and stage record as authoritative.
+- The Stage65 medium run peaks at step `4000`; the final step `5000` remains positive but is worse. Report and use the best checkpoint unless explicitly studying final-step behavior.
+- RGB render-loss training can improve rendered PSNR while making dense-anchor teacher MSE much worse. Do not use teacher MSE to choose RGB-only checkpoints.
+- Stage65 validation is still intermediate-task evaluation, not full-video all-frame RD. A full all-frame evaluation is needed before using this as a final codec point.

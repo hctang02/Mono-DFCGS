@@ -4749,3 +4749,108 @@ Best by teacher-anchor MSE：`teacher_h256`，teacher MSE `0.005198333790758625`
 - RGB render loss route 的 rendered PSNR 优于 teacher route，适合作为 Stage65 medium run 的首选配置。
 - Teacher distillation route 能更明显降低 dense-anchor teacher MSE，但 48-step ablation 没有转化为最佳 rendered PSNR。
 - Stage64 仍是小型 architecture/supervision ablation，不作为最终 medium/long adapter claim。
+
+## 2026-06-27：Stage65 RGB-H256 Medium Adapter Training
+
+### 目标
+
+基于 Stage64 的 architecture / supervision ablation 结论，选择 rendered PSNR 最好的 `rgb_h256` route，执行更长的 RGB render-loss adapter training。
+
+Stage65 仍保持 test-time 输入为 q8 endpoint Gaussian anchors plus timestamp；不把 dense teacher anchors 作为 transmitted side information。
+
+### Sanity Run
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage64_adapter_teacher_study.py
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage64_adapter_teacher_study.py --device cuda --summary_root experiments/stage65_rgb_h256_medium_sanity --heavy_root /data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_sanity --steps 1024 --eval_interval 256 --frame_gaps 2 4 8 16 --max_train_rows_per_gap 16 --max_eval_rows_per_gap 4 --targets_per_row 1 --variants rgb_h256
+```
+
+Sanity result：
+
+- Train/eval tasks：`64 / 16`。
+- Best step：`512`。
+- Linear PSNR：`19.655442148062438`。
+- Best model PSNR：`19.70705320602079`。
+- Best margin over linear：`+0.05161105795835397 dB`。
+- Final margin over linear：`+0.04578667635357192 dB`。
+
+The sanity run stayed positive without severe validation collapse, so Stage65 continued to the longer medium run.
+
+### Medium Run
+
+运行前再次使用 `nvidia-smi` 检查 GPU。GPU1 仍空闲，因此使用：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage64_adapter_teacher_study.py
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage64_adapter_teacher_study.py --device cuda --summary_root experiments/stage65_rgb_h256_medium_training --heavy_root /data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training --steps 5000 --eval_interval 500 --frame_gaps 2 4 8 16 --max_train_rows_per_gap 32 --max_eval_rows_per_gap 8 --targets_per_row 1 --variants rgb_h256
+```
+
+Medium result：
+
+- Train/eval tasks：`128 / 32`。
+- Parameter count：`402445`。
+- Best step：`4000`。
+- Linear PSNR：`18.518044832601554`。
+- Best model PSNR：`18.79151802978449`。
+- Best margin over linear：`+0.2734731971829376 dB`。
+- Final margin over linear：`+0.21907000507035335 dB`。
+
+Validation curve：
+
+| step | model PSNR | linear PSNR | margin over linear |
+|---:|---:|---:|---:|
+| 0 | `18.518044832601554` | `18.518044832601554` | `0.0` |
+| 500 | `18.554830863633462` | `18.518044832601554` | `+0.036786031031908806` |
+| 1000 | `18.562608326576196` | `18.518044832601554` | `+0.044563493974642654` |
+| 1500 | `18.558602085328477` | `18.518044832601554` | `+0.040557252726923565` |
+| 2000 | `18.55889179850922` | `18.518044832601554` | `+0.04084696590766512` |
+| 2500 | `18.574883881889722` | `18.518044832601554` | `+0.0568390492881683` |
+| 3000 | `18.610383604713636` | `18.518044832601554` | `+0.09233877211208252` |
+| 3500 | `18.7588553269502` | `18.518044832601554` | `+0.2408104943486471` |
+| 4000 | `18.79151802978449` | `18.518044832601554` | `+0.2734731971829376` |
+| 4500 | `18.76831341004217` | `18.518044832601554` | `+0.2502685774406146` |
+| 5000 | `18.737114837671907` | `18.518044832601554` | `+0.21907000507035335` |
+
+Gap-wise best-step margins：
+
+| gap | margin over linear |
+|---:|---:|
+| 2 | `+0.24356722157098484` |
+| 4 | `+0.26732412251510996` |
+| 8 | `+0.3257420419967144` |
+| 16 | `+0.2572594026489324` |
+
+### 输出
+
+Tracked outputs：
+
+```text
+experiments/stage65_rgb_h256_medium_sanity/
+experiments/stage65_rgb_h256_medium_training/
+```
+
+External checkpoints：
+
+```text
+/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_sanity/rgb_h256/{best_adapter.safetensors,final_adapter.safetensors}
+/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/{best_adapter.safetensors,final_adapter.safetensors}
+```
+
+Output sizes：
+
+| path | size |
+|---|---:|
+| `experiments/stage65_rgb_h256_medium_sanity` | `92K` |
+| `experiments/stage65_rgb_h256_medium_training` | `372K` |
+| `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_sanity` | `3.1M` |
+| `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training` | `3.1M` |
+
+### 结论
+
+- Stage65 `rgb_h256` medium run 显著扩大了 Stage64/Stage65 sanity 的 validation gain，best margin 达到 `+0.2734731971829376 dB`。
+- Best checkpoint selection 很重要：step `4000` 最好，step `5000` 仍为正但已回落。
+- Best-step 下 gaps `2/4/8/16` 全部为正，gap `8` 在该 eval subset 上 gain 最大。
+- RGB-only route 会显著恶化 dense-anchor teacher MSE，因此 teacher-anchor MSE 不能作为该 route 的模型选择指标。
+- Stage65 仍是 intermediate eval-task training 结果，不是最终 all-frame RD evaluation。

@@ -781,3 +781,25 @@ Stage64 ablation 已完成：`rgb_h256` 在 rendered PSNR 上最好，best margi
 ### 当前执行决策
 
 Stage64 已完成运行，下一步收尾：更新 Stage64 stage record、全局执行日志和 pitfalls，检查 diff 与 formatting，然后提交并推送 Stage64 script、tracked experiment summaries 和日志。提交后再进入 Stage65 medium adapter training。
+
+### 后续执行更新
+
+Stage64 已提交并推送，commit 为 `0f7dfc2 Run adapter teacher study`。提交时本机没有 git identity 配置，未修改 git config，而是复用最近提交的 `OpenCode <opencode@local>` 作为一次性 author/committer 环境变量完成提交。
+
+## 2026-06-27：执行 Stage65 rgb_h256 medium sanity training
+
+### 用户原始问题
+
+用户要求：如果有下一步就继续执行；如果不确定如何推进，再停下来询问。
+
+### 当前执行决策
+
+Stage64 结论显示 `rgb_h256` 的 rendered PSNR 最好。Stage65 先执行一个 1024-step sanity run：使用 RGB render loss、hidden dim `256`、DAVIS train/val gaps `2/4/8/16`、每 gap 最多 `16` 个 train rows 和 `4` 个 eval rows。若 sanity run 保持正向且无明显 validation collapse，再继续考虑更长 medium run。
+
+### 后续执行更新
+
+Stage65 sanity run 已完成：64 train tasks、16 eval tasks、1024 steps，best step 为 `512`，best margin over q8 linear 为 `+0.05161105795835397 dB`，final margin 为 `+0.04578667635357192 dB`。结果仍为正且没有严重 validation collapse，因此继续执行更长 medium run：`5000` steps、每 gap `32` 个 train rows、每 gap `8` 个 eval rows。
+
+### Medium run 执行更新
+
+Stage65 medium run 已完成：128 train tasks、32 eval tasks、5000 steps，best checkpoint 在 step `4000`，best eval margin over q8 linear 为 `+0.2734731971829376 dB`，final step `5000` margin 为 `+0.21907000507035335 dB`。Best-step 下 gaps `2/4/8/16` 全部为正。下一步应使用 Stage65 best checkpoint 做 full-video/all-frame evaluation，或进入 feed-forward selector dataset/training，并继续保持 rendered oracle 仅作为 upper bound 或 training label。
