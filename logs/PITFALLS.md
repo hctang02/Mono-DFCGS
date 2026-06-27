@@ -480,3 +480,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - The Stage65 RGB adapter is worse than linear for every Stage66 segment in anchor-space MSE, despite improving rendered eval PSNR in Stage65. Treat anchor-space labels as a difficulty proxy, not as a final rendered-quality objective.
 - Endpoint-anchor and RGB-motion features correlate strongly with the anchor-space label, so a feed-forward predictor is feasible, but Stage67/68 still need rendered-quality validation before selector claims.
 - `endpoint_rot_mse` can have undefined Pearson correlation when the feature has near-zero variance; do not interpret blank correlation cells as failures.
+
+## Stage67 Selector Predictor Notes
+
+- Stage67 predicts the Stage66 anchor-space proxy label well, but this does not prove selector all-frame PSNR gains.
+- Endpoint-anchor features dominate length-only and RGB-motion-only baselines on the scoped DAVIS split.
+- Keep the fitted ridge parameters as a feed-forward predictor candidate, but Stage68 must evaluate deterministic DP selections and should prefer rendered/full-video labels before final claims.

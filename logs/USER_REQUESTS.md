@@ -817,3 +817,17 @@ Stage65 已完成并推送。按 Stage56-70 计划进入 Stage66：构建 DAVIS 
 ### 后续执行更新
 
 Stage66 dataset 已完成：选取 DAVIS train `8` 个序列、val `4` 个序列，共生成 `4608` 个 segment rows，其中 train rows `3072`、eval rows `1536`。Endpoint-anchor/RGB-motion features 与 offline anchor-space adapter error label 有明显相关性，最高 Pearson 为 `endpoint_anchor_l1=0.7819601460791495`。同时发现 Stage65 RGB adapter 在 anchor-space MSE 上 `0/4608` 段优于 linear，说明该 label 只能作为 difficulty proxy，不能直接代表 rendered PSNR。下一步 Stage67 需要训练 feed-forward segment-cost predictor，并最好补 rendered-distortion label subset 后再做 selector RD claim。
+
+## 2026-06-27：执行 Stage67 DAVIS selector predictor training
+
+### 用户原始问题
+
+用户要求：如果有下一步就继续执行；如果不确定如何推进，再停下来询问。
+
+### 当前执行决策
+
+Stage66 已完成并推送。继续 Stage67：在 Stage66 DAVIS selector dataset 上训练和验证 feed-forward segment-cost predictor。先做 ridge baselines，包括 length-only、RGB-motion、endpoint-anchor 和 full-feature variants。该阶段只预测 Stage66 anchor-space proxy label，不做最终 selector RD claim。
+
+### 后续执行更新
+
+Stage67 predictor validation 已完成：`full_feature_ridge` 最好，eval RMSE log `0.01746532908957139`，eval Pearson `0.9103771172408511`，eval Spearman `0.9017146144293104`。Endpoint-anchor features 明显强于 length-only / RGB-motion-only。该结果说明 feed-forward proxy cost predictor 可训练，但仍只针对 Stage66 anchor-space proxy label；下一步 Stage68 需要用预测 cost 做 deterministic DP selection，并进行 rendered/full-video validation，不能直接声称 selector 提升 all-frame PSNR。
