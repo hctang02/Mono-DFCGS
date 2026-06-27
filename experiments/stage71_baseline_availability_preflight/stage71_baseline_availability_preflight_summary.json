@@ -1,0 +1,44 @@
+{
+  "stage": 71,
+  "mode": "baseline availability preflight",
+  "davis_root_exists": true,
+  "stage61_manifest_exists": true,
+  "stage70_samples": [
+    "DAVIS/val/bmx-trees",
+    "DAVIS/val/car-shadow",
+    "DAVIS/val/goat",
+    "DAVIS/val/soapbox"
+  ],
+  "stage70_gaps": [
+    4,
+    8,
+    16
+  ],
+  "code_inventory_count": 3,
+  "artifact_inventory_count": 4,
+  "fairness_ready_methods": [],
+  "not_ready_methods": [
+    "FCGS",
+    "D-FCGS",
+    "CWGS"
+  ],
+  "high_priority_missing_count_by_method": {
+    "FCGS": 5,
+    "D-FCGS": 5,
+    "CWGS": 3
+  },
+  "outputs": {
+    "code_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage71_baseline_availability_preflight/stage71_baseline_code_inventory.csv",
+    "artifact_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage71_baseline_availability_preflight/stage71_baseline_artifact_inventory.csv",
+    "fairness_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage71_baseline_availability_preflight/stage71_baseline_fairness_status.csv",
+    "missing_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage71_baseline_availability_preflight/stage71_baseline_missing_fields.csv",
+    "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage71_baseline_availability_preflight/stage71_baseline_availability_preflight_summary.json",
+    "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage71_baseline_availability_preflight/stage71_baseline_availability_preflight_report.md"
+  },
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage71_baseline_availability_preflight/stage71_baseline_availability_preflight_summary.json",
+  "notes": [
+    "FCGS and D-FCGS code are present locally, but no DAVIS scoped apples-to-apples run exists.",
+    "Old FCGS/D-FCGS/CWGS artifacts are useful diagnostics only because data/protocol/rate scopes differ from Stage70.",
+    "Next fair baseline step is a DAVIS-specific wrapper/runner with explicit bitstream-rate and all-frame PSNR accounting."
+  ]
+}

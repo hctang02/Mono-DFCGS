@@ -5169,3 +5169,101 @@ Baseline status：FCGS/D-FCGS/CWGS are not yet locally evaluated apples-to-apple
 - Stage70 完成当前 scoped DAVIS RD package。
 - 该 package 可用于内部进度汇总和展示，但不能作为最终 benchmark。
 - 最终报告仍需要补 FCGS/D-FCGS local fair baselines、selector robustness 和更完整数据覆盖。
+
+## 2026-06-27：Stage71 Baseline Availability Preflight
+
+### 目标
+
+盘点本机 FCGS/D-FCGS/CWGS baseline 可用性、旧结果是否能接入 DAVIS scoped RD comparison、以及距离 apples-to-apples local DAVIS baseline 还缺哪些字段/步骤。
+
+Stage71 不运行重型训练或渲染，不产出大文件。
+
+### 计划输出
+
+```text
+scripts/run_stage71_baseline_availability_preflight.py
+experiments/stage71_baseline_availability_preflight/stage71_baseline_code_inventory.csv
+experiments/stage71_baseline_availability_preflight/stage71_baseline_artifact_inventory.csv
+experiments/stage71_baseline_availability_preflight/stage71_baseline_fairness_status.csv
+experiments/stage71_baseline_availability_preflight/stage71_baseline_missing_fields.csv
+experiments/stage71_baseline_availability_preflight/stage71_baseline_availability_preflight_summary.json
+experiments/stage71_baseline_availability_preflight/stage71_baseline_availability_preflight_report.md
+```
+
+### 执行前状态
+
+- `git status --short`：clean。
+- `/data` free：约 `1010G`。
+- `/mnt/hdd2tC` free：约 `3.7G`，仍只适合源码和小 summary。
+- 已按要求运行 `nvidia-smi`；GPU 上有其它任务，因此 Stage71 保持 CPU-only 轻量扫描。
+
+### 预期结论口径
+
+- 若旧 FCGS/D-FCGS artifacts 数据集、rate scope 或质量口径与 DAVIS scoped eval 不一致，只作为 diagnostic/reference，不作为 final apples-to-apples baseline。
+- 后续若要形成 final comparison，应新增或改造 baseline runner，使输入、frame set、rate accounting 和 all-frame PSNR 口径与 Stage70 DAVIS package 对齐。
+
+### 代码
+
+新增：
+
+```text
+scripts/run_stage71_baseline_availability_preflight.py
+```
+
+### 执行
+
+运行前按要求重新使用 `nvidia-smi` 检查 GPU。GPU 上有其它任务，Stage71 是 CPU-only 文件扫描。
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage71_baseline_availability_preflight.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage71_baseline_availability_preflight.py
+```
+
+### 输出
+
+Tracked outputs：
+
+```text
+experiments/stage71_baseline_availability_preflight/stage71_baseline_code_inventory.csv
+experiments/stage71_baseline_availability_preflight/stage71_baseline_artifact_inventory.csv
+experiments/stage71_baseline_availability_preflight/stage71_baseline_fairness_status.csv
+experiments/stage71_baseline_availability_preflight/stage71_baseline_missing_fields.csv
+experiments/stage71_baseline_availability_preflight/stage71_baseline_availability_preflight_summary.json
+experiments/stage71_baseline_availability_preflight/stage71_baseline_availability_preflight_report.md
+```
+
+Output size：`32K`。
+
+### Results
+
+- DAVIS root exists：`true`。
+- Stage61 full DAVIS manifest exists：`true`。
+- Stage70 scoped samples：`DAVIS/val/bmx-trees`, `DAVIS/val/car-shadow`, `DAVIS/val/goat`, `DAVIS/val/soapbox`。
+- Stage70 gaps：`4`, `8`, `16`。
+- Fairness-ready methods：none。
+- Not-ready methods：`FCGS`, `D-FCGS`, `CWGS`。
+- High-priority missing counts：FCGS `5`, D-FCGS `5`, CWGS `3`。
+
+Code inventory：
+
+| method | code status | DAVIS mentions | checkpoints | missing tools |
+|---|---|---:|---:|---|
+| `FCGS` | `present` | `0` | `5` | `tmc3` |
+| `D-FCGS` | `present` | `0` | `1` | `tmc3` |
+| `CWGS` | `missing_optional` | `0` | `0` | `code_checkout` |
+
+Artifact inventory：
+
+| group | records | DAVIS-related | rate rows | quality rows | fair rows |
+|---|---:|---:|---:|---:|---:|
+| `stage52_fcgs_dfcgs_summary_records` | `199` | `0` | `199` | `173` | `0` |
+| `stage53_external_baseline_rows` | `199` | `0` | `199` | `173` | `0` |
+| `stage70_baseline_status` | `3` | `3` | `0` | `0` | `0` |
+| `legacy_cwgs_rd_summaries` | `264` | `0` | `264` | `264` | `0` |
+
+### 结论
+
+- FCGS/D-FCGS 代码可用作后续 baseline implementation 起点，但当前没有 DAVIS scoped apples-to-apples 结果。
+- FCGS 输入是 static 3DGS `.ply` 和 Gaussian-Splatting Scene，相比 Stage61 DAVIS `.pt` anchors 仍缺 adapter/wrapper。
+- D-FCGS README/runner 假设多视角 per-frame Gaussian sequence / 3DGStream-style layout，不能直接用于单目 DAVIS claim。
+- 旧 Stage52/53 和 CWGS artifacts 都是 diagnostic/reference；不能进入最终 DAVIS RD 对比。

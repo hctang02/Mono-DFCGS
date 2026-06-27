@@ -506,3 +506,10 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - FCGS/D-FCGS apples-to-apples local baselines are still missing and must be added before final comparison claims.
 - Stage70 uses q8 static keyframe-anchor MiB/frame; it does not include model weights as per-video rate.
 - The predicted selector curve remains mixed because Stage68 selector robustness is unresolved.
+
+## Stage71 Baseline Preflight Notes
+
+- FCGS and D-FCGS code exist locally, but neither checkout contains a DAVIS/Mono-DFCGS adapter. Do not treat code availability as benchmark availability.
+- FCGS expects FCGS-compatible static 3DGS `.ply` plus Gaussian-Splatting Scene validation inputs; Stage61 DAVIS anchors are tensor manifests and need an explicit conversion/wrapper.
+- D-FCGS upstream examples assume multiview per-frame Gaussian sequences and 3DGStream/Colmap-style layouts. Any DAVIS adaptation must avoid introducing multiview information into a monocular-video claim.
+- Old Stage52/53 FCGS/D-FCGS rows and legacy CWGS summaries are useful diagnostics, but they are non-DAVIS or protocol-mismatched and must not be added to final DAVIS apples-to-apples RD tables.

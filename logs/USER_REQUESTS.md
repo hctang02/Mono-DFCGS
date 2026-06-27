@@ -873,3 +873,17 @@ Stage69 已完成并推送。继续 Stage70：把当前 Stage68/69 DAVIS eval-su
 ### 后续执行更新
 
 Stage70 scoped DAVIS RD package 已完成：生成 rate table、all-frame PSNR table、selector delta table、method summary、baseline status 和 RD curve。当前 selector aggregate 为 `7/12` positive，mean adapter all-frame PSNR delta `+0.030738190041048163 dB`。Stage70 明确标记 FCGS/D-FCGS 尚未做 local apples-to-apples baseline，因此它是 scoped progress package，不是最终 benchmark。
+
+## 2026-06-27：执行 Stage71 baseline availability preflight
+
+### 用户原始问题
+
+用户询问当前进度后，要求：如果有下一步就继续执行；如果不确定如何推进，再停下来询问。
+
+### 当前执行决策
+
+继续 Stage71：对本机 FCGS/D-FCGS/CWGS baseline 代码、旧实验结果和 DAVIS scoped eval 适配状态做轻量 preflight。该阶段不运行重型训练/渲染，只输出 baseline candidate inventory、protocol/fairness status、missing-fields checklist 和 summary，用于判断后续能否复用旧 artifacts 或需要新增 DAVIS local fair baseline runner。
+
+### 后续执行更新
+
+Stage71 baseline availability preflight 已完成：本机存在 FCGS 和 D-FCGS 代码，但二者没有 DAVIS/Mono-DFCGS anchor adapter；旧 FCGS/D-FCGS/CWGS artifacts 均为非 DAVIS 或非 Stage70 scoped protocol。当前没有任何 external baseline 可直接作为 DAVIS apples-to-apples RD 点。下一步应优先实现 FCGS DAVIS wrapper 或明确 D-FCGS 是否能在不引入多视角信息的前提下安全适配。

@@ -1,0 +1,21 @@
+method,category,requirement,current_status,priority
+FCGS,frame_protocol,same DAVIS val eval sequences/frames/gaps as Stage70,not yet run for any external baseline,high
+FCGS,quality,all-frame PSNR against the same resized DAVIS RGB targets,missing,high
+FCGS,rate,actual transmitted baseline bitstreams MiB/frame plus necessary metadata,missing for DAVIS scoped runs,high
+FCGS,reporting,per-sequence and mean rate/PSNR tables plus RD curve,missing for external baselines,medium
+FCGS,storage,heavy decoded frames/bitstreams kept outside git under /data or tmp,policy defined but not exercised for new baseline,medium
+D-FCGS,frame_protocol,same DAVIS val eval sequences/frames/gaps as Stage70,not yet run for any external baseline,high
+D-FCGS,quality,all-frame PSNR against the same resized DAVIS RGB targets,missing,high
+D-FCGS,rate,actual transmitted baseline bitstreams MiB/frame plus necessary metadata,missing for DAVIS scoped runs,high
+D-FCGS,reporting,per-sequence and mean rate/PSNR tables plus RD curve,missing for external baselines,medium
+D-FCGS,storage,heavy decoded frames/bitstreams kept outside git under /data or tmp,policy defined but not exercised for new baseline,medium
+CWGS,frame_protocol,same DAVIS val eval sequences/frames/gaps as Stage70,not yet run for any external baseline,high
+CWGS,quality,all-frame PSNR against the same resized DAVIS RGB targets,missing,high
+CWGS,rate,actual transmitted baseline bitstreams MiB/frame plus necessary metadata,missing for DAVIS scoped runs,high
+CWGS,reporting,per-sequence and mean rate/PSNR tables plus RD curve,missing for external baselines,medium
+CWGS,storage,heavy decoded frames/bitstreams kept outside git under /data or tmp,policy defined but not exercised for new baseline,medium
+FCGS,input_adapter,convert each DAVIS/StreamSplat keyframe Gaussian anchor or full frame GS to FCGS-compatible .ply without adding non-monocular side input,not implemented,high
+FCGS,runner,batch encode/decode/validate lmd sweep over Stage70 scoped DAVIS sequences,not implemented,high
+D-FCGS,input_adapter,"construct a protocol-safe monocular DAVIS Gaussian sequence accepted by D-FCGS, or document why this baseline is incompatible",not implemented; upstream expects multiview/3DGStream-style sequences,high
+D-FCGS,gop_policy,align I/P frame or GoF policy with Stage70 gaps 4/8/16 and count I-frame side rate,not implemented,high
+CWGS,code,local code checkout and reproducible DAVIS runner,missing; only old cwgs_rd_summary artifacts found,low
