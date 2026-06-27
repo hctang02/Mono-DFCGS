@@ -945,3 +945,17 @@ Stage76 先做轻量但关键的 static anchor quantization sweep：针对 Stage
 ### 后续执行更新
 
 Stage76 已完成：q8 direct keyframe render 在 scoped DAVIS val 上相对 float16 掉 `-2.69045491882148 dB`（512 metric），q10 仅掉 `-0.3808268306669724 dB`，q12 基本无损 `-0.02718619126847699 dB`。后续 RD 应加入 q10/q12 operating points，而不能只用 q8 代表 anchor codec。
+
+## 2026-06-27：继续 Stage77 q-bit full-video RD sweep
+
+### 用户原始问题
+
+用户要求继续做后面的 stages。
+
+### 当前执行决策
+
+Stage77 在 Stage76 direct keyframe quantization sweep 之后，进一步评估 q8/q10/q12 对 full-video anchor-only RD 的影响。该阶段覆盖 Stage70 scoped DAVIS val sequences、uniform gaps `4/8/16`、linear anchor 和 Stage65 adapter 两种方法，输出 all/middle/given PSNR 与 q-bit static anchor rate。
+
+### 后续执行更新
+
+Stage77 已完成：q10/q12 明显提升 all-frame PSNR 和 given-keyframe PSNR，但 Stage65 adapter 的 middle-frame PSNR 几乎不变。例如 gap4 adapter 从 q8 `20.57270098931695` all PSNR 提升到 q12 `21.284133638556813`，但 middle PSNR 只从 `18.247303018014392` 到 `18.256196169477683`。结论是 q10/q12 应加入 RD operating points，但主要剩余瓶颈是 static-anchor-only dynamic prediction/modeling。

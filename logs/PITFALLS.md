@@ -534,3 +534,8 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - q8 static-anchor quantization is too aggressive for DAVIS direct keyframe rendering; Stage76 measured about `-2.69 dB` at `512x288` relative to float16.
 - q10 recovers most keyframe quality with a moderate rate increase over q8; q12 is nearly lossless relative to float16 in direct keyframe rendering.
 - Future RD curves should include q10/q12 operating points before concluding that the anchor-only representation is intrinsically too low quality.
+
+## Stage77 Q-Bit RD Notes
+
+- q10/q12 improve full-video all-frame PSNR mostly by recovering keyframe quality. They do not materially improve Stage65 adapter middle-frame PSNR.
+- Do not present q10/q12 as solving the dynamic prediction problem. They solve a codec/keyframe fidelity problem; the middle-frame bottleneck remains in the static-anchor-only predictor/model.
