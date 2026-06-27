@@ -5392,3 +5392,73 @@ experiments/stage73_low_psnr_diagnosis/stage73_low_psnr_diagnosis_report.md
 ### 停止状态
 
 Phase A 和 Phase B 已完成。按用户要求暂停并汇报，不继续大规模训练或新的 baseline runner。
+
+## 2026-06-27：Stage74 Stage72-vs-Actual Gap Diagnosis
+
+### 目标
+
+分析为什么 Stage72 的“原 StreamSplat 方法”DAVIS scoped baseline 与用户认知中的实际/官方结果相差较大。
+
+### 操作计划
+
+- 核查 Stage72 runner 是否等价于官方 StreamSplat evaluation，而不是仅使用 StreamSplat model 的一个自定义 DAVIS path。
+- 对比 Stage72 数据/metric/protocol 与官方/实际结果：dataset split、sequence set、resolution、mask、frame sampling、input gap、depth、checkpoint/config、all-frame/middle/given 口径。
+- 如果需要运行验证，先按要求检查 `nvidia-smi`，再运行小规模诊断脚本。
+- 输出原因排序和下一步修复路径；若产生脚本或结果，写入 stage record 并提交推送。
+
+### Stage74 执行结果
+
+新增脚本：
+
+```text
+scripts/run_stage74_stage72_vs_actual_gap_diagnosis.py
+```
+
+按要求运行前多次使用 `nvidia-smi` 检查 GPU，GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+一次完整多组合 scoped run 超时，原因是组合过多且脚本在末尾写文件。随后缩小为关键诊断组合并完成：
+
+```text
+experiments/stage74_stage72_vs_actual_gap_diagnosis_stage72_control/
+experiments/stage74_stage72_vs_actual_gap_diagnosis_sliding_per_frame/
+experiments/stage74_stage72_vs_actual_gap_diagnosis_full_val_sliding_per_frame/
+```
+
+checkpoint 加载审计：
+
+```text
+missing_count = 0
+unexpected_count = 0
+checkpoint_tensor_count = 320
+checkpoint_value_count = 183975569
+```
+
+Stage72-style control 说明 `256x256` metric 会显著抬高 PSNR：
+
+| metric space | all PSNR | middle PSNR | given PSNR |
+|---|---:|---:|---:|
+| official_256_float | 27.175326918003805 | 22.04421501448969 | 34.64175257247626 |
+| stage72_512_float | 24.43616869678078 | 20.79743947198787 | 29.730986225600738 |
+| stage72_512_uint8 | 24.433301145796477 | 20.796620327049567 | 29.72513797820384 |
+
+Full DAVIS val official-style sliding windows：
+
+| gap | pair count | all PSNR | middle PSNR | given PSNR |
+|---:|---:|---:|---:|---:|
+| 5 | 1849 | 26.994540075591946 | 23.004337221027775 | 34.97494578472027 |
+| 8 | 1759 | 24.534872014837706 | 21.56004909948801 | 34.94675221856166 |
+
+论文数值对齐后，中间帧 PSNR 剩余差距约 `0.5-0.7 dB`：
+
+| setting | paper PSNR | local PSNR | gap |
+|---|---:|---:|---:|
+| Middle-4 frames | 23.66 | 23.004337221027775 | 0.6556627789722242 |
+| 8-frame interval | 22.10 | 21.56004909948801 | 0.5399509005119906 |
+
+### 单独总结文档
+
+按用户要求，Stage72/73/74 的当前输出和总结已单独记录在：
+
+```text
+docs/STAGE72_74_STREAMSPLAT_DAVIS_DIAGNOSIS_SUMMARY.md
+```

@@ -1,0 +1,4 @@
+sample,gap,mode,depth_norm,metric_space,pair_count,all_count,middle_count,given_count,all_psnr,middle_psnr,given_psnr
+MEAN_WEIGHTED,4,disjoint_with_tail,pair_joint,official_256_float,78,383,227,156,27.175326918003805,22.04421501448969,34.64175257247626
+MEAN_WEIGHTED,4,disjoint_with_tail,pair_joint,stage72_512_float,78,383,227,156,24.43616869678078,20.79743947198787,29.730986225600738
+MEAN_WEIGHTED,4,disjoint_with_tail,pair_joint,stage72_512_uint8,78,383,227,156,24.433301145796477,20.796620327049567,29.72513797820384

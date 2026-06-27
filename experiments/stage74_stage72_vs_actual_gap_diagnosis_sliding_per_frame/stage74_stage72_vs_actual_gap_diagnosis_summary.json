@@ -1,0 +1,130 @@
+{
+  "stage": 74,
+  "mode": "Stage72 vs actual StreamSplat protocol diagnosis",
+  "davis_root": "/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS",
+  "checkpoint": "/mnt/hdd2tC/tmp/opencode/StreamSplat/checkpoints/streamsplat.safetensors",
+  "sequences": [
+    "bmx-trees",
+    "car-shadow",
+    "goat",
+    "soapbox"
+  ],
+  "gaps": [
+    5,
+    8
+  ],
+  "modes": [
+    "sliding_fixed"
+  ],
+  "depth_norms": [
+    "per_frame"
+  ],
+  "metric_spaces": [
+    "official_256_float",
+    "stage72_512_float",
+    "stage72_512_uint8"
+  ],
+  "load_audit": {
+    "checkpoint": "/mnt/hdd2tC/tmp/opencode/StreamSplat/checkpoints/streamsplat.safetensors",
+    "checkpoint_tensor_count": 320,
+    "checkpoint_value_count": 183975569,
+    "missing_count": 0,
+    "unexpected_count": 0,
+    "missing_keys_sample": [],
+    "unexpected_keys_sample": []
+  },
+  "rows_csv": "experiments/stage74_stage72_vs_actual_gap_diagnosis_sliding_per_frame/stage74_stage72_vs_actual_gap_diagnosis_rows.csv",
+  "aggregate_csv": "experiments/stage74_stage72_vs_actual_gap_diagnosis_sliding_per_frame/stage74_stage72_vs_actual_gap_diagnosis_aggregate.csv",
+  "aggregate": [
+    {
+      "sample": "MEAN_WEIGHTED",
+      "gap": 5,
+      "mode": "sliding_fixed",
+      "depth_norm": "per_frame",
+      "metric_space": "official_256_float",
+      "pair_count": 289,
+      "all_count": 1734,
+      "middle_count": 1156,
+      "given_count": 578,
+      "all_psnr": 25.75066886834122,
+      "middle_psnr": 21.30075816741288,
+      "given_psnr": 34.6504902701979
+    },
+    {
+      "sample": "MEAN_WEIGHTED",
+      "gap": 5,
+      "mode": "sliding_fixed",
+      "depth_norm": "per_frame",
+      "metric_space": "stage72_512_float",
+      "pair_count": 289,
+      "all_count": 1734,
+      "middle_count": 1156,
+      "given_count": 578,
+      "all_psnr": 23.369575999447243,
+      "middle_psnr": 20.16838250204665,
+      "given_psnr": 29.771962994248412
+    },
+    {
+      "sample": "MEAN_WEIGHTED",
+      "gap": 5,
+      "mode": "sliding_fixed",
+      "depth_norm": "per_frame",
+      "metric_space": "stage72_512_uint8",
+      "pair_count": 289,
+      "all_count": 1734,
+      "middle_count": 1156,
+      "given_count": 578,
+      "all_psnr": 23.367088994008505,
+      "middle_psnr": 20.167664434074318,
+      "given_psnr": 29.765938113876874
+    },
+    {
+      "sample": "MEAN_WEIGHTED",
+      "gap": 8,
+      "mode": "sliding_fixed",
+      "depth_norm": "per_frame",
+      "metric_space": "official_256_float",
+      "pair_count": 277,
+      "all_count": 2493,
+      "middle_count": 1939,
+      "given_count": 554,
+      "all_psnr": 23.074118356381106,
+      "middle_psnr": 19.767532338123914,
+      "given_psnr": 34.64716942028127
+    },
+    {
+      "sample": "MEAN_WEIGHTED",
+      "gap": 8,
+      "mode": "sliding_fixed",
+      "depth_norm": "per_frame",
+      "metric_space": "stage72_512_float",
+      "pair_count": 277,
+      "all_count": 2493,
+      "middle_count": 1939,
+      "given_count": 554,
+      "all_psnr": 21.287775048101732,
+      "middle_psnr": 18.858204815342486,
+      "given_psnr": 29.791270862759074
+    },
+    {
+      "sample": "MEAN_WEIGHTED",
+      "gap": 8,
+      "mode": "sliding_fixed",
+      "depth_norm": "per_frame",
+      "metric_space": "stage72_512_uint8",
+      "pair_count": 277,
+      "all_count": 2493,
+      "middle_count": 1939,
+      "given_count": 554,
+      "all_psnr": 21.286018461825766,
+      "middle_psnr": 18.857665963378977,
+      "given_psnr": 29.78525220638951
+    }
+  ],
+  "notes": [
+    "official_256_float matches the paper text saying metrics are evaluated at 256x256.",
+    "sliding_fixed approximates fixed-interval evaluation over all possible windows.",
+    "disjoint_with_tail matches the Stage72 continuous sparse-keyframe reconstruction style.",
+    "pair_joint depth normalization matches Stage72; per_frame matches training-time normalization in model/splat_model.py."
+  ]
+}

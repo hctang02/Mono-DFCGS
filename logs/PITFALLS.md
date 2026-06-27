@@ -520,3 +520,11 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Float static keyframe anchors render almost the same given-keyframe PSNR as original StreamSplat. This is a useful alignment check for RGB resize, frame index, and static-anchor-to-renderer bridge.
 - Stage70 low all-frame PSNR mainly comes from discarding original StreamSplat dynamic Gaussian fields for middle-frame reconstruction. The current zero-dynamic static anchor wrapper is a deliberate reduced representation, not equivalent to full `pred_gs`.
 - q8 anchor quantization has a large keyframe penalty on DAVIS, roughly `2.75 dB` given-keyframe PSNR in Stage73. Treat q8 as an aggressive lossy point; future RD should include q-bit or per-field quantization sweeps.
+
+## Stage74 Stage72-vs-Actual Protocol Notes
+
+- Stage72 is a scoped Mono-DFCGS diagnostic baseline, not the official StreamSplat paper benchmark protocol.
+- The paper states PSNR/SSIM/LPIPS are evaluated at `256x256`; Stage72 originally reported `512x288` uint8 metrics. This alone can change PSNR by multiple dB.
+- Paper-style dynamic interpolation should focus on non-input/middle frames under fixed interval settings; Stage72's all-frame PSNR mixes middle frames with rendered input/key frames.
+- Full DAVIS val matters. The Stage72 four-sequence subset is harder than the full 30-sequence validation split.
+- Always audit checkpoint loading when using `strict=False`. Stage74 found `missing_count=0` and `unexpected_count=0`, so the Stage72-vs-paper gap is protocol-driven rather than checkpoint mismatch.

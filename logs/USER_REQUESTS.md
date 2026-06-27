@@ -903,3 +903,17 @@ Stage72 先执行 Phase A：复现原 StreamSplat 在 Stage70 相同 DAVIS val s
 Stage72 Phase A 已完成：原 StreamSplat full dynamic Gaussian baseline 在相同 DAVIS scoped subset 上正常，mean all-frame PSNR 为 gap4 `23.244598036349643`、gap8 `20.682715912446714`、gap16 `18.353465837484507`。
 
 Stage73 Phase B 诊断已完成：Stage70 q8 adapter uniform 数值可被完全复现，未发现 RGB/resize/frame index/render bridge/checkpoint 加载口径 bug。Stage70 低于原方法主要来自两部分：当前 Gaussian-anchor-only path 只传/渲染 static anchors，丢弃原 StreamSplat full dynamic Gaussian fields；q8 anchor 量化又额外降低 keyframe render quality。完成 Phase A/B 后按用户要求暂停并汇报，不继续大规模训练。
+
+## 2026-06-27：分析 Stage72 原方法结果与实际结果差距
+
+### 用户原始问题
+
+用户指出：Stage72 原方法结果为什么和实际结果相差这么多，需要想办法分析原因。
+
+### 当前执行决策
+
+新增 Stage74 诊断：先静态核查 Stage72 runner 与官方/实际 StreamSplat evaluation protocol 的差异，包括数据集 split、frame sampling、DAVIS 分辨率、resize、mask/foreground evaluation、depth 输入、checkpoint/config、metric 口径和 keyframe/gap 定义。若静态核查不足，再运行轻量验证脚本，运行代码前先检查 `nvidia-smi`。
+
+### 后续执行更新
+
+Stage74 已完成关键诊断：Stage72 与实际/论文结果相差大的主因是 protocol 不一致，而不是 checkpoint 加载错误。改成 full DAVIS val、sliding fixed windows、`256x256` metric 和 non-input middle-frame scope 后，gap5 middle PSNR 为 `23.004337221027775`，接近论文 Middle-4 `23.66`；gap8 middle PSNR 为 `21.56004909948801`，接近论文 8-frame interval `22.10`。用户要求把当前输出和总结单独记录到文档，并继续后续 stages；总结文档路径为 `docs/STAGE72_74_STREAMSPLAT_DAVIS_DIAGNOSIS_SUMMARY.md`。

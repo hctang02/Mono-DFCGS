@@ -1,0 +1,13 @@
+sample,gap,mode,depth_norm,metric_space,pair_count,all_count,middle_count,given_count,all_psnr,middle_psnr,given_psnr
+DAVIS/val/bmx-trees,4,disjoint_with_tail,pair_joint,official_256_float,20,99,59,40,27.70526790214036,22.800941240400842,34.93914972820613
+DAVIS/val/bmx-trees,4,disjoint_with_tail,pair_joint,stage72_512_float,20,99,59,40,25.333520034875143,21.689288991975204,30.708760823152556
+DAVIS/val/bmx-trees,4,disjoint_with_tail,pair_joint,stage72_512_uint8,20,99,59,40,25.329797357473648,21.68834175447739,30.700944371893122
+DAVIS/val/car-shadow,4,disjoint_with_tail,pair_joint,official_256_float,10,49,29,20,27.69609652698274,22.95975227242282,34.56379569609462
+DAVIS/val/car-shadow,4,disjoint_with_tail,pair_joint,stage72_512_float,10,49,29,20,24.938655327319324,21.520509177584465,29.894967244434874
+DAVIS/val/car-shadow,4,disjoint_with_tail,pair_joint,stage72_512_uint8,10,49,29,20,24.936040815910538,21.51964922487809,29.889808622907594
+DAVIS/val/goat,4,disjoint_with_tail,pair_joint,official_256_float,23,112,66,46,24.83076936111168,18.987921232517294,33.213986241268834
+DAVIS/val/goat,4,disjoint_with_tail,pair_joint,stage72_512_float,23,112,66,46,21.787874061896918,17.870681247377444,27.40819418707702
+DAVIS/val/goat,4,disjoint_with_tail,pair_joint,stage72_512_uint8,23,112,66,46,21.786393873630242,17.870322766987165,27.405104591857263
+DAVIS/val/soapbox,4,disjoint_with_tail,pair_joint,official_256_float,25,123,73,50,28.67620966680406,23.832132299439827,35.74856262315585
+DAVIS/val/soapbox,4,disjoint_with_tail,pair_joint,stage72_512_float,25,123,73,50,25.925187979213792,22.435492892299315,31.020142815467462
+DAVIS/val/soapbox,4,disjoint_with_tail,pair_joint,stage72_512_uint8,25,123,73,50,25.921644606698827,22.434376994294073,31.013055320809773
