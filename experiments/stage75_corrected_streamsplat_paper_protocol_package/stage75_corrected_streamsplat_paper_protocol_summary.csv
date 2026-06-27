@@ -1,0 +1,3 @@
+paper_setting,local_gap,sequence_scope,window_mode,depth_norm,metric_space,pair_count,all_count,middle_count,given_count,all_psnr,middle_psnr,given_psnr,paper_psnr,local_minus_paper_middle_psnr
+Middle-4 frames,5,DAVIS val full 30 sequences,sliding_fixed,per_frame,official_256_float,1849,11094,7396,3698,26.994540075591946,23.004337221027775,34.97494578472027,23.66,-0.6556627789722249
+8-frame interval,8,DAVIS val full 30 sequences,sliding_fixed,per_frame,official_256_float,1759,15831,12313,3518,24.534872014837706,21.56004909948801,34.94675221856166,22.1,-0.5399509005119931

@@ -1,0 +1,51 @@
+{
+  "stage": 75,
+  "mode": "corrected StreamSplat paper-protocol DAVIS package",
+  "stage74_root": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage74_stage72_vs_actual_gap_diagnosis_full_val_sliding_per_frame",
+  "stage72_rows": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage72_original_davis_baseline/stage72_original_davis_baseline_rows.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage75_corrected_streamsplat_paper_protocol_package/stage75_corrected_streamsplat_paper_protocol_summary.csv",
+  "sequence_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage75_corrected_streamsplat_paper_protocol_package/stage75_corrected_streamsplat_per_sequence.csv",
+  "compare_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage75_corrected_streamsplat_paper_protocol_package/stage75_stage72_vs_corrected_comparison.csv",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage75_corrected_streamsplat_paper_protocol_package/stage75_corrected_streamsplat_paper_protocol_report.md",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage75_corrected_streamsplat_paper_protocol_package/stage75_corrected_streamsplat_paper_protocol_summary.json",
+  "summary_rows": [
+    {
+      "paper_setting": "Middle-4 frames",
+      "local_gap": 5,
+      "sequence_scope": "DAVIS val full 30 sequences",
+      "window_mode": "sliding_fixed",
+      "depth_norm": "per_frame",
+      "metric_space": "official_256_float",
+      "pair_count": 1849,
+      "all_count": 11094,
+      "middle_count": 7396,
+      "given_count": 3698,
+      "all_psnr": 26.994540075591946,
+      "middle_psnr": 23.004337221027775,
+      "given_psnr": 34.97494578472027,
+      "paper_psnr": 23.66,
+      "local_minus_paper_middle_psnr": -0.6556627789722249
+    },
+    {
+      "paper_setting": "8-frame interval",
+      "local_gap": 8,
+      "sequence_scope": "DAVIS val full 30 sequences",
+      "window_mode": "sliding_fixed",
+      "depth_norm": "per_frame",
+      "metric_space": "official_256_float",
+      "pair_count": 1759,
+      "all_count": 15831,
+      "middle_count": 12313,
+      "given_count": 3518,
+      "all_psnr": 24.534872014837706,
+      "middle_psnr": 21.56004909948801,
+      "given_psnr": 34.94675221856166,
+      "paper_psnr": 22.1,
+      "local_minus_paper_middle_psnr": -0.5399509005119931
+    }
+  ],
+  "notes": [
+    "Use this package for paper-style StreamSplat DAVIS references.",
+    "Stage72 remains a scoped diagnostic baseline and should not be used as a paper-protocol reproduction."
+  ]
+}

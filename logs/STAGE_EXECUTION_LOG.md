@@ -5462,3 +5462,46 @@ Full DAVIS val official-style sliding windows：
 ```text
 docs/STAGE72_74_STREAMSPLAT_DAVIS_DIAGNOSIS_SUMMARY.md
 ```
+
+## 2026-06-27：Stage75 Corrected StreamSplat Paper-Protocol DAVIS Package
+
+### 目标
+
+把 Stage74 full DAVIS val official-style outputs 打包成正式可引用的 corrected StreamSplat baseline package，避免后续报告继续误用 Stage72 scoped protocol 数值。
+
+### 操作计划
+
+- 读取 `experiments/stage74_stage72_vs_actual_gap_diagnosis_full_val_sliding_per_frame/` 的 aggregate 和 per-sequence CSV。
+- 输出 paper-protocol summary：full DAVIS val、sliding fixed intervals、`256x256` metric、middle/non-input PSNR。
+- 对照论文 Table1 Middle-4 PSNR `23.66` 和 Table2 8-frame interval PSNR `22.10`。
+- 记录 Stage72 scoped 数值与 Stage75 corrected 数值的区别。
+- Stage75 为 CPU-only 汇总，不运行 GPU inference。
+
+### Stage75 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU；该阶段是 CPU-only 汇总脚本。
+
+新增脚本：
+
+```text
+scripts/run_stage75_corrected_streamsplat_paper_protocol_package.py
+```
+
+输出：
+
+```text
+experiments/stage75_corrected_streamsplat_paper_protocol_package/stage75_corrected_streamsplat_paper_protocol_summary.json
+experiments/stage75_corrected_streamsplat_paper_protocol_package/stage75_corrected_streamsplat_paper_protocol_summary.csv
+experiments/stage75_corrected_streamsplat_paper_protocol_package/stage75_corrected_streamsplat_per_sequence.csv
+experiments/stage75_corrected_streamsplat_paper_protocol_package/stage75_stage72_vs_corrected_comparison.csv
+experiments/stage75_corrected_streamsplat_paper_protocol_package/stage75_corrected_streamsplat_paper_protocol_report.md
+```
+
+Corrected StreamSplat paper-protocol DAVIS baseline：
+
+| paper setting | local gap | pair count | all PSNR | middle PSNR | given PSNR | paper PSNR | local - paper |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Middle-4 frames | 5 | 1849 | 26.994540075591946 | 23.004337221027775 | 34.97494578472027 | 23.66 | -0.6556627789722249 |
+| 8-frame interval | 8 | 1759 | 24.534872014837706 | 21.56004909948801 | 34.94675221856166 | 22.1 | -0.5399509005119931 |
+
+Stage75 应作为本地 StreamSplat DAVIS paper-protocol reference；Stage72 仅作为 scoped Mono-DFCGS diagnostic baseline。
