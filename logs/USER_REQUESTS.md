@@ -931,3 +931,17 @@ Stage74 已完成关键诊断：Stage72 与实际/论文结果相差大的主因
 ### 后续执行更新
 
 Stage75 已完成 corrected StreamSplat paper-protocol DAVIS package：Middle-4 local middle PSNR `23.004337221027775` vs paper `23.66`，8-frame interval local middle PSNR `21.56004909948801` vs paper `22.10`。输出目录为 `experiments/stage75_corrected_streamsplat_paper_protocol_package/`。
+
+## 2026-06-27：继续 Stage76 static anchor quantization sweep
+
+### 用户原始问题
+
+用户要求继续做后面的 stages。
+
+### 当前执行决策
+
+Stage76 先做轻量但关键的 static anchor quantization sweep：针对 Stage73 发现的 q8 keyframe render quality 大幅下降，评估 float16/q6/q8/q10/q12/q16 static anchors 的 direct keyframe render PSNR 与估算 anchor payload。该阶段先覆盖 Stage70 scoped DAVIS val sequences，不启动长训。
+
+### 后续执行更新
+
+Stage76 已完成：q8 direct keyframe render 在 scoped DAVIS val 上相对 float16 掉 `-2.69045491882148 dB`（512 metric），q10 仅掉 `-0.3808268306669724 dB`，q12 基本无损 `-0.02718619126847699 dB`。后续 RD 应加入 q10/q12 operating points，而不能只用 q8 代表 anchor codec。
