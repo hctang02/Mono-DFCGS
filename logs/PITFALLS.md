@@ -486,3 +486,10 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage67 predicts the Stage66 anchor-space proxy label well, but this does not prove selector all-frame PSNR gains.
 - Endpoint-anchor features dominate length-only and RGB-motion-only baselines on the scoped DAVIS split.
 - Keep the fitted ridge parameters as a feed-forward predictor candidate, but Stage68 must evaluate deterministic DP selections and should prefer rendered/full-video labels before final claims.
+
+## Stage68 Selector Rendered Validation Notes
+
+- A high-quality anchor-space proxy predictor does not guarantee robust rendered all-frame PSNR gains. Stage68 is positive on average but has non-positive points.
+- The predicted selector can collapse exactly to uniform for some settings, as in `DAVIS/val/bmx-trees gap16`.
+- `DAVIS/val/goat gap8` is a clear negative case and should be inspected before final selector claims.
+- Future selector stages should add rendered-distortion labels or a calibrated fallback-to-uniform policy rather than relying only on anchor-space proxy cost.

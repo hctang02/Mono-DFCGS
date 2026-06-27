@@ -1,0 +1,25 @@
+sample,method,reference_gap,selector_cost,total_frames,keyframe_count,max_segment_length,mean_segment_length,segment_lengths,indices
+DAVIS/val/bmx-trees,uniform,4,,80,21,4,3.95,4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 3,0 4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 79
+DAVIS/val/bmx-trees,predicted_full_feature_dp,4,1.861794205771238,80,21,7,3.95,4 5 6 3 5 3 5 2 4 1 4 3 3 2 5 5 2 5 5 7,0 4 9 15 18 23 26 31 33 37 38 42 45 48 50 55 60 62 67 72 79
+DAVIS/val/bmx-trees,uniform,8,,80,11,8,7.9,8 8 8 8 8 8 8 8 8 7,0 8 16 24 32 40 48 56 64 72 79
+DAVIS/val/bmx-trees,predicted_full_feature_dp,8,2.233623254930399,80,11,11,7.9,9 7 9 7 11 7 5 7 8 9,0 9 16 25 32 43 50 55 62 70 79
+DAVIS/val/bmx-trees,uniform,16,,80,6,16,15.8,16 16 16 16 15,0 16 32 48 64 79
+DAVIS/val/bmx-trees,predicted_full_feature_dp,16,2.524983885360996,80,6,16,15.8,16 16 16 16 15,0 16 32 48 64 79
+DAVIS/val/car-shadow,uniform,4,,40,11,4,3.9,4 4 4 4 4 4 4 4 4 3,0 4 8 12 16 20 24 28 32 36 39
+DAVIS/val/car-shadow,predicted_full_feature_dp,4,0.8578887720331336,40,11,4,3.9,4 4 4 4 4 3 4 4 4 4,0 4 8 12 16 20 23 27 31 35 39
+DAVIS/val/car-shadow,uniform,8,,40,6,8,7.8,8 8 8 8 7,0 8 16 24 32 39
+DAVIS/val/car-shadow,predicted_full_feature_dp,8,1.0572794708184425,40,6,9,7.8,8 8 7 9 7,0 8 16 23 32 39
+DAVIS/val/car-shadow,uniform,16,,40,4,16,13.0,16 16 7,0 16 32 39
+DAVIS/val/car-shadow,predicted_full_feature_dp,16,1.1941068998580024,40,4,14,13.0,12 14 13,0 12 26 39
+DAVIS/val/goat,uniform,4,,90,24,4,3.869565217391304,4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 1,0 4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 89
+DAVIS/val/goat,predicted_full_feature_dp,4,2.279080831412867,90,24,6,3.869565217391304,5 6 5 5 4 5 2 5 4 4 5 4 5 2 3 2 5 2 5 4 2 3 2,0 5 11 16 21 25 30 32 37 41 45 50 54 59 61 64 66 71 73 78 82 84 87 89
+DAVIS/val/goat,uniform,8,,90,13,8,7.416666666666667,8 8 8 8 8 8 8 8 8 8 8 1,0 8 16 24 32 40 48 56 64 72 80 88 89
+DAVIS/val/goat,predicted_full_feature_dp,8,2.725875314482052,90,13,13,7.416666666666667,7 9 8 8 9 8 5 5 5 6 13 6,0 7 16 24 32 41 49 54 59 64 70 83 89
+DAVIS/val/goat,uniform,16,,90,7,16,14.833333333333334,16 16 16 16 16 9,0 16 32 48 64 80 89
+DAVIS/val/goat,predicted_full_feature_dp,16,3.0731221188708604,90,7,16,14.833333333333334,16 14 15 15 13 16,0 16 30 45 60 73 89
+DAVIS/val/soapbox,uniform,4,,99,26,4,3.92,4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 2,0 4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 98
+DAVIS/val/soapbox,predicted_full_feature_dp,4,2.1943960555420556,99,26,7,3.92,5 7 7 6 5 4 4 4 4 3 4 3 3 3 2 3 2 4 3 3 3 4 4 5 3,0 5 12 19 25 30 34 38 42 46 49 53 56 59 62 64 67 69 73 76 79 82 86 90 95 98
+DAVIS/val/soapbox,uniform,8,,99,14,8,7.538461538461538,8 8 8 8 8 8 8 8 8 8 8 8 2,0 8 16 24 32 40 48 56 64 72 80 88 96 98
+DAVIS/val/soapbox,predicted_full_feature_dp,8,2.6318749780736863,99,14,10,7.538461538461538,9 10 8 7 7 6 6 6 5 9 10 9 6,0 9 19 27 34 41 47 53 59 64 73 83 92 98
+DAVIS/val/soapbox,uniform,16,,99,8,16,14.0,16 16 16 16 16 16 2,0 16 32 48 64 80 96 98
+DAVIS/val/soapbox,predicted_full_feature_dp,16,2.9326975793100507,99,8,16,14.0,14 13 16 13 14 15 13,0 14 27 43 56 70 85 98

@@ -831,3 +831,17 @@ Stage66 已完成并推送。继续 Stage67：在 Stage66 DAVIS selector dataset
 ### 后续执行更新
 
 Stage67 predictor validation 已完成：`full_feature_ridge` 最好，eval RMSE log `0.01746532908957139`，eval Pearson `0.9103771172408511`，eval Spearman `0.9017146144293104`。Endpoint-anchor features 明显强于 length-only / RGB-motion-only。该结果说明 feed-forward proxy cost predictor 可训练，但仍只针对 Stage66 anchor-space proxy label；下一步 Stage68 需要用预测 cost 做 deterministic DP selection，并进行 rendered/full-video validation，不能直接声称 selector 提升 all-frame PSNR。
+
+## 2026-06-27：执行 Stage68 DAVIS feed-forward selector rendered validation
+
+### 用户原始问题
+
+用户要求：好的，继续一直往下做。
+
+### 当前执行决策
+
+继续 Stage68：使用 Stage67 `full_feature_ridge` 的 feed-forward segment-cost predictor，对 Stage66 DAVIS eval sequences 生成 deterministic DP keyframe selections，并用 Stage65 best `rgb_h256` adapter 做 rendered validation。对比 `uniform` 与 `predicted_full_feature_dp`，主指标为 all-frame PSNR；selection 过程不使用 rendered oracle、PSNR labels、dense-anchor labels 或 reconstruction lookahead。
+
+### 后续执行更新
+
+Stage68 rendered validation 已完成：在 DAVIS eval sequences `bmx-trees/car-shadow/goat/soapbox` 和 gaps `4/8/16` 上共 `12` 个对比点，`predicted_full_feature_dp` 相对 uniform 的 adapter all-frame PSNR 平均提升 `+0.030738190041048163 dB`，其中 `7/12` 个点为正。结果是 mixed-positive，不足以作为最终 selector claim；`goat gap8` 为明显负例，下一步需要 rendered-distortion labels 或 fallback calibration。

@@ -1,0 +1,57 @@
+{
+  "stage": 68,
+  "mode": "DAVIS feed-forward selector deterministic-DP rendered validation",
+  "manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage61_davis_anchor_export_data_full/stage61_davis_anchor_export_manifest.csv",
+  "stage66_summary": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage66_davis_feedforward_selector_dataset/stage66_davis_selector_dataset_summary.json",
+  "stage67_params": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage67_davis_selector_predictor_training/stage67_selector_predictor_model_params.json",
+  "adapter": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors",
+  "predictor_model": "full_feature_ridge",
+  "gaps": [
+    4,
+    8,
+    16
+  ],
+  "max_segment_length": 16,
+  "quant_bits": 8,
+  "eval_sequences": [
+    "DAVIS/val/bmx-trees",
+    "DAVIS/val/car-shadow",
+    "DAVIS/val/goat",
+    "DAVIS/val/soapbox"
+  ],
+  "coverage": [
+    {
+      "sample": "DAVIS/val/bmx-trees",
+      "total_frames": 80,
+      "candidate_cost_count": 1144,
+      "max_segment_length": 16
+    },
+    {
+      "sample": "DAVIS/val/car-shadow",
+      "total_frames": 40,
+      "candidate_cost_count": 504,
+      "max_segment_length": 16
+    },
+    {
+      "sample": "DAVIS/val/goat",
+      "total_frames": 90,
+      "candidate_cost_count": 1304,
+      "max_segment_length": 16
+    },
+    {
+      "sample": "DAVIS/val/soapbox",
+      "total_frames": 99,
+      "candidate_cost_count": 1448,
+      "max_segment_length": 16
+    }
+  ],
+  "result_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage68_davis_feedforward_selector_rendered_validation/stage68_davis_selector_rendered_validation.csv",
+  "comparison_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage68_davis_feedforward_selector_rendered_validation/stage68_davis_selector_comparison.csv",
+  "selection_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage68_davis_feedforward_selector_rendered_validation/stage68_davis_selector_selections.csv",
+  "comparison_count": 12,
+  "mean_selector_delta_adapter_all_psnr": 0.030738190041048163,
+  "positive_selector_adapter_all_points": 7,
+  "mean_selector_delta_linear_all_psnr": 0.02925622579667782,
+  "positive_selector_linear_all_points": 7,
+  "notes": "Selection uses feed-forward predicted costs plus deterministic DP. It does not use rendered oracle, PSNR labels, dense-anchor labels, or reconstruction lookahead at selection time."
+}

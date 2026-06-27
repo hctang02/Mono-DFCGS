@@ -4978,3 +4978,75 @@ Output size：`3.2M`。
 - Full-feature ridge 能较好预测 Stage66 anchor-space proxy label，eval Spearman `0.9017146144293104`。
 - Endpoint-anchor features 明显强于 length-only / RGB-motion-only。
 - Stage67 仍不是最终 selector RD；Stage68 需要 deterministic DP selection 和 rendered/full-video validation。
+
+## 2026-06-27：Stage68 DAVIS Feed-Forward Selector Rendered Validation
+
+### 目标
+
+使用 Stage67 `full_feature_ridge` feed-forward cost predictor，对 Stage66 DAVIS eval sequences 做 deterministic DP keyframe selection，并用 Stage65 best `rgb_h256` adapter 做 rendered validation。
+
+Selection 过程不使用 rendered oracle、PSNR labels、dense-anchor labels 或 reconstruction lookahead。
+
+### 代码
+
+新增：
+
+```text
+scripts/run_stage68_davis_feedforward_selector_rendered_validation.py
+```
+
+### 执行
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage68_davis_feedforward_selector_rendered_validation.py
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage68_davis_feedforward_selector_rendered_validation.py --device cuda
+```
+
+### 输出
+
+Tracked outputs：
+
+```text
+experiments/stage68_davis_feedforward_selector_rendered_validation/stage68_davis_selector_rendered_validation.csv
+experiments/stage68_davis_feedforward_selector_rendered_validation/stage68_davis_selector_comparison.csv
+experiments/stage68_davis_feedforward_selector_rendered_validation/stage68_davis_selector_selections.csv
+experiments/stage68_davis_feedforward_selector_rendered_validation/stage68_davis_selector_rendered_validation_summary.json
+```
+
+Output size：`28K`。
+
+### Results
+
+Aggregate all-frame PSNR selector result：
+
+- Comparison points：`12`。
+- Positive adapter all-frame PSNR points：`7`。
+- Mean selector delta adapter all-frame PSNR：`+0.030738190041048163 dB`。
+- Positive linear all-frame PSNR points：`7`。
+- Mean selector delta linear all-frame PSNR：`+0.02925622579667782 dB`。
+
+Per-point adapter all-frame PSNR delta：
+
+| sample | gap | predicted - uniform all PSNR |
+|---|---:|---:|
+| `DAVIS/val/bmx-trees` | `4` | `+0.06357661189149155` |
+| `DAVIS/val/bmx-trees` | `8` | `-0.03615984112334303` |
+| `DAVIS/val/bmx-trees` | `16` | `0.0` |
+| `DAVIS/val/car-shadow` | `4` | `-0.000555582328463089` |
+| `DAVIS/val/car-shadow` | `8` | `-0.006733966014870418` |
+| `DAVIS/val/car-shadow` | `16` | `+0.04549131375734561` |
+| `DAVIS/val/goat` | `4` | `+0.0055252224122490645` |
+| `DAVIS/val/goat` | `8` | `-0.10978492809701024` |
+| `DAVIS/val/goat` | `16` | `+0.02716329180723065` |
+| `DAVIS/val/soapbox` | `4` | `+0.03415602364444936` |
+| `DAVIS/val/soapbox` | `8` | `+0.08340300738787576` |
+| `DAVIS/val/soapbox` | `16` | `+0.26277712715562274` |
+
+### 结论
+
+- Stage68 完成了 DAVIS eval subset 上的 fully feed-forward deterministic-DP selector rendered validation。
+- 结果平均为正，但不稳定：`7/12` 点为正，`5/12` 点非正。
+- `goat gap8` 是明显负例，说明 anchor-space proxy predictor 仍与 rendered all-frame objective 存在 mismatch。
+- 下一步需要 rendered-distortion labels 或 fallback calibration，再做更稳健的 selector validation。
