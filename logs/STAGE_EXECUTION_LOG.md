@@ -4675,3 +4675,77 @@ Gap-wise best margins：
 ### 结论
 
 Stage63 pilot shows a small but monotonic validation gain across all tested gaps. It remains a pilot with only 128 steps and 8 eval tasks; it supports running a longer Stage63/65 training job, but should not be presented as the final medium/long adapter result.
+
+## 2026-06-27：Stage64 Adapter Architecture / Teacher Study
+
+### 目标
+
+在进入更长 medium/long adapter training 前，先做小型 adapter architecture / supervision ablation：比较 RGB render loss 和 dense-gap1 anchor teacher distillation，并分别测试 hidden dim `128` 和 `256`。
+
+Dense-gap1 anchors 只作为 offline teacher target，不改变 codec test-time 输入。Stage64 所有 variant 的 test-time 输入仍为 q8 endpoint Gaussian anchors plus timestamp。
+
+### 执行
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1/GPU3/GPU4/GPU5 空闲，因此使用 GPU1。
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage64_adapter_teacher_study.py
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage64_adapter_teacher_study.py --device cuda --steps 48 --eval_interval 24 --frame_gaps 2 4 8 16 --max_train_rows_per_gap 4 --max_eval_rows_per_gap 2 --targets_per_row 1
+```
+
+### 输出
+
+Tracked outputs：
+
+```text
+experiments/stage64_adapter_teacher_study/stage64_adapter_teacher_study_summary.json
+experiments/stage64_adapter_teacher_study/stage64_variant_summary.csv
+experiments/stage64_adapter_teacher_study/stage64_validation_log.csv
+experiments/stage64_adapter_teacher_study/stage64_train_log.csv
+experiments/stage64_adapter_teacher_study/stage64_best_eval_rows.csv
+```
+
+External checkpoints：
+
+```text
+/data/hctang/tmp/opencode/mono_dfcgs_runs/stage64_adapter_teacher_study/<variant>/best_adapter.safetensors
+/data/hctang/tmp/opencode/mono_dfcgs_runs/stage64_adapter_teacher_study/<variant>/final_adapter.safetensors
+```
+
+Output sizes：
+
+| path | size |
+|---|---:|
+| `experiments/stage64_adapter_teacher_study` | `48K` |
+| `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage64_adapter_teacher_study` | `7.8M` |
+
+### Results
+
+- Available train rows：`3926`。
+- Available eval rows：`1853`。
+- Selected train rows：`16`。
+- Selected eval rows：`8`。
+- Train tasks：`16`。
+- Eval tasks：`8`。
+- Steps：`48`。
+- Eval interval：`24`。
+
+Variant summary：
+
+| variant | loss | hidden dim | params | best step | best margin over linear PSNR | best teacher MSE |
+|---|---|---:|---:|---:|---:|---:|
+| `rgb_h128` | RGB render loss | `128` | `102925` | `48` | `+0.012173706030985443 dB` | `0.005200807470828295` |
+| `rgb_h256` | RGB render loss | `256` | `402445` | `48` | `+0.017721457863302703 dB` | `0.005200803148909472` |
+| `teacher_h128` | dense gap1 teacher | `128` | `102925` | `48` | `+0.002455631876273401 dB` | `0.005200357045396231` |
+| `teacher_h256` | dense gap1 teacher | `256` | `402445` | `48` | `+0.005105871063040723 dB` | `0.005198333790758625` |
+
+Best by rendered PSNR：`rgb_h256`，margin over linear `+0.017721457863302703 dB`。
+
+Best by teacher-anchor MSE：`teacher_h256`，teacher MSE `0.005198333790758625`。
+
+### 结论
+
+- 短训下，hidden dim `256` 明显好于 `128`。
+- RGB render loss route 的 rendered PSNR 优于 teacher route，适合作为 Stage65 medium run 的首选配置。
+- Teacher distillation route 能更明显降低 dense-anchor teacher MSE，但 48-step ablation 没有转化为最佳 rendered PSNR。
+- Stage64 仍是小型 architecture/supervision ablation，不作为最终 medium/long adapter claim。

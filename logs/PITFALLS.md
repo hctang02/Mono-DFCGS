@@ -459,3 +459,10 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Stage63 pilot reuses the Stage62 script, so output filenames still start with `stage62_` inside `experiments/stage63_medium_adapter_training_pilot`. Treat the directory name and stage record as the authoritative stage context.
 - The 128-step pilot shows monotonic eval gain but covers only 16 train rows and 8 eval tasks. It is evidence that longer training is worth trying, not a final medium-training claim.
 - Gap16 gains remain smaller than gap2/4 gains, suggesting longer-GOP behavior still needs more data, more steps, or stronger adapter architecture.
+
+## Stage64 Adapter Teacher Study Notes
+
+- Dense gap1 anchors can be used as offline teacher targets, but they must not be counted as test-time inputs or uncounted side information.
+- In the 48-step Stage64 ablation, teacher loss improves teacher-anchor MSE but does not beat RGB render loss on rendered PSNR. Do not assume anchor-space teacher MSE is a sufficient proxy for final rendered quality.
+- Hidden dim `256` is the better short-run architecture for both RGB and teacher variants, at about `402445` adapter parameters versus `102925` for hidden dim `128`.
+- Stage64 is a small ablation over 16 train rows and 8 eval tasks. Use it to choose the next training route, not as a final adapter quality result.

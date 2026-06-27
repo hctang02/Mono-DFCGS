@@ -757,3 +757,27 @@ Stage62 infra 已验证并推送。下一步执行 Stage63 的 medium-training p
 ### 后续执行更新
 
 Stage63 pilot 已完成：使用 `16` train rows、`8` eval tasks、`128` steps，best eval margin over linear 为 `+0.031141991902842392 dB`，validation curve 单调提升。结果支持后续扩展到更长训练，但目前仍只是 pilot。
+
+## 2026-06-27：执行 Stage64 adapter architecture / teacher study
+
+### 用户原始问题
+
+用户要求按之前说明的顺序继续后续 stages。
+
+### 当前执行决策
+
+Stage63 pilot 已验证更长训练有正向趋势。下一步执行 Stage64 小型 adapter architecture / teacher study：比较 RGB-loss residual adapter 与 dense-gap1 anchor teacher distillation，分别测试 hidden_dim `128` 和 `256`。训练和评估都使用 DAVIS train/val anchors；teacher distillation 只作为训练监督，test-time 输入仍限制为 keyframe anchors + timestamp。
+
+### 后续执行更新
+
+Stage64 ablation 已完成：`rgb_h256` 在 rendered PSNR 上最好，best margin over linear 为 `+0.017721457863302703 dB`；`teacher_h256` 在 dense-anchor teacher MSE 上最好，teacher MSE 为 `0.005198333790758625`。结论是下一步 Stage65 medium adapter training 优先使用 RGB render loss + hidden dim `256`，teacher route 暂作为 secondary ablation。
+
+## 2026-06-27：Stage64 收尾并继续推进
+
+### 用户原始问题
+
+用户要求：如果有下一步就继续执行；如果不确定如何推进，再停下来询问。
+
+### 当前执行决策
+
+Stage64 已完成运行，下一步收尾：更新 Stage64 stage record、全局执行日志和 pitfalls，检查 diff 与 formatting，然后提交并推送 Stage64 script、tracked experiment summaries 和日志。提交后再进入 Stage65 medium adapter training。
