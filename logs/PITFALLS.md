@@ -513,3 +513,10 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - FCGS expects FCGS-compatible static 3DGS `.ply` plus Gaussian-Splatting Scene validation inputs; Stage61 DAVIS anchors are tensor manifests and need an explicit conversion/wrapper.
 - D-FCGS upstream examples assume multiview per-frame Gaussian sequences and 3DGStream/Colmap-style layouts. Any DAVIS adaptation must avoid introducing multiview information into a monocular-video claim.
 - Old Stage52/53 FCGS/D-FCGS rows and legacy CWGS summaries are useful diagnostics, but they are non-DAVIS or protocol-mismatched and must not be added to final DAVIS apples-to-apples RD tables.
+
+## Stage72/73 Low-PSNR Diagnosis Notes
+
+- Original StreamSplat full dynamic DAVIS baseline is substantially higher than Stage70 q8 static-anchor-only results, so Stage70 should not be interpreted as a failure of DAVIS data/depth/metric alignment.
+- Float static keyframe anchors render almost the same given-keyframe PSNR as original StreamSplat. This is a useful alignment check for RGB resize, frame index, and static-anchor-to-renderer bridge.
+- Stage70 low all-frame PSNR mainly comes from discarding original StreamSplat dynamic Gaussian fields for middle-frame reconstruction. The current zero-dynamic static anchor wrapper is a deliberate reduced representation, not equivalent to full `pred_gs`.
+- q8 anchor quantization has a large keyframe penalty on DAVIS, roughly `2.75 dB` given-keyframe PSNR in Stage73. Treat q8 as an aggressive lossy point; future RD should include q-bit or per-field quantization sweeps.

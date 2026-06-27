@@ -887,3 +887,19 @@ Stage70 scoped DAVIS RD package 已完成：生成 rate table、all-frame PSNR t
 ### 后续执行更新
 
 Stage71 baseline availability preflight 已完成：本机存在 FCGS 和 D-FCGS 代码，但二者没有 DAVIS/Mono-DFCGS anchor adapter；旧 FCGS/D-FCGS/CWGS artifacts 均为非 DAVIS 或非 Stage70 scoped protocol。当前没有任何 external baseline 可直接作为 DAVIS apples-to-apples RD 点。下一步应优先实现 FCGS DAVIS wrapper 或明确 D-FCGS 是否能在不引入多视角信息的前提下安全适配。
+
+## 2026-06-27：执行 Stage72 原 StreamSplat DAVIS baseline 与低 PSNR 诊断
+
+### 用户原始问题
+
+用户要求：按照最新计划继续操作，并明确操作前先把 plan 记录到日志，操作后也要记录。当前优先级是：先在 DAVIS 上跑原有方法 baseline，看看原方法结果是否正常；再修复我们 Stage70 结果偏低的问题；这两步做完之后先找用户汇报。
+
+### 当前执行决策
+
+Stage72 先执行 Phase A：复现原 StreamSplat 在 Stage70 相同 DAVIS val subset 上的 scoped baseline，优先覆盖 `bmx-trees/car-shadow/goat/soapbox` 和 gaps `4/8/16`。若原方法 baseline 也低，优先诊断 DAVIS 数据、depth、resize、metric 或 frame alignment；若原方法 baseline 正常，再进入 Phase B：排查并修复 Stage70 Gaussian-anchor-only pipeline 的低 PSNR，包括 target RGB resize、keyframe direct render、float-vs-q8 anchor、anchor-to-renderer bridge、checkpoint 加载和 frame index/timestamp 对齐。完成 Phase A/B 后暂停并汇报，不继续大规模训练。
+
+### 操作后记录
+
+Stage72 Phase A 已完成：原 StreamSplat full dynamic Gaussian baseline 在相同 DAVIS scoped subset 上正常，mean all-frame PSNR 为 gap4 `23.244598036349643`、gap8 `20.682715912446714`、gap16 `18.353465837484507`。
+
+Stage73 Phase B 诊断已完成：Stage70 q8 adapter uniform 数值可被完全复现，未发现 RGB/resize/frame index/render bridge/checkpoint 加载口径 bug。Stage70 低于原方法主要来自两部分：当前 Gaussian-anchor-only path 只传/渲染 static anchors，丢弃原 StreamSplat full dynamic Gaussian fields；q8 anchor 量化又额外降低 keyframe render quality。完成 Phase A/B 后按用户要求暂停并汇报，不继续大规模训练。

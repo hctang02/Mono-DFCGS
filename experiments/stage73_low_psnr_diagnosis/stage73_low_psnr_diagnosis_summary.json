@@ -1,0 +1,69 @@
+{
+  "stage": 73,
+  "mode": "Stage70 low-PSNR diagnosis",
+  "manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage61_davis_anchor_export_data_full/stage61_davis_anchor_export_manifest.csv",
+  "adapter": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors",
+  "stage72_rows": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage72_original_davis_baseline/stage72_original_davis_baseline_rows.csv",
+  "stage70_psnr": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage70_scoped_davis_rd_package/stage70_all_psnr_table.csv",
+  "sequences": [
+    "bmx-trees",
+    "car-shadow",
+    "goat",
+    "soapbox"
+  ],
+  "gaps": [
+    4,
+    8,
+    16
+  ],
+  "quant_bits": 8,
+  "diagnosis_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage73_low_psnr_diagnosis/stage73_low_psnr_diagnosis.csv",
+  "gap_summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage73_low_psnr_diagnosis/stage73_low_psnr_gap_summary.csv",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage73_low_psnr_diagnosis/stage73_low_psnr_diagnosis_report.md",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage73_low_psnr_diagnosis/stage73_low_psnr_diagnosis_summary.json",
+  "gap_summary": [
+    {
+      "frame_gap": 4,
+      "point_count": 4,
+      "mean_original_all_psnr": 23.244598036349643,
+      "mean_float_adapter_all_psnr": 21.347280410784887,
+      "mean_q8_adapter_all_psnr": 20.608531857721726,
+      "mean_stage70_adapter_uniform_all_psnr": 20.608531857721726,
+      "mean_float_adapter_gap_to_original_all": 1.8973176255647592,
+      "mean_q8_adapter_gap_to_original_all": 2.63606617862792,
+      "mean_q8_loss_adapter_all": 0.7387485530631608,
+      "mean_float_given_gap_to_original_given": 0.020452617603702095,
+      "mean_q8_given_gap_to_original_given": 2.762040748859361
+    },
+    {
+      "frame_gap": 8,
+      "point_count": 4,
+      "mean_original_all_psnr": 20.682715912446714,
+      "mean_float_adapter_all_psnr": 18.93647863322668,
+      "mean_q8_adapter_all_psnr": 18.54248864942665,
+      "mean_stage70_adapter_uniform_all_psnr": 18.54248864942665,
+      "mean_float_adapter_gap_to_original_all": 1.7462372792200318,
+      "mean_q8_adapter_gap_to_original_all": 2.140227263020061,
+      "mean_q8_loss_adapter_all": 0.39398998380002936,
+      "mean_float_given_gap_to_original_given": 0.011830362977251596,
+      "mean_q8_given_gap_to_original_given": 2.74592976460412
+    },
+    {
+      "frame_gap": 16,
+      "point_count": 4,
+      "mean_original_all_psnr": 18.353465837484507,
+      "mean_float_adapter_all_psnr": 17.244538002072254,
+      "mean_q8_adapter_all_psnr": 17.01303254555753,
+      "mean_stage70_adapter_uniform_all_psnr": 17.01303254555753,
+      "mean_float_adapter_gap_to_original_all": 1.1089278354122554,
+      "mean_q8_adapter_gap_to_original_all": 1.3404332919269804,
+      "mean_q8_loss_adapter_all": 0.23150545651472498,
+      "mean_float_given_gap_to_original_given": -0.026037018245909316,
+      "mean_q8_given_gap_to_original_given": 2.745552680459971
+    }
+  ],
+  "notes": [
+    "Float static anchors remove the extra q8 simulation but still discard dynamic Gaussian fields.",
+    "Small q8_loss with large original-vs-float gap means low PSNR is mainly modeling/information loss, not quantization."
+  ]
+}

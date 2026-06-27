@@ -1,0 +1,65 @@
+{
+  "stage": 72,
+  "mode": "original StreamSplat DAVIS scoped baseline",
+  "davis_root": "/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS",
+  "checkpoint": "/mnt/hdd2tC/tmp/opencode/StreamSplat/checkpoints/streamsplat.safetensors",
+  "heavy_root": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage72_original_davis_baseline",
+  "summary_root": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage72_original_davis_baseline",
+  "split": "val",
+  "sequences": [
+    "bmx-trees",
+    "car-shadow",
+    "goat",
+    "soapbox"
+  ],
+  "gaps": [
+    4,
+    8,
+    16
+  ],
+  "device": "cuda:0",
+  "batch_size": 2,
+  "rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage72_original_davis_baseline/stage72_original_davis_baseline_rows.csv",
+  "per_frame_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage72_original_davis_baseline/stage72_original_davis_baseline_per_frame.csv",
+  "comparison_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage72_original_davis_baseline/stage72_original_vs_stage70_comparison.csv",
+  "gap_summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage72_original_davis_baseline/stage72_original_vs_stage70_gap_summary.csv",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage72_original_davis_baseline/stage72_original_davis_baseline_report.md",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage72_original_davis_baseline/stage72_original_davis_baseline_summary.json",
+  "gap_summary": [
+    {
+      "frame_gap": 4,
+      "sequence_count": 4,
+      "mean_original_streamsplat_all_psnr": 23.244598036349643,
+      "mean_original_streamsplat_middle_psnr": 20.881582891367685,
+      "mean_original_streamsplat_given_psnr": 29.745217856431786,
+      "mean_stage70_linear_uniform_all_psnr": 20.137413494810616,
+      "mean_stage70_adapter_uniform_all_psnr": 20.608531857721726,
+      "mean_stage70_adapter_predicted_all_psnr": 20.634207426626656
+    },
+    {
+      "frame_gap": 8,
+      "sequence_count": 4,
+      "mean_original_streamsplat_all_psnr": 20.682715912446714,
+      "mean_original_streamsplat_middle_psnr": 19.17823812651332,
+      "mean_original_streamsplat_given_psnr": 29.71886975750609,
+      "mean_stage70_linear_uniform_all_psnr": 18.063459460774446,
+      "mean_stage70_adapter_uniform_all_psnr": 18.54248864942665,
+      "mean_stage70_adapter_predicted_all_psnr": 18.525169717464813
+    },
+    {
+      "frame_gap": 16,
+      "sequence_count": 4,
+      "mean_original_streamsplat_all_psnr": 18.353465837484507,
+      "mean_original_streamsplat_middle_psnr": 17.3365956594116,
+      "mean_original_streamsplat_given_psnr": 29.689301009427645,
+      "mean_stage70_linear_uniform_all_psnr": 16.59656669447801,
+      "mean_stage70_adapter_uniform_all_psnr": 17.01303254555753,
+      "mean_stage70_adapter_predicted_all_psnr": 17.096890478737578
+    }
+  ],
+  "notes": [
+    "Primary metric is all-frame PSNR.",
+    "Middle/given PSNR are diagnostic only.",
+    "raw_pred_gs_mib_per_frame is raw tensor payload, not a codec bitstream."
+  ]
+}

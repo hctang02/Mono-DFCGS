@@ -5267,3 +5267,128 @@ Artifact inventory：
 - FCGS 输入是 static 3DGS `.ply` 和 Gaussian-Splatting Scene，相比 Stage61 DAVIS `.pt` anchors 仍缺 adapter/wrapper。
 - D-FCGS README/runner 假设多视角 per-frame Gaussian sequence / 3DGStream-style layout，不能直接用于单目 DAVIS claim。
 - 旧 Stage52/53 和 CWGS artifacts 都是 diagnostic/reference；不能进入最终 DAVIS RD 对比。
+
+## 2026-06-27：Stage72 Original StreamSplat DAVIS Baseline And Low-PSNR Diagnosis
+
+### 目标
+
+先验证原 StreamSplat 方法在当前 DAVIS 数据/预处理/metric 口径下是否正常，再诊断并修复 Stage70 Gaussian-anchor-only RD 指标偏低的问题。
+
+### 操作计划
+
+Phase A：原方法 DAVIS scoped baseline。
+
+- 使用当前 `/data` DAVIS root 和已生成 depth。
+- 覆盖 Stage70 相同 eval subset：`DAVIS/val/bmx-trees`, `DAVIS/val/car-shadow`, `DAVIS/val/goat`, `DAVIS/val/soapbox`。
+- 覆盖 gaps：`4`, `8`, `16`。
+- 输出 all-frame PSNR，并保留 middle/given PSNR 作为诊断，不主动作为主指标。
+- 对比 Stage70 的 linear/adapter all-frame PSNR，判断低指标是否来自数据/metric/原方法复现问题。
+
+Phase B：修复 Stage70 低 PSNR。
+
+- 检查 target RGB resize/range/颜色空间和 frame index alignment。
+- 检查直接渲染 keyframe anchor 的 PSNR，判断 anchor 本身质量。
+- 对比 float anchor 与 q8 anchor，分离量化损失。
+- 检查 static anchor 到 renderer dynamic format 的 bridge 字段、domain、`scale/rot/opacity/rgb/xyz` 处理。
+- 确认 Stage65 best checkpoint、hidden dim 和 state dict 加载无误。
+- 修复后重跑相同 Stage70 scoped subset，再输出修复前后对比。
+
+### 停止条件
+
+完成 Phase A 和 Phase B 后先暂停，向用户汇报，不继续大规模训练、selector 长训或压缩大实验。
+
+### Phase A 执行结果
+
+新增脚本：
+
+```text
+scripts/run_stage72_original_davis_baseline.py
+```
+
+运行前按要求使用 `nvidia-smi` 检查 GPU，GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 执行 smoke 和 full run。
+
+输出文件：
+
+```text
+experiments/stage72_original_davis_baseline/stage72_original_davis_baseline_summary.json
+experiments/stage72_original_davis_baseline/stage72_original_davis_baseline_rows.csv
+experiments/stage72_original_davis_baseline/stage72_original_davis_baseline_per_frame.csv
+experiments/stage72_original_davis_baseline/stage72_original_vs_stage70_comparison.csv
+experiments/stage72_original_davis_baseline/stage72_original_vs_stage70_gap_summary.csv
+experiments/stage72_original_davis_baseline/stage72_original_davis_baseline_report.md
+```
+
+原 StreamSplat full dynamic baseline mean all-frame PSNR：
+
+| gap | all PSNR | middle PSNR | given PSNR |
+|---:|---:|---:|---:|
+| 4 | 23.244598036349643 | 20.881582891367685 | 29.745217856431786 |
+| 8 | 20.682715912446714 | 19.17823812651332 | 29.71886975750609 |
+| 16 | 18.353465837484507 | 17.3365956594116 | 29.689301009427645 |
+
+与 Stage70 q8 adapter uniform 的 all-frame PSNR 对比：
+
+| gap | original full dynamic | Stage70 adapter uniform | gap |
+|---:|---:|---:|---:|
+| 4 | 23.244598036349643 | 20.608531857721726 | 2.636066178627917 |
+| 8 | 20.682715912446714 | 18.54248864942665 | 2.140227263020065 |
+| 16 | 18.353465837484507 | 17.01303254555753 | 1.340433291926977 |
+
+结论：原方法在当前 DAVIS 数据、depth、resize 和 metric 口径下正常；Stage70 偏低不是因为 DAVIS 数据或原方法复现整体失效。
+
+## 2026-06-27：Stage73 Low-PSNR Diagnosis
+
+### 目标
+
+分解 Stage70 Gaussian-anchor-only RD 偏低来源，确认是否存在可修复的 evaluator/bridge/quantization/checkpoint bug。
+
+### 新增脚本
+
+```text
+scripts/run_stage73_low_psnr_diagnosis.py
+```
+
+### 执行记录
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此 Stage73 smoke 和 full scoped diagnosis 均使用 `CUDA_VISIBLE_DEVICES=1`。
+
+先运行单序列 smoke：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage73_low_psnr_diagnosis.py && CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage73_low_psnr_diagnosis.py --device cuda --sequences bmx-trees --gaps 16 --summary_root experiments/stage73_low_psnr_diagnosis_smoke
+```
+
+随后运行完整 scoped diagnosis：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage73_low_psnr_diagnosis.py --device cuda
+```
+
+### 输出文件
+
+```text
+experiments/stage73_low_psnr_diagnosis/stage73_low_psnr_diagnosis_summary.json
+experiments/stage73_low_psnr_diagnosis/stage73_low_psnr_diagnosis.csv
+experiments/stage73_low_psnr_diagnosis/stage73_low_psnr_gap_summary.csv
+experiments/stage73_low_psnr_diagnosis/stage73_low_psnr_diagnosis_report.md
+```
+
+### 关键结果
+
+| gap | original all | float static adapter all | q8 static adapter all | q8 loss | original - float static | original given - float given | original given - q8 given |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 23.244598036349643 | 21.347280410784887 | 20.608531857721726 | 0.7387485530631608 | 1.8973176255647592 | 0.020452617603702095 | 2.762040748859361 |
+| 8 | 20.682715912446714 | 18.93647863322668 | 18.54248864942665 | 0.39398998380002936 | 1.7462372792200318 | 0.011830362977251596 | 2.74592976460412 |
+| 16 | 18.353465837484507 | 17.244538002072254 | 17.01303254555753 | 0.23150545651472498 | 1.1089278354122554 | -0.026037018245909316 | 2.745552680459971 |
+
+### 结论
+
+- Stage73 q8 adapter uniform 完全复现 Stage70 adapter uniform all-frame PSNR，说明 Stage70 汇总表和 scoped selector/rate join 没有发现口径错误。
+- `float_given` 与原始 StreamSplat `given` 基本一致，说明 target RGB resize/range/color、frame index alignment、static-anchor-to-renderer bridge 和 Stage61 keyframe anchor export 是对齐的。
+- Stage70 低于原 StreamSplat full dynamic baseline，主要因为当前 transmitted representation 只保留 static anchors，并用 zero-dynamic wrapper 渲染/预测 middle frames，丢弃原 StreamSplat `pred_gs` 的 dynamic components。
+- q8 量化不是唯一主因，但会显著降低 keyframe render quality：given-keyframe PSNR 平均约下降 `2.75 dB`；对 all-frame PSNR 的额外损失随 keyframe 占比从 gap4 `0.7387485530631608 dB` 降到 gap16 `0.23150545651472498 dB`。
+- 因未发现 evaluator bug，不直接改写 Stage70 指标；后续应把 Stage70 标注为 q8 static-anchor-only lower-quality point，并新增 q-bit/per-field quantization、动态字段保留或从原 StreamSplat checkpoint 继续训练的实验，而不是把 Stage70 作为最终质量结论。
+
+### 停止状态
+
+Phase A 和 Phase B 已完成。按用户要求暂停并汇报，不继续大规模训练或新的 baseline runner。
