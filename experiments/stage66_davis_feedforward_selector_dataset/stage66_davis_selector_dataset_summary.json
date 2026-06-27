@@ -1,0 +1,103 @@
+{
+  "stage": 66,
+  "mode": "DAVIS feed-forward selector segment-cost dataset",
+  "manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage61_davis_anchor_export_data_full/stage61_davis_anchor_export_manifest.csv",
+  "adapter": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors",
+  "train_splits": [
+    "train"
+  ],
+  "eval_splits": [
+    "val"
+  ],
+  "selected_sequences": [
+    {
+      "selector_split": "train",
+      "dataset": "DAVIS",
+      "split": "train",
+      "sequence": "bus"
+    },
+    {
+      "selector_split": "train",
+      "dataset": "DAVIS",
+      "split": "train",
+      "sequence": "cat-girl"
+    },
+    {
+      "selector_split": "train",
+      "dataset": "DAVIS",
+      "split": "train",
+      "sequence": "elephant"
+    },
+    {
+      "selector_split": "train",
+      "dataset": "DAVIS",
+      "split": "train",
+      "sequence": "flamingo"
+    },
+    {
+      "selector_split": "train",
+      "dataset": "DAVIS",
+      "split": "train",
+      "sequence": "lady-running"
+    },
+    {
+      "selector_split": "train",
+      "dataset": "DAVIS",
+      "split": "train",
+      "sequence": "scooter-gray"
+    },
+    {
+      "selector_split": "train",
+      "dataset": "DAVIS",
+      "split": "train",
+      "sequence": "swing"
+    },
+    {
+      "selector_split": "train",
+      "dataset": "DAVIS",
+      "split": "train",
+      "sequence": "tuk-tuk"
+    },
+    {
+      "selector_split": "eval",
+      "dataset": "DAVIS",
+      "split": "val",
+      "sequence": "bmx-trees"
+    },
+    {
+      "selector_split": "eval",
+      "dataset": "DAVIS",
+      "split": "val",
+      "sequence": "car-shadow"
+    },
+    {
+      "selector_split": "eval",
+      "dataset": "DAVIS",
+      "split": "val",
+      "sequence": "goat"
+    },
+    {
+      "selector_split": "eval",
+      "dataset": "DAVIS",
+      "split": "val",
+      "sequence": "soapbox"
+    }
+  ],
+  "max_segment_length": 16,
+  "segment_stride": 1,
+  "max_segments_per_sequence": 384,
+  "image_size": 64,
+  "hidden_dim": 256,
+  "quant_bits": 8,
+  "row_count": 4608,
+  "train_rows": 3072,
+  "eval_rows": 1536,
+  "sequence_count": 12,
+  "adapter_better_segment_count": 0,
+  "label_adapter_mse_mean_avg": 0.031690189455081855,
+  "label_linear_mse_mean_avg": 0.011579127648414848,
+  "dataset_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage66_davis_feedforward_selector_dataset/stage66_davis_selector_dataset.csv",
+  "sequence_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage66_davis_feedforward_selector_dataset/stage66_davis_selector_sequence_summary.csv",
+  "correlation_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage66_davis_feedforward_selector_dataset/stage66_davis_selector_feature_correlations.csv",
+  "notes": "Features are encoder-side only. Labels use Stage65 adapter errors against dense gap1 anchors as offline supervision and are not test-time inputs."
+}

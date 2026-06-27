@@ -1,0 +1,13 @@
+dataset,split,selector_split,sequence,sample,frame_count,candidate_segment_count,emitted_rows,label_adapter_mse_mean_avg,label_linear_mse_mean_avg,adapter_better_segment_count
+DAVIS,train,train,bus,DAVIS/train/bus,80,384,384,0.02989842204210116,0.010029288463137515,0
+DAVIS,train,train,cat-girl,DAVIS/train/cat-girl,89,384,384,0.03320805051089708,0.013535609812214697,0
+DAVIS,train,train,elephant,DAVIS/train/elephant,80,384,384,0.029538809355099865,0.007356507490679794,0
+DAVIS,train,train,flamingo,DAVIS/train/flamingo,80,384,384,0.028951039742393787,0.010331962665616999,0
+DAVIS,train,train,lady-running,DAVIS/train/lady-running,65,384,384,0.030221021737409415,0.010692924205479857,0
+DAVIS,train,train,scooter-gray,DAVIS/train/scooter-gray,75,384,384,0.03570488673280755,0.01617723923654833,0
+DAVIS,train,train,swing,DAVIS/train/swing,60,384,384,0.030960215194587762,0.010664232592093837,0
+DAVIS,train,train,tuk-tuk,DAVIS/train/tuk-tuk,59,384,384,0.03252085318555211,0.012680307307516533,0
+DAVIS,val,eval,bmx-trees,DAVIS/val/bmx-trees,80,384,384,0.03199844305482592,0.012656452287263276,0
+DAVIS,val,eval,car-shadow,DAVIS/val/car-shadow,40,384,384,0.030318504579226718,0.009186921132642606,0
+DAVIS,val,eval,goat,DAVIS/val/goat,90,384,384,0.03540053686729382,0.014673056991217542,0
+DAVIS,val,eval,soapbox,DAVIS/val/soapbox,99,384,384,0.03156149045878711,0.010965029596567179,0

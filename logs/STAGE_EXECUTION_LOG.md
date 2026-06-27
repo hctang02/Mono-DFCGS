@@ -4854,3 +4854,72 @@ Output sizes：
 - Best-step 下 gaps `2/4/8/16` 全部为正，gap `8` 在该 eval subset 上 gain 最大。
 - RGB-only route 会显著恶化 dense-anchor teacher MSE，因此 teacher-anchor MSE 不能作为该 route 的模型选择指标。
 - Stage65 仍是 intermediate eval-task training 结果，不是最终 all-frame RD evaluation。
+
+## 2026-06-27：Stage66 DAVIS Feed-Forward Selector Dataset
+
+### 目标
+
+构建 DAVIS feed-forward selector segment-cost dataset，为 Stage67 selector predictor / deterministic DP training 做准备。
+
+Stage66 只生成数据集，不做最终 selector quality claim。Features 限制为 encoder-side 信息：segment metadata、endpoint Gaussian-anchor statistics 和 original RGB motion statistics。Labels 使用 Stage65 best `rgb_h256` adapter 和 dense gap1 anchors 离线生成，不作为 test-time input。
+
+### 代码
+
+新增：
+
+```text
+scripts/run_stage66_davis_feedforward_selector_dataset.py
+```
+
+### 执行
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage66_davis_feedforward_selector_dataset.py
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage66_davis_feedforward_selector_dataset.py --device cuda
+```
+
+### 输出
+
+Tracked outputs：
+
+```text
+experiments/stage66_davis_feedforward_selector_dataset/stage66_davis_selector_dataset.csv
+experiments/stage66_davis_feedforward_selector_dataset/stage66_davis_selector_sequence_summary.csv
+experiments/stage66_davis_feedforward_selector_dataset/stage66_davis_selector_feature_correlations.csv
+experiments/stage66_davis_feedforward_selector_dataset/stage66_davis_selector_dataset_summary.json
+```
+
+Output size：`2.4M`。
+
+### Results
+
+- Selected sequences：`12`。
+- Train sequences：`8`。
+- Eval sequences：`4`。
+- Dataset rows：`4608`。
+- Train rows：`3072`。
+- Eval rows：`1536`。
+- Max segment length：`16`。
+- Max segments per sequence：`384`。
+- Adapter-better-than-linear in anchor space：`0 / 4608`。
+- Mean adapter anchor MSE label：`0.031690189455081855`。
+- Mean linear anchor MSE label：`0.011579127648414848`。
+
+Strongest all-scope feature correlations with `log10(adapter_anchor_mse_mean)`：
+
+| feature | Pearson |
+|---|---:|
+| `endpoint_anchor_l1` | `0.7819601460791495` |
+| `endpoint_rgb_mse` | `0.7630952706790444` |
+| `endpoint_anchor_mse` | `0.7528988639175856` |
+| `rgb_motion_max` | `0.7304595140192872` |
+| `rgb_motion_mean` | `0.7021857588764513` |
+
+### 结论
+
+- Stage66 建立了 DAVIS selector dataset 的最小闭环：encoder-side features + offline labels。
+- Endpoint-anchor/RGB-motion features 对 anchor-space adapter error 有明显相关性，说明可训练 feed-forward segment-cost predictor。
+- 但 Stage65 RGB adapter 在 anchor-space MSE 上全段都差于 linear，这再次说明 dense-anchor MSE 不是 rendered PSNR 的可靠代理。
+- Stage67 若直接训练 selector predictor，应明确它是 anchor-space difficulty proxy；更强路线是在 Stage67/68 增加 rendered-distortion label subset，再做 deployable selector RD。

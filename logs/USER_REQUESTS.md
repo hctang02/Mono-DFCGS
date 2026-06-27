@@ -803,3 +803,17 @@ Stage65 sanity run 已完成：64 train tasks、16 eval tasks、1024 steps，bes
 ### Medium run 执行更新
 
 Stage65 medium run 已完成：128 train tasks、32 eval tasks、5000 steps，best checkpoint 在 step `4000`，best eval margin over q8 linear 为 `+0.2734731971829376 dB`，final step `5000` margin 为 `+0.21907000507035335 dB`。Best-step 下 gaps `2/4/8/16` 全部为正。下一步应使用 Stage65 best checkpoint 做 full-video/all-frame evaluation，或进入 feed-forward selector dataset/training，并继续保持 rendered oracle 仅作为 upper bound 或 training label。
+
+## 2026-06-27：执行 Stage66 DAVIS feed-forward selector dataset
+
+### 用户原始问题
+
+用户要求：如果有下一步就继续执行；如果不确定如何推进，再停下来询问。
+
+### 当前执行决策
+
+Stage65 已完成并推送。按 Stage56-70 计划进入 Stage66：构建 DAVIS feed-forward selector segment-cost dataset。该阶段只生成 selector training/eval 数据，不训练最终 selector。Features 限制为 encoder-side 信息，包括 segment metadata、endpoint Gaussian-anchor statistics 和 original RGB motion statistics；labels 离线使用 Stage65 best adapter 与 dense gap1 anchors 计算，不作为 test-time input。
+
+### 后续执行更新
+
+Stage66 dataset 已完成：选取 DAVIS train `8` 个序列、val `4` 个序列，共生成 `4608` 个 segment rows，其中 train rows `3072`、eval rows `1536`。Endpoint-anchor/RGB-motion features 与 offline anchor-space adapter error label 有明显相关性，最高 Pearson 为 `endpoint_anchor_l1=0.7819601460791495`。同时发现 Stage65 RGB adapter 在 anchor-space MSE 上 `0/4608` 段优于 linear，说明该 label 只能作为 difficulty proxy，不能直接代表 rendered PSNR。下一步 Stage67 需要训练 feed-forward segment-cost predictor，并最好补 rendered-distortion label subset 后再做 selector RD claim。

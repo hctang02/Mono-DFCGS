@@ -473,3 +473,10 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - The Stage65 medium run peaks at step `4000`; the final step `5000` remains positive but is worse. Report and use the best checkpoint unless explicitly studying final-step behavior.
 - RGB render-loss training can improve rendered PSNR while making dense-anchor teacher MSE much worse. Do not use teacher MSE to choose RGB-only checkpoints.
 - Stage65 validation is still intermediate-task evaluation, not full-video all-frame RD. A full all-frame evaluation is needed before using this as a final codec point.
+
+## Stage66 Selector Dataset Notes
+
+- Stage66 labels are offline dense-anchor MSE labels generated with the Stage65 adapter. They are allowed as training supervision but must not be used at selector test time.
+- The Stage65 RGB adapter is worse than linear for every Stage66 segment in anchor-space MSE, despite improving rendered eval PSNR in Stage65. Treat anchor-space labels as a difficulty proxy, not as a final rendered-quality objective.
+- Endpoint-anchor and RGB-motion features correlate strongly with the anchor-space label, so a feed-forward predictor is feasible, but Stage67/68 still need rendered-quality validation before selector claims.
+- `endpoint_rot_mse` can have undefined Pearson correlation when the feature has near-zero variance; do not interpret blank correlation cells as failures.
