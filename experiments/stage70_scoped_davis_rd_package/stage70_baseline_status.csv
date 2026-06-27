@@ -1,0 +1,4 @@
+method,status,rate_status,all_psnr_status,notes
+FCGS,not_run_locally,missing apples-to-apples transmitted anchor/bitstream rate,missing DAVIS eval-subset rendered all-frame PSNR,Add local fair baseline before final paper-level RD claims.
+D-FCGS,not_run_locally,missing apples-to-apples transmitted anchor/bitstream rate,missing DAVIS eval-subset rendered all-frame PSNR,Primary baseline still required for final comparison.
+CWGS,optional_not_run_locally,missing local rate,missing local all-frame PSNR,Optional supplemental baseline after FCGS/D-FCGS.

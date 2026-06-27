@@ -5102,3 +5102,70 @@ Output size：`28K`。
 - Oracle/same-data fallback 说明避开负点有潜在收益，但不是 deployable claim。
 - Leave-one-sequence-out threshold fallback 在当前 4 个 eval sequences 上反而变差，mean all PSNR delta `-0.01170162890067535 dB`。
 - 简单 layout/cost threshold 不足以稳定 selector；下一步需要更多 rendered labels 或 decision-aware fallback classifier。
+
+## 2026-06-27：Stage70 Scoped DAVIS RD Package
+
+### 目标
+
+将当前 Stage68/69 DAVIS eval-subset 结果整理为 scoped RD package：rate table、all-frame PSNR table、selector delta table、method summary、baseline status 和 RD curve。
+
+Stage70 不重渲染，不声明最终完整 benchmark。
+
+### 代码
+
+新增：
+
+```text
+scripts/run_stage70_scoped_davis_rd_package.py
+```
+
+### 执行
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。Stage70 是 report/plot generation。
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage70_scoped_davis_rd_package.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage70_scoped_davis_rd_package.py
+```
+
+### 输出
+
+Tracked outputs：
+
+```text
+experiments/stage70_scoped_davis_rd_package/stage70_rate_table.csv
+experiments/stage70_scoped_davis_rd_package/stage70_all_psnr_table.csv
+experiments/stage70_scoped_davis_rd_package/stage70_selector_delta_table.csv
+experiments/stage70_scoped_davis_rd_package/stage70_method_summary.csv
+experiments/stage70_scoped_davis_rd_package/stage70_baseline_status.csv
+experiments/stage70_scoped_davis_rd_package/stage70_scoped_davis_rd_curve.png
+experiments/stage70_scoped_davis_rd_package/stage70_scoped_davis_rd_package_summary.json
+```
+
+Output size：`408K`。
+
+### Results
+
+Mean all-frame PSNR summary：
+
+| method | selector | gap | mean rate MiB/frame | mean all PSNR |
+|---|---|---:|---:|---:|
+| `linear_anchor` | `uniform` | `4` | `0.12188942649147727` | `20.137413494810616` |
+| `linear_anchor` | `uniform` | `8` | `0.06551069779829546` | `18.063459460774446` |
+| `linear_anchor` | `uniform` | `16` | `0.03811479048295455` | `16.59656669447801` |
+| `stage65_rgb_h256_adapter` | `uniform` | `4` | `0.12188942649147727` | `20.608531857721726` |
+| `stage65_rgb_h256_adapter` | `uniform` | `8` | `0.06551069779829546` | `18.54248864942665` |
+| `stage65_rgb_h256_adapter` | `uniform` | `16` | `0.03811479048295455` | `17.01303254555753` |
+| `stage65_rgb_h256_adapter` | `predicted_full_feature_dp` | `4` | `0.12188942649147727` | `20.634207426626656` |
+| `stage65_rgb_h256_adapter` | `predicted_full_feature_dp` | `8` | `0.06551069779829546` | `18.525169717464813` |
+| `stage65_rgb_h256_adapter` | `predicted_full_feature_dp` | `16` | `0.03811479048295455` | `17.096890478737578` |
+
+Selector aggregate：`7 / 12` positive，mean adapter all-frame PSNR delta `+0.030738190041048163 dB`。
+
+Baseline status：FCGS/D-FCGS/CWGS are not yet locally evaluated apples-to-apples.
+
+### 结论
+
+- Stage70 完成当前 scoped DAVIS RD package。
+- 该 package 可用于内部进度汇总和展示，但不能作为最终 benchmark。
+- 最终报告仍需要补 FCGS/D-FCGS local fair baselines、selector robustness 和更完整数据覆盖。

@@ -1,0 +1,211 @@
+{
+  "stage": 70,
+  "mode": "scoped DAVIS RD package from Stage68/69 outputs",
+  "stage68_result_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage68_davis_feedforward_selector_rendered_validation/stage68_davis_selector_rendered_validation.csv",
+  "stage68_comparison_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage68_davis_feedforward_selector_rendered_validation/stage68_davis_selector_comparison.csv",
+  "stage69_policy_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage69_selector_fallback_calibration/stage69_selector_policy_summary.csv",
+  "rate_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage70_scoped_davis_rd_package/stage70_rate_table.csv",
+  "all_psnr_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage70_scoped_davis_rd_package/stage70_all_psnr_table.csv",
+  "selector_delta_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage70_scoped_davis_rd_package/stage70_selector_delta_table.csv",
+  "method_summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage70_scoped_davis_rd_package/stage70_method_summary.csv",
+  "baseline_status_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage70_scoped_davis_rd_package/stage70_baseline_status.csv",
+  "rd_plot": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage70_scoped_davis_rd_package/stage70_scoped_davis_rd_curve.png",
+  "samples": [
+    "DAVIS/val/bmx-trees",
+    "DAVIS/val/car-shadow",
+    "DAVIS/val/goat",
+    "DAVIS/val/soapbox"
+  ],
+  "gaps": [
+    4,
+    8,
+    16
+  ],
+  "method_summary": [
+    {
+      "method": "linear_anchor",
+      "selector": "predicted_full_feature_dp",
+      "reference_gap": 4,
+      "point_count": 4,
+      "mean_rate_mib_per_frame": 0.12188942649147727,
+      "mean_all_psnr": 20.159961390260744
+    },
+    {
+      "method": "linear_anchor",
+      "selector": "predicted_full_feature_dp",
+      "reference_gap": 8,
+      "point_count": 4,
+      "mean_rate_mib_per_frame": 0.06551069779829546,
+      "mean_all_psnr": 18.05359837174225
+    },
+    {
+      "method": "linear_anchor",
+      "selector": "predicted_full_feature_dp",
+      "reference_gap": 16,
+      "point_count": 4,
+      "mean_rate_mib_per_frame": 0.03811479048295455,
+      "mean_all_psnr": 16.671648565450113
+    },
+    {
+      "method": "linear_anchor",
+      "selector": "uniform",
+      "reference_gap": 4,
+      "point_count": 4,
+      "mean_rate_mib_per_frame": 0.12188942649147727,
+      "mean_all_psnr": 20.137413494810616
+    },
+    {
+      "method": "linear_anchor",
+      "selector": "uniform",
+      "reference_gap": 8,
+      "point_count": 4,
+      "mean_rate_mib_per_frame": 0.06551069779829546,
+      "mean_all_psnr": 18.063459460774446
+    },
+    {
+      "method": "linear_anchor",
+      "selector": "uniform",
+      "reference_gap": 16,
+      "point_count": 4,
+      "mean_rate_mib_per_frame": 0.03811479048295455,
+      "mean_all_psnr": 16.59656669447801
+    },
+    {
+      "method": "stage65_rgb_h256_adapter",
+      "selector": "predicted_full_feature_dp",
+      "reference_gap": 4,
+      "point_count": 4,
+      "mean_rate_mib_per_frame": 0.12188942649147727,
+      "mean_all_psnr": 20.634207426626656
+    },
+    {
+      "method": "stage65_rgb_h256_adapter",
+      "selector": "predicted_full_feature_dp",
+      "reference_gap": 8,
+      "point_count": 4,
+      "mean_rate_mib_per_frame": 0.06551069779829546,
+      "mean_all_psnr": 18.525169717464813
+    },
+    {
+      "method": "stage65_rgb_h256_adapter",
+      "selector": "predicted_full_feature_dp",
+      "reference_gap": 16,
+      "point_count": 4,
+      "mean_rate_mib_per_frame": 0.03811479048295455,
+      "mean_all_psnr": 17.096890478737578
+    },
+    {
+      "method": "stage65_rgb_h256_adapter",
+      "selector": "uniform",
+      "reference_gap": 4,
+      "point_count": 4,
+      "mean_rate_mib_per_frame": 0.12188942649147727,
+      "mean_all_psnr": 20.608531857721726
+    },
+    {
+      "method": "stage65_rgb_h256_adapter",
+      "selector": "uniform",
+      "reference_gap": 8,
+      "point_count": 4,
+      "mean_rate_mib_per_frame": 0.06551069779829546,
+      "mean_all_psnr": 18.54248864942665
+    },
+    {
+      "method": "stage65_rgb_h256_adapter",
+      "selector": "uniform",
+      "reference_gap": 16,
+      "point_count": 4,
+      "mean_rate_mib_per_frame": 0.03811479048295455,
+      "mean_all_psnr": 17.01303254555753
+    }
+  ],
+  "selector_mean_delta_adapter_all_psnr": 0.030738190041048163,
+  "selector_positive_points": 7,
+  "selector_point_count": 12,
+  "policy_summary": [
+    {
+      "policy": "uniform",
+      "count": "12",
+      "accepted_predicted_points": "0",
+      "positive_all_points": "0",
+      "mean_delta_all_psnr": "0.0",
+      "min_delta_all_psnr": "0.0",
+      "max_delta_all_psnr": "0.0",
+      "train_policy": "always uniform",
+      "notes": "deployable baseline"
+    },
+    {
+      "policy": "fixed_predicted",
+      "count": "12",
+      "accepted_predicted_points": "12",
+      "positive_all_points": "7",
+      "mean_delta_all_psnr": "0.030738190041048163",
+      "min_delta_all_psnr": "-0.10978492809701024",
+      "max_delta_all_psnr": "0.26277712715562274",
+      "train_policy": "always predicted",
+      "notes": "deployable but unstable Stage68 selector"
+    },
+    {
+      "policy": "oracle_positive_fallback",
+      "count": "12",
+      "accepted_predicted_points": "7",
+      "positive_all_points": "7",
+      "mean_delta_all_psnr": "0.04350771650468873",
+      "min_delta_all_psnr": "0.0",
+      "max_delta_all_psnr": "0.26277712715562274",
+      "train_policy": "uses actual rendered outcome",
+      "notes": "oracle upper bound; not deployable"
+    },
+    {
+      "policy": "same_data_threshold_fallback",
+      "count": "12",
+      "accepted_predicted_points": "5",
+      "positive_all_points": "5",
+      "mean_delta_all_psnr": "0.03745316604097404",
+      "min_delta_all_psnr": "0.0",
+      "max_delta_all_psnr": "0.26277712715562274",
+      "train_policy": "trained and evaluated on Stage68",
+      "notes": "analysis upper bound; not deployable"
+    },
+    {
+      "policy": "loocv_threshold_fallback",
+      "count": "12",
+      "accepted_predicted_points": "4",
+      "positive_all_points": "1",
+      "mean_delta_all_psnr": "-0.01170162890067535",
+      "min_delta_all_psnr": "-0.10978492809701024",
+      "max_delta_all_psnr": "0.0055252224122490645",
+      "train_policy": "leave-one-sequence-out threshold",
+      "notes": "deployable-style small-sample calibration"
+    }
+  ],
+  "baseline_status": [
+    {
+      "method": "FCGS",
+      "status": "not_run_locally",
+      "rate_status": "missing apples-to-apples transmitted anchor/bitstream rate",
+      "all_psnr_status": "missing DAVIS eval-subset rendered all-frame PSNR",
+      "notes": "Add local fair baseline before final paper-level RD claims."
+    },
+    {
+      "method": "D-FCGS",
+      "status": "not_run_locally",
+      "rate_status": "missing apples-to-apples transmitted anchor/bitstream rate",
+      "all_psnr_status": "missing DAVIS eval-subset rendered all-frame PSNR",
+      "notes": "Primary baseline still required for final comparison."
+    },
+    {
+      "method": "CWGS",
+      "status": "optional_not_run_locally",
+      "rate_status": "missing local rate",
+      "all_psnr_status": "missing local all-frame PSNR",
+      "notes": "Optional supplemental baseline after FCGS/D-FCGS."
+    }
+  ],
+  "notes": [
+    "This is a scoped DAVIS eval-subset package, not the final full benchmark.",
+    "Default quality metric is all-frame PSNR.",
+    "Rate is q8 static keyframe-anchor MiB/frame; decoder/model weights are not counted per-video.",
+    "FCGS/D-FCGS apples-to-apples local baselines are still missing."
+  ]
+}

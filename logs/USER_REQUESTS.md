@@ -859,3 +859,17 @@ Stage68 暴露 selector 不稳定问题，因此 Stage69 先做 fallback calibra
 ### 后续执行更新
 
 Stage69 fallback calibration analysis 已完成：fixed predicted mean all-frame PSNR delta 为 `+0.030738190041048163 dB`，但最差点 `-0.10978492809701024 dB`；oracle-positive fallback 上界为 `+0.04350771650468873 dB` 且无负点；same-data threshold 上界为 `+0.03745316604097404 dB` 且无负点；leave-one-sequence-out threshold fallback 反而为 `-0.01170162890067535 dB`。结论是简单 threshold fallback 不稳定，下一步需要更多 rendered labels 或 decision-aware fallback classifier。
+
+## 2026-06-27：执行 Stage70 scoped DAVIS RD package
+
+### 用户原始问题
+
+用户要求：好的，继续一直往下做。
+
+### 当前执行决策
+
+Stage69 已完成并推送。继续 Stage70：把当前 Stage68/69 DAVIS eval-subset 结果整理成 scoped RD package，包括 rate table、all-frame PSNR table、selector delta table、method summary、RD curve 和 FCGS/D-FCGS baseline status。该阶段不重渲染，也不声明最终完整 benchmark。
+
+### 后续执行更新
+
+Stage70 scoped DAVIS RD package 已完成：生成 rate table、all-frame PSNR table、selector delta table、method summary、baseline status 和 RD curve。当前 selector aggregate 为 `7/12` positive，mean adapter all-frame PSNR delta `+0.030738190041048163 dB`。Stage70 明确标记 FCGS/D-FCGS 尚未做 local apples-to-apples baseline，因此它是 scoped progress package，不是最终 benchmark。

@@ -499,3 +499,10 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Same-data threshold fallback can remove Stage68 negatives, but it is an analysis upper bound because it is trained and evaluated on the same rendered outcomes.
 - Leave-one-sequence-out threshold fallback is worse than fixed predicted on the small Stage68 set. Do not claim that simple layout/cost fallback solves selector instability.
 - The useful conclusion is negative/diagnostic: robust selector fallback needs more rendered labels or a stronger decision-aware objective.
+
+## Stage70 Scoped RD Package Notes
+
+- Stage70 is a scoped DAVIS eval-subset package, not the final benchmark.
+- FCGS/D-FCGS apples-to-apples local baselines are still missing and must be added before final comparison claims.
+- Stage70 uses q8 static keyframe-anchor MiB/frame; it does not include model weights as per-video rate.
+- The predicted selector curve remains mixed because Stage68 selector robustness is unresolved.

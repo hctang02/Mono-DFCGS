@@ -1,0 +1,13 @@
+method,selector,reference_gap,point_count,mean_rate_mib_per_frame,mean_all_psnr
+linear_anchor,predicted_full_feature_dp,4,4,0.12188942649147727,20.159961390260744
+linear_anchor,predicted_full_feature_dp,8,4,0.06551069779829546,18.05359837174225
+linear_anchor,predicted_full_feature_dp,16,4,0.03811479048295455,16.671648565450113
+linear_anchor,uniform,4,4,0.12188942649147727,20.137413494810616
+linear_anchor,uniform,8,4,0.06551069779829546,18.063459460774446
+linear_anchor,uniform,16,4,0.03811479048295455,16.59656669447801
+stage65_rgb_h256_adapter,predicted_full_feature_dp,4,4,0.12188942649147727,20.634207426626656
+stage65_rgb_h256_adapter,predicted_full_feature_dp,8,4,0.06551069779829546,18.525169717464813
+stage65_rgb_h256_adapter,predicted_full_feature_dp,16,4,0.03811479048295455,17.096890478737578
+stage65_rgb_h256_adapter,uniform,4,4,0.12188942649147727,20.608531857721726
+stage65_rgb_h256_adapter,uniform,8,4,0.06551069779829546,18.54248864942665
+stage65_rgb_h256_adapter,uniform,16,4,0.03811479048295455,17.01303254555753
