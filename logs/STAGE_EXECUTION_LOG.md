@@ -5982,6 +5982,71 @@ Policy guardrails：
 
 结论：Stage84 固化了 selector rendered labels 和 deployability guardrails。当前 fixed-predicted selector 有平均增益但最坏点明显为负；满足 nonnegative min-delta 的安全 deployable policy 仍是 uniform。oracle-positive / same-data threshold 只能作为离线分析上界，不能作为 test-time selector 方案。
 
+## 2026-06-28：Stage85 Dynamic Residual Side-Info Preflight
+
+### 目标
+
+估计中间帧 dynamic residual side-info 的 anchor-space 潜力和码率成本，为后续是否实现真实 side-info codec 做依据。
+
+### 操作计划
+
+- 新增 `scripts/run_stage85_dynamic_residual_sideinfo_preflight.py`。
+- 输入 Stage79 adapter tasks 和 Stage61 dense gap1 anchor manifest。
+- 使用 dense gap1 target anchors 作为离线 teacher。
+- 对 q10/q12 endpoint 输入，比较 linear 和 Stage65 adapter 的 target-anchor residual energy。
+- 估计 top-k residual Gaussian side-info：keep fractions `0, 0.01, 0.05, 0.1, 0.25, 1.0`，side bits `6, 8`。
+- 输出 residual MSE、captured energy fraction、estimated side-info MiB/intermediate-frame。
+- Stage85 可用 GPU 加速 adapter forward；运行前按要求检查 `nvidia-smi`。
+
+### Stage85 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 preflight。
+
+新增脚本：
+
+```text
+scripts/run_stage85_dynamic_residual_sideinfo_preflight.py
+```
+
+仓库内输出：
+
+```text
+experiments/stage85_dynamic_residual_sideinfo_preflight/stage85_dynamic_residual_sideinfo_preflight_summary.json
+experiments/stage85_dynamic_residual_sideinfo_preflight/stage85_dynamic_residual_sideinfo_preflight_report.md
+experiments/stage85_dynamic_residual_sideinfo_preflight/stage85_dynamic_residual_sideinfo_rows.csv
+experiments/stage85_dynamic_residual_sideinfo_preflight/stage85_dynamic_residual_sideinfo_summary.csv
+```
+
+配置：
+
+| tasks | codecs | gaps | side bits | keep fractions |
+|---:|---|---|---|---|
+| 60 | q10,q12 | 4,8,16 | 6,8 | 0,0.01,0.05,0.1,0.25,1.0 |
+
+q12 linear residual side-info key rows：
+
+| gap | keep | 8-bit MiB/intermediate-frame | captured energy |
+|---:|---:|---:|---:|
+| 4 | 0.10 | 0.05272865295410156 | 0.6736598664316831 |
+| 4 | 0.25 | 0.1318359375 | 0.8786127617934746 |
+| 8 | 0.10 | 0.05272865295410156 | 0.6167360978722798 |
+| 8 | 0.25 | 0.1318359375 | 0.8502699399525562 |
+| 16 | 0.10 | 0.05272865295410156 | 0.6257691648725925 |
+| 16 | 0.25 | 0.1318359375 | 0.8485600745450567 |
+
+q12 Stage65 adapter residual side-info key rows：
+
+| gap | keep | 8-bit MiB/intermediate-frame | captured energy |
+|---:|---:|---:|---:|
+| 4 | 0.10 | 0.05272865295410156 | 0.25083170952874323 |
+| 4 | 0.25 | 0.1318359375 | 0.4357608051236221 |
+| 8 | 0.10 | 0.05272865295410156 | 0.26118229986966074 |
+| 8 | 0.25 | 0.1318359375 | 0.45968361079173065 |
+| 16 | 0.10 | 0.05272865295410156 | 0.24572836645426546 |
+| 16 | 0.25 | 0.1318359375 | 0.4386825171223625 |
+
+结论：linear residual 的 anchor-space energy 很集中，少量 top-k residual side-info 理论上可覆盖较大 residual energy；Stage65 adapter 的 anchor-space residual 更分散。该阶段不是 rendered RD，也未建模 residual quantization distortion。任何 dynamic residual side-info 若传输，必须作为 side-info rate 加到 total rate。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。

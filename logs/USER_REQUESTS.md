@@ -1057,3 +1057,17 @@ Stage84 转向 selector 线，不重新渲染，而是复用 Stage68 rendered va
 ### 后续执行更新
 
 Stage84 rendered selector label package 已完成：输出 `12` 个 rendered label，其中 predicted selection 正向 `7` 个，mean rendered delta `+0.030738190041048163 dB`，min delta `-0.10978492809701024 dB`。按 gap 看，gap4 mean `+0.025675568904931723 dB`、gap8 mean `-0.01731893196183698 dB`、gap16 mean `+0.08385793318004975 dB`。policy guardrail 结论：fixed-predicted 是 mean 最好的 deployable candidate，但 min delta 为负，属于 unstable；满足 nonnegative min-delta guardrail 的 best safe deployable policy 仍是 uniform。oracle-positive fallback mean `+0.04350771650468873 dB` 且 min `0.0`，但它使用 rendered outcome，只是分析上界，不能作为 deployable claim。输出目录为 `experiments/stage84_rendered_selector_label_package/`。
+
+## 2026-06-28：继续 Stage85 dynamic residual side-info preflight
+
+### 用户原始问题
+
+用户要求继续执行后续步骤，都做完了再汇报。
+
+### 当前执行决策
+
+Stage85 转向 dynamic side-info 线，先做 anchor-space residual preflight，不渲染、不训练。计划使用 Stage79 eval tasks 和 Stage61 dense gap1 anchors，计算 q10/q12 endpoint 输入下 linear/Stage65 adapter 到 dense target anchor 的 residual energy；再估计如果传 top-k residual Gaussian side-info，在不同 keep fraction 和 side bits 下能覆盖多少 residual energy、需要多少 MiB/intermediate-frame。该 side-info 是未来若传输必须计入 rate 的额外内容；Stage85 只做 optimistic anchor-space upper-bound 估算，不作为最终 RD。
+
+### 后续执行更新
+
+Stage85 dynamic residual side-info preflight 已完成：覆盖 `60` 个 Stage79 eval tasks，codecs `q10/q12`，gaps `4/8/16`，side bits `6/8`，keep fractions `0/1%/5%/10%/25%/100%`。运行前检查 `nvidia-smi`，GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。关键结果：以 q12 linear 为例，8-bit residual side-info top 10% 约 `0.05272865295410156 MiB/intermediate-frame`，可覆盖 gap4 `0.6736598664316831`、gap8 `0.6167360978722798`、gap16 `0.6257691648725925` 的 anchor residual energy；top 25% 约 `0.1318359375 MiB/intermediate-frame`，可覆盖约 `0.85-0.88`。Stage65 adapter 的 anchor-space residual 更分散，q12 top 10% 只覆盖 gap4 `0.25083170952874323`、gap8 `0.26118229986966074`、gap16 `0.24572836645426546`。结论：dynamic residual side-info 可能有潜力，但 side-info rate 不小，而且当前只是 optimistic anchor-space estimate，没有建模量化失真和 rendered RD。
