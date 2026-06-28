@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage123: `9972a6a Package compressed deterministic RD`
+- Latest pushed commit before Stage124: `4c9fac5 Package deterministic codec policy`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -78,6 +78,7 @@ Key Stage96 direct total rates:
 - Stage121: 60-task broader rendered compressed deterministic validation confirms q4/top20 and q4/top10 are stable candidates.
 - Stage122: packaged compressed deterministic RD rows/points; q4/top20 is primary, q4/top10 low-rate, q5/top10 near-anchor, q6/top10 anchor.
 - Stage123: packaged codec policy manifest around strict-safe endpoint selector and compressed deterministic value-only side-info.
+- Stage124: feed-forward residual value predictor smoke using Stage65 adapter delta over linear base completed.
 
 ## Current Best Selector Policy
 
@@ -145,6 +146,7 @@ Stage113 held-out diagnostic:
 - Stage121 broader validation confirms q4/top20 remains best: PSNR `20.689270746602087`, `+0.9223020959187475 dB` vs q6/top10, direct rate `0.1337680887378662` vs q6/top10 `0.1348375550108561`; q4/top10 gives PSNR `19.73848817438193`, only `-0.028480476301425663 dB` vs q6/top10 at direct rate `0.12124604296658527`.
 - Stage122 RD package compares against Stage96 entropy reference: q4/top20 is lower rate by `-0.004194490114847849 MiB/frame` but lower PSNR by `-0.8305321438068527 dB`; q4/top10 is lower rate by `-0.016716535886128772 MiB/frame` and lower PSNR by `-1.781314716027025 dB`.
 - Stage123 codec policy package freezes policy `compressed_deterministic_value_only_residual_codec_v1`; status remains `package_not_full_residual_predictor` because residual values are still teacher-derived.
+- Stage124 no-teacher residual value predictor smoke: `adapter_delta_selected_v1` q4/top10 improves over linear base by `+0.027863362265533247 dB` and q4/top20 by `+0.019370720622054066 dB` on 12 rendered tasks, with zero residual/index payload bytes and no target dense anchor input.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -470,11 +472,29 @@ Result:
 
 Goal: freeze codec policy manifest for compressed deterministic value-only residual side-info.
 
+### Stage124: Feed-Forward Residual Value Predictor Smoke
+
+Status: completed on 2026-06-29.
+
+Result:
+
+- Added `mono_dfcgs/residual_value_predictor.py`.
+- Added `scripts/run_stage124_feedforward_residual_value_predictor_smoke.py`.
+- Output: `experiments/stage124_feedforward_residual_value_predictor_smoke/`.
+- Predictor: `adapter_delta_selected_v1`.
+- Task count: `12`; row count: `24`.
+- Residual payload bytes: `0`; selected-index payload bytes: `0`.
+- Target dense anchors are not loaded or used; target RGB is used only for offline rendered metrics.
+- q4/top10: selected PSNR `20.107502942874657`, linear base PSNR `20.079639580609125`, full adapter PSNR `20.18242498795657`, delta vs base `+0.027863362265533247`, delta vs full `-0.0749220450819122`.
+- q4/top20: selected PSNR `20.099010301231182`, delta vs base `+0.019370720622054066`, delta vs full `-0.08341468672539139`.
+
+Goal: create first no-teacher feed-forward residual value predictor smoke.
+
 ## Later Plan After Selector Stabilizes
 
 ### Deterministic-Index Side-Info Codec
 
-- Stage124: start residual value predictor package/smoke to replace teacher-derived residual values.
+- Stage125: broaden feed-forward residual value predictor validation and/or train a dedicated selected residual value predictor.
 
 ### Residual Value Prediction
 
@@ -537,6 +557,7 @@ Goal: freeze codec policy manifest for compressed deterministic value-only resid
 - Stage121 broader rendered compressed deterministic validation: `scripts/run_stage121_broader_rendered_compressed_deterministic_validation.py`
 - Stage122 compressed deterministic RD package: `scripts/run_stage122_compressed_deterministic_rd_package.py`
 - Stage123 compressed deterministic codec policy package: `scripts/run_stage123_compressed_deterministic_codec_policy_package.py`
+- Stage124 feed-forward residual value predictor smoke: `scripts/run_stage124_feedforward_residual_value_predictor_smoke.py`
 
 ### Important Outputs
 
@@ -563,6 +584,7 @@ Goal: freeze codec policy manifest for compressed deterministic value-only resid
 - Stage121 broader rendered compressed deterministic validation: `experiments/stage121_broader_rendered_compressed_deterministic_validation/`
 - Stage122 compressed deterministic RD package: `experiments/stage122_compressed_deterministic_rd_package/`
 - Stage123 compressed deterministic codec policy package: `experiments/stage123_compressed_deterministic_codec_policy_package/`
+- Stage124 feed-forward residual value predictor smoke: `experiments/stage124_feedforward_residual_value_predictor_smoke/`
 
 ### Heavy External Paths
 

@@ -8642,3 +8642,65 @@ experiments/stage123_compressed_deterministic_codec_policy_package/stage123_comp
 - Decoder-side selected indices are reproducible from left/right anchors and are not transmitted.
 - The package is not a full deployable residual predictor because values remain teacher-derived at encoder side.
 - Next step should focus on residual value prediction or a predictor manifest/smoke.
+
+## 2026-06-29：Stage124 Feed-Forward Residual Value Predictor Smoke
+
+### 目标
+
+Start replacing teacher-derived residual values with a decoder-side feed-forward residual value predictor smoke.
+
+### 操作计划
+
+- Add a small reusable residual-value predictor utility for endpoint-diff top-k indices and selected residual application.
+- Add a Stage124 rendered smoke script.
+- Use the existing Stage65 adapter as a feed-forward predictor over linear base: predicted selected residual values are `adapter_attrs - linear_attrs` at deterministic endpoint-diff selected indices.
+- Evaluate Stage123 primary `q4_top20` and low-rate `q4_top10` settings on a small balanced eval slice.
+- Count residual payload bytes and selected-index payload bytes as zero for this predictor smoke.
+- Do not use target dense anchors for decoder inputs; target RGB is only for offline metrics.
+- Do not train a new model and do not save checkpoints/heavy tensors.
+- Check `nvidia-smi` before Python execution.
+
+### GPU 检查
+
+运行前已检查 `nvidia-smi`。GPU2 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。修正 Stage78 rate table 字段兼容后重跑前也再次检查，GPU2 仍空闲。
+
+### 执行命令
+
+```text
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile mono_dfcgs/residual_value_predictor.py scripts/run_stage124_feedforward_residual_value_predictor_smoke.py
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage124_feedforward_residual_value_predictor_smoke.py
+```
+
+### 首跑修复
+
+首次运行失败于 Stage78 rate table 字段名：脚本最初读取 `reference_gap` / `transmitted_mib_per_frame`，实际表头为 `frame_gap` / `mean_static_anchor_mib_per_frame_with_metadata`。已改为兼容两套字段后重跑成功。
+
+### 输出文件
+
+```text
+experiments/stage124_feedforward_residual_value_predictor_smoke/stage124_feedforward_residual_value_predictor_smoke_rows.csv
+experiments/stage124_feedforward_residual_value_predictor_smoke/stage124_feedforward_residual_value_predictor_smoke_summary.csv
+experiments/stage124_feedforward_residual_value_predictor_smoke/stage124_feedforward_residual_value_predictor_smoke_summary.json
+experiments/stage124_feedforward_residual_value_predictor_smoke/stage124_feedforward_residual_value_predictor_smoke_report.md
+```
+
+### 结果
+
+- Predictor: `adapter_delta_selected_v1`.
+- Task count: `12`.
+- Row count: `24`.
+- Residual payload bytes: `0`.
+- Selected-index payload bytes: `0`.
+- Target dense anchors: not loaded or used.
+- Target RGB: offline rendered metric only.
+
+| setting | role | keep | tasks | rate | base PSNR | full adapter PSNR | selected PSNR | delta base | delta full | positives | near full |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| q4_top10 | low_rate | 0.1 | 12 | 0.1292426995089139 | 20.079639580609125 | 20.18242498795657 | 20.107502942874657 | 0.027863362265533247 | -0.0749220450819122 | 9/12 | 3/12 |
+| q4_top20 | primary | 0.2 | 12 | 0.1292426995089139 | 20.079639580609125 | 20.18242498795657 | 20.099010301231182 | 0.019370720622054066 | -0.08341468672539139 | 9/12 | 3/12 |
+
+### 结论
+
+- Stage124 establishes a decoder-side feed-forward residual value predictor smoke without teacher residual payload.
+- The simple adapter-delta selected predictor gives a small positive rendered gain over linear base on this 12-task smoke.
+- It remains below full Stage65 adapter quality, so the next step should broaden validation and/or train a dedicated selected residual value predictor.

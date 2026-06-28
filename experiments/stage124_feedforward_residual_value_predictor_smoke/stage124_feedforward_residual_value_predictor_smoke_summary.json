@@ -1,0 +1,81 @@
+{
+  "stage": 124,
+  "mode": "feed-forward residual value predictor smoke",
+  "stage123_policy": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage123_compressed_deterministic_codec_policy_package/stage123_compressed_deterministic_codec_policy.json",
+  "task_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage79_adapter_training_task_manifest/stage79_adapter_training_tasks.csv",
+  "adapter": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors",
+  "task_split": "eval",
+  "codecs": [
+    "q12"
+  ],
+  "gaps": [
+    4,
+    8,
+    16
+  ],
+  "task_count": 12,
+  "row_count": 24,
+  "predictor_name": "adapter_delta_selected_v1",
+  "settings": [
+    {
+      "label": "q4_top20",
+      "role": "primary",
+      "keep_fraction": 0.2,
+      "side_bits": 4
+    },
+    {
+      "label": "q4_top10",
+      "role": "low_rate",
+      "keep_fraction": 0.1,
+      "side_bits": 4
+    }
+  ],
+  "rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage124_feedforward_residual_value_predictor_smoke/stage124_feedforward_residual_value_predictor_smoke_rows.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage124_feedforward_residual_value_predictor_smoke/stage124_feedforward_residual_value_predictor_smoke_summary.csv",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage124_feedforward_residual_value_predictor_smoke/stage124_feedforward_residual_value_predictor_smoke_summary.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage124_feedforward_residual_value_predictor_smoke/stage124_feedforward_residual_value_predictor_smoke_report.md",
+  "summary_rows": [
+    {
+      "predictor_name": "adapter_delta_selected_v1",
+      "setting_label": "q4_top10",
+      "setting_role": "low_rate",
+      "keep_fraction": 0.1,
+      "side_bits": 4,
+      "task_count": 12,
+      "mean_keep_gaussians": 3686.0,
+      "mean_direct_total_mib_per_frame": 0.1292426995089139,
+      "mean_amortized_total_mib_per_frame": 0.1292426995089139,
+      "mean_base_psnr": 20.079639580609125,
+      "mean_full_predictor_psnr": 20.18242498795657,
+      "mean_selected_predicted_psnr": 20.107502942874657,
+      "mean_delta_psnr_vs_base": 0.027863362265533247,
+      "mean_delta_psnr_vs_full_predictor": -0.0749220450819122,
+      "positive_delta_vs_base_count": 9,
+      "near_full_within_0p10db_count": 3
+    },
+    {
+      "predictor_name": "adapter_delta_selected_v1",
+      "setting_label": "q4_top20",
+      "setting_role": "primary",
+      "keep_fraction": 0.2,
+      "side_bits": 4,
+      "task_count": 12,
+      "mean_keep_gaussians": 7373.0,
+      "mean_direct_total_mib_per_frame": 0.1292426995089139,
+      "mean_amortized_total_mib_per_frame": 0.1292426995089139,
+      "mean_base_psnr": 20.079639580609125,
+      "mean_full_predictor_psnr": 20.18242498795657,
+      "mean_selected_predicted_psnr": 20.099010301231182,
+      "mean_delta_psnr_vs_base": 0.019370720622054066,
+      "mean_delta_psnr_vs_full_predictor": -0.08341468672539139,
+      "positive_delta_vs_base_count": 9,
+      "near_full_within_0p10db_count": 3
+    }
+  ],
+  "notes": [
+    "No residual payload bytes are transmitted in this predictor smoke.",
+    "No selected-index bytes are transmitted; indices are reproduced from endpoint-diff top-k.",
+    "Target dense anchors are not loaded or used.",
+    "Target RGB is used only for offline rendered metrics."
+  ]
+}
