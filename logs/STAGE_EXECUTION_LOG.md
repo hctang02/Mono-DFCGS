@@ -6410,6 +6410,70 @@ Rendered bitstream summary：
 
 结论：Stage91 fixed bitstream smoke 说明 Stage87-90 的理论 q6 top10 side-info rate 与实际 byte payload 几乎一致，差异仅为固定 header 与 byte alignment。decoded bitstream 后 rendered PSNR 与 Stage87 q6 smoke 基本一致，仍全正。限制仍然存在：该 residual 是 teacher-derived，且还不是 entropy-coded bitstream 或 deployable residual predictor。
 
+## 2026-06-28：Stage92 Residual Side-Info Entropy Preflight
+
+### 目标
+
+分析 Stage91 fixed residual side-info payload 的无损压缩空间，判断是否值得实现 entropy-coded codec v2。
+
+### 操作计划
+
+- 新增 `scripts/run_stage92_residual_sideinfo_entropy_preflight.py`。
+- 复用 Stage91 q6 top10 payload 生成逻辑，不重新渲染。
+- 输入 q12 eval tasks，默认 `max_tasks=60`，gaps `4/8/16`，base methods 为 linear 和 Stage65 adapter。
+- 分析 raw fixed payload、zlib whole-payload、component-wise zlib、sorted-index delta + zlib、residual bytes zlib。
+- 输出 per-row payload/compression CSV、summary CSV、JSON 和 Markdown report。
+- 运行前按要求检查 `nvidia-smi`，即使该阶段不渲染。
+
+### Stage92 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。Stage92 不运行 renderer，但会做 adapter forward 和 payload generation。
+
+新增脚本：
+
+```text
+scripts/run_stage92_residual_sideinfo_entropy_preflight.py
+```
+
+运行命令：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage92_residual_sideinfo_entropy_preflight.py
+```
+
+仓库内输出：
+
+```text
+experiments/stage92_residual_sideinfo_entropy_preflight/stage92_residual_sideinfo_entropy_rows.csv
+experiments/stage92_residual_sideinfo_entropy_preflight/stage92_residual_sideinfo_entropy_summary.csv
+experiments/stage92_residual_sideinfo_entropy_preflight/stage92_residual_sideinfo_entropy_candidates.csv
+experiments/stage92_residual_sideinfo_entropy_preflight/stage92_residual_sideinfo_entropy_summary.json
+experiments/stage92_residual_sideinfo_entropy_preflight/stage92_residual_sideinfo_entropy_report.md
+```
+
+Candidate summary：
+
+| candidate | mean bytes | mean MiB/intermediate | ratio vs raw | savings bytes |
+|---|---:|---:|---:|---:|
+| delta_index_zlib | 32623.583333333332 | 0.031112273534138996 | 0.7520246959114205 | 10757.416666666668 |
+| component_zlib | 37162.98333333333 | 0.035441382726033525 | 0.8566649762184673 | 6218.01666666667 |
+| residual_zlib | 37422.4 | 0.03568878173828125 | 0.8626449367234504 | 5958.5999999999985 |
+| zlib_whole | 37426.28333333333 | 0.035692485173543294 | 0.8627344536394581 | 5954.716666666667 |
+| raw_fixed | 43381.0 | 0.04137134552001953 | 1.0 | 0.0 |
+
+Gap/method summary：
+
+| base | gap | tasks | raw bytes | delta-index zlib bytes | ratio | best counts |
+|---|---:|---:|---:|---:|---:|---|
+| linear | 4 | 18 | 43381.0 | 29669.38888888889 | 0.683925886652887 | delta_index_zlib: 18 |
+| linear | 8 | 19 | 43381.0 | 30261.052631578947 | 0.6975646626767236 | delta_index_zlib: 19 |
+| linear | 16 | 23 | 43381.0 | 30109.91304347826 | 0.6940806584329144 | delta_index_zlib: 23 |
+| stage65_adapter | 4 | 18 | 43381.0 | 34731.444444444445 | 0.8006141961790748 | delta_index_zlib: 18 |
+| stage65_adapter | 8 | 19 | 43381.0 | 35462.84210526316 | 0.8174740578885493 | delta_index_zlib: 19 |
+| stage65_adapter | 16 | 23 | 43381.0 | 35405.782608695656 | 0.8161587471173013 | delta_index_zlib: 23 |
+
+结论：Stage92 表明 fixed bitstream 仍有明显无损压缩空间，主要来自 selected Gaussian indices 的排序 delta coding 和 residual bytes 的 zlib coding。整体 mean rate 可从 `0.04137134552001953` 降到 `0.031112273534138996 MiB/intermediate-frame`。Stage65 adapter residual 比 linear 更难压缩，但 delta-index zlib 仍是所有 `120` rows 的最佳候选。下一步 Stage93 应实现可 decode 的 entropy-coded codec v2。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。

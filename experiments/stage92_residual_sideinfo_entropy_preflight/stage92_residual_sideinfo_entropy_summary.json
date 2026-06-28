@@ -1,0 +1,182 @@
+{
+  "stage": 92,
+  "mode": "residual side-info entropy preflight",
+  "task_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage79_adapter_training_task_manifest/stage79_adapter_training_tasks.csv",
+  "dense_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage61_davis_anchor_export_data_full/stage61_davis_anchor_export_manifest.csv",
+  "adapter": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors",
+  "task_split": "eval",
+  "codecs": [
+    "q12"
+  ],
+  "gaps": [
+    4,
+    8,
+    16
+  ],
+  "task_count": 60,
+  "row_count": 120,
+  "keep_fraction": 0.1,
+  "side_bits": 6,
+  "zlib_level": 9,
+  "rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage92_residual_sideinfo_entropy_preflight/stage92_residual_sideinfo_entropy_rows.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage92_residual_sideinfo_entropy_preflight/stage92_residual_sideinfo_entropy_summary.csv",
+  "candidates_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage92_residual_sideinfo_entropy_preflight/stage92_residual_sideinfo_entropy_candidates.csv",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage92_residual_sideinfo_entropy_preflight/stage92_residual_sideinfo_entropy_report.md",
+  "summary_rows": [
+    {
+      "base_method": "linear",
+      "codec": "q12",
+      "reference_gap": 4,
+      "task_count": 18,
+      "mean_payload_bytes": 43381.0,
+      "mean_payload_mib_per_intermediate_frame": 0.04137134552001953,
+      "mean_theoretical_bytes_without_header": 43362.5,
+      "mean_zlib_whole_bytes": 34559.0,
+      "mean_component_zlib_bytes": 34314.333333333336,
+      "mean_residual_zlib_bytes": 34597.166666666664,
+      "mean_delta_index_zlib_bytes": 29669.38888888889,
+      "mean_best_bytes": 29669.38888888889,
+      "mean_best_mib_per_intermediate_frame": 0.028294934166802302,
+      "mean_best_ratio_vs_raw": 0.683925886652887,
+      "mean_best_savings_bytes_vs_raw": 13711.611111111111,
+      "best_candidate_counts": "{\"delta_index_zlib\": 18}"
+    },
+    {
+      "base_method": "linear",
+      "codec": "q12",
+      "reference_gap": 8,
+      "task_count": 19,
+      "mean_payload_bytes": 43381.0,
+      "mean_payload_mib_per_intermediate_frame": 0.04137134552001953,
+      "mean_theoretical_bytes_without_header": 43362.5,
+      "mean_zlib_whole_bytes": 34998.78947368421,
+      "mean_component_zlib_bytes": 34767.10526315789,
+      "mean_residual_zlib_bytes": 34990.26315789474,
+      "mean_delta_index_zlib_bytes": 30261.052631578947,
+      "mean_best_bytes": 30261.052631578947,
+      "mean_best_mib_per_intermediate_frame": 0.028859188682154605,
+      "mean_best_ratio_vs_raw": 0.6975646626767236,
+      "mean_best_savings_bytes_vs_raw": 13119.947368421053,
+      "best_candidate_counts": "{\"delta_index_zlib\": 19}"
+    },
+    {
+      "base_method": "linear",
+      "codec": "q12",
+      "reference_gap": 16,
+      "task_count": 23,
+      "mean_payload_bytes": 43381.0,
+      "mean_payload_mib_per_intermediate_frame": 0.04137134552001953,
+      "mean_theoretical_bytes_without_header": 43362.5,
+      "mean_zlib_whole_bytes": 34986.17391304348,
+      "mean_component_zlib_bytes": 34725.434782608696,
+      "mean_residual_zlib_bytes": 34992.217391304344,
+      "mean_delta_index_zlib_bytes": 30109.91304347826,
+      "mean_best_bytes": 30109.91304347826,
+      "mean_best_mib_per_intermediate_frame": 0.02871505073879076,
+      "mean_best_ratio_vs_raw": 0.6940806584329144,
+      "mean_best_savings_bytes_vs_raw": 13271.08695652174,
+      "best_candidate_counts": "{\"delta_index_zlib\": 23}"
+    },
+    {
+      "base_method": "stage65_adapter",
+      "codec": "q12",
+      "reference_gap": 4,
+      "task_count": 18,
+      "mean_payload_bytes": 43381.0,
+      "mean_payload_mib_per_intermediate_frame": 0.04137134552001953,
+      "mean_theoretical_bytes_without_header": 43362.5,
+      "mean_zlib_whole_bytes": 39556.166666666664,
+      "mean_component_zlib_bytes": 39268.72222222222,
+      "mean_residual_zlib_bytes": 39551.72222222222,
+      "mean_delta_index_zlib_bytes": 34731.444444444445,
+      "mean_best_bytes": 34731.444444444445,
+      "mean_best_mib_per_intermediate_frame": 0.033122486538357206,
+      "mean_best_ratio_vs_raw": 0.8006141961790748,
+      "mean_best_savings_bytes_vs_raw": 8649.555555555555,
+      "best_candidate_counts": "{\"delta_index_zlib\": 18}"
+    },
+    {
+      "base_method": "stage65_adapter",
+      "codec": "q12",
+      "reference_gap": 8,
+      "task_count": 19,
+      "mean_payload_bytes": 43381.0,
+      "mean_payload_mib_per_intermediate_frame": 0.04137134552001953,
+      "mean_theoretical_bytes_without_header": 43362.5,
+      "mean_zlib_whole_bytes": 40151.42105263158,
+      "mean_component_zlib_bytes": 39894.89473684211,
+      "mean_residual_zlib_bytes": 40120.26315789474,
+      "mean_delta_index_zlib_bytes": 35462.84210526316,
+      "mean_best_bytes": 35462.84210526316,
+      "mean_best_mib_per_intermediate_frame": 0.033820001702559624,
+      "mean_best_ratio_vs_raw": 0.8174740578885493,
+      "mean_best_savings_bytes_vs_raw": 7918.1578947368425,
+      "best_candidate_counts": "{\"delta_index_zlib\": 19}"
+    },
+    {
+      "base_method": "stage65_adapter",
+      "codec": "q12",
+      "reference_gap": 16,
+      "task_count": 23,
+      "mean_payload_bytes": 43381.0,
+      "mean_payload_mib_per_intermediate_frame": 0.04137134552001953,
+      "mean_theoretical_bytes_without_header": 43362.5,
+      "mean_zlib_whole_bytes": 40197.608695652176,
+      "mean_component_zlib_bytes": 39904.34782608696,
+      "mean_residual_zlib_bytes": 40177.69565217391,
+      "mean_delta_index_zlib_bytes": 35405.782608695656,
+      "mean_best_bytes": 35405.782608695656,
+      "mean_best_mib_per_intermediate_frame": 0.033765585526176124,
+      "mean_best_ratio_vs_raw": 0.8161587471173013,
+      "mean_best_savings_bytes_vs_raw": 7975.217391304348,
+      "best_candidate_counts": "{\"delta_index_zlib\": 23}"
+    }
+  ],
+  "candidate_rows": [
+    {
+      "candidate": "delta_index_zlib",
+      "row_count": 120,
+      "mean_bytes": 32623.583333333332,
+      "mean_mib_per_intermediate_frame": 0.031112273534138996,
+      "mean_ratio_vs_raw": 0.7520246959114205,
+      "mean_savings_bytes_vs_raw": 10757.416666666668
+    },
+    {
+      "candidate": "component_zlib",
+      "row_count": 120,
+      "mean_bytes": 37162.98333333333,
+      "mean_mib_per_intermediate_frame": 0.035441382726033525,
+      "mean_ratio_vs_raw": 0.8566649762184673,
+      "mean_savings_bytes_vs_raw": 6218.01666666667
+    },
+    {
+      "candidate": "residual_zlib",
+      "row_count": 120,
+      "mean_bytes": 37422.4,
+      "mean_mib_per_intermediate_frame": 0.03568878173828125,
+      "mean_ratio_vs_raw": 0.8626449367234504,
+      "mean_savings_bytes_vs_raw": 5958.5999999999985
+    },
+    {
+      "candidate": "zlib_whole",
+      "row_count": 120,
+      "mean_bytes": 37426.28333333333,
+      "mean_mib_per_intermediate_frame": 0.035692485173543294,
+      "mean_ratio_vs_raw": 0.8627344536394581,
+      "mean_savings_bytes_vs_raw": 5954.716666666667
+    },
+    {
+      "candidate": "raw_fixed",
+      "row_count": 120,
+      "mean_bytes": 43381.0,
+      "mean_mib_per_intermediate_frame": 0.04137134552001953,
+      "mean_ratio_vs_raw": 1.0,
+      "mean_savings_bytes_vs_raw": 0.0
+    }
+  ],
+  "notes": [
+    "No rendering is run in Stage92; payloads are regenerated only for byte/compression analysis.",
+    "Residuals remain teacher-derived from dense target anchors.",
+    "Candidate compression sizes include codec container assumptions described in the report."
+  ]
+}
