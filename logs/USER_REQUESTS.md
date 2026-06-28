@@ -1267,3 +1267,17 @@ Stage99 用 Stage98 同类 MLP 预测 top10 residual side-info indices，并用 
 ### 后续执行更新
 
 Stage99 predictor-selected side-info rendered smoke 已完成：运行前检查 `nvidia-smi`，GPU0 忙、GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 与 venv Python。新增 `scripts/run_stage99_predictor_selected_sideinfo_render_smoke.py`，输出目录 `experiments/stage99_predictor_selected_sideinfo_render_smoke/`。配置为 train tasks `24`、eval tasks `12`、sampled train examples `196608`、keep fraction `0.1`、side bits `6`。MLP-selected side-info 在所有 base/gap 上均为正 PSNR 增益：linear gap4/8/16 delta 为 `+0.8761/+1.5198/+1.3082 dB`，Stage65 adapter gap4/8/16 delta 为 `+0.8257/+1.2551/+1.0736 dB`；但相对 teacher-oracle top10 仍低约 `1.34-2.51 dB`。MLP 在 linear gap8、stage65 gap8 和 stage65 gap16 的 rendered PSNR 上超过 endpoint-diff baseline，但不是全面优于 endpoint。结论：当前 predictor 有用但 selection error 仍大；下一步应先改进 selector objective 或扩大训练评估规模，再进入 residual value prediction。
+
+## 2026-06-28：继续 Stage100 residual selector objective sweep
+
+### 用户原始问题
+
+用户要求如果有下一步就继续执行；如果不确定如何推进，再停下来询问。
+
+### 当前执行决策
+
+Stage100 先解决 Stage99 暴露的 selection bottleneck，不做 residual value prediction。计划实现 residual selector objective sweep：使用 Stage97 task manifest 和 Stage98 decoder-available features/teacher labels，比较 `topk_bce`、`energy_weighted_bce`、`hybrid_bce_energy`、`energy_regression` 四种训练目标，并与 endpoint-diff baseline 对比。该阶段只输出离线 precision、energy recall、relative recall，不渲染、不保存 checkpoint、不写 heavy tensors，用来决定后续是否值得再做 rendered selector validation。
+
+### 后续执行更新
+
+Stage100 residual selector objective sweep 已完成：运行前检查 `nvidia-smi`，GPU0 忙、GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。新增 `scripts/run_stage100_residual_selector_objective_sweep.py`，先通过 `py_compile`，再运行完整 sweep。输出目录 `experiments/stage100_residual_selector_objective_sweep/`，大小约 `152K`。配置为 train tasks `96`、eval tasks `60`、sampled train examples `589824`、keep fraction `0.1`、每个 objective 训练 `300` steps。结果：learned selector 在所有 base/gap 上都超过 endpoint-diff baseline。best learned energy recall 对比 endpoint：linear gap4 `0.2933 vs 0.2578`，gap8 `0.3231 vs 0.2775`，gap16 `0.2518 vs 0.2058`；Stage65 adapter gap4 `0.1620 vs 0.1341`，gap8 `0.1707 vs 0.1356`，gap16 `0.1551 vs 0.1197`。最佳 objective 分别为 linear gap4/8 `energy_regression`、linear gap16 `topk_bce`、adapter gap4 `topk_bce`、adapter gap8 `energy_weighted_bce`、adapter gap16 `energy_regression`。结论：learned selector 信号稳定，但 objective sweep 没有显著解决 oracle gap；下一步应改模型/feature 或扩大训练，而不是直接做 residual value prediction。

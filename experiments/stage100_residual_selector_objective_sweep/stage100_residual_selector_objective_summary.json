@@ -1,0 +1,438 @@
+{
+  "stage": 100,
+  "mode": "residual selector objective sweep",
+  "tasks_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage97_residual_predictor_task_manifest/stage97_residual_predictor_tasks.csv",
+  "adapter": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors",
+  "gaps": [
+    4,
+    8,
+    16
+  ],
+  "base_methods": [
+    "linear",
+    "stage65_adapter"
+  ],
+  "objectives": [
+    "topk_bce",
+    "energy_weighted_bce",
+    "hybrid_bce_energy",
+    "energy_regression"
+  ],
+  "train_task_count": 96,
+  "eval_task_count": 60,
+  "train_example_count": 589824,
+  "feature_dim": 67,
+  "positive_rate": 0.1005740687251091,
+  "energy_target_mean": 0.2161448895931244,
+  "keep_fraction": 0.1,
+  "train_steps": 300,
+  "rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage100_residual_selector_objective_sweep/stage100_residual_selector_objective_rows.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage100_residual_selector_objective_sweep/stage100_residual_selector_objective_summary.csv",
+  "train_log_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage100_residual_selector_objective_sweep/stage100_residual_selector_objective_train_log.csv",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage100_residual_selector_objective_sweep/stage100_residual_selector_objective_report.md",
+  "summary_rows": [
+    {
+      "objective": "endpoint_diff_baseline",
+      "candidate": "endpoint_diff_baseline",
+      "base_method": "linear",
+      "reference_gap": 4,
+      "task_count": 23,
+      "mean_precision_at_keep": 0.3100568529056466,
+      "mean_energy_recall_total": 0.2578457370400429,
+      "mean_oracle_energy_recall_total": 0.6033855663693469,
+      "mean_relative_energy_recall_vs_oracle": 0.4116023273571678
+    },
+    {
+      "objective": "endpoint_diff_baseline",
+      "candidate": "endpoint_diff_baseline",
+      "base_method": "linear",
+      "reference_gap": 8,
+      "task_count": 19,
+      "mean_precision_at_keep": 0.3119484817511157,
+      "mean_energy_recall_total": 0.27749040722846985,
+      "mean_oracle_energy_recall_total": 0.6419753777353387,
+      "mean_relative_energy_recall_vs_oracle": 0.4117828874211562
+    },
+    {
+      "objective": "endpoint_diff_baseline",
+      "candidate": "endpoint_diff_baseline",
+      "base_method": "linear",
+      "reference_gap": 16,
+      "task_count": 18,
+      "mean_precision_at_keep": 0.20097063968165052,
+      "mean_energy_recall_total": 0.2058291733264923,
+      "mean_oracle_energy_recall_total": 0.5684697247213788,
+      "mean_relative_energy_recall_vs_oracle": 0.3390035058061282
+    },
+    {
+      "objective": "endpoint_diff_baseline",
+      "candidate": "endpoint_diff_baseline",
+      "base_method": "stage65_adapter",
+      "reference_gap": 4,
+      "task_count": 23,
+      "mean_precision_at_keep": 0.29103069072184357,
+      "mean_energy_recall_total": 0.13412074485550757,
+      "mean_oracle_energy_recall_total": 0.23996665620285532,
+      "mean_relative_energy_recall_vs_oracle": 0.5757957541424296
+    },
+    {
+      "objective": "endpoint_diff_baseline",
+      "candidate": "endpoint_diff_baseline",
+      "base_method": "stage65_adapter",
+      "reference_gap": 8,
+      "task_count": 19,
+      "mean_precision_at_keep": 0.27700831074463694,
+      "mean_energy_recall_total": 0.13563174087750285,
+      "mean_oracle_energy_recall_total": 0.2529745478379099,
+      "mean_relative_energy_recall_vs_oracle": 0.5572832179696936
+    },
+    {
+      "objective": "endpoint_diff_baseline",
+      "candidate": "endpoint_diff_baseline",
+      "base_method": "stage65_adapter",
+      "reference_gap": 16,
+      "task_count": 18,
+      "mean_precision_at_keep": 0.1901941259081165,
+      "mean_energy_recall_total": 0.11971673224535254,
+      "mean_oracle_energy_recall_total": 0.2512796148657799,
+      "mean_relative_energy_recall_vs_oracle": 0.49458976917796665
+    },
+    {
+      "objective": "energy_regression",
+      "candidate": "mlp_selector",
+      "base_method": "linear",
+      "reference_gap": 4,
+      "task_count": 23,
+      "mean_precision_at_keep": 0.34324942593989166,
+      "mean_energy_recall_total": 0.29329851334509643,
+      "mean_oracle_energy_recall_total": 0.6033855663693469,
+      "mean_relative_energy_recall_vs_oracle": 0.4703915430151898
+    },
+    {
+      "objective": "energy_regression",
+      "candidate": "mlp_selector",
+      "base_method": "linear",
+      "reference_gap": 8,
+      "task_count": 19,
+      "mean_precision_at_keep": 0.36375188905941813,
+      "mean_energy_recall_total": 0.32311024320752996,
+      "mean_oracle_energy_recall_total": 0.6419753777353387,
+      "mean_relative_energy_recall_vs_oracle": 0.4835715215457113
+    },
+    {
+      "objective": "energy_regression",
+      "candidate": "mlp_selector",
+      "base_method": "linear",
+      "reference_gap": 16,
+      "task_count": 18,
+      "mean_precision_at_keep": 0.25655633754407364,
+      "mean_energy_recall_total": 0.24967463687062263,
+      "mean_oracle_energy_recall_total": 0.5684697247213788,
+      "mean_relative_energy_recall_vs_oracle": 0.41073499123255414
+    },
+    {
+      "objective": "energy_regression",
+      "candidate": "mlp_selector",
+      "base_method": "stage65_adapter",
+      "reference_gap": 4,
+      "task_count": 23,
+      "mean_precision_at_keep": 0.4006463911222375,
+      "mean_energy_recall_total": 0.16134036170399707,
+      "mean_oracle_energy_recall_total": 0.23996665620285532,
+      "mean_relative_energy_recall_vs_oracle": 0.6860240153644396
+    },
+    {
+      "objective": "energy_regression",
+      "candidate": "mlp_selector",
+      "base_method": "stage65_adapter",
+      "reference_gap": 8,
+      "task_count": 19,
+      "mean_precision_at_keep": 0.4136705014266466,
+      "mean_energy_recall_total": 0.16985669026249334,
+      "mean_oracle_energy_recall_total": 0.2529745478379099,
+      "mean_relative_energy_recall_vs_oracle": 0.6861344497454794
+    },
+    {
+      "objective": "energy_regression",
+      "candidate": "mlp_selector",
+      "base_method": "stage65_adapter",
+      "reference_gap": 16,
+      "task_count": 18,
+      "mean_precision_at_keep": 0.3373726398373644,
+      "mean_energy_recall_total": 0.15512513783242968,
+      "mean_oracle_energy_recall_total": 0.2512796148657799,
+      "mean_relative_energy_recall_vs_oracle": 0.6353713091876771
+    },
+    {
+      "objective": "energy_weighted_bce",
+      "candidate": "mlp_selector",
+      "base_method": "linear",
+      "reference_gap": 4,
+      "task_count": 23,
+      "mean_precision_at_keep": 0.3188091237907824,
+      "mean_energy_recall_total": 0.2885887052701867,
+      "mean_oracle_energy_recall_total": 0.6033855663693469,
+      "mean_relative_energy_recall_vs_oracle": 0.46524449146312213
+    },
+    {
+      "objective": "energy_weighted_bce",
+      "candidate": "mlp_selector",
+      "base_method": "linear",
+      "reference_gap": 8,
+      "task_count": 19,
+      "mean_precision_at_keep": 0.3419053585905778,
+      "mean_energy_recall_total": 0.3209652586987144,
+      "mean_oracle_energy_recall_total": 0.6419753777353387,
+      "mean_relative_energy_recall_vs_oracle": 0.4818989258063467
+    },
+    {
+      "objective": "energy_weighted_bce",
+      "candidate": "mlp_selector",
+      "base_method": "linear",
+      "reference_gap": 16,
+      "task_count": 18,
+      "mean_precision_at_keep": 0.25996261752314037,
+      "mean_energy_recall_total": 0.25016656435198253,
+      "mean_oracle_energy_recall_total": 0.5684697247213788,
+      "mean_relative_energy_recall_vs_oracle": 0.4168338187866741
+    },
+    {
+      "objective": "energy_weighted_bce",
+      "candidate": "mlp_selector",
+      "base_method": "stage65_adapter",
+      "reference_gap": 4,
+      "task_count": 23,
+      "mean_precision_at_keep": 0.41018896128820337,
+      "mean_energy_recall_total": 0.16173726385054382,
+      "mean_oracle_energy_recall_total": 0.23996665620285532,
+      "mean_relative_energy_recall_vs_oracle": 0.687266715194868
+    },
+    {
+      "objective": "energy_weighted_bce",
+      "candidate": "mlp_selector",
+      "base_method": "stage65_adapter",
+      "reference_gap": 8,
+      "task_count": 19,
+      "mean_precision_at_keep": 0.4208384501306634,
+      "mean_energy_recall_total": 0.17072841211369164,
+      "mean_oracle_energy_recall_total": 0.2529745478379099,
+      "mean_relative_energy_recall_vs_oracle": 0.6882316815225702
+    },
+    {
+      "objective": "energy_weighted_bce",
+      "candidate": "mlp_selector",
+      "base_method": "stage65_adapter",
+      "reference_gap": 16,
+      "task_count": 18,
+      "mean_precision_at_keep": 0.33386085658437675,
+      "mean_energy_recall_total": 0.1538311466574669,
+      "mean_oracle_energy_recall_total": 0.2512796148657799,
+      "mean_relative_energy_recall_vs_oracle": 0.6284276379479302
+    },
+    {
+      "objective": "hybrid_bce_energy",
+      "candidate": "mlp_selector",
+      "base_method": "linear",
+      "reference_gap": 4,
+      "task_count": 23,
+      "mean_precision_at_keep": 0.3249309969984967,
+      "mean_energy_recall_total": 0.289534467069999,
+      "mean_oracle_energy_recall_total": 0.6033855663693469,
+      "mean_relative_energy_recall_vs_oracle": 0.46574960972951807
+    },
+    {
+      "objective": "hybrid_bce_energy",
+      "candidate": "mlp_selector",
+      "base_method": "linear",
+      "reference_gap": 8,
+      "task_count": 19,
+      "mean_precision_at_keep": 0.3432047249455201,
+      "mean_energy_recall_total": 0.31723618507385254,
+      "mean_oracle_energy_recall_total": 0.6419753777353387,
+      "mean_relative_energy_recall_vs_oracle": 0.47638117169079025
+    },
+    {
+      "objective": "hybrid_bce_energy",
+      "candidate": "mlp_selector",
+      "base_method": "linear",
+      "reference_gap": 16,
+      "task_count": 18,
+      "mean_precision_at_keep": 0.2555465114613374,
+      "mean_energy_recall_total": 0.24857766181230545,
+      "mean_oracle_energy_recall_total": 0.5684697247213788,
+      "mean_relative_energy_recall_vs_oracle": 0.41251300937599605
+    },
+    {
+      "objective": "hybrid_bce_energy",
+      "candidate": "mlp_selector",
+      "base_method": "stage65_adapter",
+      "reference_gap": 4,
+      "task_count": 23,
+      "mean_precision_at_keep": 0.4113685132368751,
+      "mean_energy_recall_total": 0.16183031188405078,
+      "mean_oracle_energy_recall_total": 0.23996665620285532,
+      "mean_relative_energy_recall_vs_oracle": 0.6875418165455693
+    },
+    {
+      "objective": "hybrid_bce_energy",
+      "candidate": "mlp_selector",
+      "base_method": "stage65_adapter",
+      "reference_gap": 8,
+      "task_count": 19,
+      "mean_precision_at_keep": 0.41855384409427643,
+      "mean_energy_recall_total": 0.17024512981113635,
+      "mean_oracle_energy_recall_total": 0.2529745478379099,
+      "mean_relative_energy_recall_vs_oracle": 0.6861143833712527
+    },
+    {
+      "objective": "hybrid_bce_energy",
+      "candidate": "mlp_selector",
+      "base_method": "stage65_adapter",
+      "reference_gap": 16,
+      "task_count": 18,
+      "mean_precision_at_keep": 0.3347953226831224,
+      "mean_energy_recall_total": 0.15376078751352099,
+      "mean_oracle_energy_recall_total": 0.2512796148657799,
+      "mean_relative_energy_recall_vs_oracle": 0.6281004796425501
+    },
+    {
+      "objective": "topk_bce",
+      "candidate": "mlp_selector",
+      "base_method": "linear",
+      "reference_gap": 4,
+      "task_count": 23,
+      "mean_precision_at_keep": 0.32920097268146015,
+      "mean_energy_recall_total": 0.29305959849253943,
+      "mean_oracle_energy_recall_total": 0.6033855663693469,
+      "mean_relative_energy_recall_vs_oracle": 0.4703672748544942
+    },
+    {
+      "objective": "topk_bce",
+      "candidate": "mlp_selector",
+      "base_method": "linear",
+      "reference_gap": 8,
+      "task_count": 19,
+      "mean_precision_at_keep": 0.35064397046440526,
+      "mean_energy_recall_total": 0.32177531876062093,
+      "mean_oracle_energy_recall_total": 0.6419753777353387,
+      "mean_relative_energy_recall_vs_oracle": 0.4822907981119658
+    },
+    {
+      "objective": "topk_bce",
+      "candidate": "mlp_selector",
+      "base_method": "linear",
+      "reference_gap": 16,
+      "task_count": 18,
+      "mean_precision_at_keep": 0.2579128210329347,
+      "mean_energy_recall_total": 0.2517792292767101,
+      "mean_oracle_energy_recall_total": 0.5684697247213788,
+      "mean_relative_energy_recall_vs_oracle": 0.41649167074097526
+    },
+    {
+      "objective": "topk_bce",
+      "candidate": "mlp_selector",
+      "base_method": "stage65_adapter",
+      "reference_gap": 4,
+      "task_count": 23,
+      "mean_precision_at_keep": 0.4132322079461554,
+      "mean_energy_recall_total": 0.16204810336880063,
+      "mean_oracle_energy_recall_total": 0.23996665620285532,
+      "mean_relative_energy_recall_vs_oracle": 0.6889743960422018
+    },
+    {
+      "objective": "topk_bce",
+      "candidate": "mlp_selector",
+      "base_method": "stage65_adapter",
+      "reference_gap": 8,
+      "task_count": 19,
+      "mean_precision_at_keep": 0.42220921579160187,
+      "mean_energy_recall_total": 0.17060783230944684,
+      "mean_oracle_energy_recall_total": 0.2529745478379099,
+      "mean_relative_energy_recall_vs_oracle": 0.6881267146060341
+    },
+    {
+      "objective": "topk_bce",
+      "candidate": "mlp_selector",
+      "base_method": "stage65_adapter",
+      "reference_gap": 16,
+      "task_count": 18,
+      "mean_precision_at_keep": 0.33598601383467513,
+      "mean_energy_recall_total": 0.1541641718811459,
+      "mean_oracle_energy_recall_total": 0.2512796148657799,
+      "mean_relative_energy_recall_vs_oracle": 0.6302359286281798
+    }
+  ],
+  "best_learned_rows": [
+    {
+      "objective": "energy_regression",
+      "candidate": "mlp_selector",
+      "base_method": "linear",
+      "reference_gap": 4,
+      "task_count": 23,
+      "mean_precision_at_keep": 0.34324942593989166,
+      "mean_energy_recall_total": 0.29329851334509643,
+      "mean_oracle_energy_recall_total": 0.6033855663693469,
+      "mean_relative_energy_recall_vs_oracle": 0.4703915430151898
+    },
+    {
+      "objective": "energy_regression",
+      "candidate": "mlp_selector",
+      "base_method": "linear",
+      "reference_gap": 8,
+      "task_count": 19,
+      "mean_precision_at_keep": 0.36375188905941813,
+      "mean_energy_recall_total": 0.32311024320752996,
+      "mean_oracle_energy_recall_total": 0.6419753777353387,
+      "mean_relative_energy_recall_vs_oracle": 0.4835715215457113
+    },
+    {
+      "objective": "topk_bce",
+      "candidate": "mlp_selector",
+      "base_method": "linear",
+      "reference_gap": 16,
+      "task_count": 18,
+      "mean_precision_at_keep": 0.2579128210329347,
+      "mean_energy_recall_total": 0.2517792292767101,
+      "mean_oracle_energy_recall_total": 0.5684697247213788,
+      "mean_relative_energy_recall_vs_oracle": 0.41649167074097526
+    },
+    {
+      "objective": "topk_bce",
+      "candidate": "mlp_selector",
+      "base_method": "stage65_adapter",
+      "reference_gap": 4,
+      "task_count": 23,
+      "mean_precision_at_keep": 0.4132322079461554,
+      "mean_energy_recall_total": 0.16204810336880063,
+      "mean_oracle_energy_recall_total": 0.23996665620285532,
+      "mean_relative_energy_recall_vs_oracle": 0.6889743960422018
+    },
+    {
+      "objective": "energy_weighted_bce",
+      "candidate": "mlp_selector",
+      "base_method": "stage65_adapter",
+      "reference_gap": 8,
+      "task_count": 19,
+      "mean_precision_at_keep": 0.4208384501306634,
+      "mean_energy_recall_total": 0.17072841211369164,
+      "mean_oracle_energy_recall_total": 0.2529745478379099,
+      "mean_relative_energy_recall_vs_oracle": 0.6882316815225702
+    },
+    {
+      "objective": "energy_regression",
+      "candidate": "mlp_selector",
+      "base_method": "stage65_adapter",
+      "reference_gap": 16,
+      "task_count": 18,
+      "mean_precision_at_keep": 0.3373726398373644,
+      "mean_energy_recall_total": 0.15512513783242968,
+      "mean_oracle_energy_recall_total": 0.2512796148657799,
+      "mean_relative_energy_recall_vs_oracle": 0.6353713091876771
+    }
+  ],
+  "notes": [
+    "No model checkpoint or heavy tensor is saved.",
+    "Teacher labels and energy targets are generated from target dense anchors for training/evaluation only.",
+    "Predictor inputs are decoder-available anchor features, time, and base method id."
+  ]
+}

@@ -6905,6 +6905,63 @@ experiments/stage99_predictor_selected_sideinfo_render_smoke/
 
 结论：Stage99 成功隔离了 top10 index selection error。MLP-selected side-info 在所有 base/gap 上仍带来正 PSNR 增益，但相对 teacher-oracle top10 仍低约 `1.34-2.51 dB`；MLP 在 linear gap8、stage65 gap8 和 stage65 gap16 的 rendered PSNR 上超过 endpoint-diff baseline，但不是全面优于 endpoint。下一步不宜直接进入 residual value prediction，应先改进 selector objective 或扩大训练评估规模。
 
+## 2026-06-28：Stage100 Residual Selector Objective Sweep
+
+### 目标
+
+针对 Stage99 暴露出的 top10 index selection error，先做离线 selector objective sweep，不直接进入 residual value prediction。
+
+### 操作计划
+
+- 新增 `scripts/run_stage100_residual_selector_objective_sweep.py`。
+- 复用 Stage97 task manifest、Stage98 decoder-available features、Stage98 teacher top10 residual-energy labels。
+- 不渲染、不保存模型 checkpoint、不写 heavy tensors。
+- 训练并比较 `topk_bce`、`energy_weighted_bce`、`hybrid_bce_energy`、`energy_regression` 四种目标。
+- 保留 `endpoint_diff_baseline` 作为无需训练的 reference。
+- 输出每个 objective/base/gap 的 precision、energy recall、oracle recall、relative recall。
+- 运行前按要求检查 `nvidia-smi`，并选择空闲 GPU。
+
+### Stage100 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU0 忙，GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。先运行语法检查：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage100_residual_selector_objective_sweep.py
+```
+
+随后再次检查 GPU，并运行完整 sweep：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage100_residual_selector_objective_sweep.py
+```
+
+新增脚本：
+
+```text
+scripts/run_stage100_residual_selector_objective_sweep.py
+```
+
+输出目录：
+
+```text
+experiments/stage100_residual_selector_objective_sweep/
+```
+
+配置：train tasks `96`，eval tasks `60`，sampled train examples `589824`，keep fraction `0.1`，objectives 为 `topk_bce`、`energy_weighted_bce`、`hybrid_bce_energy`、`energy_regression`。
+
+Best learned objective by group：
+
+| base | gap | endpoint energy recall | best objective | best energy recall | gain vs endpoint | best relative recall |
+|---|---:|---:|---|---:|---:|---:|
+| linear | 4 | 0.2578457370400429 | energy_regression | 0.29329851334509643 | +0.03545277630505353 | 0.4703915430151898 |
+| linear | 8 | 0.27749040722846985 | energy_regression | 0.32311024320752996 | +0.04561983597906011 | 0.4835715215457113 |
+| linear | 16 | 0.2058291733264923 | topk_bce | 0.2517792292767101 | +0.045950055950217806 | 0.41649167074097526 |
+| stage65_adapter | 4 | 0.13412074485550757 | topk_bce | 0.16204810336880063 | +0.02792735851329306 | 0.6889743960422018 |
+| stage65_adapter | 8 | 0.13563174087750285 | energy_weighted_bce | 0.17072841211369164 | +0.03509667123618879 | 0.6882316815225702 |
+| stage65_adapter | 16 | 0.11971673224535254 | energy_regression | 0.15512513783242968 | +0.03540840558707714 | 0.6353713091876771 |
+
+结论：Stage100 在更大的 60-task eval 上验证 learned selector 全部超过 endpoint-diff baseline，说明 decoder-available features 的学习信号稳定存在。但 objective sweep 没有产生显著优于 `topk_bce` 的单一目标，最佳 objective 分散在不同 base/gap，且 relative oracle recall 仍约 `0.42-0.69`。下一步应从模型/feature 层面改进 selector，例如加入 Gaussian neighborhood/coordinate context、base/gap-specific heads，或做更大规模训练后再做 rendered validation。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。
