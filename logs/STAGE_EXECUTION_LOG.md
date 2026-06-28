@@ -6540,6 +6540,57 @@ Summary：
 
 结论：Stage93 entropy codec v2 是真实可 decode payload，decode 后与 Stage91 fixed payload 完全一致（max diff `0.0`），且 rendered PSNR 增益保持。12-task smoke 中 linear payload 降到约 `0.0282-0.0294 MiB/intermediate-frame`，Stage65 adapter payload 降到约 `0.0333-0.0344 MiB/intermediate-frame`。下一步 Stage94 应把这些实际 entropy payload bytes 接入 RD accounting。
 
+## 2026-06-28：Stage94 Entropy-Coded Residual Side-Info RD Package
+
+### 目标
+
+把 Stage93 entropy-coded payload 的实际 bytes 接入 q12 anchor main-rate RD accounting，量化 entropy codec v2 相比 fixed bitstream 的 total-rate 收益。
+
+### 操作计划
+
+- 新增 `scripts/run_stage94_entropy_residual_sideinfo_rd_package.py`。
+- 输入 Stage78 q12 anchor main rate table 和 Stage93 entropy codec summary。
+- 输出 fixed side-info rate、entropy side-info rate、direct/amortized total rate、entropy savings、rendered PSNR 和 delta。
+- 该阶段为 CPU 汇总脚本，不重新渲染，但运行前仍按要求检查 `nvidia-smi`。
+
+### Stage94 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。Stage94 是 CPU 汇总脚本，未占用 GPU。
+
+新增脚本：
+
+```text
+scripts/run_stage94_entropy_residual_sideinfo_rd_package.py
+```
+
+运行命令：
+
+```text
+python scripts/run_stage94_entropy_residual_sideinfo_rd_package.py
+```
+
+仓库内输出：
+
+```text
+experiments/stage94_entropy_residual_sideinfo_rd_package/stage94_entropy_residual_sideinfo_rd_rows.csv
+experiments/stage94_entropy_residual_sideinfo_rd_package/stage94_entropy_residual_sideinfo_rd_points.csv
+experiments/stage94_entropy_residual_sideinfo_rd_package/stage94_entropy_residual_sideinfo_rd_summary.json
+experiments/stage94_entropy_residual_sideinfo_rd_package/stage94_entropy_residual_sideinfo_rd_report.md
+```
+
+RD rows：
+
+| base | gap | main | fixed side | entropy side | fixed direct | entropy direct | entropy amortized | PSNR | delta |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| linear | 4 | 0.18193822076791313 | 0.04137134552001953 | 0.028384844462076824 | 0.22330956628793266 | 0.21032306522998995 | 0.20322685411447075 | 23.327021755289916 | 3.3372252270957077 |
+| linear | 8 | 0.09762538675351436 | 0.04137134552001953 | 0.029387855529785158 | 0.13899673227353387 | 0.12701324228329952 | 0.12333976034207637 | 20.94541228168298 | 2.8242945281834873 |
+| linear | 16 | 0.055468969746314975 | 0.04137134552001953 | 0.028190135955810547 | 0.0968403152663345 | 0.08365910570212552 | 0.08189722220488736 | 23.589545045225233 | 4.476530074672733 |
+| stage65_adapter | 4 | 0.18193822076791313 | 0.04137134552001953 | 0.03340339660644531 | 0.22330956628793266 | 0.21534161737435845 | 0.20699076822274712 | 23.352831018389125 | 2.870092812012075 |
+| stage65_adapter | 8 | 0.09762538675351436 | 0.04137134552001953 | 0.03443698883056641 | 0.13899673227353387 | 0.13206237558408077 | 0.12775775198025996 | 20.943699759081163 | 2.41134126509652 |
+| stage65_adapter | 16 | 0.055468969746314975 | 0.04137134552001953 | 0.03329300880432129 | 0.0968403152663345 | 0.08876197855063626 | 0.08668116550036618 | 22.48232041707169 | 3.407310328486104 |
+
+结论：Stage94 将 Stage93 actual entropy payload bytes 接入 total-rate accounting。相比 fixed q6 side-info，entropy codec v2 在 direct total rate 上节省 `0.0069-0.0132 MiB/frame`，同时 decoded rendered quality 不变。下一步应对 Stage89 的 60-task broader eval 运行 entropy codec v2，检查压缩率和 positive deltas 是否保持。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。

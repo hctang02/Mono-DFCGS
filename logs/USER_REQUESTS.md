@@ -1183,3 +1183,17 @@ Stage93 将 Stage92 的 `delta_index_zlib` preflight 方案实现成真实可 de
 ### 后续执行更新
 
 Stage93 entropy-coded residual side-info codec v2 已完成：运行前检查 `nvidia-smi`，GPU1 空闲，使用 `CUDA_VISIBLE_DEVICES=1` 与 venv Python。扩展 `mono_dfcgs/residual_sideinfo_codec.py`，新增 `encode_topk_residual_sideinfo_entropy` / `decode_residual_sideinfo_entropy`，并新增 `scripts/run_stage93_residual_sideinfo_entropy_codec_smoke.py`。12-task rendered round-trip 结果中 entropy decode 与 fixed decode 的 `max_abs_diff` 全部为 `0.0`。entropy payload mean：linear gap4/8/16 为 `29763.666666666668`、`30815.4`、`29559.5 bytes`，ratio `0.6860991371030328`、`0.71034323782301`、`0.6813927756391047`；Stage65 adapter gap4/8/16 为 `35026.0`、`36109.8`、`34910.25 bytes`，ratio `0.8074041631128835`、`0.8323874507272769`、`0.8047359443074157`。decoded rendered delta 与 Stage91 fixed 基本一致：linear gap4/8/16 `+3.3372252270957077`、`+2.8242945281834873`、`+4.476530074672733 dB`；Stage65 adapter `+2.870092812012075`、`+2.41134126509652`、`+3.407310328486104 dB`。结论：Stage93 已把 Stage92 best candidate 变成真实可 decode entropy codec，下一步可做 Stage94 entropy-coded RD accounting。
+
+## 2026-06-28：继续 Stage94 entropy-coded residual side-info RD package
+
+### 用户原始问题
+
+用户要求按照计划继续往下做，做完后续步骤，并且可以一直做下去。
+
+### 当前执行决策
+
+Stage94 将 Stage93 的实际 entropy payload bytes 接入 RD accounting，不重新渲染。计划读取 Stage78 q12 main anchor rate table 和 Stage93 entropy codec summary，输出每个 base/gap 的 q12 main rate、fixed side-info rate、entropy side-info rate、direct total、amortized total、entropy-vs-fixed savings、rendered PSNR 和 delta。目标是明确 entropy codec v2 在 RD 横轴上带来的实际 rate reduction。
+
+### 后续执行更新
+
+Stage94 entropy-coded residual side-info RD package 已完成：运行前检查 `nvidia-smi`，该阶段为 CPU 汇总。新增 `scripts/run_stage94_entropy_residual_sideinfo_rd_package.py`，输出目录 `experiments/stage94_entropy_residual_sideinfo_rd_package/`，生成 `6` 条 RD rows 和 `24` 条 point rows。linear gap4/8/16 entropy side rate 为 `0.028384844462076824`、`0.029387855529785158`、`0.028190135955810547 MiB/intermediate-frame`，entropy direct total rate 为 `0.21032306522998995`、`0.12701324228329952`、`0.08365910570212552 MiB/frame`；相对 fixed direct total 节省 `0.012986501057942718`、`0.011983489990234353`、`0.013181209564208984 MiB/frame`。Stage65 adapter gap4/8/16 entropy side rate 为 `0.03340339660644531`、`0.03443698883056641`、`0.03329300880432129`，entropy direct total rate 为 `0.21534161737435845`、`0.13206237558408077`、`0.08876197855063626`；相对 fixed direct total 节省 `0.007967948913574219`、`0.006934356689453108`、`0.008078336715698242 MiB/frame`。结论：entropy codec v2 以相同 decoded quality 降低 RD 横轴 side-info cost；下一步可扩展到 Stage89 的 60-task broader eval。
