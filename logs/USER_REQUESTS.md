@@ -1169,3 +1169,17 @@ Stage92 先做 entropy coding preflight，不重新渲染。计划复用 Stage91
 ### 后续执行更新
 
 Stage92 residual side-info entropy preflight 已完成：运行前检查 `nvidia-smi`，GPU1 空闲，使用 `CUDA_VISIBLE_DEVICES=1` 与 `/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python`。新增脚本 `scripts/run_stage92_residual_sideinfo_entropy_preflight.py`，覆盖 `60` 个 q12 eval tasks、`120` 个 method payload rows，不重新渲染。候选整体均值：raw fixed `43381.0 bytes` / `0.04137134552001953 MiB/intermediate-frame`；zlib whole `37426.28333333333 bytes` / ratio `0.8627344536394581`；component zlib `37162.98333333333 bytes` / ratio `0.8566649762184673`；delta-index zlib 最好，`32623.583333333332 bytes` / `0.031112273534138996 MiB/intermediate-frame` / ratio `0.7520246959114205`，平均节省 `10757.416666666668 bytes`。按 method 看 linear 的 delta-index zlib ratio 约 `0.684-0.698`，Stage65 adapter 约 `0.801-0.817`，说明 adapter residual payload 更接近高熵。结论：值得做 Stage93 codec v2，将 sorted-index delta + zlib 变成可 decode 的真实 entropy-coded residual side-info codec。
+
+## 2026-06-28：继续 Stage93 entropy-coded residual side-info codec v2
+
+### 用户原始问题
+
+用户要求按照计划继续往下做，做完后续步骤，并且可以一直做下去。
+
+### 当前执行决策
+
+Stage93 将 Stage92 的 `delta_index_zlib` preflight 方案实现成真实可 decode codec v2。计划在 `mono_dfcgs/residual_sideinfo_codec.py` 中新增 entropy payload encode/decode：排序 top-k Gaussian indices、用 delta bitpack 表示 sorted indices、q6 residual values 按 sorted index 顺序打包，然后对 metadata、delta bytes 和 residual bytes 分别 zlib 压缩。新增 Stage93 脚本在 12-task q12 eval slice 上做 encode/decode/render round-trip，输出 actual entropy payload bytes、fixed bytes、rate ratio、decoded rendered PSNR 和 delta。该阶段仍是 teacher residual side-info，但 decoder 只依赖 base anchor + transmitted entropy payload。
+
+### 后续执行更新
+
+Stage93 entropy-coded residual side-info codec v2 已完成：运行前检查 `nvidia-smi`，GPU1 空闲，使用 `CUDA_VISIBLE_DEVICES=1` 与 venv Python。扩展 `mono_dfcgs/residual_sideinfo_codec.py`，新增 `encode_topk_residual_sideinfo_entropy` / `decode_residual_sideinfo_entropy`，并新增 `scripts/run_stage93_residual_sideinfo_entropy_codec_smoke.py`。12-task rendered round-trip 结果中 entropy decode 与 fixed decode 的 `max_abs_diff` 全部为 `0.0`。entropy payload mean：linear gap4/8/16 为 `29763.666666666668`、`30815.4`、`29559.5 bytes`，ratio `0.6860991371030328`、`0.71034323782301`、`0.6813927756391047`；Stage65 adapter gap4/8/16 为 `35026.0`、`36109.8`、`34910.25 bytes`，ratio `0.8074041631128835`、`0.8323874507272769`、`0.8047359443074157`。decoded rendered delta 与 Stage91 fixed 基本一致：linear gap4/8/16 `+3.3372252270957077`、`+2.8242945281834873`、`+4.476530074672733 dB`；Stage65 adapter `+2.870092812012075`、`+2.41134126509652`、`+3.407310328486104 dB`。结论：Stage93 已把 Stage92 best candidate 变成真实可 decode entropy codec，下一步可做 Stage94 entropy-coded RD accounting。

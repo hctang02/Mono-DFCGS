@@ -6474,6 +6474,72 @@ Gap/method summary：
 
 结论：Stage92 表明 fixed bitstream 仍有明显无损压缩空间，主要来自 selected Gaussian indices 的排序 delta coding 和 residual bytes 的 zlib coding。整体 mean rate 可从 `0.04137134552001953` 降到 `0.031112273534138996 MiB/intermediate-frame`。Stage65 adapter residual 比 linear 更难压缩，但 delta-index zlib 仍是所有 `120` rows 的最佳候选。下一步 Stage93 应实现可 decode 的 entropy-coded codec v2。
 
+## 2026-06-28：Stage93 Entropy-Coded Residual Side-Info Codec v2
+
+### 目标
+
+把 Stage92 的 `delta_index_zlib` preflight 方案实现成真实 encode/decode codec，并通过 rendered round-trip smoke 验证。
+
+### 操作计划
+
+- 扩展 `mono_dfcgs/residual_sideinfo_codec.py`，新增 entropy-coded payload encode/decode。
+- Payload v2 内容：header、zlib-compressed float16 min/max metadata、zlib-compressed sorted-index deltas、zlib-compressed q6 residual values。
+- 新增 `scripts/run_stage93_residual_sideinfo_entropy_codec_smoke.py`。
+- 使用 12-task q12 eval slice、gaps `4/8/16`、linear 和 Stage65 adapter base、keep fraction `0.1`、side bits `6`。
+- 输出 fixed payload bytes、entropy payload bytes、ratio、decoded rendered PSNR 和 delta。
+- 运行前按要求检查 `nvidia-smi`，并选择空闲 GPU。
+
+### Stage93 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+修改文件：
+
+```text
+mono_dfcgs/residual_sideinfo_codec.py
+```
+
+新增函数：
+
+```text
+encode_topk_residual_sideinfo_entropy
+decode_residual_sideinfo_entropy
+```
+
+新增脚本：
+
+```text
+scripts/run_stage93_residual_sideinfo_entropy_codec_smoke.py
+```
+
+运行命令：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage93_residual_sideinfo_entropy_codec_smoke.py
+```
+
+仓库内输出：
+
+```text
+experiments/stage93_residual_sideinfo_entropy_codec_smoke/stage93_residual_sideinfo_entropy_codec_rows.csv
+experiments/stage93_residual_sideinfo_entropy_codec_smoke/stage93_residual_sideinfo_entropy_codec_summary.csv
+experiments/stage93_residual_sideinfo_entropy_codec_smoke/stage93_residual_sideinfo_entropy_codec_summary.json
+experiments/stage93_residual_sideinfo_entropy_codec_smoke/stage93_residual_sideinfo_entropy_codec_report.md
+```
+
+Summary：
+
+| base | gap | tasks | fixed bytes | entropy bytes | ratio | entropy MiB/intermediate | max decode diff | entropy PSNR | delta | positives |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| linear | 4 | 3 | 43381.0 | 29763.666666666668 | 0.6860991371030328 | 0.028384844462076824 | 0.0 | 23.327021755289916 | 3.3372252270957077 | 3 |
+| linear | 8 | 5 | 43381.0 | 30815.4 | 0.71034323782301 | 0.029387855529785158 | 0.0 | 20.94541228168298 | 2.8242945281834873 | 5 |
+| linear | 16 | 4 | 43381.0 | 29559.5 | 0.6813927756391047 | 0.028190135955810547 | 0.0 | 23.589545045225233 | 4.476530074672733 | 4 |
+| stage65_adapter | 4 | 3 | 43381.0 | 35026.0 | 0.8074041631128835 | 0.03340339660644531 | 0.0 | 23.352831018389125 | 2.870092812012075 | 3 |
+| stage65_adapter | 8 | 5 | 43381.0 | 36109.8 | 0.8323874507272769 | 0.03443698883056641 | 0.0 | 20.943699759081163 | 2.41134126509652 | 5 |
+| stage65_adapter | 16 | 4 | 43381.0 | 34910.25 | 0.8047359443074157 | 0.03329300880432129 | 0.0 | 22.48232041707169 | 3.407310328486104 | 4 |
+
+结论：Stage93 entropy codec v2 是真实可 decode payload，decode 后与 Stage91 fixed payload 完全一致（max diff `0.0`），且 rendered PSNR 增益保持。12-task smoke 中 linear payload 降到约 `0.0282-0.0294 MiB/intermediate-frame`，Stage65 adapter payload 降到约 `0.0333-0.0344 MiB/intermediate-frame`。下一步 Stage94 应把这些实际 entropy payload bytes 接入 RD accounting。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。

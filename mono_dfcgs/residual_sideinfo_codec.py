@@ -1,13 +1,16 @@
 import math
 import struct
+import zlib
 
 import numpy as np
 import torch
 
 
 MAGIC = b"RSI1"
+ENTROPY_MAGIC = b"RSE1"
 VERSION = 1
 HEADER_STRUCT = struct.Struct("<4sBBBBHII")
+ENTROPY_HEADER_STRUCT = struct.Struct("<4sBBBBHIIIII")
 FLOAT16_BYTES = 2
 
 
@@ -73,13 +76,7 @@ def sideinfo_mib_without_header(gaussian_count, keep_count, attr_dim, side_bits,
     ) / 8.0 / (1024.0 * 1024.0)
 
 
-def encode_topk_residual_sideinfo(base_attrs, target_attrs, keep_fraction, side_bits, eps=1e-8):
-    """Encode top-k residual side-info into a fixed-length byte payload.
-
-    The packet stores indices and q residual values with bit packing. Min/max
-    metadata is stored as float16 to match the 16-bit metadata accounting used
-    in Stage87-90.
-    """
+def _prepare_topk_residual_quantization(base_attrs, target_attrs, keep_fraction, side_bits, eps=1e-8, sort_indices=False):
     base_cpu = base_attrs.detach().cpu().float()
     target_cpu = target_attrs.detach().cpu().float()
     if base_cpu.shape != target_cpu.shape or base_cpu.ndim != 3 or base_cpu.shape[0] != 1:
@@ -87,8 +84,6 @@ def encode_topk_residual_sideinfo(base_attrs, target_attrs, keep_fraction, side_
     gaussian_count = int(base_cpu.shape[1])
     attr_dim = int(base_cpu.shape[2])
     keep_count = min(max(int(round(gaussian_count * float(keep_fraction))), 0), gaussian_count)
-    index_bits = math.ceil(math.log2(max(gaussian_count, 2)))
-
     residual = target_cpu - base_cpu
     if keep_count > 0:
         energy = torch.sum(residual[0] ** 2, dim=-1)
@@ -106,14 +101,42 @@ def encode_topk_residual_sideinfo(base_attrs, target_attrs, keep_fraction, side_
     maxs_half = maxs.numpy().astype("<f2")
     mins_codec = torch.from_numpy(mins_half.astype("<f4")).float()
     maxs_codec = torch.from_numpy(maxs_half.astype("<f4")).float()
-
     if keep_count > 0:
         qmax = (1 << int(side_bits)) - 1
         scales = (maxs_codec - mins_codec).clamp_min(eps) / qmax
         q_values = torch.round((kept - mins_codec) / scales).clamp(0, qmax).to(torch.int64)
-        q_flat = q_values.reshape(-1).tolist()
+        if sort_indices:
+            order = torch.argsort(keep_idx)
+            keep_idx = keep_idx[order]
+            q_values = q_values[order]
     else:
-        q_flat = []
+        q_values = torch.empty((0, attr_dim), dtype=torch.int64)
+
+    return {
+        "gaussian_count": gaussian_count,
+        "attr_dim": attr_dim,
+        "keep_count": keep_count,
+        "keep_idx": keep_idx,
+        "q_values": q_values,
+        "mins_half": mins_half,
+        "maxs_half": maxs_half,
+    }
+
+
+def encode_topk_residual_sideinfo(base_attrs, target_attrs, keep_fraction, side_bits, eps=1e-8):
+    """Encode top-k residual side-info into a fixed-length byte payload.
+
+    The packet stores indices and q residual values with bit packing. Min/max
+    metadata is stored as float16 to match the 16-bit metadata accounting used
+    in Stage87-90.
+    """
+    prepared = _prepare_topk_residual_quantization(base_attrs, target_attrs, keep_fraction, side_bits, eps=eps, sort_indices=False)
+    gaussian_count = prepared["gaussian_count"]
+    attr_dim = prepared["attr_dim"]
+    keep_count = prepared["keep_count"]
+    index_bits = math.ceil(math.log2(max(gaussian_count, 2)))
+    keep_idx = prepared["keep_idx"]
+    q_flat = prepared["q_values"].reshape(-1).tolist()
 
     header = HEADER_STRUCT.pack(
         MAGIC,
@@ -125,7 +148,7 @@ def encode_topk_residual_sideinfo(base_attrs, target_attrs, keep_fraction, side_
         int(gaussian_count),
         int(keep_count),
     )
-    metadata = mins_half.tobytes() + maxs_half.tobytes()
+    metadata = prepared["mins_half"].tobytes() + prepared["maxs_half"].tobytes()
     index_payload = _pack_ints(keep_idx.tolist(), index_bits)
     residual_payload = _pack_ints(q_flat, int(side_bits))
     payload = header + metadata + index_payload + residual_payload
@@ -142,6 +165,82 @@ def encode_topk_residual_sideinfo(base_attrs, target_attrs, keep_fraction, side_
         "index_bytes": len(index_payload),
         "residual_bytes": len(residual_payload),
         "payload_bytes": len(payload),
+        "theoretical_bits_without_header": theoretical_bits,
+        "theoretical_bytes_without_header": theoretical_bits / 8.0,
+        "theoretical_mib_without_header": theoretical_bits / 8.0 / (1024.0 * 1024.0),
+    }
+    return payload, info
+
+
+def _index_deltas(sorted_indices):
+    out = []
+    prev = -1
+    for index in sorted_indices:
+        index = int(index)
+        out.append(index - prev)
+        prev = index
+    return out
+
+
+def _indices_from_deltas(deltas):
+    out = []
+    prev = -1
+    for delta in deltas:
+        value = prev + int(delta)
+        out.append(value)
+        prev = value
+    return out
+
+
+def encode_topk_residual_sideinfo_entropy(base_attrs, target_attrs, keep_fraction, side_bits, zlib_level=9, eps=1e-8):
+    """Encode top-k residual side-info with sorted-index deltas and zlib.
+
+    This is a decode-capable version of the best Stage92 preflight candidate.
+    Indices are sorted before delta coding, and q residual rows are reordered to
+    match sorted indices.
+    """
+    prepared = _prepare_topk_residual_quantization(base_attrs, target_attrs, keep_fraction, side_bits, eps=eps, sort_indices=True)
+    gaussian_count = prepared["gaussian_count"]
+    attr_dim = prepared["attr_dim"]
+    keep_count = prepared["keep_count"]
+    delta_bits = math.ceil(math.log2(max(gaussian_count + 1, 2)))
+    metadata = prepared["mins_half"].tobytes() + prepared["maxs_half"].tobytes()
+    delta_payload = _pack_ints(_index_deltas(prepared["keep_idx"].tolist()), delta_bits)
+    residual_payload = _pack_ints(prepared["q_values"].reshape(-1).tolist(), int(side_bits))
+    metadata_z = zlib.compress(metadata, int(zlib_level))
+    delta_z = zlib.compress(delta_payload, int(zlib_level))
+    residual_z = zlib.compress(residual_payload, int(zlib_level))
+    header = ENTROPY_HEADER_STRUCT.pack(
+        ENTROPY_MAGIC,
+        VERSION,
+        int(side_bits),
+        int(delta_bits),
+        0,
+        int(attr_dim),
+        int(gaussian_count),
+        int(keep_count),
+        len(metadata_z),
+        len(delta_z),
+        len(residual_z),
+    )
+    payload = header + metadata_z + delta_z + residual_z
+    theoretical_bits = sideinfo_bits_without_header(gaussian_count, keep_count, attr_dim, side_bits)
+    fixed_bytes = HEADER_STRUCT.size + len(metadata) + ((keep_count * math.ceil(math.log2(max(gaussian_count, 2))) + 7) // 8) + len(residual_payload)
+    info = {
+        "gaussian_count": gaussian_count,
+        "attr_dim": attr_dim,
+        "keep_count": keep_count,
+        "side_bits": int(side_bits),
+        "delta_bits": int(delta_bits),
+        "header_bytes": ENTROPY_HEADER_STRUCT.size,
+        "metadata_bytes": len(metadata),
+        "delta_bytes": len(delta_payload),
+        "residual_bytes": len(residual_payload),
+        "metadata_zlib_bytes": len(metadata_z),
+        "delta_zlib_bytes": len(delta_z),
+        "residual_zlib_bytes": len(residual_z),
+        "payload_bytes": len(payload),
+        "fixed_payload_bytes": fixed_bytes,
         "theoretical_bits_without_header": theoretical_bits,
         "theoretical_bytes_without_header": theoretical_bits / 8.0,
         "theoretical_mib_without_header": theoretical_bits / 8.0 / (1024.0 * 1024.0),
@@ -177,6 +276,63 @@ def decode_residual_sideinfo(base_attrs, payload, eps=1e-8):
     residual_payload = payload[offset:offset + residual_bytes]
 
     keep_idx = _unpack_ints(index_payload, int(keep_count), int(index_bits))
+    q_flat = _unpack_ints(residual_payload, residual_values, int(side_bits))
+    decoded = base_cpu.clone()
+    if keep_count > 0:
+        q = torch.tensor(q_flat, dtype=torch.float32).reshape(int(keep_count), int(attr_dim))
+        mins_t = torch.from_numpy(mins).float()
+        maxs_t = torch.from_numpy(maxs).float()
+        qmax = (1 << int(side_bits)) - 1
+        scales = (maxs_t - mins_t).clamp_min(eps) / qmax
+        residual = q * scales + mins_t
+        decoded[0, torch.tensor(keep_idx, dtype=torch.long), :] += residual
+    return decoded.to(device=base_attrs.device, dtype=base_attrs.dtype)
+
+
+def decode_residual_sideinfo_entropy(base_attrs, payload, eps=1e-8):
+    base_cpu = base_attrs.detach().cpu().float()
+    if base_cpu.ndim != 3 or base_cpu.shape[0] != 1:
+        raise ValueError(f"expected [1, N, D] attrs, got {base_cpu.shape}")
+    header_size = ENTROPY_HEADER_STRUCT.size
+    (
+        magic,
+        version,
+        side_bits,
+        delta_bits,
+        _flags,
+        attr_dim,
+        gaussian_count,
+        keep_count,
+        metadata_z_bytes,
+        delta_z_bytes,
+        residual_z_bytes,
+    ) = ENTROPY_HEADER_STRUCT.unpack(payload[:header_size])
+    if magic != ENTROPY_MAGIC:
+        raise ValueError("invalid entropy residual side-info magic")
+    if version != VERSION:
+        raise ValueError(f"unsupported entropy residual side-info version: {version}")
+    if int(base_cpu.shape[1]) != gaussian_count or int(base_cpu.shape[2]) != attr_dim:
+        raise ValueError("entropy payload shape does not match base attrs")
+
+    offset = header_size
+    metadata_z = payload[offset:offset + int(metadata_z_bytes)]
+    offset += int(metadata_z_bytes)
+    delta_z = payload[offset:offset + int(delta_z_bytes)]
+    offset += int(delta_z_bytes)
+    residual_z = payload[offset:offset + int(residual_z_bytes)]
+
+    metadata = zlib.decompress(metadata_z)
+    expected_metadata_bytes = int(attr_dim) * 2 * FLOAT16_BYTES
+    if len(metadata) != expected_metadata_bytes:
+        raise ValueError("invalid entropy metadata length")
+    mins = np.frombuffer(metadata[:int(attr_dim) * FLOAT16_BYTES], dtype="<f2").astype("<f4").copy()
+    maxs = np.frombuffer(metadata[int(attr_dim) * FLOAT16_BYTES:], dtype="<f2").astype("<f4").copy()
+    delta_payload = zlib.decompress(delta_z)
+    residual_payload = zlib.decompress(residual_z)
+
+    deltas = _unpack_ints(delta_payload, int(keep_count), int(delta_bits))
+    keep_idx = _indices_from_deltas(deltas)
+    residual_values = int(keep_count) * int(attr_dim)
     q_flat = _unpack_ints(residual_payload, residual_values, int(side_bits))
     decoded = base_cpu.clone()
     if keep_count > 0:
