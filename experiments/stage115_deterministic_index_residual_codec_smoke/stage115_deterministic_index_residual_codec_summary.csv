@@ -1,0 +1,7 @@
+base_method,codec,reference_gap,task_count,selector_policy,selected_candidate,keep_fraction,side_bits,mean_keep_gaussians,mean_fixed_payload_bytes,mean_deterministic_payload_bytes,mean_fixed_index_bytes,mean_deterministic_savings_bytes_vs_fixed,mean_deterministic_ratio_vs_fixed,mean_fixed_mib_per_intermediate_frame,mean_deterministic_mib_per_intermediate_frame,max_decoded_max_abs_diff_vs_fixed
+linear,q12,4,3,strict_safe_endpoint_selector_v1,endpoint_diff_baseline,0.1,6,3686.0,43381.0,36009.0,7372.0,7372.0,0.8300638528388004,0.04137134552001953,0.034340858459472656,0.0
+linear,q12,8,5,strict_safe_endpoint_selector_v1,endpoint_diff_baseline,0.1,6,3686.0,43381.0,36009.0,7372.0,7372.0,0.8300638528388002,0.04137134552001953,0.034340858459472656,0.0
+linear,q12,16,4,strict_safe_endpoint_selector_v1,endpoint_diff_baseline,0.1,6,3686.0,43381.0,36009.0,7372.0,7372.0,0.8300638528388004,0.04137134552001953,0.034340858459472656,0.0
+stage65_adapter,q12,4,3,strict_safe_endpoint_selector_v1,endpoint_diff_baseline,0.1,6,3686.0,43381.0,36009.0,7372.0,7372.0,0.8300638528388004,0.04137134552001953,0.034340858459472656,0.0
+stage65_adapter,q12,8,5,strict_safe_endpoint_selector_v1,endpoint_diff_baseline,0.1,6,3686.0,43381.0,36009.0,7372.0,7372.0,0.8300638528388002,0.04137134552001953,0.034340858459472656,0.0
+stage65_adapter,q12,16,4,strict_safe_endpoint_selector_v1,endpoint_diff_baseline,0.1,6,3686.0,43381.0,36009.0,7372.0,7372.0,0.8300638528388004,0.04137134552001953,0.034340858459472656,0.0

@@ -7963,3 +7963,91 @@ experiments/stage114_strict_safe_selector_fallback_package/stage114_strict_safe_
 - Stage112 remains an aggregate-safe candidate only, not the final strict-safe policy.
 - The package still only selects residual indices; residual value prediction is still future work.
 - Next step: deterministic-index residual side-info codec using this strict-safe selector.
+
+## 2026-06-29：Stage115 Deterministic-Index Residual Side-Info Codec Smoke
+
+### 目标
+
+实现 deterministic-index value-only residual side-info codec smoke。核心思想是 decoder 通过 Stage114 strict-safe endpoint selector 自行确定 selected Gaussian indices，因此 side-info bitstream 不再传 selected indices，只传这些 indices 上的 residual values/scale/shape metadata。
+
+### 操作计划
+
+- 先检查 `mono_dfcgs/residual_sideinfo_codec.py` 和 Stage91/93/96 residual side-info scripts。
+- 在 codec 中新增 deterministic-index value-only encode/decode helper，或新增最小 Stage115 smoke helper，优先保持改动小。
+- 新增 `scripts/run_stage115_deterministic_index_residual_codec_smoke.py`。
+- 使用 Stage114 strict-safe selector package 作为默认 selector policy。
+- 对比 fixed index+value payload 与 deterministic value-only payload 的 bytes/rate。
+- 验证 deterministic decode 与 fixed decode 在相同 selected indices 下 `max_abs_diff = 0.0`。
+- 不重新渲染、不训练、不保存 anchors/checkpoints/heavy tensors。
+- 运行代码前检查 `nvidia-smi`。
+
+### 实现
+
+Updated:
+
+```text
+mono_dfcgs/residual_sideinfo_codec.py
+```
+
+新增 helpers:
+
+```text
+encode_selected_residual_sideinfo
+encode_selected_residual_values_sideinfo
+decode_selected_residual_values_sideinfo
+deterministic_sideinfo_bits_without_header
+deterministic_sideinfo_mib_without_header
+```
+
+Added:
+
+```text
+scripts/run_stage115_deterministic_index_residual_codec_smoke.py
+```
+
+### 执行
+
+运行前检查 `nvidia-smi`：GPU0 忙、GPU4 有进程，GPU1/2/3/5/6/7 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。
+
+Syntax check and run：
+
+```text
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile mono_dfcgs/residual_sideinfo_codec.py scripts/run_stage115_deterministic_index_residual_codec_smoke.py
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage115_deterministic_index_residual_codec_smoke.py
+```
+
+### 输出文件
+
+```text
+experiments/stage115_deterministic_index_residual_codec_smoke/stage115_deterministic_index_residual_codec_rows.csv
+experiments/stage115_deterministic_index_residual_codec_smoke/stage115_deterministic_index_residual_codec_summary.csv
+experiments/stage115_deterministic_index_residual_codec_smoke/stage115_deterministic_index_residual_codec_summary.json
+experiments/stage115_deterministic_index_residual_codec_smoke/stage115_deterministic_index_residual_codec_report.md
+```
+
+### 结果
+
+| base | gap | tasks | fixed bytes | deterministic bytes | saved bytes | ratio | deterministic MiB/intermediate | max decode diff |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| linear | 4 | 3 | 43381.0 | 36009.0 | 7372.0 | 0.8300638528388004 | 0.034340858459472656 | 0.0 |
+| linear | 8 | 5 | 43381.0 | 36009.0 | 7372.0 | 0.8300638528388002 | 0.034340858459472656 | 0.0 |
+| linear | 16 | 4 | 43381.0 | 36009.0 | 7372.0 | 0.8300638528388004 | 0.034340858459472656 | 0.0 |
+| stage65_adapter | 4 | 3 | 43381.0 | 36009.0 | 7372.0 | 0.8300638528388004 | 0.034340858459472656 | 0.0 |
+| stage65_adapter | 8 | 5 | 43381.0 | 36009.0 | 7372.0 | 0.8300638528388002 | 0.034340858459472656 | 0.0 |
+| stage65_adapter | 16 | 4 | 43381.0 | 36009.0 | 7372.0 | 0.8300638528388004 | 0.034340858459472656 | 0.0 |
+
+### 结论
+
+- Deterministic value-only payload can remove selected-index bytes when decoder reproduces endpoint-diff indices.
+- Actual payload drops from `43381` to `36009` bytes per intermediate frame for q6 top10 residual values, saving `7372` bytes.
+- Decode is equivalent to fixed index+value payload under the same selected indices: max diff `0.0`.
+- Residual values are still teacher-derived from dense target anchors; this is not residual value prediction.
+- Next step: compare deterministic value-only side-info against entropy-coded index+value side-info in RD accounting.
+
+### Commit/Push Finalization Plan
+
+- Inspect `git status`, Stage115 diff, and recent commits.
+- Stage only Stage115 code, script, output summaries, and logs.
+- Run `git diff --cached --check` before committing.
+- Commit as `Smoke deterministic-index residual codec` with the required OpenCode identity and push `main`.
+- Continue to ignore unrelated Stage53/StreamSplat comparison and exp_stage07/08 dirty files.

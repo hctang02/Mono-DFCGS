@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage114: `e306e10 Validate held-out switch policy`
+- Latest pushed commit before Stage115: `e4145ed Package strict-safe selector fallback`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -69,6 +69,7 @@ Key Stage96 direct total rates:
 - Stage112: packaged conservative broader metadata group switch policy `render_aware_group_switch_v2`; it uses only `base_method` and `reference_gap` and selects endpoint for linear gap4 plus all Stage65 adapter groups.
 - Stage113: held-out switch diagnostic over Stage111 out-of-fold rows; Stage112 is aggregate group-safe but not fold-group safe under a zero-regression criterion.
 - Stage114: packaged strict-safe endpoint-only selector fallback `strict_safe_endpoint_selector_v1` after user chose strict safety.
+- Stage115: deterministic-index residual side-info codec smoke; value-only payload removes endpoint-diff selected index bytes and decodes identically to fixed index+value payload.
 
 ## Current Best Selector Policy
 
@@ -127,6 +128,7 @@ Stage113 held-out diagnostic:
 - Selector-score task-level switching has signal but does not fix adapter-group regressions and remains below Stage106.
 - Stage114 freezes endpoint-only as the strict-safe selector fallback chosen by the user.
 - Stage112 is aggregate group-safe and improves over endpoint overall, but Stage113 shows it is not fold-group safe under a strict zero-regression criterion.
+- Stage115 confirms index bytes can be removed when selected indices are decoder-reproducible, reducing q6 top10 side-info payload from `43381` to `36009` bytes on the smoke tasks.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -272,11 +274,28 @@ Result:
 
 Goal: freeze the strict-safe selector before deterministic-index side-info codec work.
 
+### Stage115: Deterministic-Index Residual Codec Smoke
+
+Status: completed on 2026-06-29.
+
+Result:
+
+- Added deterministic value-only helpers in `mono_dfcgs/residual_sideinfo_codec.py`.
+- Added `scripts/run_stage115_deterministic_index_residual_codec_smoke.py`.
+- Selector policy: Stage114 `strict_safe_endpoint_selector_v1` / `endpoint_diff_baseline`.
+- Task count: `12` q12 eval tasks, both linear and Stage65 adapter base methods.
+- Fixed index+value payload: `43381 bytes`, `0.04137134552001953 MiB/intermediate`.
+- Deterministic value-only payload: `36009 bytes`, `0.034340858459472656 MiB/intermediate`.
+- Savings: `7372 bytes`, ratio `0.8300638528388004`.
+- Max deterministic decode diff vs fixed decode: `0.0`.
+- Limitation: residual values are still teacher-derived; this is not residual value prediction.
+
+Goal: remove transmitted selected-index bytes when decoder can reproduce selected indices.
+
 ## Later Plan After Selector Stabilizes
 
 ### Deterministic-Index Side-Info Codec
 
-- Stage115: build deterministic-index residual codec where decoder predicts indices and bitstream carries values/scales only, using Stage114 strict-safe selector by default.
 - Stage116: compare index+value entropy side-info vs deterministic-index value-only side-info.
 - Stage117: sweep q-bit and keep fraction.
 - Stage118: package broader RD with all side-info bytes counted.
@@ -333,6 +352,7 @@ Goal: freeze the strict-safe selector before deterministic-index side-info codec
 - Stage112 policy package: `scripts/run_stage112_package_broader_group_switch_policy.py`
 - Stage113 held-out switch validation: `scripts/run_stage113_heldout_switch_validation.py`
 - Stage114 strict-safe selector fallback package: `scripts/run_stage114_package_strict_safe_selector_fallback.py`
+- Stage115 deterministic-index codec smoke: `scripts/run_stage115_deterministic_index_residual_codec_smoke.py`
 
 ### Important Outputs
 
@@ -350,6 +370,7 @@ Goal: freeze the strict-safe selector before deterministic-index side-info codec
 - Stage112 packaged policy: `experiments/stage112_broader_group_switch_policy_package/`
 - Stage113 held-out switch validation: `experiments/stage113_heldout_switch_validation/`
 - Stage114 strict-safe selector fallback: `experiments/stage114_strict_safe_selector_fallback_package/`
+- Stage115 deterministic-index codec smoke: `experiments/stage115_deterministic_index_residual_codec_smoke/`
 
 ### Heavy External Paths
 

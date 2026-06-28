@@ -1501,3 +1501,17 @@ Stage114 将打包 endpoint-only strict-safe selector policy，作为后续 dete
 ### 后续执行更新
 
 Stage114 strict-safe selector fallback package 已完成：运行前检查 `nvidia-smi`，GPU1/2/3/5/6/7 空闲；该阶段为 CPU-only packaging，不重新渲染、不训练、不保存 heavy tensors。新增 `scripts/run_stage114_package_strict_safe_selector_fallback.py`，输出目录 `experiments/stage114_strict_safe_selector_fallback_package/`。打包 policy 为 `strict_safe_endpoint_selector_v1`，policy type 为 `fixed_candidate_selector`，固定选择 `endpoint_diff_baseline`，decoder inputs 为空，仅需要 decoder 正常已有的 left/right anchors。验证 summary：task count `480`，selected PSNR `20.3212149854921`，gain vs endpoint `0.0`，min fold/group/fold-group gain 全部 `0.0`，aggregate safe `1`，fold-group safe `1`。Stage112 v2 因 fold-group regression 作为 final 被拒绝；Stage111 learned switch 因 Stage65 adapter gap4 regression 被拒绝。下一步可以用该 strict-safe selector 进入 deterministic-index residual side-info codec。
+
+## 2026-06-29：执行 Stage115 deterministic-index residual side-info codec smoke
+
+### 用户原始问题
+
+用户要求如果有下一步就继续执行；Stage114 已完成、提交并推送，因此进入 deterministic-index residual side-info codec。
+
+### 当前执行决策
+
+Stage115 将实现 deterministic-index value-only residual side-info codec smoke：decoder 使用 Stage114 strict-safe endpoint selector 在左右 anchor/base anchor 上确定 selected indices，bitstream 只传这些 indices 对应的 residual values/scale/shape metadata，不再传 selected indices 本身。Stage115 先做 codec round-trip 和 rate accounting smoke，不重新渲染，不训练 residual value predictor，不保存 heavy tensors。对比 fixed index+value payload 与 deterministic value-only payload，明确节省的 index bytes 必须计入 total side-info rate。运行前仍检查 `nvidia-smi`。
+
+### 后续执行更新
+
+Stage115 deterministic-index residual side-info codec smoke 已完成：运行前检查 `nvidia-smi`，GPU1/2/3/5/6/7 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。扩展 `mono_dfcgs/residual_sideinfo_codec.py`，新增 caller-supplied selected indices 的 fixed index+value encode helper，以及 deterministic value-only encode/decode helper。新增 `scripts/run_stage115_deterministic_index_residual_codec_smoke.py`，读取 Stage114 `strict_safe_endpoint_selector_v1`，对 `12` 个 q12 eval tasks、linear/stage65_adapter 两种 base method 执行 smoke。输出目录 `experiments/stage115_deterministic_index_residual_codec_smoke/`。结果：fixed index+value payload `43381 bytes` / `0.04137134552001953 MiB/intermediate`；deterministic value-only payload `36009 bytes` / `0.034340858459472656 MiB/intermediate`；节省 `7372 bytes`，ratio `0.8300638528388004`；deterministic decode 与 fixed decode 最大差异 `0.0`。结论：在 decoder 可复现 endpoint-diff indices 时，可以无损省掉 index bytes，但 residual values 仍是 teacher-derived，尚不是 residual value prediction。
