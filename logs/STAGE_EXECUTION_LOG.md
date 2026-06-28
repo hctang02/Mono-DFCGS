@@ -5802,6 +5802,55 @@ Best margin by gap：
 
 结论：Stage81 证明从 Stage65 adapter 初始化后，可以在 Stage79 q10/q12 tasks 上继续训练并提升小规模 held-out margin。但 gap4 仍为负，说明当前 RGB-loss finetuning 对短间隔/高细节 case 不稳定。下一步不应直接宣称全局改进，应扩大 eval 或做 gap-aware sampling/loss，再进入 full RD evaluation。
 
+## 2026-06-28：Stage82 Broader Adapter Evaluation
+
+### 目标
+
+在更宽的 held-out slice 上评估 Stage81 best adapter，判断 Stage81 pilot 的增益是否稳定，避免基于 18-task 小 eval 过早下结论。
+
+### 操作计划
+
+- 复用 `scripts/run_stage80_adapter_training_smoke.py` 的 eval path。
+- `--steps 0`，不继续训练。
+- 初始化 checkpoint：`/data/hctang/tmp/opencode/mono_dfcgs_runs/stage81_adapter_training_pilot/best_adapter.safetensors`。
+- Reference checkpoint：Stage65 `rgb_h256` best adapter。
+- 数据：Stage79 q10/q12、gaps `4/8/16`。
+- Eval tasks：`60`。
+- 输出 `experiments/stage82_adapter_pilot_broader_eval/`。
+- 运行前按要求检查 `nvidia-smi`。
+
+### Stage82 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU4 空闲，因此使用 `CUDA_VISIBLE_DEVICES=4` 运行 eval-only。
+
+仓库内输出：
+
+```text
+experiments/stage82_adapter_pilot_broader_eval/stage82_adapter_pilot_broader_eval_summary.json
+experiments/stage82_adapter_pilot_broader_eval/stage82_adapter_pilot_broader_eval_report.md
+experiments/stage82_adapter_pilot_broader_eval/stage82_train_log.csv
+experiments/stage82_adapter_pilot_broader_eval/stage82_validation_log.csv
+experiments/stage82_adapter_pilot_broader_eval/stage82_best_eval_rows.csv
+experiments/stage82_adapter_pilot_broader_eval/stage82_final_eval_rows.csv
+experiments/stage82_adapter_pilot_broader_eval/stage82_reference_eval_rows.csv
+```
+
+Evaluation summary on 60 DAVIS val tasks：
+
+| model | model PSNR | linear PSNR | margin |
+|---|---:|---:|---:|
+| Stage81 best | 19.360426943660283 | 19.259310564194283 | 0.10111637946599329 |
+| Stage65 reference | 19.369958827711727 | 19.259310564194283 | 0.11064826351743612 |
+
+Margin by gap：
+
+| model | gap4 | gap8 | gap16 |
+|---|---:|---:|---:|
+| Stage81 best | -0.0773488024139178 | 0.06382222406404825 | 0.3698363934848712 |
+| Stage65 reference | -0.010726898647836793 | 0.05364375708512303 | 0.3343528251045902 |
+
+结论：Stage82 是一个重要 guardrail。Stage81 pilot 在更宽 eval 上没有超过 Stage65 reference，主要因为 gap4 退化更明显；Stage81 只显示出 gap8/gap16 改善趋势。当前 best adapter 仍应保留 Stage65，后续若继续训练应采用 gap-aware sampling/loss，至少不能牺牲 gap4。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。

@@ -1,0 +1,2 @@
+step,model_psnr_avg,linear_psnr_avg,margin_over_linear_psnr,best_so_far
+0,19.360426943660283,19.259310564194283,0.10111637946599329,True
