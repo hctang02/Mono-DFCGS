@@ -6338,6 +6338,78 @@ Broader q6 top10 RD rows：
 
 结论：Stage90 将 Stage89 的 broader q6 top10 result 转成明确 total-rate RD accounting。该 operating point 在 direct total rate `0.0968-0.2233 MiB/frame` 范围内仍带来约 `+2.69` 到 `+3.42 dB` rendered PSNR gain。下一步应进入真实 side-info bitstream / entropy coding prototype，减少 teacher residual smoke 与 deployable codec 之间的差距。
 
+## 2026-06-28：Stage91 Fixed Residual Side-Info Bitstream Smoke
+
+### 目标
+
+把 q6 top10 residual side-info 从理论 bit 估算推进到实际 bytes payload 的 fixed-length bitstream pack/unpack smoke。
+
+### 操作计划
+
+- 新增 `mono_dfcgs/residual_sideinfo_codec.py`。
+- 打包内容：header、Gaussian indices、q6 residual values、float16 per-attribute min/max metadata。
+- 新增 `scripts/run_stage91_residual_sideinfo_bitstream_smoke.py`。
+- 复用 Stage87/89 的 q12 eval 任务，但只跑 12-task smoke。
+- Base methods：linear 和 Stage65 adapter。
+- Keep fraction：`0.1`，side bits：`6`。
+- 输出 actual payload MiB/intermediate-frame、theoretical side-info MiB、overhead bytes、decoded rendered PSNR 和 delta。
+- 运行前按要求检查 `nvidia-smi`，并选择空闲 GPU。
+
+### Stage91 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU0/1 空闲，为避免默认 GPU 干扰，使用 `CUDA_VISIBLE_DEVICES=1`。
+
+新增文件：
+
+```text
+mono_dfcgs/residual_sideinfo_codec.py
+scripts/run_stage91_residual_sideinfo_bitstream_smoke.py
+```
+
+运行命令：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage91_residual_sideinfo_bitstream_smoke.py
+```
+
+仓库内输出：
+
+```text
+experiments/stage91_residual_sideinfo_bitstream_smoke/stage91_residual_sideinfo_bitstream_rows.csv
+experiments/stage91_residual_sideinfo_bitstream_smoke/stage91_residual_sideinfo_bitstream_summary.csv
+experiments/stage91_residual_sideinfo_bitstream_smoke/stage91_residual_sideinfo_bitstream_summary.json
+experiments/stage91_residual_sideinfo_bitstream_smoke/stage91_residual_sideinfo_bitstream_report.md
+```
+
+Payload accounting：
+
+| component | bytes |
+|---|---:|
+| header | 18 |
+| float16 min/max metadata | 52 |
+| bit-packed Gaussian indices | 7372 |
+| bit-packed q6 residual values | 35939 |
+| total payload | 43381 |
+
+Theoretical Stage87-90 side-info without header/byte padding：`43362.5 bytes` / `0.041353702545166016 MiB/intermediate-frame`。
+
+Actual fixed payload：`43381 bytes` / `0.04137134552001953 MiB/intermediate-frame`。
+
+Overhead vs theoretical：`18.5 bytes`。
+
+Rendered bitstream summary：
+
+| base | gap | tasks | payload MiB/intermediate | base PSNR | bitstream PSNR | delta | positives |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| linear | 4 | 3 | 0.04137134552001953 | 19.98979652819421 | 23.327021755289916 | 3.3372252270957077 | 3 |
+| linear | 8 | 5 | 0.04137134552001953 | 18.12111775349949 | 20.94541228168298 | 2.8242945281834873 | 5 |
+| linear | 16 | 4 | 0.04137134552001953 | 19.1130149705525 | 23.589545045225233 | 4.476530074672733 | 4 |
+| stage65_adapter | 4 | 3 | 0.04137134552001953 | 20.48273820637705 | 23.352831018389125 | 2.870092812012075 | 3 |
+| stage65_adapter | 8 | 5 | 0.04137134552001953 | 18.532358493984642 | 20.943699759081163 | 2.41134126509652 | 5 |
+| stage65_adapter | 16 | 4 | 0.04137134552001953 | 19.075010088585586 | 22.48232041707169 | 3.407310328486104 | 4 |
+
+结论：Stage91 fixed bitstream smoke 说明 Stage87-90 的理论 q6 top10 side-info rate 与实际 byte payload 几乎一致，差异仅为固定 header 与 byte alignment。decoded bitstream 后 rendered PSNR 与 Stage87 q6 smoke 基本一致，仍全正。限制仍然存在：该 residual 是 teacher-derived，且还不是 entropy-coded bitstream 或 deployable residual predictor。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。
