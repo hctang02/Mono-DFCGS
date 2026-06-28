@@ -1211,3 +1211,17 @@ Stage95 将 Stage93 entropy codec v2 扩展到 Stage89 同样的 60-task q12 eva
 ### 后续执行更新
 
 Stage95 broader entropy codec eval 已完成：运行前检查 `nvidia-smi`，GPU0 忙、GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。参数化 `scripts/run_stage93_residual_sideinfo_entropy_codec_smoke.py`，默认 Stage93 输出不变；Stage95 覆盖 `60` 个 q12 eval tasks、`120` rows。所有 row 的 entropy decode vs fixed decode max diff 为 `0.0`，所有 gap/method positive count 等于 task count。linear gap4/8/16 entropy side rate 为 `0.028486092885335285`、`0.02903069947895251`、`0.028838696687117867 MiB/intermediate-frame`，delta 为 `+3.4187356956292225`、`+3.05603754877287`、`+3.2599322732336695 dB`。Stage65 adapter gap4/8/16 entropy side rate 为 `0.033147705925835505`、`0.033867986578690376`、`0.03376620748768682`，delta 为 `+2.7994188265782376`、`+2.692464222747122`、`+2.9637922008291264 dB`。结论：entropy codec v2 在 broader eval 上保持 decode 一致性、压缩率和多 dB positive gain；下一步可做 Stage96 broader entropy RD accounting。
+
+## 2026-06-28：继续 Stage96 broader entropy residual side-info RD package
+
+### 用户原始问题
+
+用户要求按照计划继续往下做，做完后续步骤，并且可以一直做下去。
+
+### 当前执行决策
+
+Stage96 将 Stage95 的 60-task broader entropy side-info eval 接入 RD accounting，不重新渲染。计划参数化 Stage94 RD 脚本，使其读取 Stage95 summary、输出 Stage96 命名 package，并给出 fixed vs entropy side-info、direct total、amortized total、rate savings、PSNR 和 delta。目标是形成当前最可靠的 broader entropy residual side-info RD 表。
+
+### 后续执行更新
+
+Stage96 broader entropy residual side-info RD package 已完成：运行前检查 `nvidia-smi`，该阶段为 CPU 汇总，不占用 GPU。参数化 `scripts/run_stage94_entropy_residual_sideinfo_rd_package.py` 并读取 Stage95 summary，输出 `experiments/stage96_broader_entropy_residual_sideinfo_rd_package/`，生成 `6` 条 RD rows 和 `24` 条 point rows。linear gap4/8/16 entropy direct total rate 为 `0.21042431365324843`、`0.12665608623246688`、`0.08430766643343285 MiB/frame`，entropy amortized total 为 `0.2033027904319146`、`0.1230272487975978`、`0.08250524789048798`，PSNR/delta 为 `23.403532118481326 / +3.4187356956292225`、`21.51362735577916 / +3.05603754877287`、`20.344147709407626 / +3.2599322732336695`。Stage65 adapter gap4/8/16 entropy direct total 为 `0.21508592669374865`、`0.13149337333220473`、`0.08923517723400179`，entropy amortized total 为 `0.20679900021228975`、`0.12725987500986843`、`0.08712478926602138`，PSNR/delta 为 `22.841151135422116 / +2.7994188265782376`、`21.39901144086742 / +2.692464222747122`、`20.292022340267458 / +2.9637922008291264`。结论：Stage96 是当前 residual side-info 线最可信的 broader RD accounting；下一步应开始从 teacher residual side-info 过渡到 deployable side-info generation / residual predictor 设计。

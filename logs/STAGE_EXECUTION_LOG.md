@@ -6646,6 +6646,59 @@ Summary：
 
 结论：Stage95 证明 entropy codec v2 在 60-task broader eval 上保持稳定：所有 row decode diff 为 `0.0`，所有 task positive。linear entropy side-info rate 约为 fixed 的 `0.69-0.70`，Stage65 adapter 约为 fixed 的 `0.80-0.82`。下一步 Stage96 应将 Stage95 broader entropy side-info 接入 total-rate RD accounting。
 
+## 2026-06-28：Stage96 Broader Entropy Residual Side-Info RD Package
+
+### 目标
+
+把 Stage95 60-task broader entropy side-info eval 接入 q12 anchor main-rate accounting，输出当前更可靠的 broader entropy RD package。
+
+### 操作计划
+
+- 参数化 `scripts/run_stage94_entropy_residual_sideinfo_rd_package.py` 的 stage number、output prefix、report title、quality source 和 scope note。
+- 输入 Stage78 q12 main anchor rate table 和 Stage95 broader entropy summary。
+- 输出 fixed side-info rate、entropy side-info rate、direct/amortized total rate、rate savings、PSNR 和 delta。
+- 该阶段为 CPU 汇总脚本，不重新渲染，但运行前仍按要求检查 `nvidia-smi`。
+
+### Stage96 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。Stage96 是 CPU 汇总脚本，未占用 GPU。
+
+修改脚本：
+
+```text
+scripts/run_stage94_entropy_residual_sideinfo_rd_package.py
+```
+
+参数化 stage number、mode、output prefix、report title、quality source 和 scope note，默认 Stage94 输出保持不变。
+
+运行命令：
+
+```text
+python scripts/run_stage94_entropy_residual_sideinfo_rd_package.py --stage 96 --mode "broader entropy-coded residual side-info RD package" --stage93_summary experiments/stage95_broader_entropy_residual_sideinfo_eval/stage95_broader_entropy_residual_sideinfo_eval_summary.csv --summary_root experiments/stage96_broader_entropy_residual_sideinfo_rd_package --output_prefix stage96_broader_entropy_residual_sideinfo_rd --report_title "Stage96 Broader Entropy Residual Side-Info RD Package" --quality_source "Stage95 60-task broader entropy codec eval" --scope_note "This package uses the 60-task broader q6 top10 entropy eval slice, not final full-video RD."
+```
+
+仓库内输出：
+
+```text
+experiments/stage96_broader_entropy_residual_sideinfo_rd_package/stage96_broader_entropy_residual_sideinfo_rd_rows.csv
+experiments/stage96_broader_entropy_residual_sideinfo_rd_package/stage96_broader_entropy_residual_sideinfo_rd_points.csv
+experiments/stage96_broader_entropy_residual_sideinfo_rd_package/stage96_broader_entropy_residual_sideinfo_rd_summary.json
+experiments/stage96_broader_entropy_residual_sideinfo_rd_package/stage96_broader_entropy_residual_sideinfo_rd_report.md
+```
+
+Broader entropy RD rows：
+
+| base | gap | main | entropy side | entropy direct | entropy amortized | PSNR | delta | positives |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| linear | 4 | 0.18193822076791313 | 0.028486092885335285 | 0.21042431365324843 | 0.2033027904319146 | 23.403532118481326 | 3.4187356956292225 | 18 |
+| linear | 8 | 0.09762538675351436 | 0.02903069947895251 | 0.12665608623246688 | 0.1230272487975978 | 21.51362735577916 | 3.05603754877287 | 19 |
+| linear | 16 | 0.055468969746314975 | 0.028838696687117867 | 0.08430766643343285 | 0.08250524789048798 | 20.344147709407626 | 3.2599322732336695 | 23 |
+| stage65_adapter | 4 | 0.18193822076791313 | 0.033147705925835505 | 0.21508592669374865 | 0.20679900021228975 | 22.841151135422116 | 2.7994188265782376 | 18 |
+| stage65_adapter | 8 | 0.09762538675351436 | 0.033867986578690376 | 0.13149337333220473 | 0.12725987500986843 | 21.39901144086742 | 2.692464222747122 | 19 |
+| stage65_adapter | 16 | 0.055468969746314975 | 0.03376620748768682 | 0.08923517723400179 | 0.08712478926602138 | 20.292022340267458 | 2.9637922008291264 | 23 |
+
+结论：Stage96 是当前 residual side-info 线最可靠的 broader RD accounting。相比 Stage90 fixed q6 broader RD，entropy codec v2 将 side-info rate 从固定 `0.04137134552001953 MiB/intermediate-frame` 降到 linear 约 `0.0285-0.0290`、Stage65 adapter 约 `0.0331-0.0339`，同时 positive rendered gains 保持全正。下一步应从 teacher residual side-info 转向 deployable side-info generation / learned residual predictor。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。

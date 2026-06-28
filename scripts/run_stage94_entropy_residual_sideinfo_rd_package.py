@@ -8,6 +8,11 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_STAGE78_RATE_TABLE = REPO_ROOT / "experiments/stage78_integrated_davis_rd_package/stage78_anchor_only_rate_table.csv"
 DEFAULT_STAGE93_SUMMARY = REPO_ROOT / "experiments/stage93_residual_sideinfo_entropy_codec_smoke/stage93_residual_sideinfo_entropy_codec_summary.csv"
 DEFAULT_SUMMARY_ROOT = REPO_ROOT / "experiments/stage94_entropy_residual_sideinfo_rd_package"
+DEFAULT_OUTPUT_PREFIX = "stage94_entropy_residual_sideinfo_rd"
+DEFAULT_REPORT_TITLE = "Stage94 Entropy-Coded Residual Side-Info RD Package"
+DEFAULT_MODE = "entropy-coded residual side-info RD package"
+DEFAULT_QUALITY_SOURCE = "Stage93 entropy codec smoke"
+DEFAULT_SCOPE_NOTE = "This is a 12-task codec smoke package, not final full-video RD."
 
 METHOD_TO_STAGE78 = {
     "linear": "linear",
@@ -171,14 +176,14 @@ def format_float(value):
 
 def write_report(summary, rows, path):
     lines = [
-        "# Stage94 Entropy-Coded Residual Side-Info RD Package",
+        f"# {summary['report_title']}",
         "",
         "## Scope",
         "",
         "- Main rate comes from Stage78 q12 static-anchor rate table.",
         "- Side-info rate comes from Stage93 actual entropy-coded payload bytes.",
-        "- Rendered quality comes from Stage93 entropy codec smoke.",
-        "- This is a 12-task codec smoke package, not final full-video RD.",
+        f"- Rendered quality comes from {summary['quality_source']}.",
+        f"- {summary['scope_note']}",
         "",
         "## RD Rows",
         "",
@@ -200,7 +205,7 @@ def write_report(summary, rows, path):
         "",
         "- Entropy coding reduces side-info rate without changing decoded rendered quality relative to fixed q6 residual side-info.",
         "- Side-info remains transmitted information and is included in both direct and amortized total rates.",
-        "- The next step is broader eval with the entropy codec v2, using the Stage89 60-task slice.",
+        "- If this package uses a broader eval summary, it is the preferred RD reference over the 12-task smoke package.",
     ])
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -210,6 +215,12 @@ def parse_args():
     parser.add_argument("--stage78_rate_table", type=Path, default=DEFAULT_STAGE78_RATE_TABLE)
     parser.add_argument("--stage93_summary", type=Path, default=DEFAULT_STAGE93_SUMMARY)
     parser.add_argument("--summary_root", type=Path, default=DEFAULT_SUMMARY_ROOT)
+    parser.add_argument("--stage", type=int, default=94)
+    parser.add_argument("--mode", default=DEFAULT_MODE)
+    parser.add_argument("--output_prefix", default=DEFAULT_OUTPUT_PREFIX)
+    parser.add_argument("--report_title", default=DEFAULT_REPORT_TITLE)
+    parser.add_argument("--quality_source", default=DEFAULT_QUALITY_SOURCE)
+    parser.add_argument("--scope_note", default=DEFAULT_SCOPE_NOTE)
     return parser.parse_args()
 
 
@@ -220,15 +231,18 @@ def main():
     rows = build_rows(read_csv(args.stage93_summary), main_rate_lookup)
     points = build_points(rows)
 
-    rows_csv = args.summary_root / "stage94_entropy_residual_sideinfo_rd_rows.csv"
-    points_csv = args.summary_root / "stage94_entropy_residual_sideinfo_rd_points.csv"
-    summary_json = args.summary_root / "stage94_entropy_residual_sideinfo_rd_summary.json"
-    report_md = args.summary_root / "stage94_entropy_residual_sideinfo_rd_report.md"
+    rows_csv = args.summary_root / f"{args.output_prefix}_rows.csv"
+    points_csv = args.summary_root / f"{args.output_prefix}_points.csv"
+    summary_json = args.summary_root / f"{args.output_prefix}_summary.json"
+    report_md = args.summary_root / f"{args.output_prefix}_report.md"
     write_csv(rows, rows_csv, ROW_FIELDS)
     write_csv(points, points_csv, POINT_FIELDS)
     summary = {
-        "stage": 94,
-        "mode": "entropy-coded residual side-info RD package",
+        "stage": args.stage,
+        "mode": args.mode,
+        "report_title": args.report_title,
+        "quality_source": args.quality_source,
+        "scope_note": args.scope_note,
         "stage78_rate_table": str(args.stage78_rate_table),
         "stage93_summary": str(args.stage93_summary),
         "rows_csv": str(rows_csv),
