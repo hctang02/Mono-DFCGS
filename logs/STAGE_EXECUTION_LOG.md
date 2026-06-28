@@ -8579,3 +8579,66 @@ experiments/stage122_compressed_deterministic_rd_package/stage122_compressed_det
 - q4/top20 is the primary package point: it has higher PSNR than q6/top10 and slightly lower direct/amortized rate.
 - q4/top10 is the low-rate package point: much lower rate with small quality loss vs q6/top10, but lower PSNR than Stage96 entropy reference.
 - Stage123 should package the codec policy manifest around strict-safe endpoint selector plus compressed deterministic value-only residual side-info.
+
+## 2026-06-29：Stage123 Compressed Deterministic Codec Policy Package
+
+### 目标
+
+Package a reusable codec policy manifest that combines the strict-safe endpoint selector, deterministic endpoint-diff selected-index rule, compressed deterministic value-only residual side-info codec, and Stage122 recommended RD settings.
+
+### 操作计划
+
+- Add a Stage123 package script consuming Stage114 selector policy and Stage122 RD package JSON.
+- Emit a policy JSON, settings CSV, package JSON, and report Markdown.
+- Explicitly define decoder-side selected-index reproduction: `keep_count=round(N*keep_fraction)`, score by left/right anchor attr L2 diff, select largest top-k, sort ascending.
+- Record side-info codec implementation: `encode_selected_residual_values_sideinfo_entropy` / `decode_selected_residual_values_sideinfo_entropy`, magic `RSDZ`, zlib level 9, and no transmitted selected-index payload.
+- Mark q4/top20 as primary, q4/top10 as low-rate, q5/top10 as near-anchor, and q6/top10 as anchor.
+- Keep residual values marked as teacher-derived; this is not residual value prediction.
+- Check `nvidia-smi` before Python execution.
+
+### GPU 检查
+
+运行前已检查 `nvidia-smi`。GPU2 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。修正脚本 source path 后重跑前也再次检查，GPU2 仍空闲。
+
+### 执行命令
+
+```text
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage123_compressed_deterministic_codec_policy_package.py
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage123_compressed_deterministic_codec_policy_package.py
+```
+
+### 输出文件
+
+```text
+experiments/stage123_compressed_deterministic_codec_policy_package/stage123_compressed_deterministic_codec_policy.json
+experiments/stage123_compressed_deterministic_codec_policy_package/stage123_compressed_deterministic_codec_policy_settings.csv
+experiments/stage123_compressed_deterministic_codec_policy_package/stage123_compressed_deterministic_codec_policy_package.json
+experiments/stage123_compressed_deterministic_codec_policy_package/stage123_compressed_deterministic_codec_policy_report.md
+```
+
+### 结果
+
+- Policy: `compressed_deterministic_value_only_residual_codec_v1`.
+- Status: `package_not_full_residual_predictor`.
+- Setting count: `4`.
+- Selector: `strict_safe_endpoint_selector_v1`.
+- Selected candidate: `endpoint_diff_baseline`.
+- Index rule: `endpoint_diff_topk_v1`.
+- Payload magic: `RSDZ`.
+- Header bytes: `26`.
+- zlib level: `9`.
+- Selected index payload: omitted; decoder recomputes indices from endpoint-diff rule.
+
+| role | setting | keep | bits | payload bytes | direct rate | amortized rate | PSNR | delta q6 |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| primary | q4_top20 | 0.2 | 4 | 28320.791666666668 | 0.1337680887378662 | 0.13005386354500142 | 20.689270746602087 | 0.9223020959187475 |
+| low_rate | q4_top10 | 0.1 | 4 | 15190.475 | 0.12124604296658527 | 0.11924717736218463 | 19.73848817438193 | -0.028480476301425663 |
+| near_anchor | q5_top10 | 0.1 | 5 | 24809.95 | 0.13041988921139727 | 0.127149533351005 | 19.761047533309117 | -0.005921117374238853 |
+| anchor | q6_top10 | 0.1 | 6 | 29442.208333333332 | 0.1348375550108561 | 0.13095624756787308 | 19.766968650683353 | 0.0 |
+
+### 结论
+
+- Stage123 freezes the codec policy package for compressed deterministic value-only residual side-info.
+- Decoder-side selected indices are reproducible from left/right anchors and are not transmitted.
+- The package is not a full deployable residual predictor because values remain teacher-derived at encoder side.
+- Next step should focus on residual value prediction or a predictor manifest/smoke.

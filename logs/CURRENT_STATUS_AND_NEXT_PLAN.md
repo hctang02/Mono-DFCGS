@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage122: `cdf41fb Broaden rendered deterministic validation`
+- Latest pushed commit before Stage123: `9972a6a Package compressed deterministic RD`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -77,6 +77,7 @@ Key Stage96 direct total rates:
 - Stage120: rendered compressed deterministic shortlist smoke; q4/top20 is best on 12-task smoke and q4/top10 is a strong low-rate candidate.
 - Stage121: 60-task broader rendered compressed deterministic validation confirms q4/top20 and q4/top10 are stable candidates.
 - Stage122: packaged compressed deterministic RD rows/points; q4/top20 is primary, q4/top10 low-rate, q5/top10 near-anchor, q6/top10 anchor.
+- Stage123: packaged codec policy manifest around strict-safe endpoint selector and compressed deterministic value-only side-info.
 
 ## Current Best Selector Policy
 
@@ -143,6 +144,7 @@ Stage113 held-out diagnostic:
 - Stage120 rendered smoke shows q4/top20 improves over q6/top10 by `+1.02156556263925 dB` on average while slightly lowering rate; q4/top10 is only `-0.03468351854032611 dB` vs q6/top10 at roughly half the side-info rate; q6/top5 drops `-0.6174121509811845 dB` and should be dropped.
 - Stage121 broader validation confirms q4/top20 remains best: PSNR `20.689270746602087`, `+0.9223020959187475 dB` vs q6/top10, direct rate `0.1337680887378662` vs q6/top10 `0.1348375550108561`; q4/top10 gives PSNR `19.73848817438193`, only `-0.028480476301425663 dB` vs q6/top10 at direct rate `0.12124604296658527`.
 - Stage122 RD package compares against Stage96 entropy reference: q4/top20 is lower rate by `-0.004194490114847849 MiB/frame` but lower PSNR by `-0.8305321438068527 dB`; q4/top10 is lower rate by `-0.016716535886128772 MiB/frame` and lower PSNR by `-1.781314716027025 dB`.
+- Stage123 codec policy package freezes policy `compressed_deterministic_value_only_residual_codec_v1`; status remains `package_not_full_residual_predictor` because residual values are still teacher-derived.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -448,11 +450,31 @@ Result:
 
 Goal: freeze RD package for compressed deterministic value-only residual side-info.
 
+### Stage123: Compressed Deterministic Codec Policy Package
+
+Status: completed on 2026-06-29.
+
+Result:
+
+- Added `scripts/run_stage123_compressed_deterministic_codec_policy_package.py`.
+- Output: `experiments/stage123_compressed_deterministic_codec_policy_package/`.
+- Policy: `compressed_deterministic_value_only_residual_codec_v1`.
+- Status: `package_not_full_residual_predictor`.
+- Selector: `strict_safe_endpoint_selector_v1`.
+- Selected candidate: `endpoint_diff_baseline`.
+- Index rule: `endpoint_diff_topk_v1` with `keep_count=round(N * keep_fraction)`, left/right attr L2 endpoint-diff scores, top-k largest scores, sorted selected indices.
+- Side-info codec: `compressed_deterministic_value_only_residual_sideinfo_v1`, magic `RSDZ`, header bytes `26`, zlib level `9`.
+- Settings: q4/top20 primary, q4/top10 low-rate, q5/top10 near-anchor, q6/top10 anchor.
+- Decoder forbidden inputs: target dense anchor, target residual, target RGB, oracle task label, transmitted selected indices.
+- Limitation: residual values remain teacher-derived; not a residual value predictor.
+
+Goal: freeze codec policy manifest for compressed deterministic value-only residual side-info.
+
 ## Later Plan After Selector Stabilizes
 
 ### Deterministic-Index Side-Info Codec
 
-- Stage123: package compressed deterministic codec policy manifest for q4/top20 primary and q4/top10 low-rate options.
+- Stage124: start residual value predictor package/smoke to replace teacher-derived residual values.
 
 ### Residual Value Prediction
 
@@ -514,6 +536,7 @@ Goal: freeze RD package for compressed deterministic value-only residual side-in
 - Stage120 rendered compressed deterministic shortlist: `scripts/run_stage120_rendered_compressed_deterministic_shortlist.py`
 - Stage121 broader rendered compressed deterministic validation: `scripts/run_stage121_broader_rendered_compressed_deterministic_validation.py`
 - Stage122 compressed deterministic RD package: `scripts/run_stage122_compressed_deterministic_rd_package.py`
+- Stage123 compressed deterministic codec policy package: `scripts/run_stage123_compressed_deterministic_codec_policy_package.py`
 
 ### Important Outputs
 
@@ -539,6 +562,7 @@ Goal: freeze RD package for compressed deterministic value-only residual side-in
 - Stage120 rendered compressed deterministic shortlist: `experiments/stage120_rendered_compressed_deterministic_shortlist/`
 - Stage121 broader rendered compressed deterministic validation: `experiments/stage121_broader_rendered_compressed_deterministic_validation/`
 - Stage122 compressed deterministic RD package: `experiments/stage122_compressed_deterministic_rd_package/`
+- Stage123 compressed deterministic codec policy package: `experiments/stage123_compressed_deterministic_codec_policy_package/`
 
 ### Heavy External Paths
 

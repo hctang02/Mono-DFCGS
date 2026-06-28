@@ -1,0 +1,194 @@
+{
+  "stage": 123,
+  "policy_name": "compressed_deterministic_value_only_residual_codec_v1",
+  "policy_type": "codec_policy_manifest",
+  "status": "package_not_full_residual_predictor",
+  "stage122_commit": "9972a6a",
+  "selector_policy": {
+    "policy_name": "strict_safe_endpoint_selector_v1",
+    "policy_type": "fixed_candidate_selector",
+    "selected_candidate": "endpoint_diff_baseline",
+    "source_policy_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage114_strict_safe_selector_fallback_package/stage114_strict_safe_selector_fallback_policy.json",
+    "validation_summary": {
+      "policy_name": "strict_safe_endpoint_selector_v1",
+      "policy_type": "fixed_candidate_selector",
+      "selected_candidate": "endpoint_diff_baseline",
+      "task_count": 480,
+      "mean_selected_sideinfo_psnr": 20.3212149854921,
+      "mean_endpoint_sideinfo_psnr": 20.3212149854921,
+      "mean_gain_vs_endpoint": 0.0,
+      "min_fold_gain_vs_endpoint": 0.0,
+      "min_group_gain_vs_endpoint": 0.0,
+      "min_fold_group_gain_vs_endpoint": 0.0,
+      "aggregate_safe_no_group_regression": 1,
+      "fold_group_safe_no_regression": 1
+    }
+  },
+  "index_selection": {
+    "rule_name": "endpoint_diff_topk_v1",
+    "selected_candidate": "endpoint_diff_baseline",
+    "decoder_reproducible": true,
+    "transmitted_index_bytes": 0,
+    "input_attrs": [
+      "left_anchor_static_attrs",
+      "right_anchor_static_attrs"
+    ],
+    "shape_contract": "left_attrs and right_attrs must be matching [1, N, D] tensors with stable Gaussian ordering",
+    "keep_count_rule": "min(max(round(N * keep_fraction), 0), N)",
+    "score_rule": "sum((right_attrs[0].float() - left_attrs[0].float()) ** 2, dim=-1)",
+    "selection_rule": "select top keep_count largest scores, then sort selected indices ascending"
+  },
+  "sideinfo_codec": {
+    "codec_name": "compressed_deterministic_value_only_residual_sideinfo_v1",
+    "encode_function": "mono_dfcgs.residual_sideinfo_codec.encode_selected_residual_values_sideinfo_entropy",
+    "decode_function": "mono_dfcgs.residual_sideinfo_codec.decode_selected_residual_values_sideinfo_entropy",
+    "payload_magic": "RSDZ",
+    "version": 1,
+    "header_struct": "<4sBBBBHIIII",
+    "header_bytes": 26,
+    "zlib_level": 9,
+    "metadata_payload": "zlib(float16 residual min per attr + float16 residual max per attr)",
+    "residual_payload": "zlib(bitpacked quantized residual values for deterministic selected indices)",
+    "selected_index_payload": "omitted; decoder recomputes indices from endpoint-diff rule"
+  },
+  "recommended_settings": [
+    {
+      "role": "primary",
+      "setting_label": "q4_top20",
+      "keep_fraction": 0.2,
+      "side_bits": 4,
+      "task_row_count": 120,
+      "mean_sideinfo_payload_bytes": 28320.791666666668,
+      "mean_sideinfo_mib_per_intermediate_frame": 0.027008811632792156,
+      "mean_direct_total_mib_per_frame": 0.1337680887378662,
+      "mean_amortized_total_mib_per_frame": 0.13005386354500142,
+      "mean_base_psnr": 18.484019740725135,
+      "mean_psnr": 20.689270746602087,
+      "mean_delta_psnr_vs_base": 2.2052510058769683,
+      "mean_delta_psnr_vs_q6_top10": 0.9223020959187475,
+      "weighted_direct_rate_delta_vs_stage96_entropy": -0.004194490114847849,
+      "weighted_amortized_rate_delta_vs_stage96_entropy": -0.0036026234428088084,
+      "weighted_psnr_delta_vs_stage96_entropy": -0.8305321438068527
+    },
+    {
+      "role": "low_rate",
+      "setting_label": "q4_top10",
+      "keep_fraction": 0.1,
+      "side_bits": 4,
+      "task_row_count": 120,
+      "mean_sideinfo_payload_bytes": 15190.475,
+      "mean_sideinfo_mib_per_intermediate_frame": 0.01448676586151123,
+      "mean_direct_total_mib_per_frame": 0.12124604296658527,
+      "mean_amortized_total_mib_per_frame": 0.11924717736218463,
+      "mean_base_psnr": 18.484019740725135,
+      "mean_psnr": 19.73848817438193,
+      "mean_delta_psnr_vs_base": 1.2544684336567946,
+      "mean_delta_psnr_vs_q6_top10": -0.028480476301425663,
+      "weighted_direct_rate_delta_vs_stage96_entropy": -0.016716535886128772,
+      "weighted_amortized_rate_delta_vs_stage96_entropy": -0.014409309625625632,
+      "weighted_psnr_delta_vs_stage96_entropy": -1.781314716027025
+    },
+    {
+      "role": "near_anchor",
+      "setting_label": "q5_top10",
+      "keep_fraction": 0.1,
+      "side_bits": 5,
+      "task_row_count": 120,
+      "mean_sideinfo_payload_bytes": 24809.95,
+      "mean_sideinfo_mib_per_intermediate_frame": 0.023660612106323243,
+      "mean_direct_total_mib_per_frame": 0.13041988921139727,
+      "mean_amortized_total_mib_per_frame": 0.127149533351005,
+      "mean_base_psnr": 18.484019740725135,
+      "mean_psnr": 19.761047533309117,
+      "mean_delta_psnr_vs_base": 1.2770277925839815,
+      "mean_delta_psnr_vs_q6_top10": -0.005921117374238853,
+      "weighted_direct_rate_delta_vs_stage96_entropy": -0.007542689641316756,
+      "weighted_amortized_rate_delta_vs_stage96_entropy": -0.006506953636805241,
+      "weighted_psnr_delta_vs_stage96_entropy": -1.7587553570998395
+    },
+    {
+      "role": "anchor",
+      "setting_label": "q6_top10",
+      "keep_fraction": 0.1,
+      "side_bits": 6,
+      "task_row_count": 120,
+      "mean_sideinfo_payload_bytes": 29442.208333333332,
+      "mean_sideinfo_mib_per_intermediate_frame": 0.028078277905782063,
+      "mean_direct_total_mib_per_frame": 0.1348375550108561,
+      "mean_amortized_total_mib_per_frame": 0.13095624756787308,
+      "mean_base_psnr": 18.484019740725135,
+      "mean_psnr": 19.766968650683353,
+      "mean_delta_psnr_vs_base": 1.2829489099582205,
+      "mean_delta_psnr_vs_q6_top10": 0.0,
+      "weighted_direct_rate_delta_vs_stage96_entropy": -0.0031250238418579373,
+      "weighted_amortized_rate_delta_vs_stage96_entropy": -0.0027002394199371602,
+      "weighted_psnr_delta_vs_stage96_entropy": -1.7528342397255992
+    }
+  ],
+  "recommendation": {
+    "primary": "q4_top20",
+    "low_rate": "q4_top10",
+    "near_anchor": "q5_top10",
+    "anchor": "q6_top10"
+  },
+  "rate_accounting": {
+    "all_sideinfo_bytes_counted": true,
+    "direct_total_rate": "q12_main_anchor_mib_per_frame + sideinfo_mib_per_intermediate_frame",
+    "amortized_total_rate": "q12_main_anchor_mib_per_frame + sideinfo_mib_per_intermediate_frame * uniform_intermediate_frame_ratio",
+    "stage96_entropy_reference": "q6/top10 entropy-coded index+value side-info"
+  },
+  "encoder_contract": {
+    "inputs": [
+      "left_anchor",
+      "right_anchor",
+      "base_attrs from selected base reconstruction method",
+      "target_dense_anchor for teacher residual values"
+    ],
+    "steps": [
+      "recompute deterministic endpoint-diff selected indices",
+      "compute target residual values at selected indices",
+      "encode compressed deterministic value-only residual side-info payload"
+    ]
+  },
+  "decoder_contract": {
+    "inputs": [
+      "left_anchor",
+      "right_anchor",
+      "base_attrs from selected base reconstruction method",
+      "compressed deterministic side-info payload",
+      "keep_fraction and side_bits from policy setting"
+    ],
+    "forbidden_inputs": [
+      "target_dense_anchor",
+      "target_residual",
+      "target_rgb",
+      "oracle_task_label",
+      "transmitted selected indices"
+    ],
+    "steps": [
+      "recompute deterministic endpoint-diff selected indices",
+      "decode value-only residual payload",
+      "add decoded residuals to base_attrs at selected indices"
+    ]
+  },
+  "validation_sources": {
+    "selector_policy_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage114_strict_safe_selector_fallback_package/stage114_strict_safe_selector_fallback_policy.json",
+    "rd_package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage122_compressed_deterministic_rd_package/stage122_compressed_deterministic_rd_package.json",
+    "rd_rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage122_compressed_deterministic_rd_package/stage122_compressed_deterministic_rd_rows.csv",
+    "rd_points_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage122_compressed_deterministic_rd_package/stage122_compressed_deterministic_rd_points.csv",
+    "rd_report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage122_compressed_deterministic_rd_package/stage122_compressed_deterministic_rd_report.md"
+  },
+  "limitations": [
+    "Residual values remain teacher-derived from dense target anchors at encoder side.",
+    "This package is not yet a full deployable residual value predictor.",
+    "Decoder deployability depends on stable Gaussian ordering and matching left/right anchor attributes.",
+    "Stage96 entropy reference remains higher quality in the Stage122 comparison."
+  ],
+  "next_step": "Train or package a feed-forward residual value predictor to replace teacher-derived residual values.",
+  "output_paths": {
+    "policy_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage123_compressed_deterministic_codec_policy_package/stage123_compressed_deterministic_codec_policy.json",
+    "settings_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage123_compressed_deterministic_codec_policy_package/stage123_compressed_deterministic_codec_policy_settings.csv",
+    "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage123_compressed_deterministic_codec_policy_package/stage123_compressed_deterministic_codec_policy_package.json",
+    "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage123_compressed_deterministic_codec_policy_package/stage123_compressed_deterministic_codec_policy_report.md"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "stage": 123,
+  "mode": "compressed deterministic codec policy package",
+  "policy_name": "compressed_deterministic_value_only_residual_codec_v1",
+  "stage114_policy": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage114_strict_safe_selector_fallback_package/stage114_strict_safe_selector_fallback_policy.json",
+  "stage122_package": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage122_compressed_deterministic_rd_package/stage122_compressed_deterministic_rd_package.json",
+  "policy_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage123_compressed_deterministic_codec_policy_package/stage123_compressed_deterministic_codec_policy.json",
+  "settings_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage123_compressed_deterministic_codec_policy_package/stage123_compressed_deterministic_codec_policy_settings.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage123_compressed_deterministic_codec_policy_package/stage123_compressed_deterministic_codec_policy_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage123_compressed_deterministic_codec_policy_package/stage123_compressed_deterministic_codec_policy_report.md",
+  "setting_count": 4,
+  "primary_setting": "q4_top20",
+  "low_rate_setting": "q4_top10",
+  "status": "package_not_full_residual_predictor",
+  "notes": [
+    "Residual values remain teacher-derived from dense target anchors at encoder side.",
+    "This package is not yet a full deployable residual value predictor.",
+    "Decoder deployability depends on stable Gaussian ordering and matching left/right anchor attributes.",
+    "Stage96 entropy reference remains higher quality in the Stage122 comparison."
+  ]
+}
