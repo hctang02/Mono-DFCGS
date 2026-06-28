@@ -1,0 +1,101 @@
+{
+  "stage": 108,
+  "mode": "anchor-stat task-level switch predictor preflight",
+  "task_count": 120,
+  "fold_count": 5,
+  "feature_dim": 64,
+  "stage97_tasks": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage97_residual_predictor_task_manifest/stage97_residual_predictor_tasks.csv",
+  "stage103_rows": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage103_broader_rendered_selector_validation/stage103_broader_rendered_selector_rows.csv",
+  "stage106_policy": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage106_render_aware_group_policy_package/stage106_render_aware_group_policy.json",
+  "adapter": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors",
+  "rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage108_anchor_stat_task_switch_predictor_preflight/stage108_anchor_stat_switch_rows.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage108_anchor_stat_task_switch_predictor_preflight/stage108_anchor_stat_switch_summary.csv",
+  "group_summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage108_anchor_stat_task_switch_predictor_preflight/stage108_anchor_stat_switch_group_summary.csv",
+  "train_log_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage108_anchor_stat_task_switch_predictor_preflight/stage108_anchor_stat_switch_train_log.csv",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage108_anchor_stat_task_switch_predictor_preflight/stage108_anchor_stat_switch_report.md",
+  "summary_rows": [
+    {
+      "policy": "anchor_stat_mlp_cv",
+      "task_count": 120,
+      "mean_selected_sideinfo_psnr": 20.33017523703834,
+      "mean_endpoint_sideinfo_psnr": 20.316812710325653,
+      "mean_oracle_task_best_sideinfo_psnr": 20.403744235652297,
+      "mean_teacher_oracle_sideinfo_psnr": 22.01020466792471,
+      "mean_delta_psnr_vs_endpoint": 0.013362526712690951,
+      "mean_gap_to_oracle_task_best": -0.07356899861396461,
+      "mean_gap_to_teacher_oracle": -1.6800294308863628,
+      "selection_accuracy": 0.475,
+      "selected_candidate_counts": "endpoint_diff_baseline:51;shared_energy_regression:47;shared_topk_bce:22"
+    },
+    {
+      "policy": "endpoint_only",
+      "task_count": 120,
+      "mean_selected_sideinfo_psnr": 20.316812710325653,
+      "mean_endpoint_sideinfo_psnr": 20.316812710325653,
+      "mean_oracle_task_best_sideinfo_psnr": 20.403744235652297,
+      "mean_teacher_oracle_sideinfo_psnr": 22.01020466792471,
+      "mean_delta_psnr_vs_endpoint": 0.0,
+      "mean_gap_to_oracle_task_best": -0.08693152532665556,
+      "mean_gap_to_teacher_oracle": -1.693391957599053,
+      "selection_accuracy": 0.4583333333333333,
+      "selected_candidate_counts": "endpoint_diff_baseline:120"
+    },
+    {
+      "policy": "metadata_mlp_cv",
+      "task_count": 120,
+      "mean_selected_sideinfo_psnr": 20.31646985845114,
+      "mean_endpoint_sideinfo_psnr": 20.316812710325653,
+      "mean_oracle_task_best_sideinfo_psnr": 20.403744235652297,
+      "mean_teacher_oracle_sideinfo_psnr": 22.01020466792471,
+      "mean_delta_psnr_vs_endpoint": -0.00034285187450664443,
+      "mean_gap_to_oracle_task_best": -0.0872743772011622,
+      "mean_gap_to_teacher_oracle": -1.6937348094735605,
+      "selection_accuracy": 0.38333333333333336,
+      "selected_candidate_counts": "endpoint_diff_baseline:46;shared_energy_regression:44;shared_topk_bce:30"
+    },
+    {
+      "policy": "oracle_task_best",
+      "task_count": 120,
+      "mean_selected_sideinfo_psnr": 20.403744235652297,
+      "mean_endpoint_sideinfo_psnr": 20.316812710325653,
+      "mean_oracle_task_best_sideinfo_psnr": 20.403744235652297,
+      "mean_teacher_oracle_sideinfo_psnr": 22.01020466792471,
+      "mean_delta_psnr_vs_endpoint": 0.08693152532665556,
+      "mean_gap_to_oracle_task_best": 0.0,
+      "mean_gap_to_teacher_oracle": -1.606460432272398,
+      "selection_accuracy": 1.0,
+      "selected_candidate_counts": "endpoint_diff_baseline:55;shared_energy_regression:44;shared_topk_bce:21"
+    },
+    {
+      "policy": "stage106_fixed_group_policy",
+      "task_count": 120,
+      "mean_selected_sideinfo_psnr": 20.34687234717015,
+      "mean_endpoint_sideinfo_psnr": 20.316812710325653,
+      "mean_oracle_task_best_sideinfo_psnr": 20.403744235652297,
+      "mean_teacher_oracle_sideinfo_psnr": 22.01020466792471,
+      "mean_delta_psnr_vs_endpoint": 0.030059636844502392,
+      "mean_gap_to_oracle_task_best": -0.05687188848215317,
+      "mean_gap_to_teacher_oracle": -1.663332320754551,
+      "selection_accuracy": 0.5416666666666666,
+      "selected_candidate_counts": "endpoint_diff_baseline:60;shared_energy_regression:60"
+    },
+    {
+      "policy": "train_fold_group_policy",
+      "task_count": 120,
+      "mean_selected_sideinfo_psnr": 20.33946471381412,
+      "mean_endpoint_sideinfo_psnr": 20.316812710325653,
+      "mean_oracle_task_best_sideinfo_psnr": 20.403744235652297,
+      "mean_teacher_oracle_sideinfo_psnr": 22.01020466792471,
+      "mean_delta_psnr_vs_endpoint": 0.02265200348847392,
+      "mean_gap_to_oracle_task_best": -0.06427952183818163,
+      "mean_gap_to_teacher_oracle": -1.670739954110579,
+      "selection_accuracy": 0.5333333333333333,
+      "selected_candidate_counts": "endpoint_diff_baseline:57;shared_energy_regression:63"
+    }
+  ],
+  "notes": [
+    "Feature construction loads only left/right q12 anchors and predicted base anchors.",
+    "Target dense anchors and target residuals are not loaded for features.",
+    "Rendered PSNR labels are used only for offline training/evaluation."
+  ]
+}

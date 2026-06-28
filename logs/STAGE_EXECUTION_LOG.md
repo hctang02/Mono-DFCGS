@@ -7388,6 +7388,64 @@ Overall summary：
 
 结论：Stage107 说明 metadata-only task-level switch predictor 不足。`metadata_mlp_cv` 虽然训练集 accuracy 升到约 `0.89-0.95`，但 out-of-fold selection accuracy 仅 `0.3917`，PSNR 比 endpoint 还低 `-0.0025 dB`，远低于 Stage106 fixed group policy 的 `+0.0301 dB`。下一步若继续 task-level switching，应加入 decoder-side anchor statistics / selector score statistics；Stage106 group policy 仍是当前安全 baseline。
 
+## 2026-06-28：Stage108 Anchor-Stat Task-Level Switch Predictor Preflight
+
+### 目标
+
+测试 decoder-side anchor aggregate statistics 是否能提升 task-level switch predictor，超过 Stage107 metadata-only MLP 和 Stage106 group policy。
+
+### 操作计划
+
+- 新增 `scripts/run_stage108_anchor_stat_task_switch_predictor_preflight.py`。
+- 输入 Stage103 rendered candidate rows 和 Stage97 task manifest。
+- 加载 left/right q12 anchors，并用 linear 或 Stage65 adapter 生成 base anchor；不加载 target dense anchor，不使用 target residual。
+- 构造 task-level decoder features：Stage107 metadata features + endpoint motion stats + base-to-endpoint stats + base attribute stats。
+- Labels 仍来自 Stage103 per-task best rendered deployable candidate，仅用于 train/eval label，不作为 decoder input。
+- 运行 deterministic K-fold cross-validation，比较 anchor-stat MLP、metadata MLP baseline、Stage106 fixed group policy、endpoint-only 和 oracle task best。
+- 不渲染、不保存 checkpoint 或 heavy tensors。
+- 运行前按要求检查 `nvidia-smi`，并选择空闲 GPU。
+
+### Stage108 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU0 忙，GPU6 有进程，GPU2 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。先运行语法检查：
+
+```text
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage108_anchor_stat_task_switch_predictor_preflight.py
+```
+
+随后再次检查 GPU，并运行 preflight：
+
+```text
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage108_anchor_stat_task_switch_predictor_preflight.py
+```
+
+新增脚本：
+
+```text
+scripts/run_stage108_anchor_stat_task_switch_predictor_preflight.py
+```
+
+输出目录：
+
+```text
+experiments/stage108_anchor_stat_task_switch_predictor_preflight/
+```
+
+Task count：`120`，folds：`5`，feature dim：`64`。
+
+Overall summary：
+
+| policy | selected PSNR | gain vs endpoint | oracle task PSNR | gap to oracle task | accuracy | selections |
+|---|---:|---:|---:|---:|---:|---|
+| endpoint_only | 20.316812710325653 | 0.0 | 20.403744235652297 | -0.08693152532665556 | 0.4583333333333333 | endpoint_diff_baseline:120 |
+| metadata_mlp_cv | 20.31646985845114 | -0.00034285187450664443 | 20.403744235652297 | -0.0872743772011622 | 0.38333333333333336 | endpoint_diff_baseline:46;shared_energy_regression:44;shared_topk_bce:30 |
+| anchor_stat_mlp_cv | 20.33017523703834 | 0.013362526712690951 | 20.403744235652297 | -0.07356899861396461 | 0.475 | endpoint_diff_baseline:51;shared_energy_regression:47;shared_topk_bce:22 |
+| stage106_fixed_group_policy | 20.34687234717015 | 0.030059636844502392 | 20.403744235652297 | -0.05687188848215317 | 0.5416666666666666 | endpoint_diff_baseline:60;shared_energy_regression:60 |
+| train_fold_group_policy | 20.33946471381412 | 0.02265200348847392 | 20.403744235652297 | -0.06427952183818163 | 0.5333333333333333 | endpoint_diff_baseline:57;shared_energy_regression:63 |
+| oracle_task_best | 20.403744235652297 | 0.08693152532665556 | 20.403744235652297 | 0.0 | 1.0 | endpoint_diff_baseline:55;shared_energy_regression:44;shared_topk_bce:21 |
+
+结论：Stage108 表明 decoder-side anchor aggregate stats 比 metadata-only 有信息，`anchor_stat_mlp_cv` 比 endpoint 高 `+0.013362526712690951 dB`，但仍低于 Stage106 fixed group policy 的 `+0.030059636844502392 dB`。同时 anchor-stat MLP train accuracy 很快到 `1.0`，说明当前 120-task rendered label 太少且容易过拟合。下一步不应直接替换 Stage106 policy；若继续 switch predictor，应扩大 rendered labels 或加入 selector-score/statistics 并强化 cross-validation。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。
