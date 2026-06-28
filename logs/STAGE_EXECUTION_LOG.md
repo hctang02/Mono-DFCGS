@@ -7331,6 +7331,63 @@ Validation summary：task count `120`，endpoint PSNR `20.316812710325646`，pol
 
 结论：Stage106 将 Stage105 的 group switch 固化为 decoder-side metadata policy package。该 policy 不使用 target dense anchor、target residual、rendered PSNR 或 oracle task labels 作为 decoder input；但它仍只选择 index-selection candidate，Stage105/106 的验证 residual values 仍来自 teacher，因此不能作为完整 deployable residual-value codec claim。下一步可以做 Stage107：使用 decoder-available task features 训练 task-level switch predictor，并与 Stage106 group policy 比较是否能逼近 `oracle_task_best` 上界。
 
+## 2026-06-28：Stage107 Metadata Task-Level Switch Predictor Preflight
+
+### 目标
+
+测试仅使用 decoder-side metadata features 的 task-level switch predictor 是否能超过 Stage106 group policy，并接近 Stage105 `oracle_task_best` 上界。
+
+### 操作计划
+
+- 新增 `scripts/run_stage107_metadata_task_switch_predictor_preflight.py`。
+- 输入 Stage105 policy rows 和 Stage97 task manifest。
+- Features 只使用 metadata：base method id、gap one-hot、normalized time、left/right/target indices normalized、target relative position 等。
+- Labels 来自 Stage105/103 rendered PSNR 的 per-task best deployable candidate，仅用于 train/eval label，不作为 decoder input。
+- 运行 deterministic K-fold cross-validation，比较 learned metadata switch、train-fold group policy、global majority policy、Stage106 fixed group policy、oracle task best 和 endpoint-only。
+- 不加载 anchors、不渲染、不保存 checkpoint 或 heavy tensors。
+- 运行前按要求检查 `nvidia-smi`。
+
+### Stage107 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。Stage107 是 CPU + 小型 torch MLP，不加载 anchors、不渲染。先运行语法检查：
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage107_metadata_task_switch_predictor_preflight.py
+```
+
+随后运行 preflight：
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage107_metadata_task_switch_predictor_preflight.py
+```
+
+新增脚本：
+
+```text
+scripts/run_stage107_metadata_task_switch_predictor_preflight.py
+```
+
+输出目录：
+
+```text
+experiments/stage107_metadata_task_switch_predictor_preflight/
+```
+
+Task count：`120`，folds：`5`。
+
+Overall summary：
+
+| policy | selected PSNR | gain vs endpoint | oracle task PSNR | gap to oracle task | accuracy | selections |
+|---|---:|---:|---:|---:|---:|---|
+| endpoint_only | 20.316812710325653 | 0.0 | 20.403744235652297 | -0.08693152532665556 | 0.4583333333333333 | endpoint_diff_baseline:120 |
+| global_train_best_policy | 20.316812710325653 | 0.0 | 20.403744235652297 | -0.08693152532665556 | 0.4583333333333333 | endpoint_diff_baseline:120 |
+| metadata_mlp_cv | 20.314275971964204 | -0.002536738361441741 | 20.403744235652297 | -0.0894682636880973 | 0.39166666666666666 | endpoint_diff_baseline:48;shared_energy_regression:45;shared_topk_bce:27 |
+| stage106_fixed_group_policy | 20.34687234717015 | 0.030059636844502392 | 20.403744235652297 | -0.05687188848215317 | 0.5416666666666666 | endpoint_diff_baseline:60;shared_energy_regression:60 |
+| train_fold_group_policy | 20.33946471381412 | 0.02265200348847392 | 20.403744235652297 | -0.06427952183818163 | 0.5333333333333333 | endpoint_diff_baseline:57;shared_energy_regression:63 |
+| oracle_task_best | 20.403744235652297 | 0.08693152532665556 | 20.403744235652297 | 0.0 | 1.0 | endpoint_diff_baseline:55;shared_energy_regression:44;shared_topk_bce:21 |
+
+结论：Stage107 说明 metadata-only task-level switch predictor 不足。`metadata_mlp_cv` 虽然训练集 accuracy 升到约 `0.89-0.95`，但 out-of-fold selection accuracy 仅 `0.3917`，PSNR 比 endpoint 还低 `-0.0025 dB`，远低于 Stage106 fixed group policy 的 `+0.0301 dB`。下一步若继续 task-level switching，应加入 decoder-side anchor statistics / selector score statistics；Stage106 group policy 仍是当前安全 baseline。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。

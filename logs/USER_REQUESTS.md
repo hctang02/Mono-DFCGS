@@ -1365,3 +1365,17 @@ Stage106 先不训练 task-level predictor，而是将 Stage105 的 `group_best_
 ### 后续执行更新
 
 Stage106 deployable render-aware group policy package 已完成：运行前检查 `nvidia-smi`，该阶段为 CPU packaging，不占用 GPU。新增 `scripts/run_stage106_render_aware_group_policy_package.py`，先通过 `py_compile`，再读取 Stage105 outputs 生成 package。输出目录 `experiments/stage106_render_aware_group_policy_package/`，大小约 `20K`。核心文件为 `stage106_render_aware_group_policy.json`。policy name 为 `render_aware_group_switch_v1`，type 为 `metadata_group_switch`，decoder inputs 仅为 `base_method` 和 `reference_gap`；forbidden decoder inputs 明确包括 `target_dense_anchor`、`target_residual`、`rendered_psnr`、`oracle_task_label`。选择表：linear gap4/8/16 用 `shared_energy_regression`，Stage65 adapter gap4/8/16 用 `endpoint_diff_baseline`。validation：task count `120`，endpoint PSNR `20.316812710325646`，policy PSNR `20.346872347170144`，gain `+0.030059636844502392 dB`。限制：该 package 只做 index candidate switching，Stage105/106 验证 residual values 仍来自 teacher，不是完整 residual-value codec。
+
+## 2026-06-28：继续 Stage107 metadata task-level switch predictor preflight
+
+### 用户原始问题
+
+用户表示可以继续往后一直做。
+
+### 当前执行决策
+
+Stage107 测试一个更接近 deployable 的 task-level switch predictor，但先限制为 metadata-only，不加载 anchors、不渲染。输入特征只包含 decoder 可知的 base method、reference gap、normalized time、left/right/target indices 等；rendered PSNR 只作为训练/评估 label 来源，不作为 decoder input。用 K-fold cross-validation 比较 learned metadata switch、train-fold group policy、global majority policy、Stage106 fixed group policy、endpoint-only 和 oracle task best。若 metadata-only 不能超过 Stage106 group policy，下一步才考虑 anchor-stat features。
+
+### 后续执行更新
+
+Stage107 metadata task-level switch predictor preflight 已完成：运行前检查 `nvidia-smi`，该阶段为 CPU + 小型 torch MLP，不加载 anchors、不渲染。新增 `scripts/run_stage107_metadata_task_switch_predictor_preflight.py`，先通过 `py_compile`，再运行 5-fold CV。输出目录 `experiments/stage107_metadata_task_switch_predictor_preflight/`，大小约 `212K`，task count `120`。结果：`metadata_mlp_cv` out-of-fold PSNR `20.314275971964204`，比 endpoint 低 `-0.002536738361441741 dB`，selection accuracy `0.39166666666666666`；Stage106 fixed group policy PSNR `20.34687234717015`，比 endpoint 高 `+0.030059636844502392 dB`，accuracy `0.5416666666666666`；oracle task best PSNR `20.403744235652297`，上界 `+0.08693152532665556 dB`。结论：metadata-only task-level predictor 不能超过 Stage106 group policy；下一步若继续 switch predictor，应加入 decoder-side anchor statistics 或 selector-score statistics。
