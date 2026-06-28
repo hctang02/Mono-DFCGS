@@ -7886,3 +7886,80 @@ experiments/stage113_heldout_switch_validation/stage113_heldout_switch_validatio
 - Stage111 `score_stat_mlp_cv` remains unsafe because Stage65 adapter gap4 regresses despite the best overall PSNR.
 - Endpoint-only is the only policy that is trivially safe at aggregate, fold, group, and fold-group levels in this diagnostic.
 - Do not treat Stage112 v2 as final before either more rendered held-out validation or a stricter fallback policy decision.
+
+## 2026-06-29：Stage114 Strict-Safe Selector Fallback Package
+
+### 目标
+
+根据用户选择，冻结 endpoint-only strict-safe selector fallback，用作后续 deterministic-index side-info codec 的安全默认 selector。
+
+### 操作计划
+
+- 新增 `scripts/run_stage114_package_strict_safe_selector_fallback.py`。
+- 读取 Stage113 overall/safety summaries 和 Stage112 policy package。
+- 打包 `strict_safe_endpoint_selector_v1`，固定选择 `endpoint_diff_baseline`。
+- Decoder-side 不需要 target dense anchor、target residual、rendered PSNR、oracle labels 或 target RGB。
+- 明确记录该 fallback 牺牲 Stage112/Stage111 的平均收益，换取 aggregate/fold/group/fold-group 全部零退化。
+- 输出 JSON、summary CSV、comparison CSV 和 Markdown report。
+- 该阶段为 CPU packaging；不训练、不渲染、不保存 heavy tensors。
+- 运行代码前检查 `nvidia-smi`。
+
+### 执行
+
+运行前检查 `nvidia-smi`：GPU0 忙、GPU4 有进程，GPU1/2/3/5/6/7 空闲。Stage114 是 CPU packaging，不需要 CUDA 计算。
+
+Syntax check and run：
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage114_package_strict_safe_selector_fallback.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage114_package_strict_safe_selector_fallback.py
+```
+
+### 输出文件
+
+```text
+experiments/stage114_strict_safe_selector_fallback_package/stage114_strict_safe_selector_fallback_policy.json
+experiments/stage114_strict_safe_selector_fallback_package/stage114_strict_safe_selector_fallback_summary.csv
+experiments/stage114_strict_safe_selector_fallback_package/stage114_strict_safe_selector_fallback_comparison.csv
+experiments/stage114_strict_safe_selector_fallback_package/stage114_strict_safe_selector_fallback_report.md
+```
+
+### Packaged Policy
+
+| item | value |
+|---|---|
+| policy name | `strict_safe_endpoint_selector_v1` |
+| policy type | `fixed_candidate_selector` |
+| selected candidate | `endpoint_diff_baseline` |
+| decoder inputs | none beyond decoder-available left/right anchors |
+| forbidden inputs | `target_dense_anchor`, `target_residual`, `rendered_psnr`, `oracle_task_label`, `target_rgb` |
+
+### Validation Summary
+
+| metric | value |
+|---|---:|
+| task count | 480 |
+| selected PSNR | 20.3212149854921 |
+| gain vs endpoint | 0.0 |
+| min fold gain | 0.0 |
+| min group gain | 0.0 |
+| min fold-group gain | 0.0 |
+| aggregate safe | 1 |
+| fold-group safe | 1 |
+
+### Comparison
+
+| policy | selected PSNR | gain | min group gain | min fold-group gain | aggregate safe | fold-group safe | decision |
+|---|---:|---:|---:|---:|---:|---:|---|
+| endpoint_only | 20.3212149854921 | 0.0 | 0.0 | 0.0 | 1 | 1 | package |
+| stage106_fixed_group_policy | 20.322996715243978 | 0.0017817297518578745 | -0.023422587923175493 | -0.06427740265352 | 0 | 0 | reject |
+| stage112_group_switch_v2 | 20.32704687107235 | 0.005831885580240304 | 0.0 | -0.03366017781158855 | 1 | 0 | reject_as_final |
+| score_stat_mlp_cv | 20.33325220653739 | 0.012037221045259486 | -0.00797889356792674 | -0.039626239935121585 | 0 | 0 | reject |
+
+### 结论
+
+- Stage114 freezes `strict_safe_endpoint_selector_v1` as the default safe selector.
+- This sacrifices Stage112's average gain but satisfies the strict Stage113 fold/group/fold-group no-regression criterion.
+- Stage112 remains an aggregate-safe candidate only, not the final strict-safe policy.
+- The package still only selects residual indices; residual value prediction is still future work.
+- Next step: deterministic-index residual side-info codec using this strict-safe selector.

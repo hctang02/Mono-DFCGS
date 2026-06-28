@@ -1,0 +1,5 @@
+policy,selected_psnr,gain_vs_endpoint,min_group_gain_vs_endpoint,min_fold_group_gain_vs_endpoint,aggregate_safe,fold_group_safe,decision,reason
+endpoint_only,20.3212149854921,0.0,0.0,0.0,1,1,package,strict-safe fallback selected by user
+stage106_fixed_group_policy,20.322996715243978,0.0017817297518578745,-0.023422587923175493,-0.06427740265352,0,0,reject,linear gap4 aggregate regression
+stage112_group_switch_v2,20.32704687107235,0.005831885580240304,0.0,-0.03366017781158855,1,0,reject_as_final,fold-group regression under Stage113 strict criterion
+score_stat_mlp_cv,20.33325220653739,0.012037221045259486,-0.00797889356792674,-0.039626239935121585,0,0,reject,Stage65 adapter gap4 aggregate regression

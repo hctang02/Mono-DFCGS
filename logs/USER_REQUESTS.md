@@ -1487,3 +1487,17 @@ Stage113 先基于已有 Stage110 broader rendered rows 和 Stage111 switch pred
 ### 后续执行更新
 
 Stage113 held-out switch validation 已完成：运行前检查 `nvidia-smi`，GPU1/2/3/5/7 空闲；该阶段为 CPU-only diagnostic，不重新渲染、不训练、不保存 heavy tensors。新增 `scripts/run_stage113_heldout_switch_validation.py`，读取 Stage111 out-of-fold rows，并将 `stage110_group_best_policy` alias 为 Stage112 `stage112_group_switch_v2`；alias 与 Stage112 package selection table mismatch count 为 `0`。输出目录为 `experiments/stage113_heldout_switch_validation/`，共 `2880` policy rows、`480` unique tasks per policy。结果：Stage112 v2 overall PSNR `20.32704687107235`，gain `+0.005831885580240304 dB`，aggregate group safe `1`，Stage65 adapter gap4 gain `0.0`；但 min fold gain `-0.0059710516126523045`，min fold-group gain `-0.03366017781158855`，negative fold-group count `4`，fold-group safe `0`。Stage111 `score_stat_mlp_cv` overall gain 更高 `+0.012037221045259486 dB`，但 Stage65 adapter gap4 gain `-0.00797889356792674`，aggregate safe `0`。结论：Stage112 可作为 aggregate-safe candidate，但若要求 held-out fold-group 零退化，则不能作为最终 safe policy；下一步应冻结更严格的 endpoint-safe fallback 或先扩展 rendered labels，而不是继续堆 learned switch predictor。
+
+## 2026-06-29：执行 Stage114 strict-safe selector fallback package
+
+### 用户原始问题
+
+用户在 Stage113 后选择“严格安全 fallback”。
+
+### 当前执行决策
+
+Stage114 将打包 endpoint-only strict-safe selector policy，作为后续 deterministic-index residual side-info codec 的默认安全 selector。该 policy 固定选择 `endpoint_diff_baseline`，不依赖 target dense anchor、target residual、rendered PSNR、oracle labels 或 target RGB；decoder inputs 可以为空或仅记录为无需额外输入。Stage114 为 CPU packaging，读取 Stage113 overall/safety summaries 和 Stage112 package，输出 strict-safe policy JSON、summary CSV、comparison CSV 和 report，不重新渲染、不训练、不保存 heavy tensors。运行前仍检查 `nvidia-smi`。
+
+### 后续执行更新
+
+Stage114 strict-safe selector fallback package 已完成：运行前检查 `nvidia-smi`，GPU1/2/3/5/6/7 空闲；该阶段为 CPU-only packaging，不重新渲染、不训练、不保存 heavy tensors。新增 `scripts/run_stage114_package_strict_safe_selector_fallback.py`，输出目录 `experiments/stage114_strict_safe_selector_fallback_package/`。打包 policy 为 `strict_safe_endpoint_selector_v1`，policy type 为 `fixed_candidate_selector`，固定选择 `endpoint_diff_baseline`，decoder inputs 为空，仅需要 decoder 正常已有的 left/right anchors。验证 summary：task count `480`，selected PSNR `20.3212149854921`，gain vs endpoint `0.0`，min fold/group/fold-group gain 全部 `0.0`，aggregate safe `1`，fold-group safe `1`。Stage112 v2 因 fold-group regression 作为 final 被拒绝；Stage111 learned switch 因 Stage65 adapter gap4 regression 被拒绝。下一步可以用该 strict-safe selector 进入 deterministic-index residual side-info codec。

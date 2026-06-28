@@ -1,0 +1,102 @@
+{
+  "stage": 114,
+  "policy_name": "strict_safe_endpoint_selector_v1",
+  "policy_type": "fixed_candidate_selector",
+  "selected_candidate": "endpoint_diff_baseline",
+  "source_decision": "user_selected_strict_safe_fallback_after_stage113",
+  "decoder_inputs": [],
+  "decoder_available_prerequisites": [
+    "left_anchor",
+    "right_anchor"
+  ],
+  "forbidden_decoder_inputs": [
+    "target_dense_anchor",
+    "target_residual",
+    "rendered_psnr",
+    "oracle_task_label",
+    "target_rgb"
+  ],
+  "fallback_candidate": "endpoint_diff_baseline",
+  "selection_table": {
+    "linear": {
+      "4": "endpoint_diff_baseline",
+      "8": "endpoint_diff_baseline",
+      "16": "endpoint_diff_baseline"
+    },
+    "stage65_adapter": {
+      "4": "endpoint_diff_baseline",
+      "8": "endpoint_diff_baseline",
+      "16": "endpoint_diff_baseline"
+    }
+  },
+  "validation_summary": {
+    "policy_name": "strict_safe_endpoint_selector_v1",
+    "policy_type": "fixed_candidate_selector",
+    "selected_candidate": "endpoint_diff_baseline",
+    "task_count": 480,
+    "mean_selected_sideinfo_psnr": 20.3212149854921,
+    "mean_endpoint_sideinfo_psnr": 20.3212149854921,
+    "mean_gain_vs_endpoint": 0.0,
+    "min_fold_gain_vs_endpoint": 0.0,
+    "min_group_gain_vs_endpoint": 0.0,
+    "min_fold_group_gain_vs_endpoint": 0.0,
+    "aggregate_safe_no_group_regression": 1,
+    "fold_group_safe_no_regression": 1
+  },
+  "comparison_rows": [
+    {
+      "policy": "endpoint_only",
+      "selected_psnr": 20.3212149854921,
+      "gain_vs_endpoint": 0.0,
+      "min_group_gain_vs_endpoint": 0.0,
+      "min_fold_group_gain_vs_endpoint": 0.0,
+      "aggregate_safe": 1,
+      "fold_group_safe": 1,
+      "decision": "package",
+      "reason": "strict-safe fallback selected by user"
+    },
+    {
+      "policy": "stage106_fixed_group_policy",
+      "selected_psnr": 20.322996715243978,
+      "gain_vs_endpoint": 0.0017817297518578745,
+      "min_group_gain_vs_endpoint": -0.023422587923175493,
+      "min_fold_group_gain_vs_endpoint": -0.06427740265352,
+      "aggregate_safe": 0,
+      "fold_group_safe": 0,
+      "decision": "reject",
+      "reason": "linear gap4 aggregate regression"
+    },
+    {
+      "policy": "stage112_group_switch_v2",
+      "selected_psnr": 20.32704687107235,
+      "gain_vs_endpoint": 0.005831885580240304,
+      "min_group_gain_vs_endpoint": 0.0,
+      "min_fold_group_gain_vs_endpoint": -0.03366017781158855,
+      "aggregate_safe": 1,
+      "fold_group_safe": 0,
+      "decision": "reject_as_final",
+      "reason": "fold-group regression under Stage113 strict criterion"
+    },
+    {
+      "policy": "score_stat_mlp_cv",
+      "selected_psnr": 20.33325220653739,
+      "gain_vs_endpoint": 0.012037221045259486,
+      "min_group_gain_vs_endpoint": -0.00797889356792674,
+      "min_fold_group_gain_vs_endpoint": -0.039626239935121585,
+      "aggregate_safe": 0,
+      "fold_group_safe": 0,
+      "decision": "reject",
+      "reason": "Stage65 adapter gap4 aggregate regression"
+    }
+  ],
+  "previous_aggregate_safe_candidate": {
+    "policy_name": "render_aware_group_switch_v2",
+    "rejected_as_final_reason": "Stage113 fold-group safe flag is 0 with min fold-group gain -0.03366017781158855."
+  },
+  "rate_note": "Fixed endpoint selector transmits no selector switch side-info and keeps the q6 top10 residual payload shape unchanged.",
+  "limitations": [
+    "This package selects residual indices only; it does not predict residual values.",
+    "Stage110/111/113 validation residual values are still teacher values at selected indices.",
+    "Stage113 is a CPU diagnostic over existing rendered rows, not a fresh sequence-heldout render run."
+  ]
+}

@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage113: `56119f6 Package broader group switch policy`
+- Latest pushed commit before Stage114: `e306e10 Validate held-out switch policy`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -68,19 +68,20 @@ Key Stage96 direct total rates:
 - Stage111: broader switch predictor on Stage110 labels; score-stat MLP beats fixed group policies overall but still has Stage65 adapter gap4 regression.
 - Stage112: packaged conservative broader metadata group switch policy `render_aware_group_switch_v2`; it uses only `base_method` and `reference_gap` and selects endpoint for linear gap4 plus all Stage65 adapter groups.
 - Stage113: held-out switch diagnostic over Stage111 out-of-fold rows; Stage112 is aggregate group-safe but not fold-group safe under a zero-regression criterion.
+- Stage114: packaged strict-safe endpoint-only selector fallback `strict_safe_endpoint_selector_v1` after user chose strict safety.
 
 ## Current Best Selector Policy
 
-Current packaged aggregate-safe candidate: Stage112 `render_aware_group_switch_v2`.
+Current strict-safe selector: Stage114 `strict_safe_endpoint_selector_v1`.
 
-Strictest safe fallback under Stage113 fold-group diagnostic: endpoint-only selector.
+Aggregate-safe but not final candidate: Stage112 `render_aware_group_switch_v2`.
 
 Previous safe baseline: Stage106 `render_aware_group_switch_v1`.
 
 Policy JSON:
 
 ```text
-experiments/stage112_broader_group_switch_policy_package/stage112_broader_group_switch_policy.json
+experiments/stage114_strict_safe_selector_fallback_package/stage114_strict_safe_selector_fallback_policy.json
 ```
 
 Selection table:
@@ -88,20 +89,20 @@ Selection table:
 | base | gap | selected candidate |
 |---|---:|---|
 | linear | 4 | endpoint_diff_baseline |
-| linear | 8 | shared_energy_regression |
-| linear | 16 | shared_energy_regression |
+| linear | 8 | endpoint_diff_baseline |
+| linear | 16 | endpoint_diff_baseline |
 | stage65_adapter | 4 | endpoint_diff_baseline |
 | stage65_adapter | 8 | endpoint_diff_baseline |
 | stage65_adapter | 16 | endpoint_diff_baseline |
 
-Validation summary on Stage110 broader rows:
+Validation summary on Stage113 rows:
 
 | metric | value |
 |---|---:|
 | task count | 480 |
 | endpoint PSNR | 20.3212149854921 |
-| group policy PSNR | 20.327046871072337 |
-| gain vs endpoint | 0.005831885580240304 |
+| selected policy PSNR | 20.3212149854921 |
+| gain vs endpoint | 0.0 |
 | oracle task best PSNR | 20.382843220952523 |
 | teacher oracle top10 PSNR | 22.077800340877268 |
 
@@ -115,6 +116,7 @@ Stage113 held-out diagnostic:
 | Stage112 min fold-group gain | -0.03366017781158855 |
 | Stage112 negative fold-group count | 4 |
 | Stage112 Stage65 adapter gap4 gain | 0.0 |
+| Stage114 strict-safe fold-group safe | 1 |
 
 ## Current Interpretation
 
@@ -123,11 +125,12 @@ Stage113 held-out diagnostic:
 - Metadata-only task-level switching is too weak.
 - Anchor-stat task-level switching has signal but overfits on the current 120 rendered-label tasks.
 - Selector-score task-level switching has signal but does not fix adapter-group regressions and remains below Stage106.
+- Stage114 freezes endpoint-only as the strict-safe selector fallback chosen by the user.
 - Stage112 is aggregate group-safe and improves over endpoint overall, but Stage113 shows it is not fold-group safe under a strict zero-regression criterion.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
-- If strict safety is required, endpoint-only is currently the fallback selector policy.
+- If broader held-out validation later re-qualifies Stage112, it can be revisited as an optional gain candidate.
 - Residual value prediction should wait until selector switching and index/value accounting are more stable.
 
 ## Next Plan
@@ -254,32 +257,46 @@ Actions:
 - Re-run rendered selector validation with the frozen switch policy.
 - Compare endpoint-only, learned-only, group switch, task switch, and oracle task switch.
 
+### Stage114: Strict-Safe Selector Fallback Package
+
+Status: completed on 2026-06-29.
+
+Result:
+
+- Packaged `strict_safe_endpoint_selector_v1` in `experiments/stage114_strict_safe_selector_fallback_package/stage114_strict_safe_selector_fallback_policy.json`.
+- Fixed candidate: `endpoint_diff_baseline`.
+- Decoder inputs: none beyond normal decoder-available left/right anchors.
+- Forbidden decoder inputs: `target_dense_anchor`, `target_residual`, `rendered_psnr`, `oracle_task_label`, `target_rgb`.
+- Stage113 validation: selected PSNR `20.3212149854921`, gain vs endpoint `0.0`, min fold/group/fold-group gains all `0.0`, aggregate safe `1`, fold-group safe `1`.
+- Stage112 v2 is rejected as final under strict safety due to fold-group regression.
+
+Goal: freeze the strict-safe selector before deterministic-index side-info codec work.
+
 ## Later Plan After Selector Stabilizes
 
 ### Deterministic-Index Side-Info Codec
 
-- Before Stage114 deterministic-index codec: decide whether to use endpoint-only strict-safe selector or keep Stage112 only as an aggregate-safe candidate.
-- Stage114: build deterministic-index residual codec where decoder predicts indices and bitstream carries values/scales only.
-- Stage115: compare index+value entropy side-info vs deterministic-index value-only side-info.
-- Stage116: sweep q-bit and keep fraction.
-- Stage117: package broader RD with all side-info bytes counted.
+- Stage115: build deterministic-index residual codec where decoder predicts indices and bitstream carries values/scales only, using Stage114 strict-safe selector by default.
+- Stage116: compare index+value entropy side-info vs deterministic-index value-only side-info.
+- Stage117: sweep q-bit and keep fraction.
+- Stage118: package broader RD with all side-info bytes counted.
 
 ### Residual Value Prediction
 
-- Stage118: build selected-index residual value predictor manifest.
-- Stage119: non-rendered predicted-value smoke.
-- Stage120: rendered predicted-value smoke without teacher residual values.
-- Stage121: hybrid low-rate correction if pure prediction is too weak.
-- Stage122: package complete residual codec fields and RD accounting.
+- Stage119: build selected-index residual value predictor manifest.
+- Stage120: non-rendered predicted-value smoke.
+- Stage121: rendered predicted-value smoke without teacher residual values.
+- Stage122: hybrid low-rate correction if pure prediction is too weak.
+- Stage123: package complete residual codec fields and RD accounting.
 
 ### Final Evaluation
 
-- Stage123: broaden training labels.
-- Stage124: final selected policy held-out eval.
-- Stage125: integrated RD table.
-- Stage126: ablations.
-- Stage127: final method docs.
-- Stage128: only after internal line stabilizes, resume FCGS/D-FCGS fair comparison.
+- Stage124: broaden training labels.
+- Stage125: final selected policy held-out eval.
+- Stage126: integrated RD table.
+- Stage127: ablations.
+- Stage128: final method docs.
+- Stage129: only after internal line stabilizes, resume FCGS/D-FCGS fair comparison.
 
 ## Key Reference Files
 
@@ -315,6 +332,7 @@ Actions:
 - Stage109/111 selector-score switch predictor: `scripts/run_stage109_selector_score_switch_feature_preflight.py`
 - Stage112 policy package: `scripts/run_stage112_package_broader_group_switch_policy.py`
 - Stage113 held-out switch validation: `scripts/run_stage113_heldout_switch_validation.py`
+- Stage114 strict-safe selector fallback package: `scripts/run_stage114_package_strict_safe_selector_fallback.py`
 
 ### Important Outputs
 
@@ -331,6 +349,7 @@ Actions:
 - Stage111 broader switch predictor: `experiments/stage111_broader_switch_predictor/`
 - Stage112 packaged policy: `experiments/stage112_broader_group_switch_policy_package/`
 - Stage113 held-out switch validation: `experiments/stage113_heldout_switch_validation/`
+- Stage114 strict-safe selector fallback: `experiments/stage114_strict_safe_selector_fallback_package/`
 
 ### Heavy External Paths
 
