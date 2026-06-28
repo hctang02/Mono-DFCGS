@@ -1,0 +1,87 @@
+{
+  "stage": 97,
+  "mode": "residual predictor task manifest",
+  "task_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage79_adapter_training_task_manifest/stage79_adapter_training_tasks.csv",
+  "dense_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage61_davis_anchor_export_data_full/stage61_davis_anchor_export_manifest.csv",
+  "task_splits": [
+    "train",
+    "eval"
+  ],
+  "codecs": [
+    "q12"
+  ],
+  "gaps": [
+    4,
+    8,
+    16
+  ],
+  "base_methods": [
+    "linear",
+    "stage65_adapter"
+  ],
+  "keep_fraction": 0.1,
+  "side_bits": 6,
+  "residual_codec": "entropy_q6_top10_sorted_delta_zlib",
+  "task_count": 15554,
+  "missing_dense_count": 0,
+  "potential_base_method_label_count": 31108,
+  "rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage97_residual_predictor_task_manifest/stage97_residual_predictor_tasks.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage97_residual_predictor_task_manifest/stage97_residual_predictor_task_summary.csv",
+  "missing_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage97_residual_predictor_task_manifest/stage97_residual_predictor_missing_dense_targets.csv",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage97_residual_predictor_task_manifest/stage97_residual_predictor_task_manifest_report.md",
+  "summary_rows": [
+    {
+      "task_split": "eval",
+      "codec": "q12",
+      "reference_gap": 4,
+      "task_count": 1463,
+      "sequence_count": 30,
+      "potential_base_method_label_count": 2926
+    },
+    {
+      "task_split": "eval",
+      "codec": "q12",
+      "reference_gap": 8,
+      "task_count": 1707,
+      "sequence_count": 30,
+      "potential_base_method_label_count": 3414
+    },
+    {
+      "task_split": "eval",
+      "codec": "q12",
+      "reference_gap": 16,
+      "task_count": 1830,
+      "sequence_count": 30,
+      "potential_base_method_label_count": 3660
+    },
+    {
+      "task_split": "train",
+      "codec": "q12",
+      "reference_gap": 4,
+      "task_count": 3087,
+      "sequence_count": 60,
+      "potential_base_method_label_count": 6174
+    },
+    {
+      "task_split": "train",
+      "codec": "q12",
+      "reference_gap": 8,
+      "task_count": 3604,
+      "sequence_count": 60,
+      "potential_base_method_label_count": 7208
+    },
+    {
+      "task_split": "train",
+      "codec": "q12",
+      "reference_gap": 16,
+      "task_count": 3863,
+      "sequence_count": 60,
+      "potential_base_method_label_count": 7726
+    }
+  ],
+  "notes": [
+    "No heavy residual labels, payloads, anchors, or tensors are copied into this package.",
+    "Teacher labels can be regenerated from the target dense anchor during training or encoder-side analysis.",
+    "Decoder-side inputs must not include target dense anchors; transmitted side-info must be counted in rate."
+  ]
+}

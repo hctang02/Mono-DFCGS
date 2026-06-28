@@ -1225,3 +1225,17 @@ Stage96 将 Stage95 的 60-task broader entropy side-info eval 接入 RD account
 ### 后续执行更新
 
 Stage96 broader entropy residual side-info RD package 已完成：运行前检查 `nvidia-smi`，该阶段为 CPU 汇总，不占用 GPU。参数化 `scripts/run_stage94_entropy_residual_sideinfo_rd_package.py` 并读取 Stage95 summary，输出 `experiments/stage96_broader_entropy_residual_sideinfo_rd_package/`，生成 `6` 条 RD rows 和 `24` 条 point rows。linear gap4/8/16 entropy direct total rate 为 `0.21042431365324843`、`0.12665608623246688`、`0.08430766643343285 MiB/frame`，entropy amortized total 为 `0.2033027904319146`、`0.1230272487975978`、`0.08250524789048798`，PSNR/delta 为 `23.403532118481326 / +3.4187356956292225`、`21.51362735577916 / +3.05603754877287`、`20.344147709407626 / +3.2599322732336695`。Stage65 adapter gap4/8/16 entropy direct total 为 `0.21508592669374865`、`0.13149337333220473`、`0.08923517723400179`，entropy amortized total 为 `0.20679900021228975`、`0.12725987500986843`、`0.08712478926602138`，PSNR/delta 为 `22.841151135422116 / +2.7994188265782376`、`21.39901144086742 / +2.692464222747122`、`20.292022340267458 / +2.9637922008291264`。结论：Stage96 是当前 residual side-info 线最可信的 broader RD accounting；下一步应开始从 teacher residual side-info 过渡到 deployable side-info generation / residual predictor 设计。
+
+## 2026-06-28：继续 Stage97 residual predictor task manifest
+
+### 用户原始问题
+
+用户要求按照计划继续往下做，做完后续步骤，并且可以一直做下去。
+
+### 当前执行决策
+
+Stage97 不直接训练模型，先为 learned/deployable residual predictor 建立 task manifest。计划读取 Stage79 adapter training task manifest 和 Stage61 dense gap1 anchor manifest，输出 train/eval residual predictor tasks：每行保留 left/right keyframe anchor references、target dense anchor reference、normalized time、gap、codec、split、target RGB path、base method、side-info config（q6 top10 entropy codec）。不写入 heavy residual labels 或 payload；未来训练/评估可按 manifest 重生成 teacher residual labels。目标是把 Stage96 的 teacher residual side-info 线转成可训练的 residual predictor 数据入口。
+
+### 后续执行更新
+
+Stage97 residual predictor task manifest 已完成：首次运行误用系统 Python 间接导入 Stage85 导致缺少 `torch`，脚本随后改为自包含 CSV parser，不再依赖 torch；重新按要求检查 `nvidia-smi` 后运行成功。新增 `scripts/run_stage97_residual_predictor_task_manifest.py`，输出目录 `experiments/stage97_residual_predictor_task_manifest/`。结果：q12 train/eval tasks 共 `15554`，missing dense targets `0`，base methods 为 `linear;stage65_adapter`，潜在 base-method label count `31108`。按 split/gap：eval gap4/8/16 为 `1463/1707/1830` tasks，train gap4/8/16 为 `3087/3604/3863` tasks。输出只含文本引用和配置，不含 residual labels、payload 或 `.pt` tensors；tasks CSV 约 `13M`。

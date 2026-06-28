@@ -6699,6 +6699,75 @@ Broader entropy RD rows：
 
 结论：Stage96 是当前 residual side-info 线最可靠的 broader RD accounting。相比 Stage90 fixed q6 broader RD，entropy codec v2 将 side-info rate 从固定 `0.04137134552001953 MiB/intermediate-frame` 降到 linear 约 `0.0285-0.0290`、Stage65 adapter 约 `0.0331-0.0339`，同时 positive rendered gains 保持全正。下一步应从 teacher residual side-info 转向 deployable side-info generation / learned residual predictor。
 
+## 2026-06-28：Stage97 Residual Predictor Task Manifest
+
+### 目标
+
+为后续 learned/deployable residual predictor 建立训练/验证 task manifest，把 Stage96 的 teacher residual side-info 线转成可训练数据入口。
+
+### 操作计划
+
+- 新增 `scripts/run_stage97_residual_predictor_task_manifest.py`。
+- 输入 Stage79 task manifest 和 Stage61 dense anchor manifest。
+- 输出 train/eval task CSV，包含 left/right anchor refs、target dense anchor refs、target RGB、gap、codec、normalized time、base method、keep fraction、side bits、codec mode。
+- 不保存 heavy residual labels、payload 或 `.pt` tensor。
+- 该阶段为 CPU manifest 构建，但运行前仍按要求检查 `nvidia-smi`。
+
+### Stage97 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。Stage97 是 CPU manifest 构建脚本。
+
+首次运行使用系统 Python 时失败，原因是脚本间接导入 Stage85，Stage85 需要 `torch`：
+
+```text
+ModuleNotFoundError: No module named 'torch'
+```
+
+随后将 Stage97 脚本改为自包含 CSV parser，避免 CPU manifest 构建依赖 torch，并重新检查 `nvidia-smi` 后运行成功。
+
+新增脚本：
+
+```text
+scripts/run_stage97_residual_predictor_task_manifest.py
+```
+
+运行命令：
+
+```text
+python scripts/run_stage97_residual_predictor_task_manifest.py
+```
+
+仓库内输出：
+
+```text
+experiments/stage97_residual_predictor_task_manifest/stage97_residual_predictor_tasks.csv
+experiments/stage97_residual_predictor_task_manifest/stage97_residual_predictor_task_summary.csv
+experiments/stage97_residual_predictor_task_manifest/stage97_residual_predictor_missing_dense_targets.csv
+experiments/stage97_residual_predictor_task_manifest/stage97_residual_predictor_task_manifest_summary.json
+experiments/stage97_residual_predictor_task_manifest/stage97_residual_predictor_task_manifest_report.md
+```
+
+Summary：
+
+| split | codec | gap | tasks | sequences | potential labels |
+|---|---|---:|---:|---:|---:|
+| eval | q12 | 4 | 1463 | 30 | 2926 |
+| eval | q12 | 8 | 1707 | 30 | 3414 |
+| eval | q12 | 16 | 1830 | 30 | 3660 |
+| train | q12 | 4 | 3087 | 60 | 6174 |
+| train | q12 | 8 | 3604 | 60 | 7208 |
+| train | q12 | 16 | 3863 | 60 | 7726 |
+
+Total tasks：`15554`。
+
+Missing dense targets：`0`。
+
+Potential base-method labels：`31108`。
+
+Tasks CSV size：约 `13M`，只含文本引用和配置，不含 heavy tensors。
+
+结论：Stage97 为后续 residual predictor / deployable side-info generation 建立了 q12 train/eval data entry point。Target dense anchors 只作为 training/encoder-side teacher label source，不能作为 decoder-side input。下一步可做 Stage98 residual predictor baseline smoke，先预测 residual importance mask 或 entropy payload size，而不是直接训练完整 residual values。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。
