@@ -987,3 +987,17 @@ Stage79 开始 Gaussian adapter 训练线：先构建训练任务 manifest，而
 ### 后续执行更新
 
 Stage79 已完成 adapter training task manifest：覆盖 DAVIS train `60` sequences / `4209` frames 和 val `30` sequences / `1999` frames，共 `31108` 个 q10/q12、gap4/8/16 中间帧训练/评估 tasks。输出目录为 `experiments/stage79_adapter_training_task_manifest/`。
+
+## 2026-06-28：继续 Stage80 adapter training smoke
+
+### 用户原始问题
+
+用户要求：如果有下一步就继续执行；如果不确定如何推进，再停下来询问。
+
+### 当前执行决策
+
+Stage80 继续 Gaussian adapter 训练线，但先做小规模 smoke，而不是直接长训。计划新增 Stage80 task-manifest adapter training smoke：从 Stage79 task CSV 读取 q10/q12、gap4/8/16 的训练/评估任务，加载 Stage61 gap1 anchor `.pt` 的指定 side，模拟 q-bit static anchor 输入，用 rendered RGB loss 训练 `GaussianAnchorDynamicPredictor`，并与 linear anchor baseline 做 eval 对比。Heavy checkpoint 写入 `/data/hctang/tmp/opencode/...`，仓库内只保存脚本、小型 CSV/JSON/report 和日志。
+
+### 后续执行更新
+
+Stage80 smoke 已完成：新增 `scripts/run_stage80_adapter_training_smoke.py`，最终默认输出覆盖 q10/q12 和 gaps `4/8/16` 的小规模训练闭环。运行前检查 `nvidia-smi`，GPU4 空闲，因此使用 `CUDA_VISIBLE_DEVICES=4`。最终 smoke 使用 `6` 个 train tasks、`6` 个 eval tasks、`6` 个 training steps。best/final eval PSNR 为 `17.669478613164078`，linear baseline 为 `17.669089783599734`，margin 为 `+0.00038882956435060123 dB`；Stage65 reference adapter 在同一小 eval 上 margin 为 `+0.15900605544237814 dB`。该结果只验证 loader/render/loss/checkpoint 闭环，不代表长训效果。输出目录为 `experiments/stage80_adapter_training_smoke/`，checkpoint 在 `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage80_adapter_training_smoke/`。

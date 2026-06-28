@@ -5667,6 +5667,66 @@ Task summary：
 
 结论：Stage79 已为 Stage80 adapter training 准备好 manifest。该 manifest 不复制 heavy anchor tensors，只引用 Stage61 gap1 `.pt` 和 source side。
 
+## 2026-06-28：Stage80 Adapter Training Smoke
+
+### 目标
+
+验证 Stage79 adapter task manifest 能进入真实训练闭环：加载指定 q10/q12 endpoint Gaussian anchors、渲染 RGB loss、训练 adapter、保存 checkpoint，并在 DAVIS val tasks 上与 linear anchor baseline 对比。
+
+### 操作计划
+
+- 新增 `scripts/run_stage80_adapter_training_smoke.py`。
+- 输入 `experiments/stage79_adapter_training_task_manifest/stage79_adapter_training_tasks.csv`。
+- 先运行小规模 q10/gap4 smoke，避免直接长训。
+- Heavy checkpoint 保存到 `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage80_adapter_training_smoke`。
+- 仓库内输出 summary JSON、train log CSV、validation log CSV、best eval rows CSV 和 report。
+- 运行前按要求检查 `nvidia-smi`。
+
+### Stage80 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU4 空闲，因此使用 `CUDA_VISIBLE_DEVICES=4` 运行 smoke。
+
+新增脚本：
+
+```text
+scripts/run_stage80_adapter_training_smoke.py
+```
+
+最终 smoke 配置：
+
+| codecs | gaps | train tasks | eval tasks | steps | hidden dim |
+|---|---|---:|---:|---:|---:|
+| q10,q12 | 4,8,16 | 6 | 6 | 6 | 256 |
+
+仓库内输出：
+
+```text
+experiments/stage80_adapter_training_smoke/stage80_adapter_training_smoke_summary.json
+experiments/stage80_adapter_training_smoke/stage80_adapter_training_smoke_report.md
+experiments/stage80_adapter_training_smoke/stage80_train_log.csv
+experiments/stage80_adapter_training_smoke/stage80_validation_log.csv
+experiments/stage80_adapter_training_smoke/stage80_best_eval_rows.csv
+experiments/stage80_adapter_training_smoke/stage80_final_eval_rows.csv
+experiments/stage80_adapter_training_smoke/stage80_reference_eval_rows.csv
+```
+
+Heavy checkpoints：
+
+```text
+/data/hctang/tmp/opencode/mono_dfcgs_runs/stage80_adapter_training_smoke/best_adapter.safetensors
+/data/hctang/tmp/opencode/mono_dfcgs_runs/stage80_adapter_training_smoke/final_adapter.safetensors
+```
+
+Evaluation summary：
+
+| checkpoint | model PSNR | linear PSNR | margin |
+|---|---:|---:|---:|
+| initial | 17.669089783599734 | 17.669089783599734 | 0.0 |
+| best/final smoke | 17.669478613164078 | 17.669089783599734 | 0.00038882956435060123 |
+| Stage65 reference adapter | 17.82809583904211 | 17.669089783599734 | 0.15900605544237814 |
+
+结论：Stage80 已验证 Stage79 task manifest 可以直接驱动 q10/q12 endpoint Gaussian anchor loading、rendered RGB loss training、validation baseline comparison 和 checkpoint export。该 run 是 smoke-only，6 step 从零训练不能代表最终 adapter 性能；下一步应在相同脚本基础上启动 controlled medium training，并用 Stage78/Stage77 protocol 做更完整评估。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。

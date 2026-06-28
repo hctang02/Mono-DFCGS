@@ -1,0 +1,129 @@
+{
+  "stage": 80,
+  "mode": "adapter task-manifest RGB training smoke",
+  "task_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage79_adapter_training_task_manifest/stage79_adapter_training_tasks.csv",
+  "codecs": [
+    "q10",
+    "q12"
+  ],
+  "gaps": [
+    4,
+    8,
+    16
+  ],
+  "available_train_rows": 21108,
+  "available_eval_rows": 10000,
+  "train_task_count": 6,
+  "eval_task_count": 6,
+  "steps": 6,
+  "eval_interval": 3,
+  "hidden_dim": 256,
+  "lr": 8e-06,
+  "weight_decay": 0.0001,
+  "parameter_count": 402445,
+  "heavy_root": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage80_adapter_training_smoke",
+  "summary_root": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage80_adapter_training_smoke",
+  "initial_eval": {
+    "task_count": 6,
+    "model_psnr_avg": 17.669089783599734,
+    "linear_psnr_avg": 17.669089783599734,
+    "margin_over_linear_psnr": 0.0,
+    "model_psnr_by_gap": {
+      "16": 16.41842603249,
+      "4": 16.807865454499375,
+      "8": 22.364650851110873
+    },
+    "linear_psnr_by_gap": {
+      "16": 16.41842603249,
+      "4": 16.807865454499375,
+      "8": 22.364650851110873
+    },
+    "margin_over_linear_psnr_by_gap": {
+      "16": 0.0,
+      "4": 0.0,
+      "8": 0.0
+    }
+  },
+  "best_eval": {
+    "task_count": 6,
+    "model_psnr_avg": 17.669478613164078,
+    "linear_psnr_avg": 17.669089783599734,
+    "margin_over_linear_psnr": 0.00038882956435060123,
+    "model_psnr_by_gap": {
+      "16": 16.419137448344028,
+      "4": 16.808137150968452,
+      "8": 22.36518562676665
+    },
+    "linear_psnr_by_gap": {
+      "16": 16.41842603249,
+      "4": 16.807865454499375,
+      "8": 22.364650851110873
+    },
+    "margin_over_linear_psnr_by_gap": {
+      "16": 0.0007114158540275639,
+      "4": 0.000271696469074989,
+      "8": 0.0005347756557760874
+    }
+  },
+  "final_eval": {
+    "task_count": 6,
+    "model_psnr_avg": 17.669478613164078,
+    "linear_psnr_avg": 17.669089783599734,
+    "margin_over_linear_psnr": 0.00038882956435060123,
+    "model_psnr_by_gap": {
+      "16": 16.419137448344028,
+      "4": 16.808137150968452,
+      "8": 22.36518562676665
+    },
+    "linear_psnr_by_gap": {
+      "16": 16.41842603249,
+      "4": 16.807865454499375,
+      "8": 22.364650851110873
+    },
+    "margin_over_linear_psnr_by_gap": {
+      "16": 0.0007114158540275639,
+      "4": 0.000271696469074989,
+      "8": 0.0005347756557760874
+    }
+  },
+  "best_step": 6,
+  "best_checkpoint": {
+    "path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage80_adapter_training_smoke/best_adapter.safetensors",
+    "tensor_count": 14,
+    "parameter_count": 402445
+  },
+  "final_checkpoint": {
+    "path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage80_adapter_training_smoke/final_adapter.safetensors",
+    "tensor_count": 14,
+    "parameter_count": 402445
+  },
+  "reference_checkpoint": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors",
+  "reference_checkpoint_exists": true,
+  "reference_eval": {
+    "task_count": 6,
+    "model_psnr_avg": 17.82809583904211,
+    "linear_psnr_avg": 17.669089783599734,
+    "margin_over_linear_psnr": 0.15900605544237814,
+    "model_psnr_by_gap": {
+      "16": 16.78404965177167,
+      "4": 16.836025264339632,
+      "8": 22.84042432512246
+    },
+    "linear_psnr_by_gap": {
+      "16": 16.41842603249,
+      "4": 16.807865454499375,
+      "8": 22.364650851110873
+    },
+    "margin_over_linear_psnr_by_gap": {
+      "16": 0.36562361928167064,
+      "4": 0.028159809840253125,
+      "8": 0.47577347401158576
+    }
+  },
+  "train_log_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage80_adapter_training_smoke/stage80_train_log.csv",
+  "validation_log_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage80_adapter_training_smoke/stage80_validation_log.csv",
+  "best_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage80_adapter_training_smoke/stage80_best_eval_rows.csv",
+  "final_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage80_adapter_training_smoke/stage80_final_eval_rows.csv",
+  "reference_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage80_adapter_training_smoke/stage80_reference_eval_rows.csv",
+  "notes": "Smoke only. Offline RGB targets are used for training supervision; transmitted test-time inputs remain endpoint static Gaussian anchors plus normalized time."
+}
