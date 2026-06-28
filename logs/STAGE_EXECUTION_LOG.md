@@ -7266,6 +7266,71 @@ Group policy choices：
 
 结论：Stage105 说明简单 render-aware switching 有小幅但稳定收益。`group_best_mean_psnr` 通过 linear 使用 `shared_energy_regression`、Stage65 adapter 使用 endpoint，整体比 endpoint-only 提升 `+0.030059636844502392 dB`。`oracle_task_best` 上界为 `+0.08693152532665556 dB`，说明 task-level render-aware policy 仍有额外空间，但空间有限且该 oracle 不可部署。下一步可做 Stage106：训练/评估一个 deployable task-level switch predictor，目标是逼近 oracle_task_best，同时避免 adapter 上 learned selector 的负收益。
 
+## 2026-06-28：Stage106 Deployable Render-Aware Group Policy Package
+
+### 目标
+
+将 Stage105 的 `group_best_mean_psnr` 固化为一个 decoder-side 可执行的 metadata-only group policy package，作为后续 task-level switch predictor 的安全 baseline。
+
+### 操作计划
+
+- 新增 `scripts/run_stage106_render_aware_group_policy_package.py`。
+- 输入 Stage105 `group_choices.csv`、`overall_summary.csv`、`group_summary.csv`。
+- 输出只依赖 `base_method × reference_gap` 的 policy JSON，不使用 per-task oracle、target residual、rendered PSNR 作为 decoder input。
+- 输出 policy summary/report，说明 linear gaps 使用 `shared_energy_regression`，Stage65 adapter gaps 使用 `endpoint_diff_baseline`。
+- 该 package 仍只解决 index candidate switching；residual values 仍未预测，不能作为最终 codec claim。
+- 该阶段为 CPU packaging，不写 heavy tensors。
+- 运行前按要求检查 `nvidia-smi`。
+
+### Stage106 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。Stage106 是 CPU packaging，不占用 GPU。先运行语法检查：
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage106_render_aware_group_policy_package.py
+```
+
+随后运行 package：
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage106_render_aware_group_policy_package.py
+```
+
+新增脚本：
+
+```text
+scripts/run_stage106_render_aware_group_policy_package.py
+```
+
+输出目录：
+
+```text
+experiments/stage106_render_aware_group_policy_package/
+```
+
+核心 policy JSON：
+
+```text
+experiments/stage106_render_aware_group_policy_package/stage106_render_aware_group_policy.json
+```
+
+Policy：`render_aware_group_switch_v1`，type 为 `metadata_group_switch`，decoder inputs 仅为 `base_method` 和 `reference_gap`。
+
+Selection table：
+
+| base | gap | selected candidate |
+|---|---:|---|
+| linear | 4 | shared_energy_regression |
+| linear | 8 | shared_energy_regression |
+| linear | 16 | shared_energy_regression |
+| stage65_adapter | 4 | endpoint_diff_baseline |
+| stage65_adapter | 8 | endpoint_diff_baseline |
+| stage65_adapter | 16 | endpoint_diff_baseline |
+
+Validation summary：task count `120`，endpoint PSNR `20.316812710325646`，policy PSNR `20.346872347170144`，gain vs endpoint `+0.030059636844502392 dB`，teacher oracle PSNR `22.010204667924707`，gap to teacher `-1.6633323207545507`。
+
+结论：Stage106 将 Stage105 的 group switch 固化为 decoder-side metadata policy package。该 policy 不使用 target dense anchor、target residual、rendered PSNR 或 oracle task labels 作为 decoder input；但它仍只选择 index-selection candidate，Stage105/106 的验证 residual values 仍来自 teacher，因此不能作为完整 deployable residual-value codec claim。下一步可以做 Stage107：使用 decoder-available task features 训练 task-level switch predictor，并与 Stage106 group policy 比较是否能逼近 `oracle_task_best` 上界。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。

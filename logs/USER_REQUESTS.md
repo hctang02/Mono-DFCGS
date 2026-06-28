@@ -1351,3 +1351,17 @@ Stage105 先不训练新模型、不重新渲染，而是基于 Stage103 per-tas
 ### 后续执行更新
 
 Stage105 render-aware selector policy preflight 已完成：运行前检查 `nvidia-smi`，该阶段为 CPU 汇总，不占用 GPU。新增 `scripts/run_stage105_render_aware_selector_policy_preflight.py`，先通过 `py_compile`，再读取 Stage103 rows 运行 preflight。输出目录 `experiments/stage105_render_aware_selector_policy_preflight/`，大小约 `208K`，task count `120`。整体结果：`endpoint_only` PSNR `20.316812710325646`；`always_shared_energy_regression` 为 `20.284564319533338`，比 endpoint 低 `-0.03224839079231098 dB`；`always_shared_topk_bce` 为 `20.21561560612798`，低 `-0.10119710419766939 dB`；`group_best_mean_psnr` 为 `20.346872347170144`，比 endpoint 高 `+0.030059636844502392 dB`；`oracle_task_best` 上界为 `20.403744235652294`，比 endpoint 高 `+0.08693152532665556 dB`。group policy 选择 linear gap4/8/16 用 `shared_energy_regression`，Stage65 adapter gap4/8/16 用 endpoint。结论：render-aware switching 有小幅空间；下一步可做 deployable task-level switch predictor，但仍不应直接进入 residual value prediction。
+
+## 2026-06-28：继续 Stage106 deployable render-aware group policy package
+
+### 用户原始问题
+
+用户表示可以继续往后一直做。
+
+### 当前执行决策
+
+Stage106 先不训练 task-level predictor，而是将 Stage105 的 `group_best_mean_psnr` 固化为 metadata-only group policy package。该 policy 只依赖 decoder 已知的 `base_method × reference_gap`，linear gaps 选择 `shared_energy_regression`，Stage65 adapter gaps 选择 `endpoint_diff_baseline`；不使用 per-task oracle、target residual 或 rendered PSNR 作为 decoder input。该阶段只打包 policy JSON 和 report，作为后续 task-level switch predictor 的安全 baseline。
+
+### 后续执行更新
+
+Stage106 deployable render-aware group policy package 已完成：运行前检查 `nvidia-smi`，该阶段为 CPU packaging，不占用 GPU。新增 `scripts/run_stage106_render_aware_group_policy_package.py`，先通过 `py_compile`，再读取 Stage105 outputs 生成 package。输出目录 `experiments/stage106_render_aware_group_policy_package/`，大小约 `20K`。核心文件为 `stage106_render_aware_group_policy.json`。policy name 为 `render_aware_group_switch_v1`，type 为 `metadata_group_switch`，decoder inputs 仅为 `base_method` 和 `reference_gap`；forbidden decoder inputs 明确包括 `target_dense_anchor`、`target_residual`、`rendered_psnr`、`oracle_task_label`。选择表：linear gap4/8/16 用 `shared_energy_regression`，Stage65 adapter gap4/8/16 用 `endpoint_diff_baseline`。validation：task count `120`，endpoint PSNR `20.316812710325646`，policy PSNR `20.346872347170144`，gain `+0.030059636844502392 dB`。限制：该 package 只做 index candidate switching，Stage105/106 验证 residual values 仍来自 teacher，不是完整 residual-value codec。

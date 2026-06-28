@@ -1,0 +1,48 @@
+{
+  "stage": 106,
+  "policy_name": "render_aware_group_switch_v1",
+  "policy_type": "metadata_group_switch",
+  "source_policy": "group_best_mean_psnr",
+  "decoder_inputs": [
+    "base_method",
+    "reference_gap"
+  ],
+  "forbidden_decoder_inputs": [
+    "target_dense_anchor",
+    "target_residual",
+    "rendered_psnr",
+    "oracle_task_label"
+  ],
+  "fallback_candidate": "endpoint_diff_baseline",
+  "selection_table": {
+    "linear": {
+      "4": "shared_energy_regression",
+      "8": "shared_energy_regression",
+      "16": "shared_energy_regression"
+    },
+    "stage65_adapter": {
+      "4": "endpoint_diff_baseline",
+      "8": "endpoint_diff_baseline",
+      "16": "endpoint_diff_baseline"
+    }
+  },
+  "validation_summary": {
+    "task_count": 120,
+    "mean_base_psnr": 19.069223144778313,
+    "mean_endpoint_sideinfo_psnr": 20.316812710325646,
+    "mean_selected_sideinfo_psnr": 20.346872347170144,
+    "mean_gain_vs_endpoint": 0.030059636844502392,
+    "mean_teacher_oracle_sideinfo_psnr": 22.010204667924707,
+    "mean_gap_to_teacher_oracle_psnr": -1.6633323207545507,
+    "mean_precision_at_keep": 0.28972237242851406,
+    "mean_energy_recall_total": 0.20976792440439265,
+    "mean_relative_energy_recall_vs_oracle": 0.5007465288043023,
+    "selected_candidate_counts": "endpoint_diff_baseline:60;shared_energy_regression:60"
+  },
+  "rate_note": "Policy switches index-selection candidate only; q6 top10 residual side-info payload shape is unchanged.",
+  "limitations": [
+    "Residual values are still teacher values in Stage105 validation.",
+    "This package is not a complete deployable residual-value codec.",
+    "The policy was selected from rendered validation rows and should be revalidated on held-out data."
+  ]
+}
