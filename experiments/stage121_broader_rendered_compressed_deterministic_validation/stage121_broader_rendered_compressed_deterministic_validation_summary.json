@@ -1,0 +1,135 @@
+{
+  "stage": 121,
+  "mode": "broader rendered compressed deterministic validation",
+  "stage114_policy": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage114_strict_safe_selector_fallback_package/stage114_strict_safe_selector_fallback_policy.json",
+  "stage78_rate_table": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage78_integrated_davis_rd_package/stage78_anchor_only_rate_table.csv",
+  "selector_policy": "strict_safe_endpoint_selector_v1",
+  "selected_candidate": "endpoint_diff_baseline",
+  "task_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage79_adapter_training_task_manifest/stage79_adapter_training_tasks.csv",
+  "dense_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage61_davis_anchor_export_data_full/stage61_davis_anchor_export_manifest.csv",
+  "adapter": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors",
+  "task_split": "eval",
+  "codecs": [
+    "q12"
+  ],
+  "gaps": [
+    4,
+    8,
+    16
+  ],
+  "task_count": 60,
+  "shortlist": [
+    {
+      "label": "q6_top10",
+      "keep_fraction": 0.1,
+      "side_bits": 6
+    },
+    {
+      "label": "q5_top10",
+      "keep_fraction": 0.1,
+      "side_bits": 5
+    },
+    {
+      "label": "q4_top10",
+      "keep_fraction": 0.1,
+      "side_bits": 4
+    },
+    {
+      "label": "q4_top20",
+      "keep_fraction": 0.2,
+      "side_bits": 4
+    }
+  ],
+  "zlib_level": 9,
+  "rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage121_broader_rendered_compressed_deterministic_validation/stage121_broader_rendered_compressed_deterministic_validation_rows.csv",
+  "group_summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage121_broader_rendered_compressed_deterministic_validation/stage121_broader_rendered_compressed_deterministic_validation_group_summary.csv",
+  "setting_summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage121_broader_rendered_compressed_deterministic_validation/stage121_broader_rendered_compressed_deterministic_validation_setting_summary.csv",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage121_broader_rendered_compressed_deterministic_validation/stage121_broader_rendered_compressed_deterministic_validation_summary.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage121_broader_rendered_compressed_deterministic_validation/stage121_broader_rendered_compressed_deterministic_validation_report.md",
+  "row_count": 480,
+  "group_count": 24,
+  "setting_count": 4,
+  "setting_summary_rows": [
+    {
+      "setting_label": "q6_top10",
+      "keep_fraction": 0.1,
+      "side_bits": 6,
+      "group_count": 6,
+      "task_row_count": 120,
+      "mean_keep_gaussians": 3686.0,
+      "mean_compressed_payload_bytes": 29442.208333333332,
+      "mean_compressed_mib_per_intermediate_frame": 0.028078277905782063,
+      "mean_direct_total_mib_per_frame": 0.1348375550108561,
+      "mean_amortized_total_mib_per_frame": 0.13095624756787308,
+      "mean_base_psnr": 18.484019740725135,
+      "mean_setting_psnr": 19.766968650683353,
+      "mean_delta_psnr_vs_base": 1.2829489099582205,
+      "positive_delta_vs_base_count": 120,
+      "mean_delta_psnr_vs_q6_top10": 0.0,
+      "near_q6_within_0p10db_count": 120,
+      "max_decoded_max_abs_diff_vs_raw_deterministic": 0.0
+    },
+    {
+      "setting_label": "q5_top10",
+      "keep_fraction": 0.1,
+      "side_bits": 5,
+      "group_count": 6,
+      "task_row_count": 120,
+      "mean_keep_gaussians": 3686.0,
+      "mean_compressed_payload_bytes": 24809.95,
+      "mean_compressed_mib_per_intermediate_frame": 0.023660612106323243,
+      "mean_direct_total_mib_per_frame": 0.13041988921139727,
+      "mean_amortized_total_mib_per_frame": 0.127149533351005,
+      "mean_base_psnr": 18.484019740725135,
+      "mean_setting_psnr": 19.761047533309117,
+      "mean_delta_psnr_vs_base": 1.2770277925839815,
+      "positive_delta_vs_base_count": 120,
+      "mean_delta_psnr_vs_q6_top10": -0.005921117374238853,
+      "near_q6_within_0p10db_count": 120,
+      "max_decoded_max_abs_diff_vs_raw_deterministic": 0.0
+    },
+    {
+      "setting_label": "q4_top10",
+      "keep_fraction": 0.1,
+      "side_bits": 4,
+      "group_count": 6,
+      "task_row_count": 120,
+      "mean_keep_gaussians": 3686.0,
+      "mean_compressed_payload_bytes": 15190.475,
+      "mean_compressed_mib_per_intermediate_frame": 0.01448676586151123,
+      "mean_direct_total_mib_per_frame": 0.12124604296658527,
+      "mean_amortized_total_mib_per_frame": 0.11924717736218463,
+      "mean_base_psnr": 18.484019740725135,
+      "mean_setting_psnr": 19.73848817438193,
+      "mean_delta_psnr_vs_base": 1.2544684336567946,
+      "positive_delta_vs_base_count": 120,
+      "mean_delta_psnr_vs_q6_top10": -0.028480476301425663,
+      "near_q6_within_0p10db_count": 114,
+      "max_decoded_max_abs_diff_vs_raw_deterministic": 0.0
+    },
+    {
+      "setting_label": "q4_top20",
+      "keep_fraction": 0.2,
+      "side_bits": 4,
+      "group_count": 6,
+      "task_row_count": 120,
+      "mean_keep_gaussians": 7373.0,
+      "mean_compressed_payload_bytes": 28320.791666666668,
+      "mean_compressed_mib_per_intermediate_frame": 0.027008811632792156,
+      "mean_direct_total_mib_per_frame": 0.1337680887378662,
+      "mean_amortized_total_mib_per_frame": 0.13005386354500142,
+      "mean_base_psnr": 18.484019740725135,
+      "mean_setting_psnr": 20.689270746602087,
+      "mean_delta_psnr_vs_base": 2.2052510058769683,
+      "positive_delta_vs_base_count": 120,
+      "mean_delta_psnr_vs_q6_top10": 0.9223020959187475,
+      "near_q6_within_0p10db_count": 120,
+      "max_decoded_max_abs_diff_vs_raw_deterministic": 0.0
+    }
+  ],
+  "notes": [
+    "Broader rendered validation uses teacher-derived residual values from dense target anchors.",
+    "All compressed deterministic side-info bytes are counted in direct and amortized total rates.",
+    "q6_top10 is the same-task quality anchor for deltas."
+  ]
+}
