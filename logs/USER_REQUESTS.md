@@ -1459,3 +1459,17 @@ Stage111 将复用并参数化 `scripts/run_stage109_selector_score_switch_featu
 ### 后续执行更新
 
 Stage111 broader switch predictor 已完成：运行前检查 `nvidia-smi`，GPU2 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。参数化 `scripts/run_stage109_selector_score_switch_feature_preflight.py`，读取 Stage110 rendered rows 和 Stage110 group choices，输出目录 `experiments/stage111_broader_switch_predictor/`，大小约 `1.2M`。task count `480`，folds `5`，selector train tasks `96`，selector train examples `589824`，feature dims：anchor-stat `64`、score-stat `82`、anchor+score `133`。结果：endpoint-only PSNR `20.3212149854921`；Stage106 fixed group policy `20.322996715243978`，gain `+0.0017817297518578745 dB`；Stage110 group-best policy `20.32704687107235`，gain `+0.005831885580240304 dB`；`score_stat_mlp_cv` `20.33325220653739`，gain `+0.012037221045259486 dB`；`anchor_stat_mlp_cv` `20.331745776419964`；`anchor_score_mlp_cv` `20.33140381862592`；oracle task best `20.382843220952545`。结论：score-stat learned switch 在整体 PSNR 上超过 fixed group baselines，但仍在 Stage65 adapter gap4 上有负收益 `-0.00797889356792674 dB`，不满足“adapter 不掉点”的 safe package 条件。下一步 Stage112 应打包 conservative Stage110 broader group policy v2，而不是直接打包 learned MLP。
+
+## 2026-06-29：执行 Stage112 package conservative switch policy
+
+### 用户原始问题
+
+用户确认可以继续按后续 stages 往下做；Stage111 已完成并推送，进入 Stage112。
+
+### 当前执行决策
+
+Stage112 将新增 `scripts/run_stage112_package_broader_group_switch_policy.py`，打包 conservative Stage110 broader group policy v2。该 policy 只依赖 decoder 已知的 `base_method` 和 `reference_gap`，选择表来自 Stage110 group-best choices：linear gap4 用 endpoint，linear gap8/16 用 `shared_energy_regression`，Stage65 adapter gap4/8/16 用 endpoint。Stage112 会同时记录 Stage106 fixed、Stage110 group-best、Stage111 learned switch 和 oracle task best 的 validation summary，并明确 learned MLP 未打包原因：Stage65 adapter gap4 仍有负收益。该阶段为 CPU packaging，不渲染、不训练、不保存 heavy tensors；运行前仍检查 `nvidia-smi`。
+
+### 后续执行更新
+
+Stage112 package conservative switch policy 已完成：运行前检查 `nvidia-smi`，GPU2 空闲；该阶段为 CPU packaging，使用 `/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python` 运行。新增脚本 `scripts/run_stage112_package_broader_group_switch_policy.py`，输出目录 `experiments/stage112_broader_group_switch_policy_package/`。打包 policy 为 `render_aware_group_switch_v2`，policy type 为 `metadata_group_switch`，decoder inputs 仅为 `base_method` 和 `reference_gap`，fallback 为 `endpoint_diff_baseline`。选择表：linear gap4 -> endpoint，linear gap8/16 -> `shared_energy_regression`，Stage65 adapter gap4/8/16 -> endpoint。验证 summary：task count `480`，endpoint PSNR `20.3212149854921`，policy PSNR `20.327046871072337`，gain `+0.005831885580240304 dB`，teacher oracle PSNR `22.077800340877268`。Stage111 `score_stat_mlp_cv` 虽整体 gain `+0.012037221045259486 dB`，但因 Stage65 adapter gap4 regression 仍未打包。下一步应执行 Stage113 held-out validation。

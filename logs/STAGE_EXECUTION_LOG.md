@@ -7712,3 +7712,96 @@ Important group behavior for `score_stat_mlp_cv`：
 | stage65_adapter | 16 | 0.018024353491706453 |
 
 结论：Stage111 confirms that broader labels reduce overfitting enough for learned switch predictors to beat fixed group baselines overall. `score_stat_mlp_cv` is the best overall policy and beats Stage110 group-best by about `+0.006205335465019182 dB`. However, it still has a Stage65 adapter gap4 regression (`-0.00797889356792674 dB`), so it should not be packaged as the final safe deployable switch. Stage112 should package the conservative Stage110 broader group policy v2 as the safe decoder-side policy candidate, then Stage113 should validate it on held-out rows/sequences.
+
+## 2026-06-29：Stage112 Package Conservative Switch Policy
+
+### 目标
+
+冻结一个 decoder-side conservative selector-switch policy candidate，用于后续 Stage113 held-out validation。因为 Stage111 learned MLP 虽然整体最好但仍有 Stage65 adapter gap4 regression，Stage112 不打包 learned MLP，而是打包 Stage110 broader group-best pattern。
+
+### 操作计划
+
+- 新增 `scripts/run_stage112_package_broader_group_switch_policy.py`。
+- 输入 Stage110 policy summary/group choices、Stage111 broader switch predictor summary、Stage106 policy JSON。
+- 输出 `render_aware_group_switch_v2` policy JSON、selection table CSV、summary CSV 和 report。
+- Decoder inputs 仅允许 `base_method` 和 `reference_gap`。
+- Forbidden decoder inputs 包括 `target_dense_anchor`、`target_residual`、`rendered_psnr`、`oracle_task_label`、`target_rgb`。
+- 明确记录该 policy 只切换 index-selection candidate，Stage110/111 验证 residual values 仍为 teacher values。
+- 该阶段为 CPU packaging；不训练、不渲染、不保存 heavy tensors。
+- 运行代码前检查 `nvidia-smi`。
+
+### 执行
+
+运行前检查 `nvidia-smi`：GPU0 忙，GPU1 有小进程，GPU2 空闲。Stage112 是 CPU packaging，不需要 CUDA 计算。
+
+Syntax check：
+
+```text
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage112_package_broader_group_switch_policy.py
+```
+
+Packaging run：
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage112_package_broader_group_switch_policy.py
+```
+
+### 输出文件
+
+```text
+experiments/stage112_broader_group_switch_policy_package/stage112_broader_group_switch_policy.json
+experiments/stage112_broader_group_switch_policy_package/stage112_broader_group_switch_policy_summary.csv
+experiments/stage112_broader_group_switch_policy_package/stage112_broader_group_switch_policy_table.csv
+experiments/stage112_broader_group_switch_policy_package/stage112_broader_group_switch_policy_comparison.csv
+experiments/stage112_broader_group_switch_policy_package/stage112_broader_group_switch_policy_report.md
+```
+
+### Packaged Policy
+
+| item | value |
+|---|---|
+| policy name | `render_aware_group_switch_v2` |
+| policy type | `metadata_group_switch` |
+| decoder inputs | `base_method`, `reference_gap` |
+| fallback | `endpoint_diff_baseline` |
+| forbidden inputs | `target_dense_anchor`, `target_residual`, `rendered_psnr`, `oracle_task_label`, `target_rgb` |
+
+Selection table：
+
+| base | gap | selected candidate | validation gain vs endpoint |
+|---|---:|---|---:|
+| linear | 4 | endpoint_diff_baseline | 0.0 |
+| linear | 8 | shared_energy_regression | 0.009307271828451036 |
+| linear | 16 | shared_energy_regression | 0.026461930821380264 |
+| stage65_adapter | 4 | endpoint_diff_baseline | 0.0 |
+| stage65_adapter | 8 | endpoint_diff_baseline | 0.0 |
+| stage65_adapter | 16 | endpoint_diff_baseline | 0.0 |
+
+### 结果
+
+| policy | selected PSNR | gain vs endpoint | note |
+|---|---:|---:|---|
+| endpoint_only | 20.3212149854921 | 0.0 | baseline |
+| stage106_fixed_group_policy | 20.322996715243953 | 0.0017817297518578745 | previous packaged policy |
+| render_aware_group_switch_v2 | 20.327046871072337 | 0.005831885580240304 | packaged conservative policy |
+| score_stat_mlp_cv | 20.33325220653739 | 0.012037221045259486 | not packaged; adapter gap4 regression |
+| oracle_task_best | 20.382843220952523 | 0.06162823546041816 | upper bound, not deployable |
+
+Validation summary：
+
+| metric | value |
+|---|---:|
+| task count | 480 |
+| endpoint PSNR | 20.3212149854921 |
+| policy PSNR | 20.327046871072337 |
+| gain vs endpoint | 0.005831885580240304 |
+| teacher oracle PSNR | 22.077800340877268 |
+| gap to teacher oracle | -1.750753469804888 |
+
+### 结论
+
+- Stage112 freezes the conservative Stage110 broader group-best pattern as `render_aware_group_switch_v2`.
+- It is decoder-side safe because it uses only `base_method` and `reference_gap`.
+- Stage111 learned switch is not packaged despite better overall PSNR because it still regresses Stage65 adapter gap4.
+- This still only selects index-selection candidates; Stage110/111 validation residual values are teacher residuals, so this is not a complete residual-value codec.
+- Next step: Stage113 held-out validation before treating v2 as the final selector policy.

@@ -1,0 +1,6 @@
+policy,selected_psnr,gain_vs_endpoint,note
+endpoint_only,20.3212149854921,0.0,baseline
+stage106_fixed_group_policy,20.322996715243953,0.0017817297518578745,previous packaged policy
+render_aware_group_switch_v2,20.327046871072337,0.005831885580240304,packaged conservative policy
+score_stat_mlp_cv,20.33325220653739,0.012037221045259486,not packaged; adapter gap4 regression
+oracle_task_best,20.382843220952523,0.06162823546041816,"upper bound, not deployable"

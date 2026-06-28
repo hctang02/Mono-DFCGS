@@ -1,0 +1,62 @@
+{
+  "stage": 112,
+  "policy_name": "render_aware_group_switch_v2",
+  "policy_type": "metadata_group_switch",
+  "source_policy": "stage110_group_best_mean_psnr",
+  "previous_policy": "render_aware_group_switch_v1",
+  "decoder_inputs": [
+    "base_method",
+    "reference_gap"
+  ],
+  "forbidden_decoder_inputs": [
+    "target_dense_anchor",
+    "target_residual",
+    "rendered_psnr",
+    "oracle_task_label",
+    "target_rgb"
+  ],
+  "fallback_candidate": "endpoint_diff_baseline",
+  "selection_table": {
+    "linear": {
+      "4": "endpoint_diff_baseline",
+      "8": "shared_energy_regression",
+      "16": "shared_energy_regression"
+    },
+    "stage65_adapter": {
+      "4": "endpoint_diff_baseline",
+      "8": "endpoint_diff_baseline",
+      "16": "endpoint_diff_baseline"
+    }
+  },
+  "validation_summary": {
+    "task_count": 480,
+    "mean_base_psnr": 19.03833812732752,
+    "mean_endpoint_sideinfo_psnr": 20.3212149854921,
+    "mean_selected_sideinfo_psnr": 20.327046871072337,
+    "mean_gain_vs_endpoint": 0.005831885580240304,
+    "mean_teacher_oracle_sideinfo_psnr": 22.077800340877268,
+    "mean_gap_to_teacher_oracle_psnr": -1.750753469804888,
+    "selected_candidate_counts": "endpoint_diff_baseline:323;shared_energy_regression:157"
+  },
+  "stage111_best_learned_summary": {
+    "task_count": 480,
+    "mean_endpoint_sideinfo_psnr": 20.3212149854921,
+    "mean_selected_sideinfo_psnr": 20.33325220653739,
+    "mean_gain_vs_endpoint": 0.012037221045259486,
+    "mean_oracle_task_best_sideinfo_psnr": 20.382843220952545,
+    "mean_gap_to_oracle_task_best": -0.04959101441515865,
+    "selection_accuracy": 0.6041666666666666,
+    "selected_candidate_counts": "endpoint_diff_baseline:274;shared_energy_regression:130;shared_topk_bce:76"
+  },
+  "rate_note": "Policy switches index-selection candidate only; q6 top10 residual side-info payload shape is unchanged.",
+  "selection_rationale": [
+    "Stage111 learned switch has higher overall PSNR but regresses Stage65 adapter gap4.",
+    "Stage110 group policy has no per-group regression relative to endpoint on Stage110 rows.",
+    "The policy uses only decoder-known metadata and is feed-forward."
+  ],
+  "limitations": [
+    "Residual values are still teacher values in Stage110/111 validation.",
+    "This package is not a complete deployable residual-value codec.",
+    "The policy was selected from Stage110 rendered validation rows and needs Stage113 held-out validation."
+  ]
+}

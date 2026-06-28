@@ -1,0 +1,7 @@
+base_method,reference_gap,selected_candidate,mean_sideinfo_psnr,endpoint_mean_sideinfo_psnr,mean_gain_vs_endpoint
+linear,4,endpoint_diff_baseline,21.299547171094726,21.299547171094726,0.0
+linear,8,shared_energy_regression,20.38485570310796,20.37554843127951,0.009307271828451036
+linear,16,shared_energy_regression,19.073371617988876,19.046909687167496,0.026461930821380264
+stage65_adapter,4,endpoint_diff_baseline,21.356867273139482,21.356867273139482,0.0
+stage65_adapter,8,endpoint_diff_baseline,20.525267394607557,20.525267394607557,0.0
+stage65_adapter,16,endpoint_diff_baseline,19.19073574770046,19.19073574770046,0.0

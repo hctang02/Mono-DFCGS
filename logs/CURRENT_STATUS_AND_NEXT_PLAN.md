@@ -1,6 +1,6 @@
 # Current Status And Next Plan
 
-Date: 2026-06-28
+Date: 2026-06-29
 
 ## Current Task
 
@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage109: `010ff9a Document current residual plan`
+- Latest pushed commit before Stage112: `c808413 Evaluate broader switch predictor`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -66,38 +66,41 @@ Key Stage96 direct total rates:
 - Stage109: selector-score task-level switch predictor; score statistics have signal but still do not beat Stage106.
 - Stage110: broader rendered selector labels with 240 eval tasks; Stage106 fixed policy remains slightly positive but much weaker, and a broader group-best pattern changes linear gap4 back to endpoint.
 - Stage111: broader switch predictor on Stage110 labels; score-stat MLP beats fixed group policies overall but still has Stage65 adapter gap4 regression.
+- Stage112: packaged conservative broader metadata group switch policy `render_aware_group_switch_v2`; it uses only `base_method` and `reference_gap` and selects endpoint for linear gap4 plus all Stage65 adapter groups.
 
 ## Current Best Selector Policy
 
-Current safe baseline: Stage106 `render_aware_group_switch_v1`.
+Current packaged candidate for held-out validation: Stage112 `render_aware_group_switch_v2`.
+
+Previous safe baseline: Stage106 `render_aware_group_switch_v1`.
 
 Policy JSON:
 
 ```text
-experiments/stage106_render_aware_group_policy_package/stage106_render_aware_group_policy.json
+experiments/stage112_broader_group_switch_policy_package/stage112_broader_group_switch_policy.json
 ```
 
 Selection table:
 
 | base | gap | selected candidate |
 |---|---:|---|
-| linear | 4 | shared_energy_regression |
+| linear | 4 | endpoint_diff_baseline |
 | linear | 8 | shared_energy_regression |
 | linear | 16 | shared_energy_regression |
 | stage65_adapter | 4 | endpoint_diff_baseline |
 | stage65_adapter | 8 | endpoint_diff_baseline |
 | stage65_adapter | 16 | endpoint_diff_baseline |
 
-Validation summary on Stage105/106 rows:
+Validation summary on Stage110 broader rows:
 
 | metric | value |
 |---|---:|
-| task count | 120 |
-| endpoint PSNR | 20.316812710325646 |
-| group policy PSNR | 20.346872347170144 |
-| gain vs endpoint | 0.030059636844502392 |
-| oracle task best PSNR | 20.403744235652294 |
-| teacher oracle top10 PSNR | 22.010204667924707 |
+| task count | 480 |
+| endpoint PSNR | 20.3212149854921 |
+| group policy PSNR | 20.327046871072337 |
+| gain vs endpoint | 0.005831885580240304 |
+| oracle task best PSNR | 20.382843220952523 |
+| teacher oracle top10 PSNR | 22.077800340877268 |
 
 ## Current Interpretation
 
@@ -106,8 +109,9 @@ Validation summary on Stage105/106 rows:
 - Metadata-only task-level switching is too weak.
 - Anchor-stat task-level switching has signal but overfits on the current 120 rendered-label tasks.
 - Selector-score task-level switching has signal but does not fix adapter-group regressions and remains below Stage106.
-- Stage106 remains the current packaged deployable selector-switch baseline, but Stage110 shows its linear gap4 choice is not robust on broader labels.
-- Stage110 group-best pattern is a candidate for a future package, not yet a frozen policy.
+- Stage112 is the current packaged conservative selector-switch candidate, but it still needs Stage113 held-out validation before being treated as final.
+- Stage106 remains the previous packaged baseline and should remain in comparisons.
+- Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
 - Residual value prediction should wait until selector switching and index/value accounting are more stable.
 
@@ -197,6 +201,16 @@ Success condition:
 
 ### Stage112: Package Best Switch Policy
 
+Status: completed on 2026-06-29.
+
+Result:
+
+- Packaged `render_aware_group_switch_v2` in `experiments/stage112_broader_group_switch_policy_package/stage112_broader_group_switch_policy.json`.
+- Decoder inputs: `base_method`, `reference_gap`.
+- Forbidden decoder inputs: `target_dense_anchor`, `target_residual`, `rendered_psnr`, `oracle_task_label`, `target_rgb`.
+- Stage110 broader validation: endpoint PSNR `20.3212149854921`, policy PSNR `20.327046871072337`, gain `+0.005831885580240304 dB`.
+- Stage111 `score_stat_mlp_cv` is not packaged despite higher overall gain because Stage65 adapter gap4 still regresses.
+
 Goal: freeze the selector-switching rule.
 
 Actions:
@@ -271,6 +285,8 @@ Actions:
 - Stage106 policy package: `scripts/run_stage106_render_aware_group_policy_package.py`
 - Stage107 metadata switch predictor: `scripts/run_stage107_metadata_task_switch_predictor_preflight.py`
 - Stage108 anchor-stat switch predictor: `scripts/run_stage108_anchor_stat_task_switch_predictor_preflight.py`
+- Stage109/111 selector-score switch predictor: `scripts/run_stage109_selector_score_switch_feature_preflight.py`
+- Stage112 policy package: `scripts/run_stage112_package_broader_group_switch_policy.py`
 
 ### Important Outputs
 
@@ -282,6 +298,10 @@ Actions:
 - Stage106 packaged policy: `experiments/stage106_render_aware_group_policy_package/stage106_render_aware_group_policy.json`
 - Stage107 metadata switch predictor: `experiments/stage107_metadata_task_switch_predictor_preflight/`
 - Stage108 anchor-stat switch predictor: `experiments/stage108_anchor_stat_task_switch_predictor_preflight/`
+- Stage109 selector-score switch predictor: `experiments/stage109_selector_score_switch_feature_preflight/`
+- Stage110 broader rendered labels: `experiments/stage110_broader_rendered_selector_labels/`
+- Stage111 broader switch predictor: `experiments/stage111_broader_switch_predictor/`
+- Stage112 packaged policy: `experiments/stage112_broader_group_switch_policy_package/`
 
 ### Heavy External Paths
 
