@@ -8395,3 +8395,69 @@ Shortlist settings:
 - All compressed deterministic decodes match raw deterministic decodes exactly under the same selected indices.
 - Non-q6/top10 settings remain rate-only until rendered validation.
 - Next step: Stage120 rendered shortlist smoke.
+
+## 2026-06-29：Stage120 Rendered Compressed Deterministic Shortlist Smoke
+
+### 目标
+
+Render the compressed deterministic shortlist from Stage119 to determine whether lower-rate settings preserve quality.
+
+### 操作计划
+
+- Add a Stage120 rendered smoke script for q6/top10, q5/top10, q4/top10, q6/top5, and q4/top20.
+- Use Stage114 strict-safe endpoint selector and Stage118 compressed deterministic value-only codec.
+- For every task/base/setting, decode compressed side-info, render, and record PSNR plus payload/rate.
+- Compare each setting against base-only and q6/top10 within the same task/base.
+- Include direct and amortized total rates with all side-info bytes counted.
+- Do not train or save anchors/checkpoints/heavy tensors.
+- Check `nvidia-smi` before Python execution.
+- If rendered/target shape mismatch or broadcast warning appears, discard outputs and rerun after fixing shape handling.
+
+### 实现
+
+Added:
+
+```text
+scripts/run_stage120_rendered_compressed_deterministic_shortlist.py
+```
+
+### 执行
+
+运行前检查 `nvidia-smi`：GPU0 忙、GPU1 有小进程、GPU4 有进程，GPU2/3/5/6/7 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。
+
+Syntax check and run:
+
+```text
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage120_rendered_compressed_deterministic_shortlist.py
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage120_rendered_compressed_deterministic_shortlist.py
+```
+
+No broadcast warning was emitted.
+
+### 输出文件
+
+```text
+experiments/stage120_rendered_compressed_deterministic_shortlist/stage120_rendered_compressed_deterministic_shortlist_rows.csv
+experiments/stage120_rendered_compressed_deterministic_shortlist/stage120_rendered_compressed_deterministic_shortlist_group_summary.csv
+experiments/stage120_rendered_compressed_deterministic_shortlist/stage120_rendered_compressed_deterministic_shortlist_setting_summary.csv
+experiments/stage120_rendered_compressed_deterministic_shortlist/stage120_rendered_compressed_deterministic_shortlist_summary.json
+experiments/stage120_rendered_compressed_deterministic_shortlist/stage120_rendered_compressed_deterministic_shortlist_report.md
+```
+
+### 结果
+
+| setting | keep | bits | payload bytes | side MiB | direct rate | amortized rate | PSNR | delta base | delta q6 | near q6 | positives |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| q6_top10 | 0.1 | 6 | 29368.583333333332 | 0.028008063634236652 | 0.13265951988895094 | 0.12890187420248345 | 20.509201246149463 | 1.4493226762458462 | 0.0 | 24/24 | 24/24 |
+| q5_top10 | 0.1 | 5 | 24682.291666666668 | 0.023538867632548015 | 0.1281903238872623 | 0.12503963726559633 | 20.503631356341803 | 1.4437527864381863 | -0.00556988980765986 | 24/24 | 24/24 |
+| q4_top10 | 0.1 | 4 | 15117.083333333334 | 0.014416774113972982 | 0.11906823036868726 | 0.11714270480274513 | 20.474517727609136 | 1.41463915770552 | -0.03468351854032611 | 23/24 | 24/24 |
+| q6_top5 | 0.05 | 6 | 15099.25 | 0.01439976692199707 | 0.11905122317671135 | 0.11711924789149915 | 19.89178909516828 | 0.8319105252646616 | -0.6174121509811845 | 0/24 | 24/24 |
+| q4_top20 | 0.2 | 4 | 28241.333333333332 | 0.026933034261067707 | 0.131584490515782 | 0.12796449678936953 | 21.530766808788716 | 2.4708882388850957 | 1.02156556263925 | 24/24 | 24/24 |
+
+### 结论
+
+- q4/top20 is the best rendered candidate in the 12-task smoke: higher PSNR than q6/top10 while slightly lower rate.
+- q4/top10 is a strong low-rate candidate: about half the side-info of q6/top10 with only `-0.03468351854032611 dB` mean PSNR drop.
+- q5/top10 is nearly identical to q6/top10 with lower rate.
+- q6/top5 is not competitive and should be dropped.
+- Next step: broader rendered validation for q6/top10, q5/top10, q4/top10, and q4/top20.

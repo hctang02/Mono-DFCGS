@@ -1590,3 +1590,17 @@ Stage119 将在 Stage118 compressed deterministic codec 上做真实 payload swe
 ### 后续执行更新
 
 Stage119 actual compressed deterministic sweep 已完成：新增 `scripts/run_stage119_actual_compressed_deterministic_sweep.py`，运行前检查 `nvidia-smi`，GPU2 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。输出目录 `experiments/stage119_actual_compressed_deterministic_sweep/`，row count `720`，group count `180`，setting count `30`，所有 rows 的 compressed decode vs raw deterministic decode max diff `0.0`。关键 setting：q6/top10 mean compressed payload `29235.55 bytes` / `0.02788119316101074 MiB/intermediate`；q5/top10 `24537.56111111111 bytes` / `0.023400841818915472 MiB/intermediate`；q4/top10 `14982.574999999999 bytes` / `0.01428849697113037 MiB/intermediate`；q6/top5 `15040.72222222222 bytes` / `0.01434395048353407 MiB/intermediate`；q4/top20 `28043.888888888887 bytes` / `0.02674473656548394 MiB/intermediate`。这些 shortlist settings 均低于 `6/6` 个 Stage96 q6/top10 entropy reference groups。下一步 Stage120 rendered shortlist smoke 使用 q6/top10、q5/top10、q4/top10、q6/top5、q4/top20。
+
+## 2026-06-29：继续 Stage120 rendered compressed deterministic shortlist smoke
+
+### 用户原始问题
+
+用户允许按照规划一直往下执行。
+
+### 当前执行决策
+
+Stage120 将对 Stage119 shortlist 做 12-task rendered smoke：q6/top10 作为质量锚点，q5/top10、q4/top10、q6/top5、q4/top20 作为候选。每个 setting 使用 Stage118 compressed deterministic value-only codec decode 后渲染，记录 PSNR、delta vs base、delta vs q6/top10 anchor、payload bytes、direct/amortized total rate。该阶段仍使用 teacher-derived residual values，不训练、不保存 anchors/checkpoints/heavy tensors；运行 Python 前检查 `nvidia-smi`。如果出现 shape/broadcast warning 或 target/render shape mismatch，结果作废并修复后重跑。
+
+### 后续执行更新
+
+Stage120 rendered compressed deterministic shortlist smoke 已完成：新增 `scripts/run_stage120_rendered_compressed_deterministic_shortlist.py`，运行前检查 `nvidia-smi`，GPU2 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。运行未出现 broadcast warning，输出目录 `experiments/stage120_rendered_compressed_deterministic_shortlist/`，row count `120`，group count `30`，max decode diff `0.0`。结果：q6/top10 PSNR `20.509201246149463`、payload `29368.583333333332 bytes`、direct rate `0.13265951988895094`；q5/top10 PSNR `20.503631356341803`、delta vs q6 `-0.00556988980765986`、payload `24682.291666666668 bytes`；q4/top10 PSNR `20.474517727609136`、delta vs q6 `-0.03468351854032611`、payload `15117.083333333334 bytes`；q6/top5 PSNR `19.89178909516828`、delta vs q6 `-0.6174121509811845`，质量明显掉；q4/top20 PSNR `21.530766808788716`、delta vs q6 `+1.02156556263925`、payload `28241.333333333332 bytes`、direct rate `0.131584490515782`。下一步 Stage121 broader rendered validation 保留 q6/top10、q5/top10、q4/top10、q4/top20，丢弃 q6/top5。
