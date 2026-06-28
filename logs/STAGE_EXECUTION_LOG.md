@@ -6220,6 +6220,68 @@ experiments/stage88_residual_sideinfo_rd_package/stage88_residual_sideinfo_rd_am
 
 结论：Stage88 将 Stage87 residual side-info smoke 转为明确的 RD accounting package。q6 top10% 是当前 low-rate 首选点；q8 top10% PSNR 几乎相同但 direct total rate 增加到 gap4 `0.23471646478646782`、gap8 `0.15040363077206903`、gap16 `0.10824721376486966 MiB/frame`。该 package 仍是 12-task smoke 汇总，不是 full-video final RD。
 
+## 2026-06-28：Stage89 Broader q6 Residual Side-Info Eval
+
+### 目标
+
+扩大 Stage88 选出的 q6 top10% low-rate residual side-info operating point，检查 12-task smoke 的增益是否能在更大 eval slice 上保持。
+
+### 操作计划
+
+- 参数化 `scripts/run_stage87_quantized_residual_sideinfo_smoke.py` 的 stage number、output prefix 和 report title，避免复制渲染逻辑。
+- 运行 q12 eval slice，`max_tasks=60`，gaps `4/8/16`。
+- Base methods：linear 和 Stage65 adapter。
+- Keep fraction：`0.1`。
+- Side bits：`6`。
+- 输出 rendered PSNR、delta、positive count 和 side-info rate。
+- 运行前按要求检查 `nvidia-smi`，并选择空闲 GPU。
+
+### Stage89 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU0 忙，GPU1 空闲，因此计划使用 `CUDA_VISIBLE_DEVICES=1`。
+
+第一次误用系统 `python` 运行，因缺少 `torch` 报错退出，未进入渲染：
+
+```text
+ModuleNotFoundError: No module named 'torch'
+```
+
+随后再次检查 `nvidia-smi`，GPU1 仍空闲，改用既有 venv：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage87_quantized_residual_sideinfo_smoke.py --stage 89 --mode "broader q6 quantized rendered residual side-info eval" --summary_root experiments/stage89_broader_q6_residual_sideinfo_eval --output_prefix stage89_broader_q6_residual_sideinfo_eval --summary_prefix stage89_broader_q6_residual_sideinfo_eval --report_title "Stage89 Broader q6 Residual Side-Info Eval" --max_tasks 60 --keep_fractions 0.1 --side_bits 6
+```
+
+修改脚本：
+
+```text
+scripts/run_stage87_quantized_residual_sideinfo_smoke.py
+```
+
+参数化 stage number、mode、output prefix、summary prefix 和 report title，默认 Stage87 输出名保持不变。
+
+仓库内输出：
+
+```text
+experiments/stage89_broader_q6_residual_sideinfo_eval/stage89_broader_q6_residual_sideinfo_eval_rows.csv
+experiments/stage89_broader_q6_residual_sideinfo_eval/stage89_broader_q6_residual_sideinfo_eval_summary.csv
+experiments/stage89_broader_q6_residual_sideinfo_eval/stage89_broader_q6_residual_sideinfo_eval_summary.json
+experiments/stage89_broader_q6_residual_sideinfo_eval/stage89_broader_q6_residual_sideinfo_eval_report.md
+```
+
+Summary：
+
+| base | gap | tasks | side MiB/intermediate | base PSNR | side PSNR | delta | positives |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| linear | 4 | 18 | 0.041353702545166016 | 19.984796422852106 | 23.403666365261454 | 3.4188699424093465 | 18 |
+| linear | 8 | 19 | 0.041353702545166016 | 18.457589807006293 | 21.513744759131683 | 3.056154952125395 | 19 |
+| linear | 16 | 23 | 0.041353702545166016 | 17.08421543617396 | 20.344221350298344 | 3.2600059141243887 | 23 |
+| stage65_adapter | 4 | 18 | 0.041353702545166016 | 20.041732308843873 | 22.84099865483423 | 2.7992663459903557 | 18 |
+| stage65_adapter | 8 | 19 | 0.041353702545166016 | 18.706547218120296 | 21.398942062762643 | 2.6923948446423474 | 19 |
+| stage65_adapter | 16 | 23 | 0.041353702545166016 | 17.32823013943833 | 20.29200458015274 | 2.9637744407144093 | 23 |
+
+结论：q6 top10% residual side-info 在 60-task broader eval 上仍全正，且对 linear 和 Stage65 adapter 都保持约 `+2.69` 到 `+3.42 dB` 的 rendered PSNR 增益。下一步应把 Stage89 的 broader eval 接入 RD accounting，并继续推进真实 bitstream/entropy coding，而不是继续只做 teacher-residual smoke。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。

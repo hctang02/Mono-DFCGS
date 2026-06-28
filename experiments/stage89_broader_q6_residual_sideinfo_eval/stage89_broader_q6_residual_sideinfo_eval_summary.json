@@ -1,0 +1,113 @@
+{
+  "stage": 89,
+  "mode": "broader q6 quantized rendered residual side-info eval",
+  "report_title": "Stage89 Broader q6 Residual Side-Info Eval",
+  "task_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage79_adapter_training_task_manifest/stage79_adapter_training_tasks.csv",
+  "dense_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage61_davis_anchor_export_data_full/stage61_davis_anchor_export_manifest.csv",
+  "adapter": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors",
+  "task_split": "eval",
+  "codecs": [
+    "q12"
+  ],
+  "gaps": [
+    4,
+    8,
+    16
+  ],
+  "task_count": 60,
+  "keep_fractions": [
+    0.1
+  ],
+  "side_bits": [
+    6
+  ],
+  "metadata_bits_per_attr_value": 16,
+  "rows_csv": "experiments/stage89_broader_q6_residual_sideinfo_eval/stage89_broader_q6_residual_sideinfo_eval_rows.csv",
+  "summary_csv": "experiments/stage89_broader_q6_residual_sideinfo_eval/stage89_broader_q6_residual_sideinfo_eval_summary.csv",
+  "report_md": "experiments/stage89_broader_q6_residual_sideinfo_eval/stage89_broader_q6_residual_sideinfo_eval_report.md",
+  "summary_rows": [
+    {
+      "base_method": "linear",
+      "codec": "q12",
+      "reference_gap": 4,
+      "keep_fraction": 0.1,
+      "side_bits": 6,
+      "task_count": 18,
+      "mean_side_info_mib_per_intermediate_frame": 0.041353702545166016,
+      "mean_base_psnr": 19.984796422852106,
+      "mean_sideinfo_psnr": 23.403666365261454,
+      "mean_delta_psnr_vs_base": 3.4188699424093465,
+      "positive_delta_count": 18
+    },
+    {
+      "base_method": "linear",
+      "codec": "q12",
+      "reference_gap": 8,
+      "keep_fraction": 0.1,
+      "side_bits": 6,
+      "task_count": 19,
+      "mean_side_info_mib_per_intermediate_frame": 0.041353702545166016,
+      "mean_base_psnr": 18.457589807006293,
+      "mean_sideinfo_psnr": 21.513744759131683,
+      "mean_delta_psnr_vs_base": 3.056154952125395,
+      "positive_delta_count": 19
+    },
+    {
+      "base_method": "linear",
+      "codec": "q12",
+      "reference_gap": 16,
+      "keep_fraction": 0.1,
+      "side_bits": 6,
+      "task_count": 23,
+      "mean_side_info_mib_per_intermediate_frame": 0.041353702545166016,
+      "mean_base_psnr": 17.08421543617396,
+      "mean_sideinfo_psnr": 20.344221350298344,
+      "mean_delta_psnr_vs_base": 3.2600059141243887,
+      "positive_delta_count": 23
+    },
+    {
+      "base_method": "stage65_adapter",
+      "codec": "q12",
+      "reference_gap": 4,
+      "keep_fraction": 0.1,
+      "side_bits": 6,
+      "task_count": 18,
+      "mean_side_info_mib_per_intermediate_frame": 0.041353702545166016,
+      "mean_base_psnr": 20.041732308843873,
+      "mean_sideinfo_psnr": 22.84099865483423,
+      "mean_delta_psnr_vs_base": 2.7992663459903557,
+      "positive_delta_count": 18
+    },
+    {
+      "base_method": "stage65_adapter",
+      "codec": "q12",
+      "reference_gap": 8,
+      "keep_fraction": 0.1,
+      "side_bits": 6,
+      "task_count": 19,
+      "mean_side_info_mib_per_intermediate_frame": 0.041353702545166016,
+      "mean_base_psnr": 18.706547218120296,
+      "mean_sideinfo_psnr": 21.398942062762643,
+      "mean_delta_psnr_vs_base": 2.6923948446423474,
+      "positive_delta_count": 19
+    },
+    {
+      "base_method": "stage65_adapter",
+      "codec": "q12",
+      "reference_gap": 16,
+      "keep_fraction": 0.1,
+      "side_bits": 6,
+      "task_count": 23,
+      "mean_side_info_mib_per_intermediate_frame": 0.041353702545166016,
+      "mean_base_psnr": 17.32823013943833,
+      "mean_sideinfo_psnr": 20.29200458015274,
+      "mean_delta_psnr_vs_base": 2.9637744407144093,
+      "positive_delta_count": 23
+    }
+  ],
+  "notes": [
+    "Residual values are quantized per frame and per attribute over kept Gaussians.",
+    "Rate includes indices, residual values, and min/max metadata.",
+    "Entropy coding and full-video RD are not implemented in this smoke."
+  ]
+}

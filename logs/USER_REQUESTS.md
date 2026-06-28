@@ -1113,3 +1113,17 @@ Stage88 将 Stage87 的 quantized residual side-info rendered smoke 汇总成小
 ### 后续执行更新
 
 Stage88 residual side-info RD package 已完成：运行前检查 `nvidia-smi`，GPU0 忙但该阶段为 CPU 汇总，因此未占用 GPU。输出 `24` 条 RD rows 和 `60` 条 RD point rows，目录为 `experiments/stage88_residual_sideinfo_rd_package/`。低码率 q6 top10% residual side-info 点：linear gap4/8/16 direct total rate 分别为 `0.22329192331307915`、`0.13897908929868036`、`0.09682267229148099 MiB/frame`，对应 rendered PSNR `23.326992309396783`、`20.94547122800524`、`23.589870525188754`，delta `+3.3371957812025705`、`+2.8243534745057453`、`+4.476855554636258 dB`；Stage65 adapter gap4/8/16 direct total rate 相同，PSNR `23.35258386164915`、`20.943546028225864`、`22.481910804608162`，delta `+2.869845655272099`、`+2.411187534241218`、`+3.406900716022574 dB`。结论：q6 top10 是当前最值得扩展验证的 low-rate residual side-info operating point；q8 top10 PSNR 几乎相同但 rate 更高。
+
+## 2026-06-28：继续 Stage89 broader q6 residual side-info eval
+
+### 用户原始问题
+
+用户要求如果有下一步就继续执行，如果不确定如何推进再停下来询问。
+
+### 当前执行决策
+
+Stage89 扩大 Stage88 选出的 low-rate operating point，而不是继续扩大配置组合。计划最小参数化 Stage87 脚本，使其可输出 Stage89 命名的 package，然后运行 `max_tasks=60` 的 q12 eval slice、gaps `4/8/16`、base methods 为 linear 和 Stage65 adapter、keep fraction `0.1`、side bits `6`。目标是验证 q6 top10 residual side-info 的多 dB rendered PSNR 增益是否能从 12-task smoke 扩展到更大的 eval slice。运行前继续检查 `nvidia-smi`；该阶段会渲染，预计使用空闲 GPU。
+
+### 后续执行更新
+
+Stage89 broader q6 residual side-info eval 已完成：先按要求检查 `nvidia-smi`，GPU0 忙，GPU1 空闲；第一次误用系统 `python` 因缺少 `torch` 退出，未进入渲染；随后再次检查 GPU，并使用 `/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python` 与 `CUDA_VISIBLE_DEVICES=1` 成功运行。覆盖 `60` 个 q12 eval tasks，gaps `4/8/16` 的 task count 分别为 `18/19/23`。q6 top10 side-info rate 为 `0.041353702545166016 MiB/intermediate-frame`。linear gap4/8/16 delta 分别为 `+3.4188699424093465`、`+3.056154952125395`、`+3.2600059141243887 dB`；Stage65 adapter gap4/8/16 delta 分别为 `+2.7992663459903557`、`+2.6923948446423474`、`+2.9637744407144093 dB`。所有 gap/method 的 positive delta count 都等于 task count，说明 q6 top10 residual side-info 的多 dB 增益在更大 eval slice 上保持。

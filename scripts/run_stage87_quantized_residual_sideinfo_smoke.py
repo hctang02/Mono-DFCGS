@@ -11,6 +11,8 @@ import torch
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SUMMARY_ROOT = REPO_ROOT / "experiments/stage87_quantized_residual_sideinfo_smoke"
+DEFAULT_OUTPUT_PREFIX = "stage87_quantized_residual_sideinfo"
+DEFAULT_SUMMARY_PREFIX = "stage87_quantized_residual_sideinfo_smoke"
 
 
 sys.path.insert(0, str(REPO_ROOT))
@@ -134,7 +136,7 @@ def summarize(rows):
 
 def write_report(summary, summary_rows, path):
     lines = [
-        "# Stage87 Quantized Residual Side-Info Smoke",
+        f"# {summary['report_title']}",
         "",
         "## Configuration",
         "",
@@ -147,7 +149,7 @@ def write_report(summary, summary_rows, path):
         "",
         "## Summary",
         "",
-        "| base | codec | gap | keep | bits | side MiB/frame | base PSNR | side PSNR | delta | positives |",
+        "| base | codec | gap | keep | bits | side MiB/intermediate | base PSNR | side PSNR | delta | positives |",
         "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for row in summary_rows:
@@ -171,6 +173,11 @@ def parse_args():
     parser.add_argument("--dense_manifest", type=Path, default=DEFAULT_DENSE_MANIFEST)
     parser.add_argument("--adapter", type=Path, default=DEFAULT_ADAPTER)
     parser.add_argument("--summary_root", type=Path, default=DEFAULT_SUMMARY_ROOT)
+    parser.add_argument("--stage", type=int, default=87)
+    parser.add_argument("--mode", default="quantized rendered residual side-info smoke")
+    parser.add_argument("--output_prefix", default=DEFAULT_OUTPUT_PREFIX)
+    parser.add_argument("--summary_prefix", default=DEFAULT_SUMMARY_PREFIX)
+    parser.add_argument("--report_title", default="Stage87 Quantized Residual Side-Info Smoke")
     parser.add_argument("--task_split", default="eval")
     parser.add_argument("--codecs", nargs="+", default=["q12"])
     parser.add_argument("--gaps", nargs="+", type=int, default=[4, 8, 16])
@@ -245,15 +252,16 @@ def main():
                 torch.cuda.empty_cache()
 
     summary_rows = summarize(rows)
-    rows_csv = args.summary_root / "stage87_quantized_residual_sideinfo_rows.csv"
-    summary_csv = args.summary_root / "stage87_quantized_residual_sideinfo_summary.csv"
-    summary_json = args.summary_root / "stage87_quantized_residual_sideinfo_smoke_summary.json"
-    report_md = args.summary_root / "stage87_quantized_residual_sideinfo_smoke_report.md"
+    rows_csv = args.summary_root / f"{args.output_prefix}_rows.csv"
+    summary_csv = args.summary_root / f"{args.output_prefix}_summary.csv"
+    summary_json = args.summary_root / f"{args.summary_prefix}_summary.json"
+    report_md = args.summary_root / f"{args.summary_prefix}_report.md"
     write_csv(rows, rows_csv, ROW_FIELDS)
     write_csv(summary_rows, summary_csv, SUMMARY_FIELDS)
     summary = {
-        "stage": 87,
-        "mode": "quantized rendered residual side-info smoke",
+        "stage": args.stage,
+        "mode": args.mode,
+        "report_title": args.report_title,
         "task_manifest": str(args.task_manifest),
         "dense_manifest": str(args.dense_manifest),
         "adapter": str(args.adapter),
