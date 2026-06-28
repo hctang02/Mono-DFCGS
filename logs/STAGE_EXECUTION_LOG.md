@@ -7136,6 +7136,68 @@ Best learned rendered selector by group：
 
 结论：Stage103 说明 broader rendered behavior 比离线 energy recall 更严格。Shared learned selector 在 linear base 上相对 endpoint 有小幅 PSNR 改善，但在 Stage65 adapter base 上低于 endpoint baseline；尽管 learned selector 的 energy recall/precision 更高，RGB PSNR 不一定同步提升。当前 selection objective 仍不够 render-aware；下一步应做 render-aware selector label/metric 诊断或小规模 render-aware ranking，而不是直接进入 residual value prediction。
 
+## 2026-06-28：Stage104 Render-Energy Selector Mismatch Diagnostic
+
+### 目标
+
+基于 Stage103 per-task rendered rows，不重新渲染，诊断 learned selector 的 residual-energy recall 提升和 rendered PSNR 提升之间的不一致。
+
+### 操作计划
+
+- 新增 `scripts/run_stage104_render_energy_selector_mismatch_diagnostic.py`。
+- 输入 `experiments/stage103_broader_rendered_selector_validation/stage103_broader_rendered_selector_rows.csv`。
+- 以 `endpoint_diff_baseline` 为 reference，对 `shared_energy_regression` 和 `shared_topk_bce` 逐 task/base/gap 计算 energy recall delta、PSNR delta、precision delta、gap-to-teacher delta。
+- 汇总每个 candidate/base/gap 的 mean deltas、energy up / PSNR up counts、energy-up-PSNR-down mismatch counts、energy delta vs PSNR delta correlation。
+- 该阶段为 CPU diagnostic，不写 heavy tensors，不改变模型。
+- 运行前按要求检查 `nvidia-smi`。
+
+### Stage104 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。Stage104 是 CPU 汇总脚本，不占用 GPU。先运行语法检查：
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage104_render_energy_selector_mismatch_diagnostic.py
+```
+
+随后运行 diagnostic：
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage104_render_energy_selector_mismatch_diagnostic.py
+```
+
+新增脚本：
+
+```text
+scripts/run_stage104_render_energy_selector_mismatch_diagnostic.py
+```
+
+输出目录：
+
+```text
+experiments/stage104_render_energy_selector_mismatch_diagnostic/
+```
+
+Diagnostic rows：`240`。
+
+关键结果：
+
+| candidate | base | gap | energy delta | PSNR delta | energy up | PSNR up | energy-up PSNR-down |
+|---|---|---:|---:|---:|---:|---:|---:|
+| shared_energy_regression | linear | 4 | 0.03452943816133167 | 0.026827877460275387 | 22 | 15 | 7 |
+| shared_energy_regression | linear | 8 | 0.045587826716272456 | 0.03086322039306108 | 19 | 10 | 9 |
+| shared_energy_regression | linear | 16 | 0.043746052516831294 | 0.13353966957143293 | 17 | 14 | 3 |
+| shared_energy_regression | stage65_adapter | 4 | 0.02671546327031177 | -0.15380783202852794 | 22 | 7 | 15 |
+| shared_energy_regression | stage65_adapter | 8 | 0.03388543348563345 | -0.19199111803343827 | 18 | 7 | 11 |
+| shared_energy_regression | stage65_adapter | 16 | 0.03499703254136774 | -0.016197329840340835 | 18 | 8 | 10 |
+| shared_topk_bce | linear | 4 | 0.0336741439026335 | -0.08991556072924042 | 20 | 10 | 10 |
+| shared_topk_bce | linear | 8 | 0.04330471942299291 | -0.10740330389783524 | 17 | 7 | 10 |
+| shared_topk_bce | linear | 16 | 0.04484673134154744 | 0.03729370398841593 | 17 | 11 | 7 |
+| shared_topk_bce | stage65_adapter | 4 | 0.02759676394255265 | -0.18816386153627007 | 22 | 6 | 16 |
+| shared_topk_bce | stage65_adapter | 8 | 0.03471723159677104 | -0.19973996309924674 | 18 | 5 | 13 |
+| shared_topk_bce | stage65_adapter | 16 | 0.033893570510877505 | -0.032410577247806396 | 18 | 8 | 10 |
+
+结论：Stage104 明确了 Stage103 的 mismatch：learned selectors 在所有 group 的 mean residual-energy recall 都高于 endpoint，但 PSNR 不总是提高。Stage65 adapter base 的 mismatch 最明显，`shared_energy_regression` 在 adapter gap4/8/16 上分别有 `15/23`、`11/19`、`10/18` 个 energy-up/PSNR-down cases。下一步 selector 不能只优化 residual-energy topk，应引入 render-aware labels 或 task-level rendered ranking。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。

@@ -1323,3 +1323,17 @@ Stage103 将 Stage100-102 的 learned shared selector 放回 rendered side-info 
 ### 后续执行更新
 
 Stage103 broader rendered selector validation 已完成：运行前检查 `nvidia-smi`，GPU0 忙、GPU1 有小型 Python 进程占用约 `341MiB`，GPU2 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。新增 `scripts/run_stage103_broader_rendered_selector_validation.py`，先通过 `py_compile`，再运行完整 Stage103。输出目录 `experiments/stage103_broader_rendered_selector_validation/`，大小约 `164K`。配置为 train tasks `96`、eval tasks `60`、sampled train examples `589824`、keep fraction `0.1`、side bits `6`。结果：shared learned selector 对 linear base 有小幅 rendered PSNR 改善，linear gap4/8/16 learned-vs-endpoint PSNR 为 `+0.0268/+0.0309/+0.1335 dB`；但对 Stage65 adapter base 低于 endpoint，gap4/8/16 为 `-0.1538/-0.1920/-0.0162 dB`。最佳 learned candidate 均为 `shared_energy_regression`。结论：离线 residual-energy recall 提升不稳定转化为 RGB PSNR；selector 需要 render-aware label/loss 诊断，仍不应直接进入 residual value prediction。
+
+## 2026-06-28：继续 Stage104 render-energy selector mismatch diagnostic
+
+### 用户原始问题
+
+用户表示可以继续往下做。
+
+### 当前执行决策
+
+Stage104 不重新渲染，直接分析 Stage103 per-task rows，诊断 learned selector 的 residual-energy recall 提升和 rendered PSNR 提升之间的不一致。计划以 `endpoint_diff_baseline` 为 reference，对 `shared_energy_regression` 与 `shared_topk_bce` 逐 task/base/gap 计算 energy recall delta、PSNR delta、precision delta 和 gap-to-teacher delta，并统计 energy-up-PSNR-down mismatch count 与 energy-delta/PSNR-delta correlation。目标是判断下一步 render-aware selector 应优化什么，而不是继续盲目提升 residual-energy recall。
+
+### 后续执行更新
+
+Stage104 render-energy selector mismatch diagnostic 已完成：运行前检查 `nvidia-smi`，该阶段为 CPU 汇总，不占用 GPU。新增 `scripts/run_stage104_render_energy_selector_mismatch_diagnostic.py`，先通过 `py_compile`，再读取 Stage103 rows 运行 diagnostic。输出目录 `experiments/stage104_render_energy_selector_mismatch_diagnostic/`，大小约 `120K`，diagnostic rows `240`。结果：所有 group 的 learned selector mean energy recall delta 都为正，但 PSNR delta 不稳定。`shared_energy_regression` 在 linear gap4/8/16 的 PSNR delta 为 `+0.0268/+0.0309/+0.1335 dB`，但在 Stage65 adapter gap4/8/16 为 `-0.1538/-0.1920/-0.0162 dB`；对应 energy-up/PSNR-down cases 为 `15/23`、`11/19`、`10/18`。结论：residual-energy topk label 与 rendered quality 不完全对齐；下一步应做 render-aware selector labels/ranking，而不是继续盲目提升 energy recall 或直接做 residual value prediction。
