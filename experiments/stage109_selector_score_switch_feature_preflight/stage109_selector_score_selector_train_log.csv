@@ -1,0 +1,9 @@
+model_name,selector_scope,group_key,objective,step,loss,batch_positive_rate,batch_energy_target_mean,train_example_count
+shared__all_groups__topk_bce,shared,all_groups,topk_bce,1,1.2258872985839844,0.097412109375,0.21788837015628815,589824
+shared__all_groups__topk_bce,shared,all_groups,topk_bce,100,0.9794931411743164,0.093994140625,0.21486753225326538,589824
+shared__all_groups__topk_bce,shared,all_groups,topk_bce,200,1.0230205059051514,0.102294921875,0.2190311849117279,589824
+shared__all_groups__topk_bce,shared,all_groups,topk_bce,300,1.04121994972229,0.107666015625,0.21898721158504486,589824
+shared__all_groups__energy_regression,shared,all_groups,energy_regression,1,0.11742765456438065,0.10498046875,0.21423378586769104,589824
+shared__all_groups__energy_regression,shared,all_groups,energy_regression,100,0.019333962351083755,0.098876953125,0.2177061140537262,589824
+shared__all_groups__energy_regression,shared,all_groups,energy_regression,200,0.01939230039715767,0.095947265625,0.21293574571609497,589824
+shared__all_groups__energy_regression,shared,all_groups,energy_regression,300,0.018311575055122375,0.103515625,0.2156350463628769,589824

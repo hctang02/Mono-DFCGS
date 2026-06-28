@@ -7517,3 +7517,60 @@ logs/CURRENT_STATUS_AND_NEXT_PLAN.md
 ### 执行结果
 
 已更新 `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`，将其记录为 canonical continuation file，并写明用户已确认后续 stages 继续基于该文件维护上下文。该步骤只涉及文档和日志，不运行实验、不加载数据、不写 heavy artifacts。
+
+## 2026-06-28：Stage109 Selector-Score Switch Feature Preflight
+
+### 目标
+
+测试 decoder-side selector score/logit statistics 是否能提升 task-level selector switching，并检查是否可以超过 Stage106 fixed group policy。
+
+### 操作计划
+
+- 新增 `scripts/run_stage109_selector_score_switch_feature_preflight.py`。
+- 复用 Stage103 rendered rows、Stage97 residual predictor task manifest 和 Stage106 policy。
+- 训练与 Stage103 一致的 shared `topk_bce` 和 `energy_regression` selector，用其输出 selector logits。
+- 构造 task-level score features：endpoint score stats、learned score/logit stats、top-k score margin、score entropy/spread、endpoint-vs-learned top-k overlap/disagreement、learned-vs-learned overlap 等。
+- 只使用 decoder-side 可得信息构造 features；target dense anchor / target residual 只可用于训练 selector labels 和 Stage103 rendered label 来源，不作为 switch predictor input。
+- 运行 deterministic K-fold CV，对比 endpoint-only、metadata MLP、anchor-stat MLP、score-stat MLP、anchor+score MLP、Stage106 fixed group policy、train-fold group policy 和 oracle task best。
+- 输出 CSV、JSON、Markdown report；不保存 checkpoint、anchors、payload 或 heavy tensors。
+- 运行代码前检查 `nvidia-smi` 并选择空闲 GPU。
+
+### Stage109 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU0 忙，GPU1 有既有进程占用，GPU2 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。先运行语法检查：
+
+```text
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage109_selector_score_switch_feature_preflight.py
+```
+
+随后再次检查 GPU，并运行完整 Stage109：
+
+```text
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage109_selector_score_switch_feature_preflight.py
+```
+
+新增脚本：
+
+```text
+scripts/run_stage109_selector_score_switch_feature_preflight.py
+```
+
+输出目录：
+
+```text
+experiments/stage109_selector_score_switch_feature_preflight/
+```
+
+输出大小约 `316K`。配置：task count `120`，folds `5`，selector train tasks `96`，selector train examples `589824`，feature dims 为 anchor-stat `64`、score-stat `82`、anchor+score `133`。
+
+Overall summary：
+
+| policy | selected PSNR | gain vs endpoint | accuracy | selections |
+|---|---:|---:|---:|---|
+| score_stat_mlp_cv | 20.32781855154445 | 0.01100584121880117 | 0.5 | endpoint_diff_baseline:56;shared_energy_regression:46;shared_topk_bce:18 |
+| anchor_score_mlp_cv | 20.328372726184103 | 0.01156001585845603 | 0.4666666666666667 | endpoint_diff_baseline:52;shared_energy_regression:50;shared_topk_bce:18 |
+| anchor_stat_mlp_cv | 20.33017523703834 | 0.013362526712690951 | 0.475 | endpoint_diff_baseline:51;shared_energy_regression:47;shared_topk_bce:22 |
+| stage106_fixed_group_policy | 20.34687234717015 | 0.030059636844502392 | 0.5416666666666666 | endpoint_diff_baseline:60;shared_energy_regression:60 |
+| oracle_task_best | 20.403744235652297 | 0.08693152532665556 | 1.0 | endpoint_diff_baseline:55;shared_energy_regression:44;shared_topk_bce:21 |
+
+结论：Stage109 的 selector-score features 有正信号，但没有超过 Stage106 fixed group policy。score-stat 和 anchor+score MLP 均低于 anchor-stat MLP 与 Stage106，且 Stage65 adapter groups 仍出现负收益。因此 Stage106 仍是当前最安全 deployable switch baseline；下一步不继续堆 switch feature，而是进入 Stage110，扩大 rendered selector labels 后再重做 broader switch diagnostics。

@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit: `75e402c Preflight anchor-stat selector switch predictor`
+- Latest pushed commit before Stage109: `010ff9a Document current residual plan`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -63,6 +63,7 @@ Key Stage96 direct total rates:
 - Stage106: packaged decoder-side metadata group switch policy.
 - Stage107: metadata-only task-level switch predictor; did not beat endpoint or Stage106.
 - Stage108: anchor-stat task-level switch predictor; better than metadata-only and endpoint, but still below Stage106 and overfits.
+- Stage109: selector-score task-level switch predictor; score statistics have signal but still do not beat Stage106.
 
 ## Current Best Selector Policy
 
@@ -102,12 +103,23 @@ Validation summary on Stage105/106 rows:
 - Always using learned selection is unsafe because Stage65 adapter groups degrade.
 - Metadata-only task-level switching is too weak.
 - Anchor-stat task-level switching has signal but overfits on the current 120 rendered-label tasks.
+- Selector-score task-level switching has signal but does not fix adapter-group regressions and remains below Stage106.
 - Stage106 group policy remains the safest deployable selector-switch baseline.
 - Residual value prediction should wait until selector switching and index/value accounting are more stable.
 
 ## Next Plan
 
 ### Stage109: Selector-Score Feature Preflight
+
+Status: completed on 2026-06-28.
+
+Result:
+
+- `score_stat_mlp_cv` PSNR `20.32781855154445`, gain vs endpoint `+0.01100584121880117 dB`.
+- `anchor_score_mlp_cv` PSNR `20.328372726184103`, gain `+0.01156001585845603 dB`.
+- `anchor_stat_mlp_cv` remains `20.33017523703834`, gain `+0.013362526712690951 dB`.
+- Stage106 fixed group policy remains better at `20.34687234717015`, gain `+0.030059636844502392 dB`.
+- Conclusion: do not replace Stage106; proceed to Stage110 broader rendered selector labels.
 
 Goal: test whether selector-score statistics can improve task-level switching beyond Stage106.
 

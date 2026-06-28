@@ -1417,3 +1417,17 @@ Stage108 anchor-stat task-level switch predictor preflight 已完成：运行前
 ### 后续执行更新
 
 已在 `logs/CURRENT_STATUS_AND_NEXT_PLAN.md` 中标记该文件为 canonical continuation file，并记录用户确认后续继续使用该文件名。下一步将只提交该总结文件和对应日志更新，不提交或修改无关 Stage53/StreamSplat comparison 脏文件。
+
+## 2026-06-28：执行 Stage109 selector-score switch feature preflight
+
+### 用户原始问题
+
+用户确认可以继续按后续 stages 往下做；当前进入 Stage109。
+
+### 当前执行决策
+
+Stage109 将新增 `scripts/run_stage109_selector_score_switch_feature_preflight.py`。目标是复用 Stage103 rendered selector rows、Stage97 task manifest 和 Stage106 policy，训练/评估 task-level switch predictor，并新增 decoder-side selector score/logit statistics：endpoint score 分布、learned selector logit 分布、top-k margin、score entropy/spread、endpoint-vs-learned top-k overlap/disagreement 等。labels 仍来自 Stage103 per-task rendered best candidate，仅用于 train/eval；features 不使用 target dense anchor、target residual、rendered PSNR 或 oracle label。评估使用 deterministic K-fold CV，对比 endpoint-only、metadata MLP、anchor-stat MLP、score-stat MLP、anchor+score MLP、Stage106 fixed group policy、train-fold group policy 和 oracle task best。运行前先检查 `nvidia-smi`，选择空闲 GPU；输出只保存 CSV/JSON/Markdown report，不保存 heavy tensors 或 checkpoint。
+
+### 后续执行更新
+
+Stage109 selector-score switch feature preflight 已完成：运行前检查 `nvidia-smi`，GPU0 忙、GPU1 有进程占用、GPU2 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。新增 `scripts/run_stage109_selector_score_switch_feature_preflight.py`，先通过 `py_compile`，再次检查 GPU 后运行完整 preflight。输出目录 `experiments/stage109_selector_score_switch_feature_preflight/`，大小约 `316K`，task count `120`，folds `5`，selector train tasks `96`，selector train examples `589824`。feature dims：anchor-stat `64`，score-stat `82`，anchor+score `133`。结果：`score_stat_mlp_cv` PSNR `20.32781855154445`，gain vs endpoint `+0.01100584121880117 dB`；`anchor_score_mlp_cv` PSNR `20.328372726184103`，gain `+0.01156001585845603 dB`；`anchor_stat_mlp_cv` 复现 Stage108 为 `20.33017523703834`，gain `+0.013362526712690951 dB`；Stage106 fixed group policy 仍最佳 deployable baseline，PSNR `20.34687234717015`，gain `+0.030059636844502392 dB`。结论：selector-score features 有信号但不能替代 Stage106，且 adapter group 仍会掉点；下一步按计划进入 Stage110 broader rendered selector labels。
