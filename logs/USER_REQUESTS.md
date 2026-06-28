@@ -1562,3 +1562,17 @@ Stage117 将优先复用 Stage92 entropy preflight 的 q-bit / keep-fraction 候
 ### 后续执行更新
 
 检查后发现 Stage92 只覆盖 q6/top10，不是多 q-bit / keep-fraction sweep。因此 Stage117 改为从 Stage115 deterministic payload 推导 geometry（Gaussian count `36860`、attr dim `13`），按公式 sweep deterministic value-only payload，并用 Stage116/Stage96 measured q6/top10 entropy-coded index+value side-info 作为 rate reference；所有非 q6/top10 对照均标记为 cross-setting rate-only，质量未知。新增 `scripts/run_stage117_deterministic_sideinfo_sweep.py`，运行前检查 `nvidia-smi`，GPU2 空闲；该脚本为 CPU-only accounting，但仍使用 `CUDA_VISIBLE_DEVICES=2`。输出目录 `experiments/stage117_deterministic_sideinfo_sweep/`，row count `180`，setting count `30`。关键结果：q6/top10 deterministic 复现 `36009 bytes` / `0.034340858459472656 MiB/intermediate`，低于 `0/6` 个 Stage96 q6/top10 entropy reference groups；q5/top10 为 `30019 bytes` / `0.02862834930419922 MiB/intermediate`，低于 `5/6` 个 reference groups；q4/top10 为 `24029 bytes` / `0.02291584014892578 MiB/intermediate`，低于 `6/6`；q6/top5 为 `18040 bytes` / `0.01720428466796875 MiB/intermediate`，低于 `6/6`。下一步不应直接 package RD；应先对 shortlist 做 rendered validation。
+
+## 2026-06-29：继续 Stage118 compressed deterministic value-only codec smoke
+
+### 用户原始问题
+
+用户允许按照规划一直往下执行，预计有 10 多小时可运行。
+
+### 当前执行决策
+
+Stage118 将先补 deterministic value-only codec 的无损压缩版本，而不是直接做 broader RD。实现目标是在不传 selected indices 的前提下，对 metadata 和 q residual values 做 zlib component compression，并新增 decode helper 验证与 raw deterministic decode 完全一致。Stage118 先跑 12-task q6/top10 smoke，对比 raw deterministic payload、compressed deterministic payload、fixed index+value payload 和 Stage96 entropy reference。该阶段不训练、不重新渲染、不保存 anchors/checkpoints/heavy tensors；运行 Python 前仍先检查 `nvidia-smi`。
+
+### 后续执行更新
+
+Stage118 compressed deterministic value-only codec smoke 已完成：新增 `DETERMINISTIC_ENTROPY_MAGIC` / compressed deterministic header，以及 `encode_selected_residual_values_sideinfo_entropy`、`decode_selected_residual_values_sideinfo_entropy` helper。新增 `scripts/run_stage118_compressed_deterministic_codec_smoke.py`，运行前检查 `nvidia-smi`，GPU2 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。输出目录 `experiments/stage118_compressed_deterministic_codec_smoke/`。结果：12-task q6/top10 smoke 中 compressed deterministic decode vs raw deterministic decode max diff `0.0`，vs fixed index+value decode max diff `0.0`。Compressed deterministic payload：linear gap4/8/16 为 `25652.333333333332`、`27322.2`、`26884.0 bytes`；Stage65 adapter gap4/8/16 为 `30934.666666666668`、`32457.6`、`32162.5 bytes`。相对 Stage96 q6/top10 entropy-coded index+value reference，`6/6` groups 都更小。下一步进入 Stage119，对多个 q-bit / keep-fraction setting 做 actual compressed sweep。

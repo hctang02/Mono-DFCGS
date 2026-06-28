@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage117: `eece89f Account deterministic vs entropy sideinfo`
+- Latest pushed commit before Stage118: `9d301f5 Sweep deterministic sideinfo rates`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -72,6 +72,7 @@ Key Stage96 direct total rates:
 - Stage115: deterministic-index residual side-info codec smoke; value-only payload removes endpoint-diff selected index bytes and decodes identically to fixed index+value payload.
 - Stage116: deterministic vs entropy side-info accounting; all transmitted bytes are counted, and deterministic endpoint-diff quality is explicitly marked rate-only / not rendered.
 - Stage117: deterministic q-bit / keep-fraction side-info sweep; lower-rate settings can beat the Stage96 q6 top10 entropy reference in rate, but quality is unknown until rendered validation.
+- Stage118: compressed deterministic value-only codec smoke; q6/top10 compressed deterministic payload decodes identically and beats Stage96 entropy-coded index+value side-info reference in all groups.
 
 ## Current Best Selector Policy
 
@@ -133,6 +134,7 @@ Stage113 held-out diagnostic:
 - Stage115 confirms index bytes can be removed when selected indices are decoder-reproducible, reducing q6 top10 side-info payload from `43381` to `36009` bytes on the smoke tasks.
 - Stage116 shows deterministic value-only side-info is still larger than zlib entropy-coded index+value side-info for Stage96 broader linear groups (`1.1907909303963997`-`1.2055306636015155x`) and slightly larger for Stage65 adapter groups (`1.0139622082252686`-`1.0359950259093857x`).
 - Stage117 shows q5/top10 deterministic side-info is rate-competitive (`30019 bytes`, below `5/6` Stage96 q6 top10 entropy reference groups), and q4/top10 or q6/top5 are below all `6/6` reference groups, but these are cross-setting rate-only comparisons.
+- Stage118 resolves the q6/top10 rate gap by compressing deterministic value-only payloads: compressed q6/top10 is `0.024463971455891926`-`0.0309539794921875 MiB/intermediate` and below Stage96 entropy reference for `6/6` groups.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -333,11 +335,34 @@ Result:
 
 Goal: identify rate-feasible deterministic settings before rendered validation.
 
+### Stage118: Compressed Deterministic Value-Only Codec Smoke
+
+Status: completed on 2026-06-29.
+
+Result:
+
+- Added compressed deterministic codec helpers in `mono_dfcgs/residual_sideinfo_codec.py`.
+- Added `scripts/run_stage118_compressed_deterministic_codec_smoke.py`.
+- Output: `experiments/stage118_compressed_deterministic_codec_smoke/`.
+- Selector policy: Stage114 `strict_safe_endpoint_selector_v1` / `endpoint_diff_baseline`.
+- Task count: `12` q12 eval tasks, both linear and Stage65 adapter base methods.
+- Compressed deterministic decode vs raw deterministic decode: max diff `0.0`.
+- Compressed deterministic decode vs fixed index+value decode: max diff `0.0`.
+- Linear q6/top10 compressed payloads: `25652.333333333332`, `27322.2`, `26884.0 bytes` for gap4/8/16.
+- Stage65 adapter q6/top10 compressed payloads: `30934.666666666668`, `32457.6`, `32162.5 bytes` for gap4/8/16.
+- All `6/6` groups are below the Stage96 q6/top10 entropy-coded index+value reference.
+- Limitation: residual values remain teacher-derived; this is still not residual value prediction.
+
+Goal: remove selected-index bytes and entropy-compress value-only metadata/residual payload before rendered shortlist validation.
+
 ## Later Plan After Selector Stabilizes
 
 ### Deterministic-Index Side-Info Codec
 
-- Stage118: render/validate a short list of deterministic settings, then package broader RD with all side-info bytes counted.
+- Stage119: actual compressed sweep over q-bit / keep-fraction settings.
+- Stage120: render/validate a short list of deterministic compressed settings.
+- Stage121: broader rendered validation if Stage120 has a promising winner.
+- Stage122: package RD with all side-info bytes counted.
 
 ### Residual Value Prediction
 
@@ -394,6 +419,7 @@ Goal: identify rate-feasible deterministic settings before rendered validation.
 - Stage115 deterministic-index codec smoke: `scripts/run_stage115_deterministic_index_residual_codec_smoke.py`
 - Stage116 deterministic vs entropy accounting: `scripts/run_stage116_deterministic_vs_entropy_sideinfo_accounting.py`
 - Stage117 deterministic side-info sweep: `scripts/run_stage117_deterministic_sideinfo_sweep.py`
+- Stage118 compressed deterministic codec smoke: `scripts/run_stage118_compressed_deterministic_codec_smoke.py`
 
 ### Important Outputs
 
@@ -414,6 +440,7 @@ Goal: identify rate-feasible deterministic settings before rendered validation.
 - Stage115 deterministic-index codec smoke: `experiments/stage115_deterministic_index_residual_codec_smoke/`
 - Stage116 deterministic vs entropy accounting: `experiments/stage116_deterministic_vs_entropy_sideinfo_accounting/`
 - Stage117 deterministic side-info sweep: `experiments/stage117_deterministic_sideinfo_sweep/`
+- Stage118 compressed deterministic codec smoke: `experiments/stage118_compressed_deterministic_codec_smoke/`
 
 ### Heavy External Paths
 

@@ -9,10 +9,12 @@ import torch
 MAGIC = b"RSI1"
 ENTROPY_MAGIC = b"RSE1"
 DETERMINISTIC_MAGIC = b"RSD1"
+DETERMINISTIC_ENTROPY_MAGIC = b"RSDZ"
 VERSION = 1
 HEADER_STRUCT = struct.Struct("<4sBBBBHII")
 ENTROPY_HEADER_STRUCT = struct.Struct("<4sBBBBHIIIII")
 DETERMINISTIC_HEADER_STRUCT = struct.Struct("<4sBBBBHII")
+DETERMINISTIC_ENTROPY_HEADER_STRUCT = struct.Struct("<4sBBBBHIIII")
 FLOAT16_BYTES = 2
 
 
@@ -316,6 +318,56 @@ def encode_selected_residual_values_sideinfo(base_attrs, target_attrs, selected_
     return payload, info
 
 
+def encode_selected_residual_values_sideinfo_entropy(base_attrs, target_attrs, selected_indices, side_bits, zlib_level=9, eps=1e-8):
+    """Encode deterministic-index residual values with zlib-compressed components."""
+    prepared = _prepare_selected_residual_quantization(base_attrs, target_attrs, selected_indices, side_bits, eps=eps)
+    gaussian_count = prepared["gaussian_count"]
+    attr_dim = prepared["attr_dim"]
+    keep_count = prepared["keep_count"]
+    metadata = prepared["mins_half"].tobytes() + prepared["maxs_half"].tobytes()
+    residual_payload = _pack_ints(prepared["q_values"].reshape(-1).tolist(), int(side_bits))
+    metadata_z = zlib.compress(metadata, int(zlib_level))
+    residual_z = zlib.compress(residual_payload, int(zlib_level))
+    header = DETERMINISTIC_ENTROPY_HEADER_STRUCT.pack(
+        DETERMINISTIC_ENTROPY_MAGIC,
+        VERSION,
+        int(side_bits),
+        0,
+        0,
+        int(attr_dim),
+        int(gaussian_count),
+        int(keep_count),
+        len(metadata_z),
+        len(residual_z),
+    )
+    payload = header + metadata_z + residual_z
+    theoretical_bits = deterministic_sideinfo_bits_without_header(keep_count, attr_dim, side_bits)
+    fixed_index_bits = int(keep_count) * math.ceil(math.log2(max(gaussian_count, 2)))
+    raw_payload_bytes = DETERMINISTIC_HEADER_STRUCT.size + len(metadata) + len(residual_payload)
+    info = {
+        "gaussian_count": gaussian_count,
+        "attr_dim": attr_dim,
+        "keep_count": keep_count,
+        "side_bits": int(side_bits),
+        "zlib_level": int(zlib_level),
+        "header_bytes": DETERMINISTIC_ENTROPY_HEADER_STRUCT.size,
+        "metadata_bytes": len(metadata),
+        "residual_bytes": len(residual_payload),
+        "metadata_zlib_bytes": len(metadata_z),
+        "residual_zlib_bytes": len(residual_z),
+        "index_bytes": 0,
+        "payload_bytes": len(payload),
+        "raw_deterministic_payload_bytes": raw_payload_bytes,
+        "compressed_ratio_vs_raw_deterministic": len(payload) / raw_payload_bytes if raw_payload_bytes > 0 else 0.0,
+        "omitted_index_bits_vs_fixed": fixed_index_bits,
+        "omitted_index_bytes_vs_fixed_aligned": (fixed_index_bits + 7) // 8,
+        "theoretical_bits_without_header": theoretical_bits,
+        "theoretical_bytes_without_header": theoretical_bits / 8.0,
+        "theoretical_mib_without_header": theoretical_bits / 8.0 / (1024.0 * 1024.0),
+    }
+    return payload, info
+
+
 def _index_deltas(sorted_indices):
     out = []
     prev = -1
@@ -461,6 +513,65 @@ def decode_selected_residual_values_sideinfo(base_attrs, payload, selected_indic
     residual_values = int(keep_count) * int(attr_dim)
     residual_bytes = (residual_values * int(side_bits) + 7) // 8
     residual_payload = payload[offset:offset + residual_bytes]
+    q_flat = _unpack_ints(residual_payload, residual_values, int(side_bits))
+    decoded = base_cpu.clone()
+    if keep_count > 0:
+        q = torch.tensor(q_flat, dtype=torch.float32).reshape(int(keep_count), int(attr_dim))
+        mins_t = torch.from_numpy(mins).float()
+        maxs_t = torch.from_numpy(maxs).float()
+        qmax = (1 << int(side_bits)) - 1
+        scales = (maxs_t - mins_t).clamp_min(eps) / qmax
+        residual = q * scales + mins_t
+        decoded[0, keep_idx, :] += residual
+    return decoded.to(device=base_attrs.device, dtype=base_attrs.dtype)
+
+
+def decode_selected_residual_values_sideinfo_entropy(base_attrs, payload, selected_indices, eps=1e-8):
+    base_cpu = base_attrs.detach().cpu().float()
+    if base_cpu.ndim != 3 or base_cpu.shape[0] != 1:
+        raise ValueError(f"expected [1, N, D] attrs, got {base_cpu.shape}")
+    header_size = DETERMINISTIC_ENTROPY_HEADER_STRUCT.size
+    (
+        magic,
+        version,
+        side_bits,
+        _unused,
+        _flags,
+        attr_dim,
+        gaussian_count,
+        keep_count,
+        metadata_z_bytes,
+        residual_z_bytes,
+    ) = DETERMINISTIC_ENTROPY_HEADER_STRUCT.unpack(payload[:header_size])
+    if magic != DETERMINISTIC_ENTROPY_MAGIC:
+        raise ValueError("invalid compressed deterministic residual side-info magic")
+    if version != VERSION:
+        raise ValueError(f"unsupported compressed deterministic residual side-info version: {version}")
+    if int(base_cpu.shape[1]) != gaussian_count or int(base_cpu.shape[2]) != attr_dim:
+        raise ValueError("compressed deterministic payload shape does not match base attrs")
+    keep_idx = torch.as_tensor(selected_indices, dtype=torch.int64).detach().cpu().reshape(-1)
+    if int(keep_idx.numel()) != int(keep_count):
+        raise ValueError("selected index count does not match compressed deterministic payload")
+    if keep_idx.numel() > 0:
+        if int(keep_idx.min().item()) < 0 or int(keep_idx.max().item()) >= int(gaussian_count):
+            raise ValueError("selected index out of range")
+
+    offset = header_size
+    metadata_z = payload[offset:offset + int(metadata_z_bytes)]
+    offset += int(metadata_z_bytes)
+    residual_z = payload[offset:offset + int(residual_z_bytes)]
+    metadata = zlib.decompress(metadata_z)
+    expected_metadata_bytes = int(attr_dim) * 2 * FLOAT16_BYTES
+    if len(metadata) != expected_metadata_bytes:
+        raise ValueError("invalid compressed deterministic metadata length")
+    residual_payload = zlib.decompress(residual_z)
+    residual_values = int(keep_count) * int(attr_dim)
+    expected_residual_bytes = (residual_values * int(side_bits) + 7) // 8
+    if len(residual_payload) != expected_residual_bytes:
+        raise ValueError("invalid compressed deterministic residual length")
+
+    mins = np.frombuffer(metadata[:int(attr_dim) * FLOAT16_BYTES], dtype="<f2").astype("<f4").copy()
+    maxs = np.frombuffer(metadata[int(attr_dim) * FLOAT16_BYTES:], dtype="<f2").astype("<f4").copy()
     q_flat = _unpack_ints(residual_payload, residual_values, int(side_bits))
     decoded = base_cpu.clone()
     if keep_count > 0:
