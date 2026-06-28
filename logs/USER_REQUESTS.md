@@ -1576,3 +1576,17 @@ Stage118 将先补 deterministic value-only codec 的无损压缩版本，而不
 ### 后续执行更新
 
 Stage118 compressed deterministic value-only codec smoke 已完成：新增 `DETERMINISTIC_ENTROPY_MAGIC` / compressed deterministic header，以及 `encode_selected_residual_values_sideinfo_entropy`、`decode_selected_residual_values_sideinfo_entropy` helper。新增 `scripts/run_stage118_compressed_deterministic_codec_smoke.py`，运行前检查 `nvidia-smi`，GPU2 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。输出目录 `experiments/stage118_compressed_deterministic_codec_smoke/`。结果：12-task q6/top10 smoke 中 compressed deterministic decode vs raw deterministic decode max diff `0.0`，vs fixed index+value decode max diff `0.0`。Compressed deterministic payload：linear gap4/8/16 为 `25652.333333333332`、`27322.2`、`26884.0 bytes`；Stage65 adapter gap4/8/16 为 `30934.666666666668`、`32457.6`、`32162.5 bytes`。相对 Stage96 q6/top10 entropy-coded index+value reference，`6/6` groups 都更小。下一步进入 Stage119，对多个 q-bit / keep-fraction setting 做 actual compressed sweep。
+
+## 2026-06-29：继续 Stage119 actual compressed deterministic sweep
+
+### 用户原始问题
+
+用户允许按照规划一直往下执行。
+
+### 当前执行决策
+
+Stage119 将在 Stage118 compressed deterministic codec 上做真实 payload sweep：对多个 keep fraction 与 side bits setting，重新从 task anchors 和 dense target anchors 量化 selected residual values，计算 raw deterministic 与 compressed deterministic payload bytes，并验证 compressed decode 与 raw deterministic decode 等价。参考 Stage116/Stage96 q6/top10 entropy side-info 只作为 rate reference；非 q6/top10 setting 的 rendered quality 仍未知。该阶段不训练、不重新渲染、不保存 anchors/checkpoints/heavy tensors；运行 Python 前仍检查 `nvidia-smi`。
+
+### 后续执行更新
+
+Stage119 actual compressed deterministic sweep 已完成：新增 `scripts/run_stage119_actual_compressed_deterministic_sweep.py`，运行前检查 `nvidia-smi`，GPU2 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。输出目录 `experiments/stage119_actual_compressed_deterministic_sweep/`，row count `720`，group count `180`，setting count `30`，所有 rows 的 compressed decode vs raw deterministic decode max diff `0.0`。关键 setting：q6/top10 mean compressed payload `29235.55 bytes` / `0.02788119316101074 MiB/intermediate`；q5/top10 `24537.56111111111 bytes` / `0.023400841818915472 MiB/intermediate`；q4/top10 `14982.574999999999 bytes` / `0.01428849697113037 MiB/intermediate`；q6/top5 `15040.72222222222 bytes` / `0.01434395048353407 MiB/intermediate`；q4/top20 `28043.888888888887 bytes` / `0.02674473656548394 MiB/intermediate`。这些 shortlist settings 均低于 `6/6` 个 Stage96 q6/top10 entropy reference groups。下一步 Stage120 rendered shortlist smoke 使用 q6/top10、q5/top10、q4/top10、q6/top5、q4/top20。

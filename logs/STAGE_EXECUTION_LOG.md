@@ -8322,3 +8322,76 @@ experiments/stage118_compressed_deterministic_codec_smoke/stage118_compressed_de
 - q6/top10 compressed deterministic payload is below the Stage96 q6/top10 entropy-coded index+value reference in all `6/6` groups.
 - Residual values remain teacher-derived from dense target anchors; this is not residual value prediction.
 - Next step: Stage119 actual compressed sweep over q-bit / keep-fraction settings.
+
+## 2026-06-29：Stage119 Actual Compressed Deterministic Sweep
+
+### 目标
+
+Run an actual compressed deterministic value-only payload sweep over q-bit and keep-fraction settings using real task residual values, not only formula-based raw byte accounting.
+
+### 操作计划
+
+- Add a Stage119 script that reuses Stage118 compressed deterministic codec helpers.
+- Sweep keep fractions `[0.025, 0.05, 0.1, 0.15, 0.2]` and side bits `[2, 3, 4, 5, 6, 8]` on the 12-task smoke set.
+- For each task/base/setting, compute raw deterministic and compressed deterministic bytes.
+- Verify compressed deterministic decode matches raw deterministic decode for every row.
+- Compare rate against Stage116/Stage96 q6/top10 entropy side-info reference, while marking non-q6/top10 quality as unknown.
+- Do not train, render, or save anchors/checkpoints/heavy tensors.
+- Check `nvidia-smi` before Python execution.
+
+### 实现
+
+Added:
+
+```text
+scripts/run_stage119_actual_compressed_deterministic_sweep.py
+```
+
+### 执行
+
+运行前检查 `nvidia-smi`：GPU0 忙、GPU1 有小进程、GPU4 有进程，GPU2/3/5/6/7 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。
+
+Syntax check and run:
+
+```text
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage119_actual_compressed_deterministic_sweep.py
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage119_actual_compressed_deterministic_sweep.py
+```
+
+### 输出文件
+
+```text
+experiments/stage119_actual_compressed_deterministic_sweep/stage119_actual_compressed_deterministic_sweep_rows.csv
+experiments/stage119_actual_compressed_deterministic_sweep/stage119_actual_compressed_deterministic_sweep_group_summary.csv
+experiments/stage119_actual_compressed_deterministic_sweep/stage119_actual_compressed_deterministic_sweep_setting_summary.csv
+experiments/stage119_actual_compressed_deterministic_sweep/stage119_actual_compressed_deterministic_sweep_summary.json
+experiments/stage119_actual_compressed_deterministic_sweep/stage119_actual_compressed_deterministic_sweep_report.md
+```
+
+### 结果
+
+Global:
+
+| metric | value |
+|---|---:|
+| row count | 720 |
+| group count | 180 |
+| setting count | 30 |
+| max decode diff | 0.0 |
+
+Shortlist settings:
+
+| keep | bits | mean compressed bytes | mean MiB/intermediate | groups below Stage96 entropy | max comp/entropy | note |
+|---:|---:|---:|---:|---:|---:|---|
+| 0.1 | 6 | 29235.55 | 0.02788119316101074 | 6/6 | 0.9139598369766582 | q6/top10 quality anchor |
+| 0.1 | 5 | 24537.56111111111 | 0.023400841818915472 | 6/6 | 0.7730317895516859 | q5/top10 candidate |
+| 0.1 | 4 | 14982.574999999999 | 0.01428849697113037 | 6/6 | 0.4795912560207484 | q4/top10 candidate |
+| 0.05 | 6 | 15040.72222222222 | 0.01434395048353407 | 6/6 | 0.4667089499820716 | q6/top5 candidate |
+| 0.2 | 4 | 28043.888888888887 | 0.02674473656548394 | 6/6 | 0.8963100407558355 | q4/top20 candidate |
+
+### 结论
+
+- Actual compressed deterministic payloads are lower than raw formula estimates and below Stage96 q6/top10 entropy reference for the selected shortlist.
+- All compressed deterministic decodes match raw deterministic decodes exactly under the same selected indices.
+- Non-q6/top10 settings remain rate-only until rendered validation.
+- Next step: Stage120 rendered shortlist smoke.
