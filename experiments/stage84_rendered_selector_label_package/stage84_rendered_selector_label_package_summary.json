@@ -1,0 +1,150 @@
+{
+  "stage": 84,
+  "mode": "rendered selector label package",
+  "comparison_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage68_davis_feedforward_selector_rendered_validation/stage68_davis_selector_comparison.csv",
+  "decision_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage69_selector_fallback_calibration/stage69_selector_decision_records.csv",
+  "policy_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage69_selector_fallback_calibration/stage69_selector_policy_summary.csv",
+  "choices_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage69_selector_fallback_calibration/stage69_selector_policy_choices.csv",
+  "label_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage84_rendered_selector_label_package/stage84_rendered_selector_labels.csv",
+  "gap_summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage84_rendered_selector_label_package/stage84_rendered_selector_gap_summary.csv",
+  "policy_guardrails_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage84_rendered_selector_label_package/stage84_selector_policy_guardrails.csv",
+  "policy_choices_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage84_rendered_selector_label_package/stage84_selector_policy_choices.csv",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage84_rendered_selector_label_package/stage84_rendered_selector_label_package_report.md",
+  "label_count": 12,
+  "positive_label_count": 7,
+  "mean_delta_all_psnr": 0.030738190041048163,
+  "min_delta_all_psnr": -0.10978492809701024,
+  "max_delta_all_psnr": 0.26277712715562274,
+  "gap_summary": [
+    {
+      "reference_gap": 4,
+      "count": 4,
+      "positive_count": 3,
+      "mean_delta_all_psnr": 0.025675568904931723,
+      "min_delta_all_psnr": -0.000555582328463089,
+      "max_delta_all_psnr": 0.06357661189149155,
+      "mean_rate_mib_per_frame": 0.12188942649147727
+    },
+    {
+      "reference_gap": 8,
+      "count": 4,
+      "positive_count": 1,
+      "mean_delta_all_psnr": -0.01731893196183698,
+      "min_delta_all_psnr": -0.10978492809701024,
+      "max_delta_all_psnr": 0.08340300738787576,
+      "mean_rate_mib_per_frame": 0.06551069779829546
+    },
+    {
+      "reference_gap": 16,
+      "count": 4,
+      "positive_count": 3,
+      "mean_delta_all_psnr": 0.08385793318004975,
+      "min_delta_all_psnr": 0.0,
+      "max_delta_all_psnr": 0.26277712715562274,
+      "mean_rate_mib_per_frame": 0.03811479048295455
+    }
+  ],
+  "policy_guardrails": [
+    {
+      "policy": "uniform",
+      "count": "12",
+      "accepted_predicted_points": "0",
+      "positive_all_points": "0",
+      "mean_delta_all_psnr": "0.0",
+      "min_delta_all_psnr": "0.0",
+      "max_delta_all_psnr": "0.0",
+      "train_policy": "always uniform",
+      "notes": "deployable baseline",
+      "deployable_category": "safe_deployable_baseline"
+    },
+    {
+      "policy": "fixed_predicted",
+      "count": "12",
+      "accepted_predicted_points": "12",
+      "positive_all_points": "7",
+      "mean_delta_all_psnr": "0.030738190041048163",
+      "min_delta_all_psnr": "-0.10978492809701024",
+      "max_delta_all_psnr": "0.26277712715562274",
+      "train_policy": "always predicted",
+      "notes": "deployable but unstable Stage68 selector",
+      "deployable_category": "deployable_candidate_unstable"
+    },
+    {
+      "policy": "oracle_positive_fallback",
+      "count": "12",
+      "accepted_predicted_points": "7",
+      "positive_all_points": "7",
+      "mean_delta_all_psnr": "0.04350771650468873",
+      "min_delta_all_psnr": "0.0",
+      "max_delta_all_psnr": "0.26277712715562274",
+      "train_policy": "uses actual rendered outcome",
+      "notes": "oracle upper bound; not deployable",
+      "deployable_category": "analysis_oracle_not_deployable"
+    },
+    {
+      "policy": "same_data_threshold_fallback",
+      "count": "12",
+      "accepted_predicted_points": "5",
+      "positive_all_points": "5",
+      "mean_delta_all_psnr": "0.03745316604097404",
+      "min_delta_all_psnr": "0.0",
+      "max_delta_all_psnr": "0.26277712715562274",
+      "train_policy": "trained and evaluated on Stage68",
+      "notes": "analysis upper bound; not deployable",
+      "deployable_category": "analysis_oracle_not_deployable"
+    },
+    {
+      "policy": "loocv_threshold_fallback",
+      "count": "12",
+      "accepted_predicted_points": "4",
+      "positive_all_points": "1",
+      "mean_delta_all_psnr": "-0.01170162890067535",
+      "min_delta_all_psnr": "-0.10978492809701024",
+      "max_delta_all_psnr": "0.0055252224122490645",
+      "train_policy": "leave-one-sequence-out threshold",
+      "notes": "deployable-style small-sample calibration",
+      "deployable_category": "deployable_style_small_sample"
+    }
+  ],
+  "best_deployable_policy": {
+    "policy": "fixed_predicted",
+    "count": "12",
+    "accepted_predicted_points": "12",
+    "positive_all_points": "7",
+    "mean_delta_all_psnr": "0.030738190041048163",
+    "min_delta_all_psnr": "-0.10978492809701024",
+    "max_delta_all_psnr": "0.26277712715562274",
+    "train_policy": "always predicted",
+    "notes": "deployable but unstable Stage68 selector",
+    "deployable_category": "deployable_candidate_unstable"
+  },
+  "best_safe_deployable_policy": {
+    "policy": "uniform",
+    "count": "12",
+    "accepted_predicted_points": "0",
+    "positive_all_points": "0",
+    "mean_delta_all_psnr": "0.0",
+    "min_delta_all_psnr": "0.0",
+    "max_delta_all_psnr": "0.0",
+    "train_policy": "always uniform",
+    "notes": "deployable baseline",
+    "deployable_category": "safe_deployable_baseline"
+  },
+  "best_analysis_policy": {
+    "policy": "oracle_positive_fallback",
+    "count": "12",
+    "accepted_predicted_points": "7",
+    "positive_all_points": "7",
+    "mean_delta_all_psnr": "0.04350771650468873",
+    "min_delta_all_psnr": "0.0",
+    "max_delta_all_psnr": "0.26277712715562274",
+    "train_policy": "uses actual rendered outcome",
+    "notes": "oracle upper bound; not deployable",
+    "deployable_category": "analysis_oracle_not_deployable"
+  },
+  "notes": [
+    "Rendered labels are offline labels and are not available at test time.",
+    "A deployable selector must use feed-forward predicted costs and deterministic DP only.",
+    "Stage68/69 rendered label count is small, so policy results are guardrails rather than final selector claims."
+  ]
+}

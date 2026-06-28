@@ -5920,6 +5920,68 @@ Evaluation summary on 60 DAVIS val tasks：
 
 结论：Stage83 protected metric 正确阻止了选择 gap4 退化更明显的 final checkpoint。即使 gap4 loss weight 提到 `3.0`，RGB-loss finetune 仍倾向改善 gap8/gap16、损害 gap4。当前 best adapter 继续保持 Stage65；后续应转向 rendered-label selector、dynamic side-info 或更结构化的 adapter objective。
 
+## 2026-06-28：Stage84 Rendered Selector Label Package
+
+### 目标
+
+复用 Stage68 rendered validation 和 Stage69 fallback calibration，生成 selector rendered-label package，为后续 decision-aware selector 训练提供干净标签和 guardrails。
+
+### 操作计划
+
+- 新增 `scripts/run_stage84_rendered_selector_label_package.py`。
+- 输入 Stage68 comparison / selection CSV 和 Stage69 decision / policy CSV。
+- 输出 per-point rendered labels：predicted-vs-uniform adapter PSNR delta、positive label、oracle accept label、indices、rate 和 simple selector features。
+- 输出 policy guardrail summary：uniform、fixed predicted、oracle positive、same-data threshold、LOOCV threshold。
+- 明确 oracle/same-data 只用于分析，不能作为 deployable selector claim。
+- Stage84 为 CPU-only 汇总；运行前仍按要求检查 `nvidia-smi`。
+
+### Stage84 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。该阶段为 CPU-only package generation。
+
+新增脚本：
+
+```text
+scripts/run_stage84_rendered_selector_label_package.py
+```
+
+仓库内输出：
+
+```text
+experiments/stage84_rendered_selector_label_package/stage84_rendered_selector_label_package_summary.json
+experiments/stage84_rendered_selector_label_package/stage84_rendered_selector_label_package_report.md
+experiments/stage84_rendered_selector_label_package/stage84_rendered_selector_labels.csv
+experiments/stage84_rendered_selector_label_package/stage84_rendered_selector_gap_summary.csv
+experiments/stage84_rendered_selector_label_package/stage84_selector_policy_guardrails.csv
+experiments/stage84_rendered_selector_label_package/stage84_selector_policy_choices.csv
+```
+
+Rendered label summary：
+
+| labels | positive | mean delta | min delta | max delta |
+|---:|---:|---:|---:|---:|
+| 12 | 7 | 0.030738190041048163 | -0.10978492809701024 | 0.26277712715562274 |
+
+Gap summary：
+
+| gap | count | positives | mean delta | min delta |
+|---:|---:|---:|---:|---:|
+| 4 | 4 | 3 | 0.025675568904931723 | -0.000555582328463089 |
+| 8 | 4 | 1 | -0.01731893196183698 | -0.10978492809701024 |
+| 16 | 4 | 3 | 0.08385793318004975 | 0.0 |
+
+Policy guardrails：
+
+| policy | category | accepted | mean delta | min delta |
+|---|---|---:|---:|---:|
+| uniform | safe_deployable_baseline | 0 | 0.0 | 0.0 |
+| fixed_predicted | deployable_candidate_unstable | 12 | 0.030738190041048163 | -0.10978492809701024 |
+| oracle_positive_fallback | analysis_oracle_not_deployable | 7 | 0.04350771650468873 | 0.0 |
+| same_data_threshold_fallback | analysis_oracle_not_deployable | 5 | 0.03745316604097404 | 0.0 |
+| loocv_threshold_fallback | deployable_style_small_sample | 4 | -0.01170162890067535 | -0.10978492809701024 |
+
+结论：Stage84 固化了 selector rendered labels 和 deployability guardrails。当前 fixed-predicted selector 有平均增益但最坏点明显为负；满足 nonnegative min-delta 的安全 deployable policy 仍是 uniform。oracle-positive / same-data threshold 只能作为离线分析上界，不能作为 test-time selector 方案。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。
