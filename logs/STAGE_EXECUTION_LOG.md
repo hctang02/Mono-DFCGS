@@ -7493,3 +7493,27 @@ Key result：
 - 方法：linear anchor interpolation 与 Stage65 `rgb_h256` adapter。
 - 输出 all/middle/given PSNR、rate MiB/frame、method/codec/gap summary。
 - 运行前按要求检查 `nvidia-smi`。
+
+## 2026-06-28：Continue After Current Status Summary
+
+### 用户请求
+
+用户确认继续按照已整理的后续 stages 往下做；如果用户不打断，就持续推进。用户确认当前总结文件保留为：
+
+```text
+logs/CURRENT_STATUS_AND_NEXT_PLAN.md
+```
+
+### 操作计划
+
+- 先补齐当前总结文档相关日志和提交记录，并 commit/push。
+- 然后开始 Stage109 selector-score switch feature preflight。
+- Stage109 复用 Stage103 rendered rows、Stage97 tasks 和 Stage106 policy，构造 decoder-side selector score/logit statistics。
+- 对比 endpoint-only、metadata MLP、anchor-stat MLP、Stage106 fixed group policy、train-fold group policy 和 oracle task best。
+- 继续不使用 target dense anchor、target residual、rendered PSNR 或 oracle label 作为 decoder input。
+- 运行代码前检查 `nvidia-smi`，并选择空闲 GPU。
+- 继续避开无关 Stage53/StreamSplat comparison 脏文件。
+
+### 执行结果
+
+已更新 `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`，将其记录为 canonical continuation file，并写明用户已确认后续 stages 继续基于该文件维护上下文。该步骤只涉及文档和日志，不运行实验、不加载数据、不写 heavy artifacts。
