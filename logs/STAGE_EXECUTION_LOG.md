@@ -6109,6 +6109,66 @@ Top25% residual side-info：
 
 结论：Stage86 表明 residual side-info 在 rendered RGB 上确实有显著潜力，且 top10% side-info 已能带来多 dB 提升。但该结果仍是 optimistic smoke：residual values 未量化，side-info entropy/packing 未实现，且这里只覆盖 12 个 tasks。下一步应实现 quantized residual side-info codec，并把 side-info MiB/frame 与 anchor main rate 相加后做小规模 RD。
 
+## 2026-06-28：Stage87 Quantized Residual Side-Info Smoke
+
+### 目标
+
+验证 Stage86 residual side-info 在 q6/q8 quantized residual values 后是否仍能保持 rendered PSNR 增益，并把 residual metadata 计入 side-info rate。
+
+### 操作计划
+
+- 新增 `scripts/run_stage87_quantized_residual_sideinfo_smoke.py`。
+- 复用 Stage86 的 12-task q12 eval slice、linear / Stage65 adapter base。
+- Keep fractions：`0.1`, `0.25`。
+- Side bits：`6`, `8`。
+- 对 kept residual attrs 做 per-frame per-attribute uniform quantization/dequantization。
+- Rate 估计包括 Gaussian index bits、quantized residual attr bits、per-attribute min/max metadata。
+- 输出 rendered PSNR、delta vs base、estimated side-info MiB/intermediate-frame。
+- 运行前按要求检查 `nvidia-smi`。
+
+### Stage87 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU0 忙，GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 smoke。
+
+新增脚本：
+
+```text
+scripts/run_stage87_quantized_residual_sideinfo_smoke.py
+```
+
+仓库内输出：
+
+```text
+experiments/stage87_quantized_residual_sideinfo_smoke/stage87_quantized_residual_sideinfo_smoke_summary.json
+experiments/stage87_quantized_residual_sideinfo_smoke/stage87_quantized_residual_sideinfo_smoke_report.md
+experiments/stage87_quantized_residual_sideinfo_smoke/stage87_quantized_residual_sideinfo_rows.csv
+experiments/stage87_quantized_residual_sideinfo_smoke/stage87_quantized_residual_sideinfo_summary.csv
+```
+
+q6 top10% quantized residual side-info：
+
+| base | gap | side MiB/intermediate-frame | base PSNR | side PSNR | delta |
+|---|---:|---:|---:|---:|---:|
+| linear | 4 | 0.041353702545166016 | 19.98979652819421 | 23.326992309396783 | 3.3371957812025705 |
+| linear | 8 | 0.041353702545166016 | 18.12111775349949 | 20.94547122800524 | 2.8243534745057453 |
+| linear | 16 | 0.041353702545166016 | 19.1130149705525 | 23.589870525188754 | 4.476855554636258 |
+| stage65_adapter | 4 | 0.041353702545166016 | 20.48273820637705 | 23.35258386164915 | 2.869845655272099 |
+| stage65_adapter | 8 | 0.041353702545166016 | 18.532358493984642 | 20.943546028225864 | 2.411187534241218 |
+| stage65_adapter | 16 | 0.041353702545166016 | 19.075010088585586 | 22.481910804608162 | 3.406900716022574 |
+
+q8 top10% quantized residual side-info：
+
+| base | gap | side MiB/intermediate-frame | delta |
+|---|---:|---:|---:|
+| linear | 4 | 0.05277824401855469 | 3.3417250739461744 |
+| linear | 8 | 0.05277824401855469 | 2.830301690996175 |
+| linear | 16 | 0.05277824401855469 | 4.482808916885427 |
+| stage65_adapter | 4 | 0.05277824401855469 | 2.8765203485467516 |
+| stage65_adapter | 8 | 0.05277824401855469 | 2.4118763463117925 |
+| stage65_adapter | 16 | 0.05277824401855469 | 3.412887380817623 |
+
+结论：Stage87 说明 residual side-info 对 6-bit quantization 很鲁棒，q6 与 q8 的 rendered PSNR 差异很小。下一步应将 q12 anchor main rate 与 q6/q8 top-k residual side-info rate 合并成小规模 RD table，并明确 side-info 是 transmitted information。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。
