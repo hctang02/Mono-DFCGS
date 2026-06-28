@@ -7198,6 +7198,74 @@ Diagnostic rows：`240`。
 
 结论：Stage104 明确了 Stage103 的 mismatch：learned selectors 在所有 group 的 mean residual-energy recall 都高于 endpoint，但 PSNR 不总是提高。Stage65 adapter base 的 mismatch 最明显，`shared_energy_regression` 在 adapter gap4/8/16 上分别有 `15/23`、`11/19`、`10/18` 个 energy-up/PSNR-down cases。下一步 selector 不能只优化 residual-energy topk，应引入 render-aware labels 或 task-level rendered ranking。
 
+## 2026-06-28：Stage105 Render-Aware Selector Policy Preflight
+
+### 目标
+
+基于 Stage103 rendered rows，不重新渲染，先判断 render-aware policy 是否有实际空间：比较 endpoint-only、always learned、group-level switch 和 per-task oracle switch 的 rendered PSNR。
+
+### 操作计划
+
+- 新增 `scripts/run_stage105_render_aware_selector_policy_preflight.py`。
+- 输入 `experiments/stage103_broader_rendered_selector_validation/stage103_broader_rendered_selector_rows.csv`。
+- 构造 policy candidates：`endpoint_only`、`always_shared_energy_regression`、`always_shared_topk_bce`、`group_best_mean_psnr`、`oracle_task_best`。
+- `group_best_mean_psnr` 只按 `base_method × gap` 选择 mean rendered PSNR 最好的 deployable-style candidate。
+- `oracle_task_best` 使用 per-task rendered PSNR 选择最佳 candidate，只作为 render-aware upper bound，不可部署。
+- 输出 policy/base/gap summary、overall summary 和 per-task selected rows。
+- 该阶段为 CPU diagnostic，不写 heavy tensors，不改变模型。
+- 运行前按要求检查 `nvidia-smi`。
+
+### Stage105 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。Stage105 是 CPU 汇总脚本，不占用 GPU。先运行语法检查：
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage105_render_aware_selector_policy_preflight.py
+```
+
+随后运行 preflight：
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage105_render_aware_selector_policy_preflight.py
+```
+
+新增脚本：
+
+```text
+scripts/run_stage105_render_aware_selector_policy_preflight.py
+```
+
+输出目录：
+
+```text
+experiments/stage105_render_aware_selector_policy_preflight/
+```
+
+Task count：`120`。
+
+Overall policy summary：
+
+| policy | selected PSNR | endpoint PSNR | gain vs endpoint | teacher PSNR | selections |
+|---|---:|---:|---:|---:|---|
+| endpoint_only | 20.316812710325646 | 20.316812710325646 | 0.0 | 22.010204667924707 | endpoint_diff_baseline:120 |
+| always_shared_energy_regression | 20.284564319533338 | 20.316812710325646 | -0.03224839079231098 | 22.010204667924707 | shared_energy_regression:120 |
+| always_shared_topk_bce | 20.21561560612798 | 20.316812710325646 | -0.10119710419766939 | 22.010204667924707 | shared_topk_bce:120 |
+| group_best_mean_psnr | 20.346872347170144 | 20.316812710325646 | 0.030059636844502392 | 22.010204667924707 | endpoint_diff_baseline:60;shared_energy_regression:60 |
+| oracle_task_best | 20.403744235652294 | 20.316812710325646 | 0.08693152532665556 | 22.010204667924707 | endpoint_diff_baseline:55;shared_energy_regression:44;shared_topk_bce:21 |
+
+Group policy choices：
+
+| base | gap | selected candidate | gain vs endpoint |
+|---|---:|---|---:|
+| linear | 4 | shared_energy_regression | 0.026827877460277705 |
+| linear | 8 | shared_energy_regression | 0.030863220393055002 |
+| linear | 16 | shared_energy_regression | 0.1335396695714337 |
+| stage65_adapter | 4 | endpoint_diff_baseline | 0.0 |
+| stage65_adapter | 8 | endpoint_diff_baseline | 0.0 |
+| stage65_adapter | 16 | endpoint_diff_baseline | 0.0 |
+
+结论：Stage105 说明简单 render-aware switching 有小幅但稳定收益。`group_best_mean_psnr` 通过 linear 使用 `shared_energy_regression`、Stage65 adapter 使用 endpoint，整体比 endpoint-only 提升 `+0.030059636844502392 dB`。`oracle_task_best` 上界为 `+0.08693152532665556 dB`，说明 task-level render-aware policy 仍有额外空间，但空间有限且该 oracle 不可部署。下一步可做 Stage106：训练/评估一个 deployable task-level switch predictor，目标是逼近 oracle_task_best，同时避免 adapter 上 learned selector 的负收益。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。

@@ -1337,3 +1337,17 @@ Stage104 不重新渲染，直接分析 Stage103 per-task rows，诊断 learned 
 ### 后续执行更新
 
 Stage104 render-energy selector mismatch diagnostic 已完成：运行前检查 `nvidia-smi`，该阶段为 CPU 汇总，不占用 GPU。新增 `scripts/run_stage104_render_energy_selector_mismatch_diagnostic.py`，先通过 `py_compile`，再读取 Stage103 rows 运行 diagnostic。输出目录 `experiments/stage104_render_energy_selector_mismatch_diagnostic/`，大小约 `120K`，diagnostic rows `240`。结果：所有 group 的 learned selector mean energy recall delta 都为正，但 PSNR delta 不稳定。`shared_energy_regression` 在 linear gap4/8/16 的 PSNR delta 为 `+0.0268/+0.0309/+0.1335 dB`，但在 Stage65 adapter gap4/8/16 为 `-0.1538/-0.1920/-0.0162 dB`；对应 energy-up/PSNR-down cases 为 `15/23`、`11/19`、`10/18`。结论：residual-energy topk label 与 rendered quality 不完全对齐；下一步应做 render-aware selector labels/ranking，而不是继续盲目提升 energy recall 或直接做 residual value prediction。
+
+## 2026-06-28：继续 Stage105 render-aware selector policy preflight
+
+### 用户原始问题
+
+用户表示可以继续往后一直做。
+
+### 当前执行决策
+
+Stage105 先不训练新模型、不重新渲染，而是基于 Stage103 per-task rendered rows 做 render-aware selector policy preflight。计划比较 `endpoint_only`、`always_shared_energy_regression`、`always_shared_topk_bce`、`group_best_mean_psnr` 和 `oracle_task_best`。其中 `group_best_mean_psnr` 只用 `base_method × gap` 的均值选择 candidate，接近可部署规则；`oracle_task_best` 使用 per-task rendered PSNR，只作为上界，不能作为最终 decoder policy。目标是确认 render-aware switching 是否值得进入后续可学习 task-level selector。
+
+### 后续执行更新
+
+Stage105 render-aware selector policy preflight 已完成：运行前检查 `nvidia-smi`，该阶段为 CPU 汇总，不占用 GPU。新增 `scripts/run_stage105_render_aware_selector_policy_preflight.py`，先通过 `py_compile`，再读取 Stage103 rows 运行 preflight。输出目录 `experiments/stage105_render_aware_selector_policy_preflight/`，大小约 `208K`，task count `120`。整体结果：`endpoint_only` PSNR `20.316812710325646`；`always_shared_energy_regression` 为 `20.284564319533338`，比 endpoint 低 `-0.03224839079231098 dB`；`always_shared_topk_bce` 为 `20.21561560612798`，低 `-0.10119710419766939 dB`；`group_best_mean_psnr` 为 `20.346872347170144`，比 endpoint 高 `+0.030059636844502392 dB`；`oracle_task_best` 上界为 `20.403744235652294`，比 endpoint 高 `+0.08693152532665556 dB`。group policy 选择 linear gap4/8/16 用 `shared_energy_regression`，Stage65 adapter gap4/8/16 用 endpoint。结论：render-aware switching 有小幅空间；下一步可做 deployable task-level switch predictor，但仍不应直接进入 residual value prediction。
