@@ -959,3 +959,17 @@ Stage77 在 Stage76 direct keyframe quantization sweep 之后，进一步评估 
 ### 后续执行更新
 
 Stage77 已完成：q10/q12 明显提升 all-frame PSNR 和 given-keyframe PSNR，但 Stage65 adapter 的 middle-frame PSNR 几乎不变。例如 gap4 adapter 从 q8 `20.57270098931695` all PSNR 提升到 q12 `21.284133638556813`，但 middle PSNR 只从 `18.247303018014392` 到 `18.256196169477683`。结论是 q10/q12 应加入 RD operating points，但主要剩余瓶颈是 static-anchor-only dynamic prediction/modeling。
+
+## 2026-06-28：继续 Stage78 integrated DAVIS RD package
+
+### 用户原始问题
+
+用户要求：按照后续计划继续往下做，一点点把这些步骤做好；当前先不急着做 FCGS/D-FCGS 对比实验。
+
+### 当前执行决策
+
+从 Stage78 开始继续执行：整合 Stage75 corrected StreamSplat paper-protocol baseline 和 Stage77 q8/q10/q12 anchor-only RD sweep，生成新的 DAVIS RD package。该阶段聚焦我们自己的创新线，输出 anchor-only RD table、rate table、method summary、与 corrected StreamSplat reference 的差距表和 RD curve。Stage78 为 CPU-only package generation，不启动训练或重渲染。
+
+### 后续执行更新
+
+Stage78 已完成 integrated DAVIS RD package，输出目录为 `experiments/stage78_integrated_davis_rd_package/`。当前最佳 anchor-only scoped 点为 q12 adapter，mean all PSNR `19.074880702510743`、mean middle PSNR `17.100601790202944`、mean rate `0.11167752575591416 MiB/frame`。与 corrected StreamSplat reference 的 middle-frame gap 仍约 `4.5-4.8 dB`，后续应转向 stronger adapter training、rendered-label selector 和 dynamic side-info。

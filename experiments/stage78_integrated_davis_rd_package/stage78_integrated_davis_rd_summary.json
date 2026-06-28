@@ -1,0 +1,82 @@
+{
+  "stage": 78,
+  "mode": "integrated DAVIS RD package",
+  "stage75_root": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage75_corrected_streamsplat_paper_protocol_package",
+  "stage77_root": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage77_qbit_full_video_anchor_only_rd_sweep",
+  "summary_root": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage78_integrated_davis_rd_package",
+  "rate_table_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage78_integrated_davis_rd_package/stage78_anchor_only_rate_table.csv",
+  "psnr_table_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage78_integrated_davis_rd_package/stage78_anchor_only_psnr_table.csv",
+  "method_summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage78_integrated_davis_rd_package/stage78_method_summary.csv",
+  "reference_gap_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage78_integrated_davis_rd_package/stage78_reference_gap_table.csv",
+  "all_rd_plot": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage78_integrated_davis_rd_package/stage78_anchor_only_all_rd_curve.png",
+  "middle_rd_plot": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage78_integrated_davis_rd_package/stage78_anchor_only_middle_rd_curve.png",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage78_integrated_davis_rd_package/stage78_integrated_davis_rd_report.md",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage78_integrated_davis_rd_package/stage78_integrated_davis_rd_summary.json",
+  "method_summary": [
+    {
+      "method": "linear",
+      "codec": "q8",
+      "bits": 8,
+      "point_count": 3,
+      "mean_rate_mib_per_frame": 0.0744543764840695,
+      "mean_all_psnr": 18.196689289875984,
+      "mean_middle_psnr": 16.561587772918216,
+      "mean_given_psnr": 27.01290792772471
+    },
+    {
+      "method": "linear",
+      "codec": "q10",
+      "bits": 10,
+      "point_count": 3,
+      "mean_rate_mib_per_frame": 0.09306595111999183,
+      "mean_all_psnr": 18.589141793730672,
+      "mean_middle_psnr": 16.581582825535197,
+      "mean_given_psnr": 29.32570816116025
+    },
+    {
+      "method": "linear",
+      "codec": "q12",
+      "bits": 12,
+      "point_count": 3,
+      "mean_rate_mib_per_frame": 0.11167752575591416,
+      "mean_all_psnr": 18.648513030391765,
+      "mean_middle_psnr": 16.58455938471112,
+      "mean_given_psnr": 29.67539054371856
+    },
+    {
+      "method": "adapter",
+      "codec": "q8",
+      "bits": 8,
+      "point_count": 3,
+      "mean_rate_mib_per_frame": 0.0744543764840695,
+      "mean_all_psnr": 18.639515032836314,
+      "mean_middle_psnr": 17.098172669025544,
+      "mean_given_psnr": 27.01290792772471
+    },
+    {
+      "method": "adapter",
+      "codec": "q10",
+      "bits": 10,
+      "point_count": 3,
+      "mean_rate_mib_per_frame": 0.09306595111999183,
+      "mean_all_psnr": 19.017864345659827,
+      "mean_middle_psnr": 17.100522171202915,
+      "mean_given_psnr": 29.32570816116025
+    },
+    {
+      "method": "adapter",
+      "codec": "q12",
+      "bits": 12,
+      "point_count": 3,
+      "mean_rate_mib_per_frame": 0.11167752575591416,
+      "mean_all_psnr": 19.074880702510743,
+      "mean_middle_psnr": 17.100601790202944,
+      "mean_given_psnr": 29.67539054371856
+    }
+  ],
+  "notes": [
+    "Stage78 excludes FCGS/D-FCGS by user request.",
+    "Stage75 StreamSplat reference is paper-protocol; Stage77 anchor-only rows are scoped DAVIS RD diagnostics.",
+    "Use all-frame PSNR as primary anchor-only RD metric and middle/given PSNR as diagnostics."
+  ]
+}

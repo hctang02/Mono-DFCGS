@@ -539,3 +539,8 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 
 - q10/q12 improve full-video all-frame PSNR mostly by recovering keyframe quality. They do not materially improve Stage65 adapter middle-frame PSNR.
 - Do not present q10/q12 as solving the dynamic prediction problem. They solve a codec/keyframe fidelity problem; the middle-frame bottleneck remains in the static-anchor-only predictor/model.
+
+## Stage78 Integrated RD Notes
+
+- Keep Stage75 corrected StreamSplat paper-protocol reference separate from Stage77/78 scoped anchor-only RD protocol. The reference gap table is diagnostic, not an apples-to-apples RD curve.
+- Stage78 confirms q12 adapter is the current best anchor-only scoped point, but the middle-frame gap to corrected StreamSplat remains large. Do not overemphasize codec changes as the main innovation path from here.

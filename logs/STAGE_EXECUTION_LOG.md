@@ -5555,6 +5555,56 @@ Adapter key results：
 
 结论：q10/q12 改善 all-frame PSNR 主要来自 given/keyframe 质量恢复；middle-frame PSNR 基本不变。后续瓶颈应转向 stronger predictor / dynamic side-info / rendered-label selector。
 
+## 2026-06-28：Stage78 Integrated DAVIS RD Package
+
+### 目标
+
+整合 Stage75 corrected StreamSplat baseline 与 Stage77 q8/q10/q12 anchor-only RD sweep，形成新的 DAVIS RD package，作为后续 adapter training、selector 和 compression ablation 的统一对照基线。
+
+### 操作计划
+
+- 读取 `experiments/stage75_corrected_streamsplat_paper_protocol_package/` 的 corrected StreamSplat paper-style reference。
+- 读取 `experiments/stage77_qbit_full_video_anchor_only_rd_sweep/` 的 q8/q10/q12 linear/adapter RD rows。
+- 输出 rate table、all/middle/given PSNR table、method summary、gap-to-StreamSplat reference table 和 RD curve。
+- 明确 Stage78 的 StreamSplat reference 是 paper-protocol interpolation reference，不直接等同 Stage70 scoped all-frame protocol。
+- Stage78 为 CPU-only 汇总；运行前仍按用户要求检查 `nvidia-smi`。
+
+### Stage78 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。该阶段为 CPU-only package generation。
+
+新增脚本：
+
+```text
+scripts/run_stage78_integrated_davis_rd_package.py
+```
+
+输出：
+
+```text
+experiments/stage78_integrated_davis_rd_package/stage78_integrated_davis_rd_summary.json
+experiments/stage78_integrated_davis_rd_package/stage78_integrated_davis_rd_report.md
+experiments/stage78_integrated_davis_rd_package/stage78_anchor_only_rate_table.csv
+experiments/stage78_integrated_davis_rd_package/stage78_anchor_only_psnr_table.csv
+experiments/stage78_integrated_davis_rd_package/stage78_method_summary.csv
+experiments/stage78_integrated_davis_rd_package/stage78_reference_gap_table.csv
+experiments/stage78_integrated_davis_rd_package/stage78_anchor_only_all_rd_curve.png
+experiments/stage78_integrated_davis_rd_package/stage78_anchor_only_middle_rd_curve.png
+```
+
+Method averages：
+
+| method | codec | mean rate | mean all PSNR | mean middle PSNR | mean given PSNR |
+|---|---|---:|---:|---:|---:|
+| linear | q8 | 0.0744543764840695 | 18.196689289875984 | 16.561587772918216 | 27.01290792772471 |
+| linear | q10 | 0.09306595111999183 | 18.589141793730672 | 16.581582825535197 | 29.32570816116025 |
+| linear | q12 | 0.11167752575591416 | 18.648513030391765 | 16.58455938471112 | 29.67539054371856 |
+| adapter | q8 | 0.0744543764840695 | 18.639515032836314 | 17.098172669025544 | 27.01290792772471 |
+| adapter | q10 | 0.09306595111999183 | 19.017864345659827 | 17.100522171202915 | 29.32570816116025 |
+| adapter | q12 | 0.11167752575591416 | 19.074880702510743 | 17.100601790202944 | 29.67539054371856 |
+
+诊断结论：q12 adapter 是当前 anchor-only scoped RD 中最好点，但 middle-frame PSNR 与 corrected StreamSplat reference 仍差约 `4.5-4.8 dB`。后续优先做 stronger adapter training、rendered-label selector 和 dynamic side-info。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。
