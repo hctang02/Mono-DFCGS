@@ -1431,3 +1431,17 @@ Stage109 将新增 `scripts/run_stage109_selector_score_switch_feature_preflight
 ### 后续执行更新
 
 Stage109 selector-score switch feature preflight 已完成：运行前检查 `nvidia-smi`，GPU0 忙、GPU1 有进程占用、GPU2 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。新增 `scripts/run_stage109_selector_score_switch_feature_preflight.py`，先通过 `py_compile`，再次检查 GPU 后运行完整 preflight。输出目录 `experiments/stage109_selector_score_switch_feature_preflight/`，大小约 `316K`，task count `120`，folds `5`，selector train tasks `96`，selector train examples `589824`。feature dims：anchor-stat `64`，score-stat `82`，anchor+score `133`。结果：`score_stat_mlp_cv` PSNR `20.32781855154445`，gain vs endpoint `+0.01100584121880117 dB`；`anchor_score_mlp_cv` PSNR `20.328372726184103`，gain `+0.01156001585845603 dB`；`anchor_stat_mlp_cv` 复现 Stage108 为 `20.33017523703834`，gain `+0.013362526712690951 dB`；Stage106 fixed group policy 仍最佳 deployable baseline，PSNR `20.34687234717015`，gain `+0.030059636844502392 dB`。结论：selector-score features 有信号但不能替代 Stage106，且 adapter group 仍会掉点；下一步按计划进入 Stage110 broader rendered selector labels。
+
+## 2026-06-28：执行 Stage110 broader rendered selector labels
+
+### 用户原始问题
+
+用户确认可以继续按后续 stages 往下做；Stage109 已完成并推送，进入 Stage110。
+
+### 当前执行决策
+
+Stage110 将扩大 Stage103 rendered selector validation 的 eval task 数，从 `60` 扩到 `240`，用于减少 Stage107-109 小样本 overfitting。计划最小参数化 `scripts/run_stage103_broader_rendered_selector_validation.py`，保留默认 Stage103 输出不变，同时支持 Stage110 命名输出；随后参数化 `scripts/run_stage105_render_aware_selector_policy_preflight.py`，读取 Stage110 rendered rows，重新计算 endpoint-only、always learned、group_best_mean_psnr 和 oracle_task_best。该阶段会渲染，运行前检查 `nvidia-smi` 并选择空闲 GPU；输出只保存 CSV/JSON/Markdown，不保存 checkpoint 或 heavy tensors。若 Stage106-style group policy 在 240-task labels 上仍为正，则继续把 Stage106 视为安全 baseline；若 group choice 发生变化，则记录新 pattern 供 Stage111 使用。
+
+### 后续执行更新
+
+Stage110 broader rendered selector labels 已完成：运行前多次检查 `nvidia-smi`，GPU2 空闲，因此 rendered validation 使用 `CUDA_VISIBLE_DEVICES=2`。参数化 `scripts/run_stage103_broader_rendered_selector_validation.py`、`scripts/run_stage104_render_energy_selector_mismatch_diagnostic.py` 和 `scripts/run_stage105_render_aware_selector_policy_preflight.py`，默认 Stage103/104/105 输出保持不变；Stage110 输出目录为 `experiments/stage110_broader_rendered_selector_labels/`，大小约 `1.8M`。Rendered validation 覆盖 train tasks `96`、eval tasks `240`、train examples `589824`。Policy preflight task count `480`。结果：endpoint-only PSNR `20.3212149854921`；Stage106 fixed group policy PSNR `20.322996715243953`，gain `+0.0017817297518578745 dB`；Stage110 group-best policy PSNR `20.327046871072337`，gain `+0.005831885580240304 dB`；oracle task best PSNR `20.382843220952523`，gain `+0.06162823546041816 dB`。Stage110 group-best choice 为 linear gap4 用 endpoint，linear gap8/16 用 `shared_energy_regression`，Stage65 adapter gap4/8/16 用 endpoint。结论：更大 label set 上 Stage106 仍略正但收益明显缩小，linear gap4 learned selector 不稳；下一步应执行 Stage111 broader switch predictor，以 Stage110 rows 作为更可靠 labels，并同时比较 Stage106 fixed policy 和 Stage110 group-best policy。

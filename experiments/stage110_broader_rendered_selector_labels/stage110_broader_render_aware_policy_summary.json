@@ -1,0 +1,173 @@
+{
+  "stage": 110,
+  "mode": "broader render-aware selector policy preflight",
+  "report_title": "Stage110 Broader Render-Aware Selector Policy Preflight",
+  "input_rows": "experiments/stage110_broader_rendered_selector_labels/stage110_broader_rendered_selector_labels_rows.csv",
+  "stage106_policy": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage106_render_aware_group_policy_package/stage106_render_aware_group_policy.json",
+  "task_count": 480,
+  "policies": [
+    "endpoint_only",
+    "always_shared_energy_regression",
+    "always_shared_topk_bce",
+    "stage106_fixed_group_policy",
+    "group_best_mean_psnr",
+    "oracle_task_best"
+  ],
+  "deployable_candidates": [
+    "endpoint_diff_baseline",
+    "shared_energy_regression",
+    "shared_topk_bce"
+  ],
+  "rows_csv": "experiments/stage110_broader_rendered_selector_labels/stage110_broader_render_aware_policy_rows.csv",
+  "group_summary_csv": "experiments/stage110_broader_rendered_selector_labels/stage110_broader_render_aware_policy_group_summary.csv",
+  "overall_summary_csv": "experiments/stage110_broader_rendered_selector_labels/stage110_broader_render_aware_policy_overall_summary.csv",
+  "group_choices_csv": "experiments/stage110_broader_rendered_selector_labels/stage110_broader_render_aware_policy_group_choices.csv",
+  "report_md": "experiments/stage110_broader_rendered_selector_labels/stage110_broader_render_aware_policy_report.md",
+  "group_choice_rows": [
+    {
+      "base_method": "linear",
+      "reference_gap": 4,
+      "selected_candidate": "endpoint_diff_baseline",
+      "mean_sideinfo_psnr": 21.299547171094726,
+      "endpoint_mean_sideinfo_psnr": 21.299547171094726,
+      "mean_gain_vs_endpoint": 0.0
+    },
+    {
+      "base_method": "linear",
+      "reference_gap": 8,
+      "selected_candidate": "shared_energy_regression",
+      "mean_sideinfo_psnr": 20.38485570310796,
+      "endpoint_mean_sideinfo_psnr": 20.37554843127951,
+      "mean_gain_vs_endpoint": 0.009307271828451036
+    },
+    {
+      "base_method": "linear",
+      "reference_gap": 16,
+      "selected_candidate": "shared_energy_regression",
+      "mean_sideinfo_psnr": 19.073371617988876,
+      "endpoint_mean_sideinfo_psnr": 19.046909687167496,
+      "mean_gain_vs_endpoint": 0.026461930821380264
+    },
+    {
+      "base_method": "stage65_adapter",
+      "reference_gap": 4,
+      "selected_candidate": "endpoint_diff_baseline",
+      "mean_sideinfo_psnr": 21.356867273139482,
+      "endpoint_mean_sideinfo_psnr": 21.356867273139482,
+      "mean_gain_vs_endpoint": 0.0
+    },
+    {
+      "base_method": "stage65_adapter",
+      "reference_gap": 8,
+      "selected_candidate": "endpoint_diff_baseline",
+      "mean_sideinfo_psnr": 20.525267394607557,
+      "endpoint_mean_sideinfo_psnr": 20.525267394607557,
+      "mean_gain_vs_endpoint": 0.0
+    },
+    {
+      "base_method": "stage65_adapter",
+      "reference_gap": 16,
+      "selected_candidate": "endpoint_diff_baseline",
+      "mean_sideinfo_psnr": 19.19073574770046,
+      "endpoint_mean_sideinfo_psnr": 19.19073574770046,
+      "mean_gain_vs_endpoint": 0.0
+    }
+  ],
+  "overall_summary_rows": [
+    {
+      "policy": "always_shared_energy_regression",
+      "task_count": 480,
+      "mean_base_psnr": 19.03833812732752,
+      "mean_endpoint_sideinfo_psnr": 20.3212149854921,
+      "mean_selected_sideinfo_psnr": 20.229984156626987,
+      "mean_teacher_oracle_sideinfo_psnr": 22.077800340877268,
+      "mean_delta_psnr_vs_endpoint": -0.09123082886513802,
+      "mean_delta_psnr_vs_base": 1.1916460292994506,
+      "mean_gap_to_teacher_oracle_psnr": -1.8478161842502654,
+      "mean_precision_at_keep": 0.3509862755192444,
+      "mean_energy_recall_total": 0.22616748025951286,
+      "mean_relative_energy_recall_vs_oracle": 0.5595903992652893,
+      "selected_candidate_counts": "shared_energy_regression:480"
+    },
+    {
+      "policy": "always_shared_topk_bce",
+      "task_count": 480,
+      "mean_base_psnr": 19.03833812732752,
+      "mean_endpoint_sideinfo_psnr": 20.3212149854921,
+      "mean_selected_sideinfo_psnr": 20.159752797305014,
+      "mean_teacher_oracle_sideinfo_psnr": 22.077800340877268,
+      "mean_delta_psnr_vs_endpoint": -0.16146218818711972,
+      "mean_delta_psnr_vs_base": 1.121414669977469,
+      "mean_gap_to_teacher_oracle_psnr": -1.9180475435722473,
+      "mean_precision_at_keep": 0.35005312845654163,
+      "mean_energy_recall_total": 0.22565066522608201,
+      "mean_relative_energy_recall_vs_oracle": 0.560263491421938,
+      "selected_candidate_counts": "shared_topk_bce:480"
+    },
+    {
+      "policy": "endpoint_only",
+      "task_count": 480,
+      "mean_base_psnr": 19.03833812732752,
+      "mean_endpoint_sideinfo_psnr": 20.3212149854921,
+      "mean_selected_sideinfo_psnr": 20.3212149854921,
+      "mean_teacher_oracle_sideinfo_psnr": 22.077800340877268,
+      "mean_delta_psnr_vs_endpoint": 0.0,
+      "mean_delta_psnr_vs_base": 1.2828768581645889,
+      "mean_gap_to_teacher_oracle_psnr": -1.7565853553851296,
+      "mean_precision_at_keep": 0.27495252288687577,
+      "mean_energy_recall_total": 0.1942112475944062,
+      "mean_relative_energy_recall_vs_oracle": 0.4750616183814903,
+      "selected_candidate_counts": "endpoint_diff_baseline:480"
+    },
+    {
+      "policy": "group_best_mean_psnr",
+      "task_count": 480,
+      "mean_base_psnr": 19.03833812732752,
+      "mean_endpoint_sideinfo_psnr": 20.3212149854921,
+      "mean_selected_sideinfo_psnr": 20.327046871072337,
+      "mean_teacher_oracle_sideinfo_psnr": 22.077800340877268,
+      "mean_delta_psnr_vs_endpoint": 0.005831885580240304,
+      "mean_delta_psnr_vs_base": 1.2887087437448286,
+      "mean_gap_to_teacher_oracle_psnr": -1.750753469804888,
+      "mean_precision_at_keep": 0.28829580340285854,
+      "mean_energy_recall_total": 0.20619393843226136,
+      "mean_relative_energy_recall_vs_oracle": 0.4944105441061159,
+      "selected_candidate_counts": "endpoint_diff_baseline:323;shared_energy_regression:157"
+    },
+    {
+      "policy": "oracle_task_best",
+      "task_count": 480,
+      "mean_base_psnr": 19.03833812732752,
+      "mean_endpoint_sideinfo_psnr": 20.3212149854921,
+      "mean_selected_sideinfo_psnr": 20.382843220952523,
+      "mean_teacher_oracle_sideinfo_psnr": 22.077800340877268,
+      "mean_delta_psnr_vs_endpoint": 0.06162823546041816,
+      "mean_delta_psnr_vs_base": 1.3445050936250087,
+      "mean_gap_to_teacher_oracle_psnr": -1.6949571199247109,
+      "mean_precision_at_keep": 0.31080552502147235,
+      "mean_energy_recall_total": 0.21292074020020663,
+      "mean_relative_energy_recall_vs_oracle": 0.5169668667018413,
+      "selected_candidate_counts": "endpoint_diff_baseline:278;shared_energy_regression:121;shared_topk_bce:81"
+    },
+    {
+      "policy": "stage106_fixed_group_policy",
+      "task_count": 480,
+      "mean_base_psnr": 19.03833812732752,
+      "mean_endpoint_sideinfo_psnr": 20.3212149854921,
+      "mean_selected_sideinfo_psnr": 20.322996715243953,
+      "mean_teacher_oracle_sideinfo_psnr": 22.077800340877268,
+      "mean_delta_psnr_vs_endpoint": 0.0017817297518578745,
+      "mean_delta_psnr_vs_base": 1.284658587916447,
+      "mean_gap_to_teacher_oracle_psnr": -1.7548036256332702,
+      "mean_precision_at_keep": 0.2927428100388473,
+      "mean_energy_recall_total": 0.21158466555643826,
+      "mean_relative_energy_recall_vs_oracle": 0.5030206107534468,
+      "selected_candidate_counts": "endpoint_diff_baseline:240;shared_energy_regression:240"
+    }
+  ],
+  "notes": [
+    "No rendering or heavy tensor output is produced.",
+    "Oracle task policy uses per-task rendered PSNR and is not deployable.",
+    "Candidates still use teacher residual values at selected indices."
+  ]
+}

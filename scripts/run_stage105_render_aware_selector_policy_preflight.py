@@ -7,6 +7,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_STAGE103_ROWS = REPO_ROOT / "experiments/stage103_broader_rendered_selector_validation/stage103_broader_rendered_selector_rows.csv"
+DEFAULT_STAGE106_POLICY = REPO_ROOT / "experiments/stage106_render_aware_group_policy_package/stage106_render_aware_group_policy.json"
 DEFAULT_SUMMARY_ROOT = REPO_ROOT / "experiments/stage105_render_aware_selector_policy_preflight"
 DEPLOYABLE_CANDIDATES = ["endpoint_diff_baseline", "shared_energy_regression", "shared_topk_bce"]
 
@@ -143,7 +144,7 @@ def build_group_choices(tasks):
     return choices, rows
 
 
-def choose_candidate(policy, candidates, group_choices):
+def choose_candidate(policy, candidates, group_choices, stage106_policy):
     endpoint = candidates["endpoint_diff_baseline"]
     group_key = (endpoint["base_method"], int(endpoint["reference_gap"]))
     if policy == "endpoint_only":
@@ -154,17 +155,19 @@ def choose_candidate(policy, candidates, group_choices):
         return "shared_topk_bce"
     if policy == "group_best_mean_psnr":
         return group_choices[group_key]
+    if policy == "stage106_fixed_group_policy":
+        return stage106_policy.get(endpoint["base_method"], {}).get(str(int(endpoint["reference_gap"])), "endpoint_diff_baseline")
     if policy == "oracle_task_best":
         return max(DEPLOYABLE_CANDIDATES, key=lambda candidate: f(candidates[candidate], "sideinfo_psnr"))
     raise ValueError(f"Unknown policy: {policy}")
 
 
-def build_policy_rows(tasks, group_choices, policies):
+def build_policy_rows(tasks, group_choices, policies, stage106_policy):
     rows = []
     for _, candidates in sorted(tasks.items()):
         endpoint = candidates["endpoint_diff_baseline"]
         for policy in policies:
-            selected_candidate = choose_candidate(policy, candidates, group_choices)
+            selected_candidate = choose_candidate(policy, candidates, group_choices, stage106_policy)
             selected = candidates[selected_candidate]
             rows.append({
                 "policy": policy,
@@ -230,7 +233,7 @@ def summarize_overall(rows):
 
 def write_report(summary, group_choice_rows, group_summary_rows, overall_summary_rows, path):
     lines = [
-        "# Stage105 Render-Aware Selector Policy Preflight",
+        f"# {summary.get('report_title', 'Stage105 Render-Aware Selector Policy Preflight')}",
         "",
         "## Configuration",
         "",
@@ -284,7 +287,12 @@ def write_report(summary, group_choice_rows, group_summary_rows, overall_summary
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--stage103_rows", type=Path, default=DEFAULT_STAGE103_ROWS)
+    parser.add_argument("--stage106_policy", type=Path, default=DEFAULT_STAGE106_POLICY)
     parser.add_argument("--summary_root", type=Path, default=DEFAULT_SUMMARY_ROOT)
+    parser.add_argument("--stage", type=int, default=105)
+    parser.add_argument("--mode", default="render-aware selector policy preflight")
+    parser.add_argument("--output_prefix", default="stage105_render_aware_policy")
+    parser.add_argument("--report_title", default="Stage105 Render-Aware Selector Policy Preflight")
     parser.add_argument("--policies", nargs="+", default=[
         "endpoint_only",
         "always_shared_energy_regression",
@@ -299,27 +307,32 @@ def main():
     args = parse_args()
     args.summary_root.mkdir(parents=True, exist_ok=True)
     stage103_rows = read_csv(args.stage103_rows)
+    stage106_policy = {}
+    if args.stage106_policy and args.stage106_policy.exists():
+        stage106_policy = json.loads(args.stage106_policy.read_text(encoding="utf-8")).get("selection_table", {})
     tasks = group_rows_by_task(stage103_rows)
     group_choices, group_choice_rows = build_group_choices(tasks)
-    policy_rows = build_policy_rows(tasks, group_choices, args.policies)
+    policy_rows = build_policy_rows(tasks, group_choices, args.policies, stage106_policy)
     group_summary_rows = summarize_groups(policy_rows)
     overall_summary_rows = summarize_overall(policy_rows)
 
-    rows_csv = args.summary_root / "stage105_render_aware_policy_rows.csv"
-    group_summary_csv = args.summary_root / "stage105_render_aware_policy_group_summary.csv"
-    overall_summary_csv = args.summary_root / "stage105_render_aware_policy_overall_summary.csv"
-    group_choices_csv = args.summary_root / "stage105_render_aware_policy_group_choices.csv"
-    summary_json = args.summary_root / "stage105_render_aware_policy_summary.json"
-    report_md = args.summary_root / "stage105_render_aware_policy_report.md"
+    rows_csv = args.summary_root / f"{args.output_prefix}_rows.csv"
+    group_summary_csv = args.summary_root / f"{args.output_prefix}_group_summary.csv"
+    overall_summary_csv = args.summary_root / f"{args.output_prefix}_overall_summary.csv"
+    group_choices_csv = args.summary_root / f"{args.output_prefix}_group_choices.csv"
+    summary_json = args.summary_root / f"{args.output_prefix}_summary.json"
+    report_md = args.summary_root / f"{args.output_prefix}_report.md"
 
     write_csv(policy_rows, rows_csv, ROW_FIELDS)
     write_csv(group_summary_rows, group_summary_csv, GROUP_SUMMARY_FIELDS)
     write_csv(overall_summary_rows, overall_summary_csv, OVERALL_SUMMARY_FIELDS)
     write_csv(group_choice_rows, group_choices_csv, GROUP_CHOICE_FIELDS)
     summary = {
-        "stage": 105,
-        "mode": "render-aware selector policy preflight",
+        "stage": args.stage,
+        "mode": args.mode,
+        "report_title": args.report_title,
         "input_rows": str(args.stage103_rows),
+        "stage106_policy": str(args.stage106_policy),
         "task_count": len(tasks),
         "policies": args.policies,
         "deployable_candidates": DEPLOYABLE_CANDIDATES,

@@ -182,7 +182,7 @@ def summarize(rows):
 
 def write_report(summary, summary_rows, path):
     lines = [
-        "# Stage104 Render-Energy Selector Mismatch Diagnostic",
+        f"# {summary.get('report_title', 'Stage104 Render-Energy Selector Mismatch Diagnostic')}",
         "",
         "## Configuration",
         "",
@@ -215,6 +215,10 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--stage103_rows", type=Path, default=DEFAULT_STAGE103_ROWS)
     parser.add_argument("--summary_root", type=Path, default=DEFAULT_SUMMARY_ROOT)
+    parser.add_argument("--stage", type=int, default=104)
+    parser.add_argument("--mode", default="render-energy selector mismatch diagnostic")
+    parser.add_argument("--output_prefix", default="stage104_render_energy_mismatch")
+    parser.add_argument("--report_title", default="Stage104 Render-Energy Selector Mismatch Diagnostic")
     parser.add_argument("--candidates", nargs="+", default=["shared_energy_regression", "shared_topk_bce"])
     return parser.parse_args()
 
@@ -225,15 +229,16 @@ def main():
     stage103_rows = read_csv(args.stage103_rows)
     diagnostic_rows = build_rows(stage103_rows, args.candidates)
     summary_rows = summarize(diagnostic_rows)
-    rows_csv = args.summary_root / "stage104_render_energy_mismatch_rows.csv"
-    summary_csv = args.summary_root / "stage104_render_energy_mismatch_summary.csv"
-    summary_json = args.summary_root / "stage104_render_energy_mismatch_summary.json"
-    report_md = args.summary_root / "stage104_render_energy_mismatch_report.md"
+    rows_csv = args.summary_root / f"{args.output_prefix}_rows.csv"
+    summary_csv = args.summary_root / f"{args.output_prefix}_summary.csv"
+    summary_json = args.summary_root / f"{args.output_prefix}_summary.json"
+    report_md = args.summary_root / f"{args.output_prefix}_report.md"
     write_csv(diagnostic_rows, rows_csv, ROW_FIELDS)
     write_csv(summary_rows, summary_csv, SUMMARY_FIELDS)
     summary = {
-        "stage": 104,
-        "mode": "render-energy selector mismatch diagnostic",
+        "stage": args.stage,
+        "mode": args.mode,
+        "report_title": args.report_title,
         "input_rows": str(args.stage103_rows),
         "candidates": args.candidates,
         "diagnostic_row_count": len(diagnostic_rows),

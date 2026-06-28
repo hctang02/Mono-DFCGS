@@ -114,7 +114,7 @@ def best_learned_by_group(summary_rows):
 def write_report(summary, summary_rows, path):
     best_rows = best_learned_by_group(summary_rows)
     lines = [
-        "# Stage103 Broader Rendered Selector Validation",
+        f"# {summary.get('report_title', 'Stage103 Broader Rendered Selector Validation')}",
         "",
         "## Configuration",
         "",
@@ -163,6 +163,10 @@ def parse_args():
     parser.add_argument("--tasks_csv", type=Path, default=DEFAULT_STAGE97_TASKS)
     parser.add_argument("--adapter", type=Path, default=DEFAULT_ADAPTER)
     parser.add_argument("--summary_root", type=Path, default=DEFAULT_SUMMARY_ROOT)
+    parser.add_argument("--stage", type=int, default=103)
+    parser.add_argument("--mode", default="broader rendered selector validation")
+    parser.add_argument("--output_prefix", default="stage103_broader_rendered_selector")
+    parser.add_argument("--report_title", default="Stage103 Broader Rendered Selector Validation")
     parser.add_argument("--gaps", nargs="+", type=int, default=[4, 8, 16])
     parser.add_argument("--base_methods", nargs="+", default=["linear", "stage65_adapter"])
     parser.add_argument("--objectives", nargs="+", default=["topk_bce", "energy_regression"])
@@ -271,11 +275,11 @@ def main():
                 torch.cuda.empty_cache()
 
     summary_rows = summarize(rows)
-    rows_csv = args.summary_root / "stage103_broader_rendered_selector_rows.csv"
-    summary_csv = args.summary_root / "stage103_broader_rendered_selector_summary.csv"
-    train_log_csv = args.summary_root / "stage103_broader_rendered_selector_train_log.csv"
-    summary_json = args.summary_root / "stage103_broader_rendered_selector_summary.json"
-    report_md = args.summary_root / "stage103_broader_rendered_selector_report.md"
+    rows_csv = args.summary_root / f"{args.output_prefix}_rows.csv"
+    summary_csv = args.summary_root / f"{args.output_prefix}_summary.csv"
+    train_log_csv = args.summary_root / f"{args.output_prefix}_train_log.csv"
+    summary_json = args.summary_root / f"{args.output_prefix}_summary.json"
+    report_md = args.summary_root / f"{args.output_prefix}_report.md"
     write_csv(rows, rows_csv, ROW_FIELDS)
     write_csv(summary_rows, summary_csv, SUMMARY_FIELDS)
     write_csv(train_logs, train_log_csv, [
@@ -290,8 +294,9 @@ def main():
         "train_example_count",
     ])
     summary = {
-        "stage": 103,
-        "mode": "broader rendered selector validation",
+        "stage": args.stage,
+        "mode": args.mode,
+        "report_title": args.report_title,
         "tasks_csv": str(args.tasks_csv),
         "adapter": str(args.adapter),
         "gaps": args.gaps,

@@ -7574,3 +7574,77 @@ Overall summary：
 | oracle_task_best | 20.403744235652297 | 0.08693152532665556 | 1.0 | endpoint_diff_baseline:55;shared_energy_regression:44;shared_topk_bce:21 |
 
 结论：Stage109 的 selector-score features 有正信号，但没有超过 Stage106 fixed group policy。score-stat 和 anchor+score MLP 均低于 anchor-stat MLP 与 Stage106，且 Stage65 adapter groups 仍出现负收益。因此 Stage106 仍是当前最安全 deployable switch baseline；下一步不继续堆 switch feature，而是进入 Stage110，扩大 rendered selector labels 后再重做 broader switch diagnostics。
+
+## 2026-06-28：Stage110 Broader Rendered Selector Labels
+
+### 目标
+
+把 Stage103 rendered selector validation 从 `60` 个 eval tasks 扩到 `240` 个 eval tasks，减少 Stage107-109 switch predictor 过拟合，并重新验证 Stage106-style group switch 在更大 rendered label set 上是否仍然为正。
+
+### 操作计划
+
+- 参数化 `scripts/run_stage103_broader_rendered_selector_validation.py`，新增 stage/output prefix/report title 参数，默认行为保持 Stage103 不变。
+- 使用 Stage110 参数运行 rendered selector validation：`max_eval_tasks=240`，objectives 为 `topk_bce` 和 `energy_regression`，base methods 为 `linear` 和 `stage65_adapter`。
+- 参数化 `scripts/run_stage105_render_aware_selector_policy_preflight.py`，让其可读取 Stage110 rows 并输出 Stage110 命名 policy preflight。
+- 在 Stage110 rendered rows 上重新计算 endpoint-only、always learned、group_best_mean_psnr 和 oracle_task_best。
+- 不保存 checkpoint、anchors、payload 或 heavy tensors；只保存 CSV/JSON/Markdown report。
+- 运行前检查 `nvidia-smi` 并选择空闲 GPU。
+
+### Stage110 执行结果
+
+运行前按要求多次使用 `nvidia-smi` 检查 GPU。GPU0 忙，GPU1/6/7 有既有进程，GPU2 空闲，因此 rendered validation 使用 `CUDA_VISIBLE_DEVICES=2`。先语法检查参数化脚本：
+
+```text
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage103_broader_rendered_selector_validation.py scripts/run_stage105_render_aware_selector_policy_preflight.py
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage104_render_energy_selector_mismatch_diagnostic.py
+```
+
+运行 Stage110 rendered validation：
+
+```text
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage103_broader_rendered_selector_validation.py --stage 110 --mode "broader rendered selector labels" --summary_root experiments/stage110_broader_rendered_selector_labels --output_prefix stage110_broader_rendered_selector_labels --report_title "Stage110 Broader Rendered Selector Labels" --max_eval_tasks 240
+```
+
+运行 Stage110 mismatch diagnostic：
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage104_render_energy_selector_mismatch_diagnostic.py --stage 110 --mode "broader render-energy selector mismatch diagnostic" --stage103_rows experiments/stage110_broader_rendered_selector_labels/stage110_broader_rendered_selector_labels_rows.csv --summary_root experiments/stage110_broader_rendered_selector_labels --output_prefix stage110_render_energy_mismatch --report_title "Stage110 Broader Render-Energy Selector Mismatch Diagnostic"
+```
+
+运行 Stage110 policy preflight，并加入 Stage106 fixed policy 对比：
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage105_render_aware_selector_policy_preflight.py --stage 110 --mode "broader render-aware selector policy preflight" --stage103_rows experiments/stage110_broader_rendered_selector_labels/stage110_broader_rendered_selector_labels_rows.csv --summary_root experiments/stage110_broader_rendered_selector_labels --output_prefix stage110_broader_render_aware_policy --report_title "Stage110 Broader Render-Aware Selector Policy Preflight" --policies endpoint_only always_shared_energy_regression always_shared_topk_bce stage106_fixed_group_policy group_best_mean_psnr oracle_task_best
+```
+
+输出目录：
+
+```text
+experiments/stage110_broader_rendered_selector_labels/
+```
+
+输出大小约 `1.8M`，不包含 checkpoint、anchors、payload 或 heavy tensors。Rendered validation 配置：train tasks `96`，eval tasks `240`，train examples `589824`，keep fraction `0.1`，side bits `6`。
+
+Policy summary：
+
+| policy | selected PSNR | gain vs endpoint | selections |
+|---|---:|---:|---|
+| endpoint_only | 20.3212149854921 | 0.0 | endpoint_diff_baseline:480 |
+| stage106_fixed_group_policy | 20.322996715243953 | 0.0017817297518578745 | endpoint_diff_baseline:240;shared_energy_regression:240 |
+| group_best_mean_psnr | 20.327046871072337 | 0.005831885580240304 | endpoint_diff_baseline:323;shared_energy_regression:157 |
+| oracle_task_best | 20.382843220952523 | 0.06162823546041816 | endpoint_diff_baseline:278;shared_energy_regression:121;shared_topk_bce:81 |
+
+Stage110 group-best choices：
+
+| base | gap | selected candidate | gain vs endpoint |
+|---|---:|---|---:|
+| linear | 4 | endpoint_diff_baseline | 0.0 |
+| linear | 8 | shared_energy_regression | 0.009307271828451036 |
+| linear | 16 | shared_energy_regression | 0.026461930821380264 |
+| stage65_adapter | 4 | endpoint_diff_baseline | 0.0 |
+| stage65_adapter | 8 | endpoint_diff_baseline | 0.0 |
+| stage65_adapter | 16 | endpoint_diff_baseline | 0.0 |
+
+Mismatch diagnostic confirms the earlier issue at broader scale: learned selectors improve residual-energy recall in every group, but rendered PSNR can drop. For `shared_energy_regression`, linear gap4 has energy delta `+0.031175289392830378` but PSNR delta `-0.023422587923175493`; Stage65 adapter gap4/8/16 PSNR deltas are `-0.22540383262011054`, `-0.19372914974113`, and `-0.1363193230658923`.
+
+结论：Stage110 reduces confidence in the exact Stage106 group switch. The Stage106 fixed policy remains slightly positive on the broader 480-task policy set, but its gain shrinks from Stage105's `+0.030059636844502392 dB` to `+0.0017817297518578745 dB` because linear gap4 learned selection is negative at broader scale. A Stage110 group-best pattern is better at `+0.005831885580240304 dB`, but this is selected on the same broader rows and should be treated as a candidate, not a frozen deployable policy. Next step should be Stage111 broader switch predictor using Stage110 labels and comparing against both Stage106 fixed and Stage110 group-best policies.

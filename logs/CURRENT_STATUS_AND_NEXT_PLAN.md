@@ -64,6 +64,7 @@ Key Stage96 direct total rates:
 - Stage107: metadata-only task-level switch predictor; did not beat endpoint or Stage106.
 - Stage108: anchor-stat task-level switch predictor; better than metadata-only and endpoint, but still below Stage106 and overfits.
 - Stage109: selector-score task-level switch predictor; score statistics have signal but still do not beat Stage106.
+- Stage110: broader rendered selector labels with 240 eval tasks; Stage106 fixed policy remains slightly positive but much weaker, and a broader group-best pattern changes linear gap4 back to endpoint.
 
 ## Current Best Selector Policy
 
@@ -104,7 +105,8 @@ Validation summary on Stage105/106 rows:
 - Metadata-only task-level switching is too weak.
 - Anchor-stat task-level switching has signal but overfits on the current 120 rendered-label tasks.
 - Selector-score task-level switching has signal but does not fix adapter-group regressions and remains below Stage106.
-- Stage106 group policy remains the safest deployable selector-switch baseline.
+- Stage106 remains the current packaged deployable selector-switch baseline, but Stage110 shows its linear gap4 choice is not robust on broader labels.
+- Stage110 group-best pattern is a candidate for a future package, not yet a frozen policy.
 - Residual value prediction should wait until selector switching and index/value accounting are more stable.
 
 ## Next Plan
@@ -140,6 +142,18 @@ Fallback:
 - If it does not beat Stage106, keep Stage106 fixed group policy and stop optimizing switch predictors until more rendered labels are available.
 
 ### Stage110: Broader Rendered Selector Labels
+
+Status: completed on 2026-06-28.
+
+Result:
+
+- Eval tasks increased from `60` to `240`; policy task count is `480` across two base methods.
+- Endpoint-only PSNR: `20.3212149854921`.
+- Stage106 fixed group policy PSNR: `20.322996715243953`, gain `+0.0017817297518578745 dB`.
+- Stage110 group-best policy PSNR: `20.327046871072337`, gain `+0.005831885580240304 dB`.
+- Oracle task best PSNR: `20.382843220952523`, gain `+0.06162823546041816 dB`.
+- Broader group-best choices: linear gap4 -> endpoint; linear gap8/16 -> shared_energy_regression; Stage65 adapter gap4/8/16 -> endpoint.
+- Conclusion: Stage106 exact policy remains slightly positive but is much less robust than on Stage105; use Stage110 rows for Stage111 broader switch predictor.
 
 Goal: reduce overfitting from the 120-task rendered-label set.
 
