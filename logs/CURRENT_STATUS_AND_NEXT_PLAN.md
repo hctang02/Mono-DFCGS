@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage116: `25c4f98 Smoke deterministic-index residual codec`
+- Latest pushed commit before Stage117: `eece89f Account deterministic vs entropy sideinfo`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -71,6 +71,7 @@ Key Stage96 direct total rates:
 - Stage114: packaged strict-safe endpoint-only selector fallback `strict_safe_endpoint_selector_v1` after user chose strict safety.
 - Stage115: deterministic-index residual side-info codec smoke; value-only payload removes endpoint-diff selected index bytes and decodes identically to fixed index+value payload.
 - Stage116: deterministic vs entropy side-info accounting; all transmitted bytes are counted, and deterministic endpoint-diff quality is explicitly marked rate-only / not rendered.
+- Stage117: deterministic q-bit / keep-fraction side-info sweep; lower-rate settings can beat the Stage96 q6 top10 entropy reference in rate, but quality is unknown until rendered validation.
 
 ## Current Best Selector Policy
 
@@ -131,6 +132,7 @@ Stage113 held-out diagnostic:
 - Stage112 is aggregate group-safe and improves over endpoint overall, but Stage113 shows it is not fold-group safe under a strict zero-regression criterion.
 - Stage115 confirms index bytes can be removed when selected indices are decoder-reproducible, reducing q6 top10 side-info payload from `43381` to `36009` bytes on the smoke tasks.
 - Stage116 shows deterministic value-only side-info is still larger than zlib entropy-coded index+value side-info for Stage96 broader linear groups (`1.1907909303963997`-`1.2055306636015155x`) and slightly larger for Stage65 adapter groups (`1.0139622082252686`-`1.0359950259093857x`).
+- Stage117 shows q5/top10 deterministic side-info is rate-competitive (`30019 bytes`, below `5/6` Stage96 q6 top10 entropy reference groups), and q4/top10 or q6/top5 are below all `6/6` reference groups, but these are cross-setting rate-only comparisons.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -312,12 +314,30 @@ Result:
 
 Goal: make index+value entropy vs deterministic value-only side-info accounting explicit before q-bit / keep-fraction sweeps.
 
+### Stage117: Deterministic Side-Info q-bit / Keep-Fraction Sweep
+
+Status: completed on 2026-06-29.
+
+Result:
+
+- Added `scripts/run_stage117_deterministic_sideinfo_sweep.py`.
+- Output: `experiments/stage117_deterministic_sideinfo_sweep/`.
+- Derived geometry from Stage115: gaussian count `36860`, attr dim `13`.
+- Sweep settings: keep fractions `[0.025, 0.05, 0.1, 0.15, 0.2]`, side bits `[2, 3, 4, 5, 6, 8]`.
+- Row count: `180`; setting count: `30`.
+- Stage115 q6/top10 deterministic setting reproduced: `36009 bytes`, `0.034340858459472656 MiB/intermediate`, `0/6` groups below Stage96 q6/top10 entropy reference.
+- q5/top10 deterministic: `30019 bytes`, `0.02862834930419922 MiB/intermediate`, `5/6` groups below Stage96 q6/top10 entropy reference.
+- q4/top10 deterministic: `24029 bytes`, `0.02291584014892578 MiB/intermediate`, `6/6` groups below Stage96 q6/top10 entropy reference.
+- q6/top5 deterministic: `18040 bytes`, `0.01720428466796875 MiB/intermediate`, `6/6` groups below Stage96 q6/top10 entropy reference.
+- Limitation: all non-q6/top10 comparisons are cross-setting rate-only; rendered quality is unknown.
+
+Goal: identify rate-feasible deterministic settings before rendered validation.
+
 ## Later Plan After Selector Stabilizes
 
 ### Deterministic-Index Side-Info Codec
 
-- Stage117: sweep q-bit and keep fraction.
-- Stage118: package broader RD with all side-info bytes counted.
+- Stage118: render/validate a short list of deterministic settings, then package broader RD with all side-info bytes counted.
 
 ### Residual Value Prediction
 
@@ -373,6 +393,7 @@ Goal: make index+value entropy vs deterministic value-only side-info accounting 
 - Stage114 strict-safe selector fallback package: `scripts/run_stage114_package_strict_safe_selector_fallback.py`
 - Stage115 deterministic-index codec smoke: `scripts/run_stage115_deterministic_index_residual_codec_smoke.py`
 - Stage116 deterministic vs entropy accounting: `scripts/run_stage116_deterministic_vs_entropy_sideinfo_accounting.py`
+- Stage117 deterministic side-info sweep: `scripts/run_stage117_deterministic_sideinfo_sweep.py`
 
 ### Important Outputs
 
@@ -392,6 +413,7 @@ Goal: make index+value entropy vs deterministic value-only side-info accounting 
 - Stage114 strict-safe selector fallback: `experiments/stage114_strict_safe_selector_fallback_package/`
 - Stage115 deterministic-index codec smoke: `experiments/stage115_deterministic_index_residual_codec_smoke/`
 - Stage116 deterministic vs entropy accounting: `experiments/stage116_deterministic_vs_entropy_sideinfo_accounting/`
+- Stage117 deterministic side-info sweep: `experiments/stage117_deterministic_sideinfo_sweep/`
 
 ### Heavy External Paths
 

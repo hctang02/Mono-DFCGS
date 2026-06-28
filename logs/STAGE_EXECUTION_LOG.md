@@ -8169,3 +8169,82 @@ experiments/stage116_deterministic_vs_entropy_sideinfo_accounting/stage116_deter
 - Deterministic direct total rates with all side-info counted are `0.2162790792273858`, `0.131966245212987`, and `0.08980982820578763 MiB/frame` for gap4/8/16.
 - Stage116 is rate accounting only; deterministic endpoint-diff residual quality is marked `not_rendered_rate_only`.
 - Next step: Stage117 q-bit / keep-fraction sweep.
+
+## 2026-06-29：Stage117 q-bit / keep-fraction Side-Info Sweep
+
+### 目标
+
+Build a lightweight q-bit / keep-fraction accounting sweep for deterministic-index value-only residual side-info versus existing entropy-coded index+value side-info candidates.
+
+### 操作计划
+
+- Inspect Stage92 entropy preflight candidate outputs for reusable q-bit / keep-fraction rows.
+- Compute deterministic value-only payload bytes for the same Gaussian count / attr dim / keep fraction / side bits.
+- Produce rows/report under `experiments/stage117_deterministic_sideinfo_sweep/`.
+- Do not train, render, or save anchors/checkpoints/heavy tensors.
+- Check `nvidia-smi` before any Python execution.
+
+### 实现
+
+Inspection result: Stage92 only covers q6/top10, not a multi q-bit / keep-fraction sweep. Stage117 therefore derives deterministic payload geometry from Stage115 and uses Stage116/Stage96 measured q6/top10 entropy side-info as a rate reference.
+
+Added:
+
+```text
+scripts/run_stage117_deterministic_sideinfo_sweep.py
+```
+
+Inputs:
+
+```text
+experiments/stage115_deterministic_index_residual_codec_smoke/stage115_deterministic_index_residual_codec_summary.csv
+experiments/stage116_deterministic_vs_entropy_sideinfo_accounting/stage116_deterministic_vs_entropy_sideinfo_accounting_rows.csv
+```
+
+### 执行
+
+运行前检查 `nvidia-smi`：GPU0 忙、GPU4 有进程，GPU1/2/3/5/6/7 空闲。Stage117 是 CPU-only accounting，但仍使用 `CUDA_VISIBLE_DEVICES=2`。
+
+Syntax check and run:
+
+```text
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage117_deterministic_sideinfo_sweep.py
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage117_deterministic_sideinfo_sweep.py
+```
+
+### 输出文件
+
+```text
+experiments/stage117_deterministic_sideinfo_sweep/stage117_deterministic_sideinfo_sweep_rows.csv
+experiments/stage117_deterministic_sideinfo_sweep/stage117_deterministic_sideinfo_sweep_setting_summary.csv
+experiments/stage117_deterministic_sideinfo_sweep/stage117_deterministic_sideinfo_sweep_summary.json
+experiments/stage117_deterministic_sideinfo_sweep/stage117_deterministic_sideinfo_sweep_report.md
+```
+
+### 结果
+
+Derived geometry:
+
+| item | value |
+|---|---:|
+| gaussian count | 36860 |
+| attr dim | 13 |
+| row count | 180 |
+| setting count | 30 |
+
+Selected setting summary:
+
+| keep | bits | deterministic bytes | deterministic MiB | groups below Stage96 q6/top10 entropy | max det/entropy | note |
+|---:|---:|---:|---:|---:|---:|---|
+| 0.1 | 6 | 36009 | 0.034340858459472656 | 0/6 | 1.2055306636015155 | Stage115 setting |
+| 0.1 | 5 | 30019 | 0.02862834930419922 | 5/6 | 1.0049938901567357 | quality unknown |
+| 0.1 | 4 | 24029 | 0.02291584014892578 | 6/6 | 0.8044571167119557 | quality unknown |
+| 0.05 | 6 | 18040 | 0.01720428466796875 | 6/6 | 0.6039538218604055 | quality unknown |
+| 0.2 | 3 | 36009 | 0.034340858459472656 | 0/6 | 1.2055306636015155 | quality unknown |
+
+### 结论
+
+- Stage115 q6/top10 deterministic payload is reproduced exactly from the derived geometry.
+- q5/top10 is nearly competitive with Stage96 q6/top10 entropy reference in rate and is below `5/6` groups.
+- q4/top10 and q6/top5 are below all Stage96 q6/top10 entropy reference groups in rate.
+- These are cross-setting rate-only comparisons; rendered quality is unknown, so Stage118 should first render/validate a shortlist before packaging RD.
