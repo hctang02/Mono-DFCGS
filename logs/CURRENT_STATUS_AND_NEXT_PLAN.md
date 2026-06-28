@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage121: `6645bc1 Render compressed deterministic shortlist`
+- Latest pushed commit before Stage122: `cdf41fb Broaden rendered deterministic validation`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -76,6 +76,7 @@ Key Stage96 direct total rates:
 - Stage119: actual compressed deterministic q-bit / keep-fraction sweep over real task residual values; all rows decode exactly and shortlist is ready for rendered smoke.
 - Stage120: rendered compressed deterministic shortlist smoke; q4/top20 is best on 12-task smoke and q4/top10 is a strong low-rate candidate.
 - Stage121: 60-task broader rendered compressed deterministic validation confirms q4/top20 and q4/top10 are stable candidates.
+- Stage122: packaged compressed deterministic RD rows/points; q4/top20 is primary, q4/top10 low-rate, q5/top10 near-anchor, q6/top10 anchor.
 
 ## Current Best Selector Policy
 
@@ -141,6 +142,7 @@ Stage113 held-out diagnostic:
 - Stage119 actual compressed sweep confirms q6/top10 mean compressed payload `29235.55 bytes`, q5/top10 `24537.56111111111`, q4/top10 `14982.574999999999`, q6/top5 `15040.72222222222`, and q4/top20 `28043.888888888887`; all these shortlist settings are below Stage96 entropy reference for `6/6` groups.
 - Stage120 rendered smoke shows q4/top20 improves over q6/top10 by `+1.02156556263925 dB` on average while slightly lowering rate; q4/top10 is only `-0.03468351854032611 dB` vs q6/top10 at roughly half the side-info rate; q6/top5 drops `-0.6174121509811845 dB` and should be dropped.
 - Stage121 broader validation confirms q4/top20 remains best: PSNR `20.689270746602087`, `+0.9223020959187475 dB` vs q6/top10, direct rate `0.1337680887378662` vs q6/top10 `0.1348375550108561`; q4/top10 gives PSNR `19.73848817438193`, only `-0.028480476301425663 dB` vs q6/top10 at direct rate `0.12124604296658527`.
+- Stage122 RD package compares against Stage96 entropy reference: q4/top20 is lower rate by `-0.004194490114847849 MiB/frame` but lower PSNR by `-0.8305321438068527 dB`; q4/top10 is lower rate by `-0.016716535886128772 MiB/frame` and lower PSNR by `-1.781314716027025 dB`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -424,11 +426,33 @@ Result:
 
 Goal: validate Stage120 candidates on the same 60-task broader scale as Stage95/96.
 
+### Stage122: Compressed Deterministic RD Package
+
+Status: completed on 2026-06-29.
+
+Result:
+
+- Added `scripts/run_stage122_compressed_deterministic_rd_package.py`.
+- Output: `experiments/stage122_compressed_deterministic_rd_package/`.
+- RD row count: `24`; RD point count: `60`.
+- Package roles:
+  - primary: `q4_top20`
+  - low-rate: `q4_top10`
+  - near-anchor: `q5_top10`
+  - anchor: `q6_top10`
+- q4/top20: direct rate `0.1337680887378662`, PSNR `20.689270746602087`, delta vs Stage96 entropy direct rate `-0.004194490114847849`, delta vs Stage96 entropy PSNR `-0.8305321438068527`.
+- q4/top10: direct rate `0.12124604296658527`, PSNR `19.73848817438193`, delta vs Stage96 entropy direct rate `-0.016716535886128772`, delta vs Stage96 entropy PSNR `-1.781314716027025`.
+- q5/top10: direct rate `0.13041988921139727`, PSNR `19.761047533309117`, delta vs Stage96 entropy direct rate `-0.007542689641316756`, delta vs Stage96 entropy PSNR `-1.7587553570998395`.
+- q6/top10: direct rate `0.1348375550108561`, PSNR `19.766968650683353`, delta vs Stage96 entropy direct rate `-0.0031250238418579373`, delta vs Stage96 entropy PSNR `-1.7528342397255992`.
+- Limitation: residual values remain teacher-derived; not residual value prediction.
+
+Goal: freeze RD package for compressed deterministic value-only residual side-info.
+
 ## Later Plan After Selector Stabilizes
 
 ### Deterministic-Index Side-Info Codec
 
-- Stage122: package RD for q4/top20 primary, q4/top10 low-rate, q5/top10 near-anchor, and q6/top10 anchor with all side-info bytes counted.
+- Stage123: package compressed deterministic codec policy manifest for q4/top20 primary and q4/top10 low-rate options.
 
 ### Residual Value Prediction
 
@@ -489,6 +513,7 @@ Goal: validate Stage120 candidates on the same 60-task broader scale as Stage95/
 - Stage119 actual compressed deterministic sweep: `scripts/run_stage119_actual_compressed_deterministic_sweep.py`
 - Stage120 rendered compressed deterministic shortlist: `scripts/run_stage120_rendered_compressed_deterministic_shortlist.py`
 - Stage121 broader rendered compressed deterministic validation: `scripts/run_stage121_broader_rendered_compressed_deterministic_validation.py`
+- Stage122 compressed deterministic RD package: `scripts/run_stage122_compressed_deterministic_rd_package.py`
 
 ### Important Outputs
 
@@ -513,6 +538,7 @@ Goal: validate Stage120 candidates on the same 60-task broader scale as Stage95/
 - Stage119 actual compressed deterministic sweep: `experiments/stage119_actual_compressed_deterministic_sweep/`
 - Stage120 rendered compressed deterministic shortlist: `experiments/stage120_rendered_compressed_deterministic_shortlist/`
 - Stage121 broader rendered compressed deterministic validation: `experiments/stage121_broader_rendered_compressed_deterministic_validation/`
+- Stage122 compressed deterministic RD package: `experiments/stage122_compressed_deterministic_rd_package/`
 
 ### Heavy External Paths
 

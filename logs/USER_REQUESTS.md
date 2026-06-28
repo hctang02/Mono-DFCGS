@@ -1618,3 +1618,27 @@ Stage121 将把 Stage120 的有效候选扩大到 60-task eval slice：q6/top10 
 ### 后续执行更新
 
 Stage121 broader rendered compressed deterministic validation 已完成：新增 `scripts/run_stage121_broader_rendered_compressed_deterministic_validation.py`，运行前检查 `nvidia-smi`，GPU2 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。输出目录 `experiments/stage121_broader_rendered_compressed_deterministic_validation/`，task count `60`，row count `480`，group count `24`，max decode diff `0.0`。结果：q6/top10 PSNR `19.766968650683353`、payload `29442.208333333332 bytes`、direct rate `0.1348375550108561`；q5/top10 PSNR `19.761047533309117`、delta vs q6 `-0.005921117374238853`、direct rate `0.13041988921139727`；q4/top10 PSNR `19.73848817438193`、delta vs q6 `-0.028480476301425663`、direct rate `0.12124604296658527`；q4/top20 PSNR `20.689270746602087`、delta vs q6 `+0.9223020959187475`、payload `28320.791666666668 bytes`、direct rate `0.1337680887378662`。q4/top20 作为 primary RD candidate，q4/top10 作为 low-rate candidate，下一步 Stage122 package RD。
+
+## 2026-06-29：继续 Stage122 compressed deterministic RD package
+
+### 用户原始问题
+
+用户允许按照规划一直往下执行。
+
+### 当前执行决策
+
+Stage122 将把 Stage121 broader rendered validation 打包为 RD package。输出 q6/top10 anchor、q5/top10 near-anchor、q4/top10 low-rate、q4/top20 primary 的 rows/points/report，并对齐 Stage96 entropy-coded q6/top10 reference 作为参考。所有 side-info bytes 已在 direct/amortized total rate 中计入。该阶段不训练、不渲染、不保存 anchors/checkpoints/heavy tensors；运行 Python 前仍检查 `nvidia-smi`。
+
+## 2026-06-29：继续 Stage122 收尾
+
+### 用户原始问题
+
+用户表示：如果有下一步就继续执行；如果不确定如何推进，再停下来询问。
+
+### 当前执行决策
+
+继续按既定流程收尾 Stage122：补齐 `USER_REQUESTS`、`STAGE_EXECUTION_LOG` 和 `logs/stage_records/122_compressed_deterministic_rd_package.md`，检查 diff，只暂存 Stage122 相关文件，提交并推送。Stage123 codec policy package 在 Stage122 完成后再继续。
+
+### 后续执行更新
+
+Stage122 package 已运行完成：`py_compile` 通过，脚本 `scripts/run_stage122_compressed_deterministic_rd_package.py` 生成 `experiments/stage122_compressed_deterministic_rd_package/`。输出 row count `24`，point count `60`。package roles：primary `q4_top20`、low-rate `q4_top10`、near-anchor `q5_top10`、anchor `q6_top10`。q4/top20 direct rate `0.1337680887378662`、PSNR `20.689270746602087`，相对 Stage96 entropy reference direct rate delta `-0.004194490114847849`、PSNR delta `-0.8305321438068527`。q4/top10 direct rate `0.12124604296658527`、PSNR `19.73848817438193`，相对 Stage96 entropy reference direct rate delta `-0.016716535886128772`、PSNR delta `-1.781314716027025`。残差值仍是 teacher-derived，不是 deployable residual value prediction。

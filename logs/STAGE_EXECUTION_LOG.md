@@ -8522,3 +8522,60 @@ experiments/stage121_broader_rendered_compressed_deterministic_validation/stage1
 - q4/top10 remains a strong low-rate candidate: `-0.028480476301425663 dB` vs q6/top10 at much lower side-info rate.
 - q5/top10 remains nearly identical to q6/top10 with lower rate.
 - Next step: Stage122 RD package with q4/top20 primary, q4/top10 low-rate, q5/top10 near-anchor, and q6/top10 anchor.
+
+## 2026-06-29：Stage122 Compressed Deterministic RD Package
+
+### 目标
+
+Package broader rendered RD points for compressed deterministic value-only residual side-info with all side-info bytes counted.
+
+### 操作计划
+
+- Add a Stage122 package script that consumes Stage121 group/setting summaries and Stage96 entropy RD rows.
+- Emit deterministic RD rows and direct/amortized points for q6/top10 anchor, q5/top10 near-anchor, q4/top10 low-rate, and q4/top20 primary.
+- Include Stage96 entropy-coded q6/top10 reference rows/points for comparison.
+- Mark residual values as teacher-derived and not yet deployable residual value prediction.
+- Do not train, render, or save anchors/checkpoints/heavy tensors.
+- Check `nvidia-smi` before Python execution.
+
+### GPU 检查
+
+运行前已检查 `nvidia-smi`。GPU2 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。
+
+### 执行命令
+
+```text
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage122_compressed_deterministic_rd_package.py
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage122_compressed_deterministic_rd_package.py
+```
+
+### 输出文件
+
+```text
+experiments/stage122_compressed_deterministic_rd_package/stage122_compressed_deterministic_rd_rows.csv
+experiments/stage122_compressed_deterministic_rd_package/stage122_compressed_deterministic_rd_points.csv
+experiments/stage122_compressed_deterministic_rd_package/stage122_compressed_deterministic_rd_setting_summary.csv
+experiments/stage122_compressed_deterministic_rd_package/stage122_compressed_deterministic_rd_package.json
+experiments/stage122_compressed_deterministic_rd_package/stage122_compressed_deterministic_rd_report.md
+```
+
+### 结果
+
+- RD row count: `24`.
+- RD point count: `60`.
+- All side-info bytes are counted in direct and amortized total rates.
+- Selected indices are decoder-reproducible endpoint-diff indices and are not transmitted.
+- Residual values remain teacher-derived from dense target anchors.
+
+| role | setting | keep | bits | payload bytes | direct rate | amortized rate | PSNR | delta q6 | direct delta vs Stage96 entropy | PSNR delta vs Stage96 entropy |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| primary | q4_top20 | 0.2 | 4 | 28320.791666666668 | 0.1337680887378662 | 0.13005386354500142 | 20.689270746602087 | 0.9223020959187475 | -0.004194490114847849 | -0.8305321438068527 |
+| low_rate | q4_top10 | 0.1 | 4 | 15190.475 | 0.12124604296658527 | 0.11924717736218463 | 19.73848817438193 | -0.028480476301425663 | -0.016716535886128772 | -1.781314716027025 |
+| near_anchor | q5_top10 | 0.1 | 5 | 24809.95 | 0.13041988921139727 | 0.127149533351005 | 19.761047533309117 | -0.005921117374238853 | -0.007542689641316756 | -1.7587553570998395 |
+| anchor | q6_top10 | 0.1 | 6 | 29442.208333333332 | 0.1348375550108561 | 0.13095624756787308 | 19.766968650683353 | 0.0 | -0.0031250238418579373 | -1.7528342397255992 |
+
+### 结论
+
+- q4/top20 is the primary package point: it has higher PSNR than q6/top10 and slightly lower direct/amortized rate.
+- q4/top10 is the low-rate package point: much lower rate with small quality loss vs q6/top10, but lower PSNR than Stage96 entropy reference.
+- Stage123 should package the codec policy manifest around strict-safe endpoint selector plus compressed deterministic value-only residual side-info.
