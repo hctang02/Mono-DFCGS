@@ -7020,6 +7020,64 @@ Best learned feature by group：
 
 结论：Stage101 验证 endpoint/gap/rank extras 没有带来实质性突破。`gap_endpoint_norms` 仅在 linear gap8 和 stage65 gap16 成为最佳，但提升幅度极小；多数 group 的最佳仍是 Stage100 base features。下一步应避免继续堆 hand-crafted endpoint extras，转向 group-specific heads、larger train scale 或 rendered validation of the current best learned selector。
 
+## 2026-06-28：Stage102 Group-Specific Selector Heads
+
+### 目标
+
+测试 `base_method × reference_gap` group-specific selector heads 是否比 Stage100/101 的 shared MLP 更适合 residual top10 index selection。
+
+### 操作计划
+
+- 新增 `scripts/run_stage102_group_specific_selector_heads.py`。
+- 只使用 Stage100 base features，不继续加入 endpoint/gap/rank hand-crafted extras。
+- 复用 Stage97 manifest、Stage98 anchor loading/topk metrics、Stage101 feature construction utilities。
+- 训练 shared selectors：`shared + topk_bce`、`shared + energy_regression`。
+- 训练 group-specific selectors：每个 `base_method × gap` 一个 head，并分别跑 `topk_bce`、`energy_regression`。
+- 对比 endpoint baseline、shared selector、group-specific selector 的 precision、energy recall、relative oracle recall。
+- 不渲染、不保存 checkpoint、不写 heavy tensors。
+- 运行前按要求检查 `nvidia-smi`，并选择空闲 GPU。
+
+### Stage102 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU0 忙，GPU1 有已有 Python 进程占用约 `341MiB`，GPU2 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。先运行语法检查：
+
+```text
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage102_group_specific_selector_heads.py
+```
+
+随后再次检查 GPU，并运行完整 Stage102：
+
+```text
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage102_group_specific_selector_heads.py
+```
+
+新增脚本：
+
+```text
+scripts/run_stage102_group_specific_selector_heads.py
+```
+
+输出目录：
+
+```text
+experiments/stage102_group_specific_selector_heads/
+```
+
+配置：train tasks `96`，eval tasks `60`，sampled train examples `589824`，base feature dim `67`，keep fraction `0.1`，objectives 为 `topk_bce`、`energy_regression`。
+
+Group comparison：
+
+| base | gap | endpoint recall | best shared | shared recall | best group | group recall | group-shared | group relative |
+|---|---:|---:|---|---:|---|---:|---:|---:|
+| linear | 4 | 0.2578457370400429 | energy_regression | 0.29237517520137457 | energy_regression | 0.28957911483619525 | -0.0027960603651793203 | 0.4642657028592151 |
+| linear | 8 | 0.27749040722846985 | energy_regression | 0.3230782339447423 | energy_regression | 0.3191431258854113 | -0.0039351080593309495 | 0.47870409018114995 |
+| linear | 16 | 0.2058291733264923 | topk_bce | 0.25067590466803974 | energy_regression | 0.24646301691730818 | -0.004212887750731559 | 0.4052088227536943 |
+| stage65_adapter | 4 | 0.13412074485550757 | topk_bce | 0.1617175087980602 | energy_regression | 0.1613874824150749 | -0.00033002638298532117 | 0.686178427675496 |
+| stage65_adapter | 8 | 0.13563174087750285 | topk_bce | 0.17034897247427389 | energy_regression | 0.17020083375667272 | -0.00014813871760116504 | 0.6869090183785087 |
+| stage65_adapter | 16 | 0.11971673224535254 | energy_regression | 0.15471376478672028 | energy_regression | 0.15460273540682262 | -0.0001110293798976536 | 0.6332634886105856 |
+
+结论：Stage102 说明 group-specific heads 没有改善 selection bottleneck。所有 `base_method × gap` group 的 group-specific best energy recall 均略低于 shared MLP；selection gap 不是简单由 mixed-group shared head 造成。下一步更合理的是做 Stage103：对当前最稳的 shared selector 做 broader/rendered validation，或探索更结构化的 Gaussian-neighborhood/coordinate context，而不是继续拆 head。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。

@@ -1295,3 +1295,17 @@ Stage101 继续处理 Stage99/100 的 selector bottleneck，优先测试 decoder
 ### 后续执行更新
 
 Stage101 enhanced selector feature sweep 已完成：运行前检查 `nvidia-smi`，GPU0 忙、GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。新增 `scripts/run_stage101_enhanced_selector_feature_sweep.py`，先通过 `py_compile`，再运行完整 sweep。输出目录 `experiments/stage101_enhanced_selector_feature_sweep/`，大小约 `224K`。配置为 train tasks `96`、eval tasks `60`、sampled train examples `589824`、full feature dim `75`、keep fraction `0.1`。结果：best learned feature/objective 为 linear gap4 `stage100_base + energy_regression` energy recall `0.2935`，linear gap8 `gap_endpoint_norms + energy_regression` `0.3240`，linear gap16 `stage100_base + topk_bce` `0.2518`，Stage65 adapter gap4 `stage100_base + topk_bce` `0.1620`，gap8 `stage100_base + topk_bce` `0.1706`，gap16 `gap_endpoint_norms + energy_regression` `0.1550`。结论：endpoint/gap/rank extras 只有极小提升，多数组仍由 Stage100 base features 胜出；下一步应转向 group-specific heads、larger train scale 或对当前最佳 learned selector 做 rendered validation，而不是继续堆 endpoint hand-crafted features。
+
+## 2026-06-28：继续 Stage102 group-specific selector heads
+
+### 用户原始问题
+
+用户表示可以继续往下做。
+
+### 当前执行决策
+
+Stage102 针对 Stage101 结论测试 group-specific selector heads。计划只使用 Stage100 base features，避免继续堆 endpoint/gap/rank hand-crafted extras；训练 shared selector 与每个 `base_method × reference_gap` 独立 head，并比较 endpoint baseline、shared selector、group-specific selector 的 precision、energy recall 和 relative oracle recall。该阶段仍不渲染、不保存 checkpoint、不写 heavy tensors，用于判断 selection bottleneck 是否来自 shared-head capacity/混合 group 分布。
+
+### 后续执行更新
+
+Stage102 group-specific selector heads 已完成：运行前检查 `nvidia-smi`，GPU0 忙、GPU1 有小型 Python 进程占用约 `341MiB`，GPU2 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。新增 `scripts/run_stage102_group_specific_selector_heads.py`，先通过 `py_compile`，再运行完整 Stage102。输出目录 `experiments/stage102_group_specific_selector_heads/`，大小约 `188K`。配置为 train tasks `96`、eval tasks `60`、sampled train examples `589824`、base feature dim `67`、keep fraction `0.1`。结果：group-specific heads 没有超过 shared MLP；所有 `base_method × gap` 的 group-specific best energy recall 均略低于 shared best。linear gap4/8/16 group-shared 为 `-0.0028/-0.0039/-0.0042`，Stage65 adapter gap4/8/16 为 `-0.00033/-0.00015/-0.00011`。结论：selection bottleneck 不是简单由 shared-head 混合 group 分布导致；下一步应对当前最稳 shared selector 做 rendered/broader validation，或转向更结构化的 Gaussian-neighborhood/coordinate context。
