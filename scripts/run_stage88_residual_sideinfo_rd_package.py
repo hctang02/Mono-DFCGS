@@ -8,6 +8,12 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_STAGE78_RATE_TABLE = REPO_ROOT / "experiments/stage78_integrated_davis_rd_package/stage78_anchor_only_rate_table.csv"
 DEFAULT_STAGE87_SUMMARY = REPO_ROOT / "experiments/stage87_quantized_residual_sideinfo_smoke/stage87_quantized_residual_sideinfo_summary.csv"
 DEFAULT_SUMMARY_ROOT = REPO_ROOT / "experiments/stage88_residual_sideinfo_rd_package"
+DEFAULT_OUTPUT_PREFIX = "stage88_residual_sideinfo_rd"
+DEFAULT_REPORT_TITLE = "Stage88 Residual Side-Info RD Package"
+DEFAULT_MODE = "residual side-info RD package"
+DEFAULT_QUALITY_SOURCE = "Stage87 quantized residual side-info smoke"
+DEFAULT_SCOPE_NOTE = "This is a 12-task smoke package, not a full-video RD benchmark."
+DEFAULT_PLOT_QUALITY_LABEL = "Rendered PSNR (dB, Stage87 12-task smoke)"
 
 METHOD_TO_STAGE78 = {
     "linear": "linear",
@@ -187,7 +193,7 @@ def build_point_rows(rd_rows):
     return sorted(rows, key=lambda item: (item["rate_mode"], METHOD_ORDER[item["base_method"]], item["reference_gap"], item["keep_fraction"], item["side_bits"], item["point_type"]))
 
 
-def plot_rd(rd_rows, rate_key, title, xlabel, path):
+def plot_rd(rd_rows, rate_key, title, xlabel, ylabel, path):
     import matplotlib
 
     matplotlib.use("Agg")
@@ -235,7 +241,7 @@ def plot_rd(rd_rows, rate_key, title, xlabel, path):
                     textcoords="offset points",
                 )
     plt.xlabel(xlabel)
-    plt.ylabel("Rendered PSNR (dB, Stage87 12-task smoke)")
+    plt.ylabel(ylabel)
     plt.title(title)
     plt.grid(True, alpha=0.3)
     plt.legend(fontsize=7, ncol=2)
@@ -250,21 +256,22 @@ def format_float(value):
 
 def write_report(summary, rd_rows, path):
     top10_q6 = [row for row in rd_rows if row["keep_fraction"] == 0.1 and row["side_bits"] == 6]
+    top10_q8 = [row for row in rd_rows if row["keep_fraction"] == 0.1 and row["side_bits"] == 8]
     lines = [
-        "# Stage88 Residual Side-Info RD Package",
+        f"# {summary['report_title']}",
         "",
         "## Scope",
         "",
         "- Main rate comes from Stage78 q12 static-anchor rate table.",
-        "- Rendered quality comes from Stage87 quantized residual side-info smoke.",
+        f"- Rendered quality comes from {summary['quality_source']}.",
         "- Side-info is treated as transmitted information and included in total rate.",
-        "- This is a 12-task smoke package, not a full-video RD benchmark.",
+        f"- {summary['scope_note']}",
         "",
         "## Rate Definitions",
         "",
         "- `direct_total_mib_per_frame = q12_main_anchor_mib_per_frame + side_info_mib_per_intermediate_frame`.",
         "- `amortized_total_mib_per_frame = q12_main_anchor_mib_per_frame + side_info_mib_per_intermediate_frame * ((gap - 1) / gap)`.",
-        "- The direct total is conservative for the Stage87 per-intermediate-frame side-info smoke; the amortized total is a uniform-gap full-video approximation.",
+        "- The direct total is conservative for the per-intermediate-frame side-info eval; the amortized total is a uniform-gap full-video approximation.",
         "",
         "## Low-Rate Operating Point: keep 0.1, q6 residual",
         "",
@@ -297,10 +304,16 @@ def write_report(summary, rd_rows, path):
         "",
         "## Conclusion",
         "",
-        "- q6 top10 residual side-info is the most attractive low-rate point in this smoke: it adds roughly `0.041354 MiB/intermediate-frame` and preserves multi-dB rendered PSNR gains.",
-        "- q8 side-info gives nearly identical PSNR at a higher rate; q6 should be the default follow-up operating point unless larger eval contradicts it.",
-        "- The next step is a larger eval or a real bitstream/entropy-coded side-info implementation; this package does not yet claim final RD.",
     ])
+    if top10_q6:
+        lines.append(
+            f"- q6 top10 residual side-info adds `{format_float(top10_q6[0]['side_info_mib_per_intermediate_frame'])} MiB/intermediate-frame` and preserves multi-dB rendered PSNR gains in this package."
+        )
+    if top10_q8:
+        lines.append("- q8 top10 side-info is included for cross-bit comparison; q6 should remain the low-rate default if quality is similar.")
+    else:
+        lines.append("- This package only includes the requested side-info operating points; it is not a cross-bit sweep.")
+    lines.append("- The next step is a real bitstream/entropy-coded side-info implementation; this package does not yet claim final RD.")
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -309,6 +322,13 @@ def parse_args():
     parser.add_argument("--stage78_rate_table", type=Path, default=DEFAULT_STAGE78_RATE_TABLE)
     parser.add_argument("--stage87_summary", type=Path, default=DEFAULT_STAGE87_SUMMARY)
     parser.add_argument("--summary_root", type=Path, default=DEFAULT_SUMMARY_ROOT)
+    parser.add_argument("--stage", type=int, default=88)
+    parser.add_argument("--mode", default=DEFAULT_MODE)
+    parser.add_argument("--output_prefix", default=DEFAULT_OUTPUT_PREFIX)
+    parser.add_argument("--report_title", default=DEFAULT_REPORT_TITLE)
+    parser.add_argument("--quality_source", default=DEFAULT_QUALITY_SOURCE)
+    parser.add_argument("--scope_note", default=DEFAULT_SCOPE_NOTE)
+    parser.add_argument("--plot_quality_label", default=DEFAULT_PLOT_QUALITY_LABEL)
     return parser.parse_args()
 
 
@@ -320,33 +340,38 @@ def main():
     rd_rows = build_rd_rows(read_csv(args.stage87_summary), main_rate_lookup)
     point_rows = build_point_rows(rd_rows)
 
-    rows_csv = args.summary_root / "stage88_residual_sideinfo_rd_rows.csv"
-    points_csv = args.summary_root / "stage88_residual_sideinfo_rd_points.csv"
-    summary_json = args.summary_root / "stage88_residual_sideinfo_rd_summary.json"
-    report_md = args.summary_root / "stage88_residual_sideinfo_rd_report.md"
-    direct_plot = args.summary_root / "stage88_residual_sideinfo_rd_direct.png"
-    amortized_plot = args.summary_root / "stage88_residual_sideinfo_rd_amortized.png"
+    rows_csv = args.summary_root / f"{args.output_prefix}_rows.csv"
+    points_csv = args.summary_root / f"{args.output_prefix}_points.csv"
+    summary_json = args.summary_root / f"{args.output_prefix}_summary.json"
+    report_md = args.summary_root / f"{args.output_prefix}_report.md"
+    direct_plot = args.summary_root / f"{args.output_prefix}_direct.png"
+    amortized_plot = args.summary_root / f"{args.output_prefix}_amortized.png"
 
     write_csv(rd_rows, rows_csv, ROW_FIELDS)
     write_csv(point_rows, points_csv, POINT_FIELDS)
     plot_rd(
         rd_rows,
         "direct_total_mib_per_frame",
-        "Stage88 Residual Side-Info RD (Direct Total Rate)",
+        f"{args.report_title} (Direct Total Rate)",
         "q12 main anchor + side-info (MiB/frame)",
+        args.plot_quality_label,
         direct_plot,
     )
     plot_rd(
         rd_rows,
         "amortized_total_mib_per_frame",
-        "Stage88 Residual Side-Info RD (Uniform-Gap Amortized Rate)",
+        f"{args.report_title} (Uniform-Gap Amortized Rate)",
         "q12 main anchor + amortized side-info (MiB/frame)",
+        args.plot_quality_label,
         amortized_plot,
     )
 
     summary = {
-        "stage": 88,
-        "mode": "residual side-info RD package",
+        "stage": args.stage,
+        "mode": args.mode,
+        "report_title": args.report_title,
+        "quality_source": args.quality_source,
+        "scope_note": args.scope_note,
         "stage78_rate_table": str(args.stage78_rate_table),
         "stage87_summary": str(args.stage87_summary),
         "rows_csv": str(rows_csv),

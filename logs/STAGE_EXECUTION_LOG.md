@@ -6282,6 +6282,62 @@ Summary：
 
 结论：q6 top10% residual side-info 在 60-task broader eval 上仍全正，且对 linear 和 Stage65 adapter 都保持约 `+2.69` 到 `+3.42 dB` 的 rendered PSNR 增益。下一步应把 Stage89 的 broader eval 接入 RD accounting，并继续推进真实 bitstream/entropy coding，而不是继续只做 teacher-residual smoke。
 
+## 2026-06-28：Stage90 Broader q6 Residual Side-Info RD Package
+
+### 目标
+
+把 Stage89 60-task q6 top10 residual side-info eval 接入 Stage88 RD accounting，输出 broader q6 low-rate total-rate table。
+
+### 操作计划
+
+- 参数化 `scripts/run_stage88_residual_sideinfo_rd_package.py` 的 stage number、mode、output prefix 和 report title。
+- 输入 Stage78 q12 anchor main rate table 和 Stage89 broader q6 summary。
+- 输出 direct total rate 与 uniform-gap amortized total rate。
+- 保留 side-info rate 口径为 transmitted MiB/intermediate-frame。
+- 该阶段为 CPU 汇总脚本，但运行前仍按要求检查 `nvidia-smi`。
+
+### Stage90 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU0 忙，Stage90 为 CPU 汇总脚本，因此未占用 GPU。
+
+修改脚本：
+
+```text
+scripts/run_stage88_residual_sideinfo_rd_package.py
+```
+
+参数化 stage number、mode、output prefix、report title、quality source、scope note 和 plot y-label，默认 Stage88 输出名保持不变。
+
+运行命令：
+
+```text
+python scripts/run_stage88_residual_sideinfo_rd_package.py --stage 90 --mode "broader q6 residual side-info RD package" --stage87_summary experiments/stage89_broader_q6_residual_sideinfo_eval/stage89_broader_q6_residual_sideinfo_eval_summary.csv --summary_root experiments/stage90_broader_q6_residual_sideinfo_rd_package --output_prefix stage90_broader_q6_residual_sideinfo_rd --report_title "Stage90 Broader q6 Residual Side-Info RD Package" --quality_source "Stage89 60-task broader q6 residual side-info eval" --scope_note "This package uses a 60-task broader q6 top10 eval slice, not a full-video final RD benchmark." --plot_quality_label "Rendered PSNR (dB, Stage89 60-task broader eval)"
+```
+
+仓库内输出：
+
+```text
+experiments/stage90_broader_q6_residual_sideinfo_rd_package/stage90_broader_q6_residual_sideinfo_rd_rows.csv
+experiments/stage90_broader_q6_residual_sideinfo_rd_package/stage90_broader_q6_residual_sideinfo_rd_points.csv
+experiments/stage90_broader_q6_residual_sideinfo_rd_package/stage90_broader_q6_residual_sideinfo_rd_summary.json
+experiments/stage90_broader_q6_residual_sideinfo_rd_package/stage90_broader_q6_residual_sideinfo_rd_report.md
+```
+
+本地还生成 RD plot PNG，但 `.gitignore` 忽略图片，未强制加入 git。
+
+Broader q6 top10 RD rows：
+
+| base | gap | tasks | q12 main MiB/frame | side MiB/intermediate | direct total | amortized total | side PSNR | delta |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| linear | 4 | 18 | 0.18193822076791313 | 0.041353702545166016 | 0.22329192331307915 | 0.21295349767678765 | 23.403666365261454 | 3.4188699424093465 |
+| linear | 8 | 19 | 0.09762538675351436 | 0.041353702545166016 | 0.13897908929868036 | 0.1338098764805346 | 21.513744759131683 | 3.056154952125395 |
+| linear | 16 | 23 | 0.055468969746314975 | 0.041353702545166016 | 0.09682267229148099 | 0.09423806588240811 | 20.344221350298344 | 3.2600059141243887 |
+| stage65_adapter | 4 | 18 | 0.18193822076791313 | 0.041353702545166016 | 0.22329192331307915 | 0.21295349767678765 | 22.84099865483423 | 2.7992663459903557 |
+| stage65_adapter | 8 | 19 | 0.09762538675351436 | 0.041353702545166016 | 0.13897908929868036 | 0.1338098764805346 | 21.398942062762643 | 2.6923948446423474 |
+| stage65_adapter | 16 | 23 | 0.055468969746314975 | 0.041353702545166016 | 0.09682267229148099 | 0.09423806588240811 | 20.29200458015274 | 2.9637744407144093 |
+
+结论：Stage90 将 Stage89 的 broader q6 top10 result 转成明确 total-rate RD accounting。该 operating point 在 direct total rate `0.0968-0.2233 MiB/frame` 范围内仍带来约 `+2.69` 到 `+3.42 dB` rendered PSNR gain。下一步应进入真实 side-info bitstream / entropy coding prototype，减少 teacher residual smoke 与 deployable codec 之间的差距。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。
