@@ -273,6 +273,15 @@ def train_adapter(args, train_tasks, eval_tasks, background, opt, device):
         apply_output_constraints=False,
         zero_init_residual=True,
     ).to(device)
+    init_checkpoint = None
+    if args.init_checkpoint is not None:
+        state = load_file(str(args.init_checkpoint), device=safetensors_device(device))
+        model.load_state_dict(state, strict=True)
+        init_checkpoint = {
+            "path": str(args.init_checkpoint),
+            "tensor_count": len(state),
+            "parameter_count": sum(t.numel() for t in state.values()),
+        }
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     order = list(range(len(train_tasks)))
     rng.shuffle(order)
@@ -341,13 +350,14 @@ def train_adapter(args, train_tasks, eval_tasks, background, opt, device):
         "best_step": best_step,
         "best_checkpoint": best_checkpoint,
         "final_checkpoint": final_checkpoint,
+        "init_checkpoint": init_checkpoint,
         "parameter_count": sum(p.numel() for p in model.parameters()),
     }
 
 
 def write_report(summary, path):
     lines = [
-        "# Stage80 Adapter Training Smoke",
+        f"# {summary['stage_label']}",
         "",
         "## Configuration",
         "",
@@ -358,6 +368,7 @@ def write_report(summary, path):
         f"- eval tasks: `{summary['eval_task_count']}`",
         f"- steps: `{summary['steps']}`",
         f"- heavy root: `{summary['heavy_root']}`",
+        f"- init checkpoint: `{summary['init_checkpoint']['path'] if summary.get('init_checkpoint') else None}`",
         "",
         "## Evaluation",
         "",
@@ -374,7 +385,7 @@ def write_report(summary, path):
         "",
         "## Notes",
         "",
-        "- This is a smoke run, not a final long-training result.",
+        f"- {summary['run_note']}",
         "- Training uses target RGB only as offline supervision; transmitted test-time inputs remain endpoint Gaussian anchors plus normalized time.",
         "- Checkpoints are stored outside git under the heavy root.",
     ])
@@ -383,6 +394,12 @@ def write_report(summary, path):
 
 def parse_args():
     parser = argparse.ArgumentParser()
+    parser.add_argument("--stage", type=int, default=80)
+    parser.add_argument("--stage_label", default="Stage80 Adapter Training Smoke")
+    parser.add_argument("--mode", default="adapter task-manifest RGB training smoke")
+    parser.add_argument("--output_prefix", default="stage80")
+    parser.add_argument("--summary_name", default="stage80_adapter_training_smoke")
+    parser.add_argument("--run_note", default="This is a smoke run, not a final long-training result.")
     parser.add_argument("--task_manifest", type=Path, default=DEFAULT_TASK_MANIFEST)
     parser.add_argument("--codecs", nargs="+", default=["q10"])
     parser.add_argument("--gaps", nargs="+", type=int, default=[4])
@@ -399,6 +416,7 @@ def parse_args():
     parser.add_argument("--seed", type=int, default=20260628)
     parser.add_argument("--heavy_root", type=Path, default=DEFAULT_HEAVY_ROOT)
     parser.add_argument("--summary_root", type=Path, default=DEFAULT_SUMMARY_ROOT)
+    parser.add_argument("--init_checkpoint", type=Path, default=None)
     parser.add_argument("--reference_checkpoint", type=Path, default=DEFAULT_REFERENCE_CHECKPOINT)
     parser.add_argument("--reference_hidden_dim", type=int, default=256)
     parser.add_argument("--no_cache_anchors", action="store_true")
@@ -454,11 +472,11 @@ def main():
 
     result = train_adapter(args, train_tasks, eval_tasks, background, opt, device)
 
-    train_csv = args.summary_root / "stage80_train_log.csv"
-    validation_csv = args.summary_root / "stage80_validation_log.csv"
-    best_eval_csv = args.summary_root / "stage80_best_eval_rows.csv"
-    final_eval_csv = args.summary_root / "stage80_final_eval_rows.csv"
-    reference_eval_csv = args.summary_root / "stage80_reference_eval_rows.csv"
+    train_csv = args.summary_root / f"{args.output_prefix}_train_log.csv"
+    validation_csv = args.summary_root / f"{args.output_prefix}_validation_log.csv"
+    best_eval_csv = args.summary_root / f"{args.output_prefix}_best_eval_rows.csv"
+    final_eval_csv = args.summary_root / f"{args.output_prefix}_final_eval_rows.csv"
+    reference_eval_csv = args.summary_root / f"{args.output_prefix}_reference_eval_rows.csv"
     write_csv(result["train_log"], train_csv, TRAIN_FIELDS)
     write_csv(result["validation_log"], validation_csv, VALIDATION_FIELDS)
     write_csv(result["best_rows"], best_eval_csv, EVAL_FIELDS)
@@ -466,8 +484,10 @@ def main():
     write_csv(reference_rows, reference_eval_csv, EVAL_FIELDS)
 
     summary = {
-        "stage": 80,
-        "mode": "adapter task-manifest RGB training smoke",
+        "stage": args.stage,
+        "stage_label": args.stage_label,
+        "mode": args.mode,
+        "run_note": args.run_note,
         "task_manifest": str(args.task_manifest),
         "codecs": args.codecs,
         "gaps": args.gaps,
@@ -487,6 +507,7 @@ def main():
         "best_eval": result["best_eval"],
         "final_eval": result["final_eval"],
         "best_step": result["best_step"],
+        "init_checkpoint": result["init_checkpoint"],
         "best_checkpoint": result["best_checkpoint"],
         "final_checkpoint": result["final_checkpoint"],
         "reference_checkpoint": str(args.reference_checkpoint),
@@ -497,10 +518,10 @@ def main():
         "best_eval_csv": str(best_eval_csv),
         "final_eval_csv": str(final_eval_csv),
         "reference_eval_csv": str(reference_eval_csv),
-        "notes": "Smoke only. Offline RGB targets are used for training supervision; transmitted test-time inputs remain endpoint static Gaussian anchors plus normalized time.",
+        "notes": f"{args.run_note} Offline RGB targets are used for training supervision; transmitted test-time inputs remain endpoint static Gaussian anchors plus normalized time.",
     }
-    summary_path = args.summary_root / "stage80_adapter_training_smoke_summary.json"
-    report_path = args.summary_root / "stage80_adapter_training_smoke_report.md"
+    summary_path = args.summary_root / f"{args.summary_name}_summary.json"
+    report_path = args.summary_root / f"{args.summary_name}_report.md"
     summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
     write_report(summary, report_path)
     print(json.dumps({

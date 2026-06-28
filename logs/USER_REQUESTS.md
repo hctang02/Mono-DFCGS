@@ -1001,3 +1001,17 @@ Stage80 继续 Gaussian adapter 训练线，但先做小规模 smoke，而不是
 ### 后续执行更新
 
 Stage80 smoke 已完成：新增 `scripts/run_stage80_adapter_training_smoke.py`，最终默认输出覆盖 q10/q12 和 gaps `4/8/16` 的小规模训练闭环。运行前检查 `nvidia-smi`，GPU4 空闲，因此使用 `CUDA_VISIBLE_DEVICES=4`。最终 smoke 使用 `6` 个 train tasks、`6` 个 eval tasks、`6` 个 training steps。best/final eval PSNR 为 `17.669478613164078`，linear baseline 为 `17.669089783599734`，margin 为 `+0.00038882956435060123 dB`；Stage65 reference adapter 在同一小 eval 上 margin 为 `+0.15900605544237814 dB`。该结果只验证 loader/render/loss/checkpoint 闭环，不代表长训效果。输出目录为 `experiments/stage80_adapter_training_smoke/`，checkpoint 在 `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage80_adapter_training_smoke/`。
+
+## 2026-06-28：继续 Stage81 adapter pilot fine-tuning
+
+### 用户原始问题
+
+用户要求继续执行下一步。
+
+### 当前执行决策
+
+Stage81 在 Stage80 smoke 通过后做 controlled adapter pilot fine-tuning。先对 Stage80 trainer 做最小扩展：支持从已有 Stage65 `rgb_h256` adapter checkpoint 初始化，并支持自定义 stage/run 输出前缀，避免 Stage81 输出仍使用 Stage80 文件名。随后用 Stage79 manifest 跑小规模但比 smoke 更有意义的 q10/q12、gap4/8/16 pilot：`48` train tasks、`18` eval tasks、`48` steps、每 `12` steps eval。运行前继续检查 `nvidia-smi`，heavy checkpoint 仍写到 `/data/hctang/tmp/opencode/...`。
+
+### 后续执行更新
+
+Stage81 pilot 已完成：新增 Stage80 trainer 的 `--init_checkpoint` 和自定义输出前缀能力，并从 Stage65 `rgb_h256` checkpoint 初始化运行 q10/q12、gap4/8/16 pilot。运行前检查 `nvidia-smi`，GPU4 空闲，因此使用 `CUDA_VISIBLE_DEVICES=4`。最终配置为 `48` train tasks、`18` eval tasks、`48` steps，best step 为 `24`。reference/initial margin 为 `+0.061880396487980015 dB`，best margin 为 `+0.10681560967982436 dB`，final margin 为 `+0.10644771658749658 dB`。按 gap 看，best gap16 `+0.403032388467782 dB`、gap8 `+0.14113360277949102 dB`，但 gap4 仍为 `-0.18006936459308479 dB`。输出目录为 `experiments/stage81_adapter_training_pilot/`，heavy checkpoint 在 `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage81_adapter_training_pilot/`。

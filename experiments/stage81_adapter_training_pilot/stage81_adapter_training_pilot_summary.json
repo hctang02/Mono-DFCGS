@@ -1,0 +1,136 @@
+{
+  "stage": 81,
+  "stage_label": "Stage81 Adapter Training Pilot",
+  "mode": "adapter task-manifest RGB training pilot",
+  "run_note": "This is a controlled pilot run, not a final long-training result.",
+  "task_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage79_adapter_training_task_manifest/stage79_adapter_training_tasks.csv",
+  "codecs": [
+    "q10",
+    "q12"
+  ],
+  "gaps": [
+    4,
+    8,
+    16
+  ],
+  "available_train_rows": 21108,
+  "available_eval_rows": 10000,
+  "train_task_count": 48,
+  "eval_task_count": 18,
+  "steps": 48,
+  "eval_interval": 12,
+  "hidden_dim": 256,
+  "lr": 8e-06,
+  "weight_decay": 0.0001,
+  "parameter_count": 402445,
+  "heavy_root": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage81_adapter_training_pilot",
+  "summary_root": "experiments/stage81_adapter_training_pilot",
+  "initial_eval": {
+    "task_count": 18,
+    "model_psnr_avg": 18.43683802603116,
+    "linear_psnr_avg": 18.37495762954318,
+    "margin_over_linear_psnr": 0.061880396487980015,
+    "model_psnr_by_gap": {
+      "16": 18.790045543858373,
+      "4": 18.046807844865693,
+      "8": 18.518858525724976
+    },
+    "linear_psnr_by_gap": {
+      "16": 18.41580635317472,
+      "4": 18.27897541499844,
+      "8": 18.428050439416147
+    },
+    "margin_over_linear_psnr_by_gap": {
+      "16": 0.37423919068365025,
+      "4": -0.2321675701327471,
+      "8": 0.09080808630883881
+    }
+  },
+  "best_eval": {
+    "task_count": 18,
+    "model_psnr_avg": 18.481773239223003,
+    "linear_psnr_avg": 18.37495762954318,
+    "margin_over_linear_psnr": 0.10681560967982436,
+    "model_psnr_by_gap": {
+      "16": 18.8188387416425,
+      "4": 18.098906050405354,
+      "8": 18.569184042195634
+    },
+    "linear_psnr_by_gap": {
+      "16": 18.41580635317472,
+      "4": 18.27897541499844,
+      "8": 18.428050439416147
+    },
+    "margin_over_linear_psnr_by_gap": {
+      "16": 0.403032388467782,
+      "4": -0.18006936459308479,
+      "8": 0.14113360277949102
+    }
+  },
+  "final_eval": {
+    "task_count": 18,
+    "model_psnr_avg": 18.48140534613068,
+    "linear_psnr_avg": 18.37495762954318,
+    "margin_over_linear_psnr": 0.10644771658749658,
+    "model_psnr_by_gap": {
+      "16": 18.811292651076066,
+      "4": 18.10588649286997,
+      "8": 18.567644859678857
+    },
+    "linear_psnr_by_gap": {
+      "16": 18.41580635317472,
+      "4": 18.27897541499844,
+      "8": 18.428050439416147
+    },
+    "margin_over_linear_psnr_by_gap": {
+      "16": 0.395486297901342,
+      "4": -0.17308892212846505,
+      "8": 0.13959442026271698
+    }
+  },
+  "best_step": 24,
+  "init_checkpoint": {
+    "path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors",
+    "tensor_count": 14,
+    "parameter_count": 402445
+  },
+  "best_checkpoint": {
+    "path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage81_adapter_training_pilot/best_adapter.safetensors",
+    "tensor_count": 14,
+    "parameter_count": 402445
+  },
+  "final_checkpoint": {
+    "path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage81_adapter_training_pilot/final_adapter.safetensors",
+    "tensor_count": 14,
+    "parameter_count": 402445
+  },
+  "reference_checkpoint": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors",
+  "reference_checkpoint_exists": true,
+  "reference_eval": {
+    "task_count": 18,
+    "model_psnr_avg": 18.43683802603116,
+    "linear_psnr_avg": 18.37495762954318,
+    "margin_over_linear_psnr": 0.061880396487980015,
+    "model_psnr_by_gap": {
+      "16": 18.790045543858373,
+      "4": 18.046807844865693,
+      "8": 18.518858525724976
+    },
+    "linear_psnr_by_gap": {
+      "16": 18.41580635317472,
+      "4": 18.27897541499844,
+      "8": 18.428050439416147
+    },
+    "margin_over_linear_psnr_by_gap": {
+      "16": 0.37423919068365025,
+      "4": -0.2321675701327471,
+      "8": 0.09080808630883881
+    }
+  },
+  "train_log_csv": "experiments/stage81_adapter_training_pilot/stage81_train_log.csv",
+  "validation_log_csv": "experiments/stage81_adapter_training_pilot/stage81_validation_log.csv",
+  "best_eval_csv": "experiments/stage81_adapter_training_pilot/stage81_best_eval_rows.csv",
+  "final_eval_csv": "experiments/stage81_adapter_training_pilot/stage81_final_eval_rows.csv",
+  "reference_eval_csv": "experiments/stage81_adapter_training_pilot/stage81_reference_eval_rows.csv",
+  "notes": "This is a controlled pilot run, not a final long-training result. Offline RGB targets are used for training supervision; transmitted test-time inputs remain endpoint static Gaussian anchors plus normalized time."
+}

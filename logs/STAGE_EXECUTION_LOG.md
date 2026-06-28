@@ -5727,6 +5727,81 @@ Evaluation summary：
 
 结论：Stage80 已验证 Stage79 task manifest 可以直接驱动 q10/q12 endpoint Gaussian anchor loading、rendered RGB loss training、validation baseline comparison 和 checkpoint export。该 run 是 smoke-only，6 step 从零训练不能代表最终 adapter 性能；下一步应在相同脚本基础上启动 controlled medium training，并用 Stage78/Stage77 protocol 做更完整评估。
 
+## 2026-06-28：Stage81 Adapter Pilot Fine-Tuning
+
+### 目标
+
+在 Stage80 smoke trainer 上启动更有意义但仍受控的小规模 adapter pilot fine-tuning，验证 Stage65 adapter 能否作为 q10/q12 Stage79 tasks 的初始化继续训练。
+
+### 操作计划
+
+- 扩展 `scripts/run_stage80_adapter_training_smoke.py`，支持 `--init_checkpoint` 和自定义 stage/run 输出名前缀。
+- 初始化 checkpoint：`/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`。
+- 数据：Stage79 q10/q12、gaps `4/8/16`。
+- Pilot 配置：`48` train tasks、`18` eval tasks、`48` steps、`eval_interval=12`。
+- Heavy checkpoint 保存到 `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage81_adapter_training_pilot`。
+- 仓库内保存 Stage81 summary/report/CSV 和日志。
+- 运行前按要求检查 `nvidia-smi`。
+
+### Stage81 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU4 空闲，因此使用 `CUDA_VISIBLE_DEVICES=4` 运行 pilot。
+
+脚本更新：
+
+```text
+scripts/run_stage80_adapter_training_smoke.py
+```
+
+新增能力：
+
+- `--init_checkpoint`：从已有 adapter checkpoint 初始化训练模型。
+- `--stage`, `--stage_label`, `--output_prefix`, `--summary_name`：支持复用 trainer 生成 Stage81 输出。
+- `--run_note`：区分 smoke / pilot / later long-run 报告说明。
+
+最终 pilot 配置：
+
+| init | codecs | gaps | train tasks | eval tasks | steps | eval interval |
+|---|---|---|---:|---:|---:|---:|
+| Stage65 rgb_h256 | q10,q12 | 4,8,16 | 48 | 18 | 48 | 12 |
+
+仓库内输出：
+
+```text
+experiments/stage81_adapter_training_pilot/stage81_adapter_training_pilot_summary.json
+experiments/stage81_adapter_training_pilot/stage81_adapter_training_pilot_report.md
+experiments/stage81_adapter_training_pilot/stage81_train_log.csv
+experiments/stage81_adapter_training_pilot/stage81_validation_log.csv
+experiments/stage81_adapter_training_pilot/stage81_best_eval_rows.csv
+experiments/stage81_adapter_training_pilot/stage81_final_eval_rows.csv
+experiments/stage81_adapter_training_pilot/stage81_reference_eval_rows.csv
+```
+
+Heavy checkpoints：
+
+```text
+/data/hctang/tmp/opencode/mono_dfcgs_runs/stage81_adapter_training_pilot/best_adapter.safetensors
+/data/hctang/tmp/opencode/mono_dfcgs_runs/stage81_adapter_training_pilot/final_adapter.safetensors
+```
+
+Evaluation summary：
+
+| checkpoint | step | model PSNR | linear PSNR | margin |
+|---|---:|---:|---:|---:|
+| initial/reference Stage65 | 0 | 18.43683802603116 | 18.37495762954318 | 0.061880396487980015 |
+| best pilot | 24 | 18.481773239223003 | 18.37495762954318 | 0.10681560967982436 |
+| final pilot | 48 | 18.48140534613068 | 18.37495762954318 | 0.10644771658749658 |
+
+Best margin by gap：
+
+| gap | margin |
+|---:|---:|
+| 4 | -0.18006936459308479 |
+| 8 | 0.14113360277949102 |
+| 16 | 0.403032388467782 |
+
+结论：Stage81 证明从 Stage65 adapter 初始化后，可以在 Stage79 q10/q12 tasks 上继续训练并提升小规模 held-out margin。但 gap4 仍为负，说明当前 RGB-loss finetuning 对短间隔/高细节 case 不稳定。下一步不应直接宣称全局改进，应扩大 eval 或做 gap-aware sampling/loss，再进入 full RD evaluation。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。
