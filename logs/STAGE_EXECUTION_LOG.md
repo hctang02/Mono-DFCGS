@@ -6169,6 +6169,57 @@ q8 top10% quantized residual side-info：
 
 结论：Stage87 说明 residual side-info 对 6-bit quantization 很鲁棒，q6 与 q8 的 rendered PSNR 差异很小。下一步应将 q12 anchor main rate 与 q6/q8 top-k residual side-info rate 合并成小规模 RD table，并明确 side-info 是 transmitted information。
 
+## 2026-06-28：Stage88 Residual Side-Info RD Package
+
+### 目标
+
+把 Stage87 quantized residual side-info smoke 汇总为小规模 RD package，明确 total rate 口径，并对比 linear 与 Stage65 adapter base。
+
+### 操作计划
+
+- 新增 `scripts/run_stage88_residual_sideinfo_rd_package.py`。
+- 输入 Stage78 q12 anchor main rate table 和 Stage87 quantized residual side-info summary。
+- 输出 RD rows：base method、gap、keep fraction、side bits、main q12 anchor MiB/frame、side-info MiB/intermediate-frame、direct total rate、uniform-gap amortized total rate、base PSNR、side-info PSNR、delta。
+- direct total rate 按当前需求使用 `main anchor rate + side-info rate`。
+- amortized total rate 使用 uniform gap 的 intermediate-frame ratio，对 side-info 做 per-frame 摊销，作为更严格的全视频 rate 参考。
+- 运行前按要求检查 `nvidia-smi`，即使该 package 脚本为 CPU 汇总。
+
+### Stage88 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU0 忙，GPU1/2/3/4/7 空闲；Stage88 是 CPU 汇总脚本，因此未占用 GPU。
+
+新增脚本：
+
+```text
+scripts/run_stage88_residual_sideinfo_rd_package.py
+```
+
+仓库内输出：
+
+```text
+experiments/stage88_residual_sideinfo_rd_package/stage88_residual_sideinfo_rd_rows.csv
+experiments/stage88_residual_sideinfo_rd_package/stage88_residual_sideinfo_rd_points.csv
+experiments/stage88_residual_sideinfo_rd_package/stage88_residual_sideinfo_rd_summary.json
+experiments/stage88_residual_sideinfo_rd_package/stage88_residual_sideinfo_rd_report.md
+experiments/stage88_residual_sideinfo_rd_package/stage88_residual_sideinfo_rd_direct.png
+experiments/stage88_residual_sideinfo_rd_package/stage88_residual_sideinfo_rd_amortized.png
+```
+
+生成 `24` 条 RD rows 和 `60` 条 point rows。
+
+低码率 q6 top10% residual side-info operating point：
+
+| base | gap | q12 main MiB/frame | side MiB/intermediate | direct total | amortized total | side PSNR | delta |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| linear | 4 | 0.18193822076791313 | 0.041353702545166016 | 0.22329192331307915 | 0.21295349767678765 | 23.326992309396783 | 3.3371957812025705 |
+| linear | 8 | 0.09762538675351436 | 0.041353702545166016 | 0.13897908929868036 | 0.1338098764805346 | 20.94547122800524 | 2.8243534745057453 |
+| linear | 16 | 0.055468969746314975 | 0.041353702545166016 | 0.09682267229148099 | 0.09423806588240811 | 23.589870525188754 | 4.476855554636258 |
+| stage65_adapter | 4 | 0.18193822076791313 | 0.041353702545166016 | 0.22329192331307915 | 0.21295349767678765 | 23.35258386164915 | 2.869845655272099 |
+| stage65_adapter | 8 | 0.09762538675351436 | 0.041353702545166016 | 0.13897908929868036 | 0.1338098764805346 | 20.943546028225864 | 2.411187534241218 |
+| stage65_adapter | 16 | 0.055468969746314975 | 0.041353702545166016 | 0.09682267229148099 | 0.09423806588240811 | 22.481910804608162 | 3.406900716022574 |
+
+结论：Stage88 将 Stage87 residual side-info smoke 转为明确的 RD accounting package。q6 top10% 是当前 low-rate 首选点；q8 top10% PSNR 几乎相同但 direct total rate 增加到 gap4 `0.23471646478646782`、gap8 `0.15040363077206903`、gap16 `0.10824721376486966 MiB/frame`。该 package 仍是 12-task smoke 汇总，不是 full-video final RD。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。

@@ -1099,3 +1099,17 @@ Stage87 将 Stage86 的未量化 residual side-info smoke 推进到 q6/q8 quanti
 ### 后续执行更新
 
 Stage87 quantized residual side-info smoke 已完成：覆盖同一 12-task q12 eval slice，keep fractions `0.1/0.25`，side bits `6/8`，rate 计入 Gaussian indices、residual attrs 和 per-attribute min/max metadata。关键结果：q6 top10% side-info rate `0.041353702545166016 MiB/intermediate-frame`，linear base 在 gap4/8/16 上分别提升 `+3.3371957812025705`、`+2.8243534745057453`、`+4.476855554636258 dB`；Stage65 adapter base 分别提升 `+2.869845655272099`、`+2.411187534241218`、`+3.406900716022574 dB`。q8 top10% rate `0.05277824401855469`，提升与 Stage86 未量化 smoke 几乎一致。结论：残差值 6-bit 量化已经足够保留大部分 rendered gain；下一步可做小规模 RD package，把 q12 anchor main rate 与 q6/q8 residual side-info rate 相加。
+
+## 2026-06-28：继续 Stage88 residual side-info RD package
+
+### 用户原始问题
+
+用户要求如果有下一步就继续执行，如果不确定如何推进再停下来询问。
+
+### 当前执行决策
+
+Stage88 将 Stage87 的 quantized residual side-info rendered smoke 汇总成小规模 RD package，不重新渲染。计划读取 Stage87 summary 和 Stage78 q12 anchor-only rate table，把 q12 main anchor rate 与 residual side-info rate 合并，输出 linear / Stage65 adapter 在 gaps `4/8/16`、keep `0.1/0.25`、side bits `6/8` 下的 total rate vs rendered PSNR。由于 Stage87 side-info 口径是 MiB/intermediate-frame，而 Stage78 main anchor rate 是 amortized MiB/frame，Stage88 会同时保留 direct/conservative total 和 uniform-gap amortized total 两列，避免 rate 口径混淆。
+
+### 后续执行更新
+
+Stage88 residual side-info RD package 已完成：运行前检查 `nvidia-smi`，GPU0 忙但该阶段为 CPU 汇总，因此未占用 GPU。输出 `24` 条 RD rows 和 `60` 条 RD point rows，目录为 `experiments/stage88_residual_sideinfo_rd_package/`。低码率 q6 top10% residual side-info 点：linear gap4/8/16 direct total rate 分别为 `0.22329192331307915`、`0.13897908929868036`、`0.09682267229148099 MiB/frame`，对应 rendered PSNR `23.326992309396783`、`20.94547122800524`、`23.589870525188754`，delta `+3.3371957812025705`、`+2.8243534745057453`、`+4.476855554636258 dB`；Stage65 adapter gap4/8/16 direct total rate 相同，PSNR `23.35258386164915`、`20.943546028225864`、`22.481910804608162`，delta `+2.869845655272099`、`+2.411187534241218`、`+3.406900716022574 dB`。结论：q6 top10 是当前最值得扩展验证的 low-rate residual side-info operating point；q8 top10 PSNR 几乎相同但 rate 更高。
