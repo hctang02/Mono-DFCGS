@@ -1029,3 +1029,17 @@ Stage82 不继续训练，先检查 Stage81 best checkpoint 是否只是在 18-t
 ### 后续执行更新
 
 Stage82 broader eval 已完成：在 60-task DAVIS val slice 上，Stage81 best 的 mean margin 为 `+0.10111637946599329 dB`，Stage65 reference adapter 的 mean margin 为 `+0.11064826351743612 dB`，因此 Stage81 pilot 没有在更宽 eval 上超过 Stage65。按 gap 看，Stage81 best 相对 linear 为 gap16 `+0.3698363934848712 dB`、gap8 `+0.06382222406404825 dB`、gap4 `-0.0773488024139178 dB`；Stage65 reference 为 gap16 `+0.3343528251045902 dB`、gap8 `+0.05364375708512303 dB`、gap4 `-0.010726898647836793 dB`。结论：Stage81 pilot 可能改善长 gap，但损害 gap4，暂不能替代 Stage65 作为 current best adapter。输出目录为 `experiments/stage82_adapter_pilot_broader_eval/`。
+
+## 2026-06-28：继续 Stage83 gap-aware adapter training
+
+### 用户原始问题
+
+用户要求继续执行后续步骤，都做完了再汇报。
+
+### 当前执行决策
+
+Stage83 针对 Stage82 发现的 gap4 退化问题做 gap-aware adapter pilot。计划最小扩展 Stage80 trainer：支持按 reference gap 设置 RGB loss weight，并支持 protected validation score，在选择 best checkpoint 时对 gap4 negative margin 加 penalty。训练仍从 Stage65 `rgb_h256` adapter 初始化，覆盖 Stage79 q10/q12、gap4/8/16，使用更宽的 60-task eval slice，目标是确认能否保护 gap4，同时不牺牲 gap8/gap16 和 mean margin。运行前继续检查 `nvidia-smi`，heavy checkpoint 写到 `/data/hctang/tmp/opencode/...`。
+
+### 后续执行更新
+
+Stage83 gap-aware adapter training 已完成：扩展 trainer 支持 `--gap_loss_weights`、`--best_metric protected_gap4_margin` 和 `--gap4_penalty`。运行前检查 `nvidia-smi`，GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。配置为 Stage65 初始化、gap4 loss weight `3.0`、gap8/gap16 weight `1.0`、`72` train tasks、`60` eval tasks、`72` steps。protected best checkpoint 选择 step `0`，即保留 Stage65 初始化；final mean margin 从 `+0.11064826351743612 dB` 到 `+0.11286058458557878 dB`，但 gap4 从 `-0.010726898647836793 dB` 退化到 `-0.044278793981359484 dB`。结论：当前 gap-aware RGB-loss finetune 仍不能替代 Stage65；后续应转向 selector / dynamic side-info / 更结构化目标，而不是继续盲目加权训练。

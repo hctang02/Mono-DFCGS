@@ -62,6 +62,8 @@ TRAIN_FIELDS = [
     "target_index",
     "normalized_time",
     "loss",
+    "loss_weight",
+    "weighted_loss",
     "loss_psnr",
 ]
 
@@ -70,6 +72,7 @@ VALIDATION_FIELDS = [
     "model_psnr_avg",
     "linear_psnr_avg",
     "margin_over_linear_psnr",
+    "selection_score",
     "best_so_far",
 ]
 
@@ -230,6 +233,7 @@ def group_average(rows, group_key, value_key):
 
 
 def summarize_eval(rows):
+    margin_by_gap = group_average(rows, "reference_gap", "margin_over_linear_psnr")
     return {
         "task_count": len(rows),
         "model_psnr_avg": average(rows, "model_psnr"),
@@ -237,7 +241,8 @@ def summarize_eval(rows):
         "margin_over_linear_psnr": average(rows, "margin_over_linear_psnr"),
         "model_psnr_by_gap": group_average(rows, "reference_gap", "model_psnr"),
         "linear_psnr_by_gap": group_average(rows, "reference_gap", "linear_psnr"),
-        "margin_over_linear_psnr_by_gap": group_average(rows, "reference_gap", "margin_over_linear_psnr"),
+        "margin_over_linear_psnr_by_gap": margin_by_gap,
+        "min_gap_margin_over_linear_psnr": min(margin_by_gap.values()) if margin_by_gap else 0.0,
     }
 
 
@@ -252,6 +257,28 @@ def safetensors_device(device):
     if device.type == "cuda" and device.index is None:
         return "cuda:0"
     return str(device)
+
+
+def parse_gap_weights(items):
+    weights = {}
+    for item in items:
+        if ":" not in item:
+            raise ValueError(f"Expected GAP:WEIGHT, got {item}")
+        gap, weight = item.split(":", 1)
+        weights[int(gap)] = float(weight)
+    return weights
+
+
+def selection_score(eval_summary, args):
+    if args.best_metric == "mean_margin":
+        return eval_summary["margin_over_linear_psnr"]
+    if args.best_metric == "min_gap_margin":
+        return eval_summary["min_gap_margin_over_linear_psnr"]
+    if args.best_metric == "protected_gap4_margin":
+        gap4_margin = eval_summary["margin_over_linear_psnr_by_gap"].get("4", 0.0)
+        penalty = args.gap4_penalty * min(0.0, gap4_margin)
+        return eval_summary["margin_over_linear_psnr"] + penalty
+    raise ValueError(f"Unsupported best metric: {args.best_metric}")
 
 
 def load_reference_model(path, hidden_dim, device):
@@ -283,15 +310,17 @@ def train_adapter(args, train_tasks, eval_tasks, background, opt, device):
             "parameter_count": sum(t.numel() for t in state.values()),
         }
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
+    gap_loss_weights = parse_gap_weights(args.gap_loss_weights)
     order = list(range(len(train_tasks)))
     rng.shuffle(order)
 
     initial_rows = evaluate_model(model, eval_tasks, background, opt, step=0)
     best_rows = initial_rows
     best_eval = summarize_eval(initial_rows)
+    best_score = selection_score(best_eval, args)
     best_step = 0
     best_checkpoint = save_model(model, args.heavy_root / "best_adapter.safetensors")
-    validation_log = [{"step": 0, **best_eval, "best_so_far": True}]
+    validation_log = [{"step": 0, **best_eval, "selection_score": best_score, "best_so_far": True}]
     train_log = []
 
     model.train()
@@ -300,12 +329,15 @@ def train_adapter(args, train_tasks, eval_tasks, background, opt, device):
             rng.shuffle(order)
         task = train_tasks[order[(step - 1) % len(order)]]
         pred_rgb = render_prediction(model, task, background, opt).clamp(0.0, 1.0)
-        loss = F.mse_loss(pred_rgb, task["target"])
+        raw_loss = F.mse_loss(pred_rgb, task["target"])
+        loss_weight = gap_loss_weights.get(int(task["reference_gap"]), 1.0)
+        loss = raw_loss * loss_weight
         optimizer.zero_grad(set_to_none=True)
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), args.grad_clip)
         optimizer.step()
-        loss_value = float(loss.detach().item())
+        raw_loss_value = float(raw_loss.detach().item())
+        weighted_loss_value = float(loss.detach().item())
         row = {
             "step": step,
             "task_id": task["task_id"],
@@ -314,8 +346,10 @@ def train_adapter(args, train_tasks, eval_tasks, background, opt, device):
             "reference_gap": task["reference_gap"],
             "target_index": task["target_index"],
             "normalized_time": task["normalized_time"],
-            "loss": loss_value,
-            "loss_psnr": psnr_from_mse(loss_value),
+            "loss": raw_loss_value,
+            "loss_weight": loss_weight,
+            "weighted_loss": weighted_loss_value,
+            "loss_psnr": psnr_from_mse(raw_loss_value),
         }
         train_log.append(row)
         print(json.dumps(row), flush=True)
@@ -323,13 +357,15 @@ def train_adapter(args, train_tasks, eval_tasks, background, opt, device):
         if step % args.eval_interval == 0 or step == args.steps:
             current_rows = evaluate_model(model, eval_tasks, background, opt, step=step)
             current_eval = summarize_eval(current_rows)
-            is_best = current_eval["margin_over_linear_psnr"] > best_eval["margin_over_linear_psnr"]
+            current_score = selection_score(current_eval, args)
+            is_best = current_score > best_score
             if is_best:
                 best_rows = current_rows
                 best_eval = current_eval
+                best_score = current_score
                 best_step = step
                 best_checkpoint = save_model(model, args.heavy_root / "best_adapter.safetensors")
-            validation_row = {"step": step, **current_eval, "best_so_far": is_best}
+            validation_row = {"step": step, **current_eval, "selection_score": current_score, "best_so_far": is_best}
             validation_log.append(validation_row)
             print(json.dumps(validation_row), flush=True)
             model.train()
@@ -347,6 +383,7 @@ def train_adapter(args, train_tasks, eval_tasks, background, opt, device):
         "initial_eval": summarize_eval(initial_rows),
         "best_eval": best_eval,
         "final_eval": final_eval,
+        "best_selection_score": best_score,
         "best_step": best_step,
         "best_checkpoint": best_checkpoint,
         "final_checkpoint": final_checkpoint,
@@ -369,6 +406,9 @@ def write_report(summary, path):
         f"- steps: `{summary['steps']}`",
         f"- heavy root: `{summary['heavy_root']}`",
         f"- init checkpoint: `{summary['init_checkpoint']['path'] if summary.get('init_checkpoint') else None}`",
+        f"- gap loss weights: `{summary.get('gap_loss_weights', {})}`",
+        f"- best metric: `{summary.get('best_metric', 'mean_margin')}`",
+        f"- best selection score: `{summary.get('best_selection_score')}`",
         "",
         "## Evaluation",
         "",
@@ -381,6 +421,23 @@ def write_report(summary, path):
     if summary.get("reference_eval") is not None:
         ref = summary["reference_eval"]
         lines.append(f"| reference adapter | -1 | {ref['model_psnr_avg']} | {ref['linear_psnr_avg']} | {ref['margin_over_linear_psnr']} |")
+    gap_keys = sorted(summary["final_eval"].get("margin_over_linear_psnr_by_gap", {}), key=lambda item: int(item))
+    if gap_keys:
+        lines.extend([
+            "",
+            "## Gap Margins",
+            "",
+            "| gap | initial | best | final | reference |",
+            "|---:|---:|---:|---:|---:|",
+        ])
+        for gap in gap_keys:
+            initial_gap = summary["initial_eval"].get("margin_over_linear_psnr_by_gap", {}).get(gap)
+            best_gap = summary["best_eval"].get("margin_over_linear_psnr_by_gap", {}).get(gap)
+            final_gap = summary["final_eval"].get("margin_over_linear_psnr_by_gap", {}).get(gap)
+            reference_gap = None
+            if summary.get("reference_eval") is not None:
+                reference_gap = summary["reference_eval"].get("margin_over_linear_psnr_by_gap", {}).get(gap)
+            lines.append(f"| {gap} | {initial_gap} | {best_gap} | {final_gap} | {reference_gap} |")
     lines.extend([
         "",
         "## Notes",
@@ -413,6 +470,9 @@ def parse_args():
     parser.add_argument("--lr", type=float, default=8e-6)
     parser.add_argument("--weight_decay", type=float, default=1e-4)
     parser.add_argument("--grad_clip", type=float, default=1.0)
+    parser.add_argument("--gap_loss_weights", nargs="*", default=[])
+    parser.add_argument("--best_metric", choices=["mean_margin", "min_gap_margin", "protected_gap4_margin"], default="mean_margin")
+    parser.add_argument("--gap4_penalty", type=float, default=1.0)
     parser.add_argument("--seed", type=int, default=20260628)
     parser.add_argument("--heavy_root", type=Path, default=DEFAULT_HEAVY_ROOT)
     parser.add_argument("--summary_root", type=Path, default=DEFAULT_SUMMARY_ROOT)
@@ -500,12 +560,16 @@ def main():
         "hidden_dim": args.hidden_dim,
         "lr": args.lr,
         "weight_decay": args.weight_decay,
+        "gap_loss_weights": parse_gap_weights(args.gap_loss_weights),
+        "best_metric": args.best_metric,
+        "gap4_penalty": args.gap4_penalty,
         "parameter_count": result["parameter_count"],
         "heavy_root": str(args.heavy_root),
         "summary_root": str(args.summary_root),
         "initial_eval": result["initial_eval"],
         "best_eval": result["best_eval"],
         "final_eval": result["final_eval"],
+        "best_selection_score": result["best_selection_score"],
         "best_step": result["best_step"],
         "init_checkpoint": result["init_checkpoint"],
         "best_checkpoint": result["best_checkpoint"],

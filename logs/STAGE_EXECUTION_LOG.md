@@ -5851,6 +5851,75 @@ Margin by gap：
 
 结论：Stage82 是一个重要 guardrail。Stage81 pilot 在更宽 eval 上没有超过 Stage65 reference，主要因为 gap4 退化更明显；Stage81 只显示出 gap8/gap16 改善趋势。当前 best adapter 仍应保留 Stage65，后续若继续训练应采用 gap-aware sampling/loss，至少不能牺牲 gap4。
 
+## 2026-06-28：Stage83 Gap-Aware Adapter Training
+
+### 目标
+
+针对 Stage82 的 gap4 退化问题，做 gap-aware adapter pilot：训练时提高 gap4 RGB loss 权重，选择 best checkpoint 时用 protected score 惩罚 gap4 negative margin。
+
+### 操作计划
+
+- 扩展 `scripts/run_stage80_adapter_training_smoke.py`：
+- 增加 `--gap_loss_weights`，支持如 `4:3.0 8:1.0 16:1.0`。
+- 增加 `--best_metric protected_gap4_margin` 和 `--gap4_penalty`。
+- 从 Stage65 `rgb_h256` checkpoint 初始化。
+- 数据：Stage79 q10/q12、gaps `4/8/16`。
+- Pilot 配置：`72` train tasks、`60` eval tasks、`72` steps、`eval_interval=18`。
+- Heavy checkpoint 保存到 `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage83_gap_aware_adapter_training`。
+- 仓库内保存 Stage83 summary/report/CSV 和日志。
+- 运行前按要求检查 `nvidia-smi`。
+
+### Stage83 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 pilot。
+
+脚本更新：
+
+```text
+scripts/run_stage80_adapter_training_smoke.py
+```
+
+新增能力：
+
+- `--gap_loss_weights`：按 reference gap 加权 RGB loss。
+- `--best_metric protected_gap4_margin`：best checkpoint selection 使用 mean margin 加 gap4 negative penalty。
+- `--gap4_penalty`：控制 gap4 negative margin penalty 强度。
+
+最终 pilot 配置：
+
+| init | loss weights | best metric | train tasks | eval tasks | steps |
+|---|---|---|---:|---:|---:|
+| Stage65 rgb_h256 | gap4=3.0, gap8=1.0, gap16=1.0 | protected_gap4_margin | 72 | 60 | 72 |
+
+仓库内输出：
+
+```text
+experiments/stage83_gap_aware_adapter_training/stage83_gap_aware_adapter_training_summary.json
+experiments/stage83_gap_aware_adapter_training/stage83_gap_aware_adapter_training_report.md
+experiments/stage83_gap_aware_adapter_training/stage83_train_log.csv
+experiments/stage83_gap_aware_adapter_training/stage83_validation_log.csv
+experiments/stage83_gap_aware_adapter_training/stage83_best_eval_rows.csv
+experiments/stage83_gap_aware_adapter_training/stage83_final_eval_rows.csv
+experiments/stage83_gap_aware_adapter_training/stage83_reference_eval_rows.csv
+```
+
+Heavy checkpoints：
+
+```text
+/data/hctang/tmp/opencode/mono_dfcgs_runs/stage83_gap_aware_adapter_training/best_adapter.safetensors
+/data/hctang/tmp/opencode/mono_dfcgs_runs/stage83_gap_aware_adapter_training/final_adapter.safetensors
+```
+
+Evaluation summary on 60 DAVIS val tasks：
+
+| checkpoint | step | model PSNR | linear PSNR | mean margin | gap4 margin | gap8 margin | gap16 margin |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| initial/reference Stage65 | 0 | 19.369958827711727 | 19.259310564194283 | 0.11064826351743612 | -0.010726898647836793 | 0.05364375708512303 | 0.3343528251045902 |
+| protected best | 0 | 19.369958827711727 | 19.259310564194283 | 0.11064826351743612 | -0.010726898647836793 | 0.05364375708512303 | 0.3343528251045902 |
+| final | 72 | 19.372171148779863 | 19.259310564194283 | 0.11286058458557878 | -0.044278793981359484 | 0.06219831435034278 | 0.3725368725315138 |
+
+结论：Stage83 protected metric 正确阻止了选择 gap4 退化更明显的 final checkpoint。即使 gap4 loss weight 提到 `3.0`，RGB-loss finetune 仍倾向改善 gap8/gap16、损害 gap4。当前 best adapter 继续保持 Stage65；后续应转向 rendered-label selector、dynamic side-info 或更结构化的 adapter objective。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。
