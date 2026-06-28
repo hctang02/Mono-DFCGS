@@ -7648,3 +7648,67 @@ Stage110 group-best choices：
 Mismatch diagnostic confirms the earlier issue at broader scale: learned selectors improve residual-energy recall in every group, but rendered PSNR can drop. For `shared_energy_regression`, linear gap4 has energy delta `+0.031175289392830378` but PSNR delta `-0.023422587923175493`; Stage65 adapter gap4/8/16 PSNR deltas are `-0.22540383262011054`, `-0.19372914974113`, and `-0.1363193230658923`.
 
 结论：Stage110 reduces confidence in the exact Stage106 group switch. The Stage106 fixed policy remains slightly positive on the broader 480-task policy set, but its gain shrinks from Stage105's `+0.030059636844502392 dB` to `+0.0017817297518578745 dB` because linear gap4 learned selection is negative at broader scale. A Stage110 group-best pattern is better at `+0.005831885580240304 dB`, but this is selected on the same broader rows and should be treated as a candidate, not a frozen deployable policy. Next step should be Stage111 broader switch predictor using Stage110 labels and comparing against both Stage106 fixed and Stage110 group-best policies.
+
+## 2026-06-28：Stage111 Broader Switch Predictor
+
+### 目标
+
+使用 Stage110 的 480-task broader rendered labels，重新评估 task-level switch predictor 是否能稳定超过 fixed group baselines，并减少 Stage107-109 的小样本过拟合。
+
+### 操作计划
+
+- 参数化 `scripts/run_stage109_selector_score_switch_feature_preflight.py`，让其支持 Stage111 输入 rows、输出 prefix、report title 和额外 fixed group policy baseline。
+- 输入 rendered rows：`experiments/stage110_broader_rendered_selector_labels/stage110_broader_rendered_selector_labels_rows.csv`。
+- 输入 Stage110 group choices：`experiments/stage110_broader_rendered_selector_labels/stage110_broader_render_aware_policy_group_choices.csv`。
+- 构造 metadata、anchor-stat、score-stat、anchor+score feature tables。
+- 运行 deterministic K-fold CV，对比 endpoint-only、metadata MLP、anchor-stat MLP、score-stat MLP、anchor+score MLP、Stage106 fixed group policy、Stage110 group-best candidate、train-fold group policy 和 oracle task best。
+- 不渲染、不保存 checkpoint、不保存 heavy tensors。
+- 运行代码前检查 `nvidia-smi` 并选择空闲 GPU。
+
+### Stage111 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU2 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。先运行语法检查：
+
+```text
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage109_selector_score_switch_feature_preflight.py
+```
+
+随后再次检查 GPU，并运行完整 Stage111：
+
+```text
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage109_selector_score_switch_feature_preflight.py --stage 111 --mode "broader task-level switch predictor" --stage103_rows experiments/stage110_broader_rendered_selector_labels/stage110_broader_rendered_selector_labels_rows.csv --fixed_group_choices experiments/stage110_broader_rendered_selector_labels/stage110_broader_render_aware_policy_group_choices.csv --fixed_group_policy_name stage110_group_best_policy --summary_root experiments/stage111_broader_switch_predictor --output_prefix stage111_broader_switch_predictor --report_title "Stage111 Broader Switch Predictor"
+```
+
+输出目录：
+
+```text
+experiments/stage111_broader_switch_predictor/
+```
+
+输出大小约 `1.2M`，不包含 checkpoint、anchors、payload 或 heavy tensors。配置：task count `480`，folds `5`，selector train tasks `96`，selector train examples `589824`，feature dims 为 anchor-stat `64`、score-stat `82`、anchor+score `133`。
+
+Overall summary：
+
+| policy | selected PSNR | gain vs endpoint | accuracy | selections |
+|---|---:|---:|---:|---|
+| endpoint_only | 20.3212149854921 | 0.0 | 0.5791666666666667 | endpoint_diff_baseline:480 |
+| stage106_fixed_group_policy | 20.322996715243978 | 0.0017817297518578745 | 0.51875 | endpoint_diff_baseline:240;shared_energy_regression:240 |
+| stage110_group_best_policy | 20.32704687107235 | 0.005831885580240304 | 0.55625 | endpoint_diff_baseline:323;shared_energy_regression:157 |
+| train_fold_group_policy | 20.325313259771452 | 0.00409827427933979 | 0.5541666666666667 | endpoint_diff_baseline:338;shared_energy_regression:142 |
+| anchor_stat_mlp_cv | 20.331745776419964 | 0.010530790927825506 | 0.6041666666666666 | endpoint_diff_baseline:261;shared_energy_regression:134;shared_topk_bce:85 |
+| score_stat_mlp_cv | 20.33325220653739 | 0.012037221045259486 | 0.6041666666666666 | endpoint_diff_baseline:274;shared_energy_regression:130;shared_topk_bce:76 |
+| anchor_score_mlp_cv | 20.33140381862592 | 0.010188833133790712 | 0.59375 | endpoint_diff_baseline:270;shared_energy_regression:122;shared_topk_bce:88 |
+| oracle_task_best | 20.382843220952545 | 0.06162823546041816 | 1.0 | endpoint_diff_baseline:278;shared_energy_regression:121;shared_topk_bce:81 |
+
+Important group behavior for `score_stat_mlp_cv`：
+
+| base | gap | gain vs endpoint |
+|---|---:|---:|
+| linear | 4 | 0.005069813517757055 |
+| linear | 8 | 0.025965933345715158 |
+| linear | 16 | 0.02894712770300507 |
+| stage65_adapter | 4 | -0.00797889356792674 |
+| stage65_adapter | 8 | 0.003851082004932165 |
+| stage65_adapter | 16 | 0.018024353491706453 |
+
+结论：Stage111 confirms that broader labels reduce overfitting enough for learned switch predictors to beat fixed group baselines overall. `score_stat_mlp_cv` is the best overall policy and beats Stage110 group-best by about `+0.006205335465019182 dB`. However, it still has a Stage65 adapter gap4 regression (`-0.00797889356792674 dB`), so it should not be packaged as the final safe deployable switch. Stage112 should package the conservative Stage110 broader group policy v2 as the safe decoder-side policy candidate, then Stage113 should validate it on held-out rows/sequences.

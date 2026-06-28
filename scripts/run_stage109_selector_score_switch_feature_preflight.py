@@ -73,6 +73,15 @@ SWITCH_POLICIES = [
 ]
 
 
+def read_group_choices(path):
+    if path is None or not path.exists():
+        return {}
+    choices = {}
+    for row in read_csv(path):
+        choices[(row["base_method"], int(row["reference_gap"]))] = row["selected_candidate"]
+    return choices
+
+
 def write_plain_csv(rows, path, fields):
     with open(path, "w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fields, extrasaction="ignore", lineterminator="\n")
@@ -280,7 +289,18 @@ def predict_feature_mlp(task, feature_table, model_bundle):
     return DEPLOYABLE_CANDIDATES[pred]
 
 
-def run_cv(tasks, feature_tables, args, stage106_table, fallback):
+def select_fixed_group_choice(task, group_choices, fallback):
+    return group_choices.get((task["base_method"], int(task["reference_gap"])), fallback)
+
+
+def policy_order(fixed_group_choices):
+    policies = list(SWITCH_POLICIES)
+    if fixed_group_choices and "fixed_group_choices_policy" not in policies:
+        policies.insert(policies.index("oracle_task_best"), "fixed_group_choices_policy")
+    return policies
+
+
+def run_cv(tasks, feature_tables, args, stage106_table, fallback, fixed_group_choices):
     fold_map = split_folds(tasks, args.fold_count)
     rows = []
     train_logs = []
@@ -310,14 +330,17 @@ def run_cv(tasks, feature_tables, args, stage106_table, fallback):
                 "anchor_score_mlp_cv": predict_feature_mlp(task, feature_tables["anchor_score_mlp_cv"], model_bundles["anchor_score_mlp_cv"]),
                 "oracle_task_best": task["oracle_candidate"],
             }
-            for policy in SWITCH_POLICIES:
-                rows.append(evaluate_selection(task, policy, fold, policy_candidates[policy]))
+            if fixed_group_choices:
+                policy_candidates["fixed_group_choices_policy"] = select_fixed_group_choice(task, fixed_group_choices, fallback)
+            for policy in policy_order(fixed_group_choices):
+                policy_name = args.fixed_group_policy_name if policy == "fixed_group_choices_policy" else policy
+                rows.append(evaluate_selection(task, policy_name, fold, policy_candidates[policy]))
     return rows, train_logs
 
 
 def write_report(summary, summary_rows, group_summary_rows, path):
     lines = [
-        "# Stage109 Selector-Score Switch Feature Preflight",
+        f"# {summary.get('report_title', 'Stage109 Selector-Score Switch Feature Preflight')}",
         "",
         "## Configuration",
         "",
@@ -366,8 +389,14 @@ def parse_args():
     parser.add_argument("--stage97_tasks", type=Path, default=DEFAULT_STAGE97_TASKS)
     parser.add_argument("--stage103_rows", type=Path, default=DEFAULT_STAGE103_ROWS)
     parser.add_argument("--stage106_policy", type=Path, default=DEFAULT_STAGE106_POLICY)
+    parser.add_argument("--fixed_group_choices", type=Path, default=None)
+    parser.add_argument("--fixed_group_policy_name", default="fixed_group_choices_policy")
     parser.add_argument("--adapter", type=Path, default=DEFAULT_ADAPTER)
     parser.add_argument("--summary_root", type=Path, default=DEFAULT_SUMMARY_ROOT)
+    parser.add_argument("--stage", type=int, default=109)
+    parser.add_argument("--mode", default="selector-score task-level switch feature preflight")
+    parser.add_argument("--output_prefix", default="stage109_selector_score_switch")
+    parser.add_argument("--report_title", default="Stage109 Selector-Score Switch Feature Preflight")
     parser.add_argument("--gaps", nargs="+", type=int, default=[4, 8, 16])
     parser.add_argument("--base_methods", nargs="+", default=["linear", "stage65_adapter"])
     parser.add_argument("--objectives", nargs="+", default=["topk_bce", "energy_regression"])
@@ -400,17 +429,18 @@ def main():
     selector_models, selector_logs, selector_train_task_count, selector_train_example_count = train_score_selectors(args, adapter, device)
     feature_tables = build_feature_tables(tasks, manifest, adapter, selector_models, device, args)
     package = json.loads(args.stage106_policy.read_text(encoding="utf-8"))
-    rows, switch_logs = run_cv(tasks, feature_tables, args, package["selection_table"], package["fallback_candidate"])
+    fixed_group_choices = read_group_choices(args.fixed_group_choices)
+    rows, switch_logs = run_cv(tasks, feature_tables, args, package["selection_table"], package["fallback_candidate"], fixed_group_choices)
     summary_rows = summarize(rows)
     group_summary_rows = summarize_groups(rows)
 
-    rows_csv = args.summary_root / "stage109_selector_score_switch_rows.csv"
-    summary_csv = args.summary_root / "stage109_selector_score_switch_summary.csv"
-    group_summary_csv = args.summary_root / "stage109_selector_score_switch_group_summary.csv"
-    selector_train_log_csv = args.summary_root / "stage109_selector_score_selector_train_log.csv"
-    switch_train_log_csv = args.summary_root / "stage109_selector_score_switch_train_log.csv"
-    summary_json = args.summary_root / "stage109_selector_score_switch_summary.json"
-    report_md = args.summary_root / "stage109_selector_score_switch_report.md"
+    rows_csv = args.summary_root / f"{args.output_prefix}_rows.csv"
+    summary_csv = args.summary_root / f"{args.output_prefix}_summary.csv"
+    group_summary_csv = args.summary_root / f"{args.output_prefix}_group_summary.csv"
+    selector_train_log_csv = args.summary_root / f"{args.output_prefix}_selector_train_log.csv"
+    switch_train_log_csv = args.summary_root / f"{args.output_prefix}_switch_train_log.csv"
+    summary_json = args.summary_root / f"{args.output_prefix}_summary.json"
+    report_md = args.summary_root / f"{args.output_prefix}_report.md"
     write_csv(rows, rows_csv, ROW_FIELDS)
     write_csv(summary_rows, summary_csv, SUMMARY_FIELDS)
     write_csv(group_summary_rows, group_summary_csv, GROUP_SUMMARY_FIELDS)
@@ -418,8 +448,9 @@ def main():
     write_plain_csv(switch_logs, switch_train_log_csv, ["model", *TRAIN_LOG_FIELDS])
     feature_dims = {name: len(next(iter(table.values()))) if table else 0 for name, table in feature_tables.items()}
     summary = {
-        "stage": 109,
-        "mode": "selector-score task-level switch feature preflight",
+        "stage": args.stage,
+        "mode": args.mode,
+        "report_title": args.report_title,
         "task_count": len(tasks),
         "fold_count": args.fold_count,
         "selector_train_task_count": selector_train_task_count,
@@ -428,6 +459,8 @@ def main():
         "stage97_tasks": str(args.stage97_tasks),
         "stage103_rows": str(args.stage103_rows),
         "stage106_policy": str(args.stage106_policy),
+        "fixed_group_choices": str(args.fixed_group_choices) if args.fixed_group_choices else "",
+        "fixed_group_policy_name": args.fixed_group_policy_name,
         "adapter": str(args.adapter),
         "rows_csv": str(rows_csv),
         "summary_csv": str(summary_csv),

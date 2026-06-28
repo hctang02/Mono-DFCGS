@@ -1445,3 +1445,17 @@ Stage110 将扩大 Stage103 rendered selector validation 的 eval task 数，从
 ### 后续执行更新
 
 Stage110 broader rendered selector labels 已完成：运行前多次检查 `nvidia-smi`，GPU2 空闲，因此 rendered validation 使用 `CUDA_VISIBLE_DEVICES=2`。参数化 `scripts/run_stage103_broader_rendered_selector_validation.py`、`scripts/run_stage104_render_energy_selector_mismatch_diagnostic.py` 和 `scripts/run_stage105_render_aware_selector_policy_preflight.py`，默认 Stage103/104/105 输出保持不变；Stage110 输出目录为 `experiments/stage110_broader_rendered_selector_labels/`，大小约 `1.8M`。Rendered validation 覆盖 train tasks `96`、eval tasks `240`、train examples `589824`。Policy preflight task count `480`。结果：endpoint-only PSNR `20.3212149854921`；Stage106 fixed group policy PSNR `20.322996715243953`，gain `+0.0017817297518578745 dB`；Stage110 group-best policy PSNR `20.327046871072337`，gain `+0.005831885580240304 dB`；oracle task best PSNR `20.382843220952523`，gain `+0.06162823546041816 dB`。Stage110 group-best choice 为 linear gap4 用 endpoint，linear gap8/16 用 `shared_energy_regression`，Stage65 adapter gap4/8/16 用 endpoint。结论：更大 label set 上 Stage106 仍略正但收益明显缩小，linear gap4 learned selector 不稳；下一步应执行 Stage111 broader switch predictor，以 Stage110 rows 作为更可靠 labels，并同时比较 Stage106 fixed policy 和 Stage110 group-best policy。
+
+## 2026-06-28：执行 Stage111 broader switch predictor
+
+### 用户原始问题
+
+用户确认可以继续按后续 stages 往下做；Stage110 已完成并推送，进入 Stage111。
+
+### 当前执行决策
+
+Stage111 将复用并参数化 `scripts/run_stage109_selector_score_switch_feature_preflight.py`，读取 Stage110 broader rendered rows，构造 metadata、anchor-stat、score-stat、anchor+score features，在 `480` 个 broader switch tasks 上做 deterministic K-fold CV。对比 endpoint-only、metadata MLP、anchor-stat MLP、score-stat MLP、anchor+score MLP、Stage106 fixed group policy、Stage110 group-best candidate、train-fold group policy 和 oracle task best。该阶段不渲染、不保存 checkpoint、不保存 heavy tensors；features 仍只使用 decoder-side left/right q12 anchors、base anchors 和 selector logits，rendered PSNR 只作为 train/eval label 来源。运行前检查 `nvidia-smi` 并选择空闲 GPU。
+
+### 后续执行更新
+
+Stage111 broader switch predictor 已完成：运行前检查 `nvidia-smi`，GPU2 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。参数化 `scripts/run_stage109_selector_score_switch_feature_preflight.py`，读取 Stage110 rendered rows 和 Stage110 group choices，输出目录 `experiments/stage111_broader_switch_predictor/`，大小约 `1.2M`。task count `480`，folds `5`，selector train tasks `96`，selector train examples `589824`，feature dims：anchor-stat `64`、score-stat `82`、anchor+score `133`。结果：endpoint-only PSNR `20.3212149854921`；Stage106 fixed group policy `20.322996715243978`，gain `+0.0017817297518578745 dB`；Stage110 group-best policy `20.32704687107235`，gain `+0.005831885580240304 dB`；`score_stat_mlp_cv` `20.33325220653739`，gain `+0.012037221045259486 dB`；`anchor_stat_mlp_cv` `20.331745776419964`；`anchor_score_mlp_cv` `20.33140381862592`；oracle task best `20.382843220952545`。结论：score-stat learned switch 在整体 PSNR 上超过 fixed group baselines，但仍在 Stage65 adapter gap4 上有负收益 `-0.00797889356792674 dB`，不满足“adapter 不掉点”的 safe package 条件。下一步 Stage112 应打包 conservative Stage110 broader group policy v2，而不是直接打包 learned MLP。

@@ -65,6 +65,7 @@ Key Stage96 direct total rates:
 - Stage108: anchor-stat task-level switch predictor; better than metadata-only and endpoint, but still below Stage106 and overfits.
 - Stage109: selector-score task-level switch predictor; score statistics have signal but still do not beat Stage106.
 - Stage110: broader rendered selector labels with 240 eval tasks; Stage106 fixed policy remains slightly positive but much weaker, and a broader group-best pattern changes linear gap4 back to endpoint.
+- Stage111: broader switch predictor on Stage110 labels; score-stat MLP beats fixed group policies overall but still has Stage65 adapter gap4 regression.
 
 ## Current Best Selector Policy
 
@@ -107,6 +108,7 @@ Validation summary on Stage105/106 rows:
 - Selector-score task-level switching has signal but does not fix adapter-group regressions and remains below Stage106.
 - Stage106 remains the current packaged deployable selector-switch baseline, but Stage110 shows its linear gap4 choice is not robust on broader labels.
 - Stage110 group-best pattern is a candidate for a future package, not yet a frozen policy.
+- Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
 - Residual value prediction should wait until selector switching and index/value accounting are more stable.
 
 ## Next Plan
@@ -168,6 +170,18 @@ Success condition:
 - Stage106-style policy remains positive on broader rendered labels, or a better switch policy emerges consistently.
 
 ### Stage111: Broader Switch Predictor
+
+Status: completed on 2026-06-28.
+
+Result:
+
+- Task count: `480` broader switch rows from Stage110.
+- `score_stat_mlp_cv` PSNR `20.33325220653739`, gain vs endpoint `+0.012037221045259486 dB`.
+- Stage110 group-best policy PSNR `20.32704687107235`, gain `+0.005831885580240304 dB`.
+- Stage106 fixed policy PSNR `20.322996715243978`, gain `+0.0017817297518578745 dB`.
+- Oracle task best PSNR `20.382843220952545`, gain `+0.06162823546041816 dB`.
+- `score_stat_mlp_cv` still has Stage65 adapter gap4 regression `-0.00797889356792674 dB`.
+- Conclusion: do not package learned switch; package conservative Stage110 group policy candidate in Stage112.
 
 Goal: train a more reliable switch predictor using metadata + anchor stats + selector-score features on broader labels.
 
