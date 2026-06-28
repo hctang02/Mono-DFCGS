@@ -7078,6 +7078,64 @@ Group comparison：
 
 结论：Stage102 说明 group-specific heads 没有改善 selection bottleneck。所有 `base_method × gap` group 的 group-specific best energy recall 均略低于 shared MLP；selection gap 不是简单由 mixed-group shared head 造成。下一步更合理的是做 Stage103：对当前最稳的 shared selector 做 broader/rendered validation，或探索更结构化的 Gaussian-neighborhood/coordinate context，而不是继续拆 head。
 
+## 2026-06-28：Stage103 Broader Rendered Selector Validation
+
+### 目标
+
+把 Stage100-102 的 learned shared selector 放回 rendered side-info validation，在更大的 eval split 上检查离线 energy recall 改善是否转化为 RGB PSNR 改善。
+
+### 操作计划
+
+- 新增 `scripts/run_stage103_broader_rendered_selector_validation.py`。
+- 复用 Stage97 manifest、Stage99 q6 selected residual rendering、Stage102 shared selector training setup。
+- 训练 shared `topk_bce` 和 shared `energy_regression` selectors。
+- Eval candidates：`teacher_oracle_topk`、`endpoint_diff_baseline`、`shared_topk_bce`、`shared_energy_regression`。
+- 使用 predicted indices + teacher residual values 渲染，仍只隔离 selection error，不解决 residual value prediction。
+- Eval task 数扩展到 `60`，输出 rendered PSNR、delta vs base、gap to teacher、precision 和 energy recall。
+- 不保存模型 checkpoint 或 heavy tensors。
+- 运行前按要求检查 `nvidia-smi`，并选择空闲 GPU。
+
+### Stage103 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU0 忙，GPU1 有已有 Python 进程占用约 `341MiB`，GPU2 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。先运行语法检查：
+
+```text
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage103_broader_rendered_selector_validation.py
+```
+
+随后再次检查 GPU，并运行完整 Stage103：
+
+```text
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage103_broader_rendered_selector_validation.py
+```
+
+新增脚本：
+
+```text
+scripts/run_stage103_broader_rendered_selector_validation.py
+```
+
+输出目录：
+
+```text
+experiments/stage103_broader_rendered_selector_validation/
+```
+
+配置：train tasks `96`，eval tasks `60`，sampled train examples `589824`，keep fraction `0.1`，side bits `6`，objectives 为 `topk_bce`、`energy_regression`。
+
+Best learned rendered selector by group：
+
+| base | gap | candidate | endpoint PSNR | learned PSNR | teacher PSNR | learned delta | gap to teacher |
+|---|---:|---|---:|---:|---:|---:|---:|
+| linear | 4 | shared_energy_regression | 20.950348386765448 | 20.977176264225726 | 22.564021045406168 | 1.3280279007214773 | -1.586844781180443 |
+| linear | 8 | shared_energy_regression | 20.891092240107927 | 20.921955460500982 | 22.828205501612626 | 1.511430236827558 | -1.9062500411116432 |
+| linear | 16 | shared_energy_regression | 18.68835971009511 | 18.821899379666544 | 20.772060171450324 | 1.2486889254734588 | -1.9501607917837827 |
+| stage65_adapter | 4 | shared_energy_regression | 21.16056131878281 | 21.006753486754278 | 22.478052503501885 | 1.0415692337164726 | -1.4712990167476079 |
+| stage65_adapter | 8 | shared_energy_regression | 20.97013749190139 | 20.778146373867948 | 22.491323232804557 | 1.1403157927234944 | -1.7131768589366099 |
+| stage65_adapter | 16 | shared_energy_regression | 18.76182012897664 | 18.7456227991363 | 20.571596638113725 | 1.0267017588076504 | -1.8259738389774265 |
+
+结论：Stage103 说明 broader rendered behavior 比离线 energy recall 更严格。Shared learned selector 在 linear base 上相对 endpoint 有小幅 PSNR 改善，但在 Stage65 adapter base 上低于 endpoint baseline；尽管 learned selector 的 energy recall/precision 更高，RGB PSNR 不一定同步提升。当前 selection objective 仍不够 render-aware；下一步应做 render-aware selector label/metric 诊断或小规模 render-aware ranking，而不是直接进入 residual value prediction。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。
