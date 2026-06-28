@@ -1071,3 +1071,17 @@ Stage85 转向 dynamic side-info 线，先做 anchor-space residual preflight，
 ### 后续执行更新
 
 Stage85 dynamic residual side-info preflight 已完成：覆盖 `60` 个 Stage79 eval tasks，codecs `q10/q12`，gaps `4/8/16`，side bits `6/8`，keep fractions `0/1%/5%/10%/25%/100%`。运行前检查 `nvidia-smi`，GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。关键结果：以 q12 linear 为例，8-bit residual side-info top 10% 约 `0.05272865295410156 MiB/intermediate-frame`，可覆盖 gap4 `0.6736598664316831`、gap8 `0.6167360978722798`、gap16 `0.6257691648725925` 的 anchor residual energy；top 25% 约 `0.1318359375 MiB/intermediate-frame`，可覆盖约 `0.85-0.88`。Stage65 adapter 的 anchor-space residual 更分散，q12 top 10% 只覆盖 gap4 `0.25083170952874323`、gap8 `0.26118229986966074`、gap16 `0.24572836645426546`。结论：dynamic residual side-info 可能有潜力，但 side-info rate 不小，而且当前只是 optimistic anchor-space estimate，没有建模量化失真和 rendered RD。
+
+## 2026-06-28：继续 Stage86 rendered residual side-info smoke
+
+### 用户原始问题
+
+用户要求继续执行后续步骤，都做完了再汇报。
+
+### 当前执行决策
+
+Stage86 在 Stage85 anchor-space preflight 之后做小规模 rendered smoke，验证 top-k residual side-info 是否能转化为 RGB PSNR 改善。计划使用 Stage79 eval q12 tasks 和 Stage61 dense target anchors，对 linear 和 Stage65 adapter 两种 base anchor 构造 top-k residual side-info anchor，并渲染 target RGB。该阶段 residual values 先用未量化 teacher residual，side-info rate 用 q8 top-k estimate，因此是 optimistic rendered smoke，不是最终 RD；任何 residual side-info 都必须计入 side-info rate 和 total rate。
+
+### 后续执行更新
+
+Stage86 rendered residual side-info smoke 已完成：覆盖 `12` 个 Stage79 eval q12 tasks，gaps `4/8/16`，base methods 为 linear 和 Stage65 adapter，keep fractions `0/0.1/0.25`，side bits `8`。首次运行发现 render/target shape broadcast warning，已修正后重新运行，最终结果无 warning。关键结果：top10% residual side-info rate 约 `0.05272865295410156 MiB/intermediate-frame`，linear base 在 gap4/8/16 上分别提升 `+3.34178357354566`、`+2.829455800539616`、`+4.482252047941727 dB`；Stage65 adapter base 分别提升 `+2.8758664220815766`、`+2.4121275447105757`、`+3.414016361458769 dB`。top25% rate 约 `0.1318359375 MiB/intermediate-frame`，提升更大。结论：dynamic residual side-info 对 rendered PSNR 有明显潜力，但当前 residual 未量化，仍是 optimistic smoke，下一步需要实现 quantized residual side-info codec 并计入 total rate。

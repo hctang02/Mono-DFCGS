@@ -550,3 +550,8 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 - Adapter training manifests should reference Stage61 gap1 anchor `.pt` files and source sides instead of copying tensors into new artifacts.
 - For dense gap1 anchors, the canonical source choice should mimic Stage66 loading: frame 0 from the first row's left anchor, later frames from the previous row's right anchor unless already seen.
 - Keep `task_split=train` and `task_split=eval` separate so Stage80 can validate on DAVIS val without accidentally mixing train sequences.
+
+## Stage86 Render Shape Notes
+
+- `render_anchor` can return `[1, 1, 3, H, W]` while `load_rgb(...).squeeze(1)` gives `[1, 3, H, W]`. Do not allow PyTorch broadcast warnings in PSNR/MSE calculations; explicitly align target dimensions to the rendered tensor before `F.mse_loss`.
+- If a rendered smoke emits a shape broadcast warning, discard that run's metrics and rerun after fixing shape alignment.

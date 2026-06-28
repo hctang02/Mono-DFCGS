@@ -6047,6 +6047,68 @@ q12 Stage65 adapter residual side-info key rows：
 
 结论：linear residual 的 anchor-space energy 很集中，少量 top-k residual side-info 理论上可覆盖较大 residual energy；Stage65 adapter 的 anchor-space residual 更分散。该阶段不是 rendered RD，也未建模 residual quantization distortion。任何 dynamic residual side-info 若传输，必须作为 side-info rate 加到 total rate。
 
+## 2026-06-28：Stage86 Rendered Residual Side-Info Smoke
+
+### 目标
+
+小规模验证 Stage85 的 anchor-space residual side-info 是否能在 rendered RGB PSNR 上产生正向效果。
+
+### 操作计划
+
+- 新增 `scripts/run_stage86_rendered_residual_sideinfo_smoke.py`。
+- 输入 Stage79 eval q12 tasks 和 Stage61 dense gap1 anchors。
+- Base methods：linear anchor 和 Stage65 adapter。
+- Keep fractions：`0`, `0.1`, `0.25`。
+- Side bits：`8`，rate 使用 top-k index bits + residual attrs bits 估算。
+- Residual values 暂用未量化 teacher residual，因此结果为 optimistic smoke。
+- 输出 rendered PSNR、delta vs base、estimated side-info MiB/intermediate-frame。
+- 运行前按要求检查 `nvidia-smi`。
+
+### Stage86 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 rendered smoke。
+
+首次运行出现 render/target shape broadcast warning，已修正 `render_psnr` 中的 target shape alignment 后重新运行；最终结果无 warning。该坑已记录到 `logs/PITFALLS.md`。
+
+新增脚本：
+
+```text
+scripts/run_stage86_rendered_residual_sideinfo_smoke.py
+```
+
+仓库内输出：
+
+```text
+experiments/stage86_rendered_residual_sideinfo_smoke/stage86_rendered_residual_sideinfo_smoke_summary.json
+experiments/stage86_rendered_residual_sideinfo_smoke/stage86_rendered_residual_sideinfo_smoke_report.md
+experiments/stage86_rendered_residual_sideinfo_smoke/stage86_rendered_residual_sideinfo_rows.csv
+experiments/stage86_rendered_residual_sideinfo_smoke/stage86_rendered_residual_sideinfo_summary.csv
+```
+
+Rendered smoke summary：
+
+| base | gap | keep | side MiB/intermediate-frame | base PSNR | side PSNR | delta |
+|---|---:|---:|---:|---:|---:|---:|
+| linear | 4 | 0.1 | 0.05272865295410156 | 19.98979652819421 | 23.33158010173987 | 3.34178357354566 |
+| linear | 8 | 0.1 | 0.05272865295410156 | 18.12111775349949 | 20.950573554039106 | 2.829455800539616 |
+| linear | 16 | 0.1 | 0.05272865295410156 | 19.1130149705525 | 23.595267018494223 | 4.482252047941727 |
+| stage65_adapter | 4 | 0.1 | 0.05272865295410156 | 20.48273820637705 | 23.358604628458625 | 2.8758664220815766 |
+| stage65_adapter | 8 | 0.1 | 0.05272865295410156 | 18.532358493984642 | 20.94448603869522 | 2.4121275447105757 |
+| stage65_adapter | 16 | 0.1 | 0.05272865295410156 | 19.075010088585586 | 22.489026450044353 | 3.414016361458769 |
+
+Top25% residual side-info：
+
+| base | gap | side MiB/intermediate-frame | delta |
+|---|---:|---:|---:|
+| linear | 4 | 0.1318359375 | 6.079208939121096 |
+| linear | 8 | 0.1318359375 | 5.362593643634623 |
+| linear | 16 | 0.1318359375 | 6.849065423269733 |
+| stage65_adapter | 4 | 0.1318359375 | 4.826898315812073 |
+| stage65_adapter | 8 | 0.1318359375 | 4.331580420489802 |
+| stage65_adapter | 16 | 0.1318359375 | 5.420300667021456 |
+
+结论：Stage86 表明 residual side-info 在 rendered RGB 上确实有显著潜力，且 top10% side-info 已能带来多 dB 提升。但该结果仍是 optimistic smoke：residual values 未量化，side-info entropy/packing 未实现，且这里只覆盖 12 个 tasks。下一步应实现 quantized residual side-info codec，并把 side-info MiB/frame 与 anchor main rate 相加后做小规模 RD。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。
