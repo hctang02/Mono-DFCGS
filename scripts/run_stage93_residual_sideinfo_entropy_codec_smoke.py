@@ -10,6 +10,9 @@ import torch
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SUMMARY_ROOT = REPO_ROOT / "experiments/stage93_residual_sideinfo_entropy_codec_smoke"
+DEFAULT_OUTPUT_PREFIX = "stage93_residual_sideinfo_entropy_codec"
+DEFAULT_REPORT_TITLE = "Stage93 Entropy-Coded Residual Side-Info Codec Smoke"
+DEFAULT_MODE = "entropy-coded residual side-info codec smoke"
 
 
 sys.path.insert(0, str(REPO_ROOT))
@@ -125,7 +128,7 @@ def summarize(rows):
 
 def write_report(summary, summary_rows, path):
     lines = [
-        "# Stage93 Entropy-Coded Residual Side-Info Codec Smoke",
+        f"# {summary['report_title']}",
         "",
         "## Configuration",
         "",
@@ -162,6 +165,10 @@ def parse_args():
     parser.add_argument("--dense_manifest", type=Path, default=DEFAULT_DENSE_MANIFEST)
     parser.add_argument("--adapter", type=Path, default=DEFAULT_ADAPTER)
     parser.add_argument("--summary_root", type=Path, default=DEFAULT_SUMMARY_ROOT)
+    parser.add_argument("--stage", type=int, default=93)
+    parser.add_argument("--mode", default=DEFAULT_MODE)
+    parser.add_argument("--output_prefix", default=DEFAULT_OUTPUT_PREFIX)
+    parser.add_argument("--report_title", default=DEFAULT_REPORT_TITLE)
     parser.add_argument("--task_split", default="eval")
     parser.add_argument("--codecs", nargs="+", default=["q12"])
     parser.add_argument("--gaps", nargs="+", type=int, default=[4, 8, 16])
@@ -253,15 +260,16 @@ def main():
                 torch.cuda.empty_cache()
 
     summary_rows = summarize(rows)
-    rows_csv = args.summary_root / "stage93_residual_sideinfo_entropy_codec_rows.csv"
-    summary_csv = args.summary_root / "stage93_residual_sideinfo_entropy_codec_summary.csv"
-    summary_json = args.summary_root / "stage93_residual_sideinfo_entropy_codec_summary.json"
-    report_md = args.summary_root / "stage93_residual_sideinfo_entropy_codec_report.md"
+    rows_csv = args.summary_root / f"{args.output_prefix}_rows.csv"
+    summary_csv = args.summary_root / f"{args.output_prefix}_summary.csv"
+    summary_json = args.summary_root / f"{args.output_prefix}_summary.json"
+    report_md = args.summary_root / f"{args.output_prefix}_report.md"
     write_csv(rows, rows_csv, ROW_FIELDS)
     write_csv(summary_rows, summary_csv, SUMMARY_FIELDS)
     summary = {
-        "stage": 93,
-        "mode": "entropy-coded residual side-info codec smoke",
+        "stage": args.stage,
+        "mode": args.mode,
+        "report_title": args.report_title,
         "task_manifest": str(args.task_manifest),
         "dense_manifest": str(args.dense_manifest),
         "adapter": str(args.adapter),

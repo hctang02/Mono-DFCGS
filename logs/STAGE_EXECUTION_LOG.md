@@ -6591,6 +6591,61 @@ RD rows：
 
 结论：Stage94 将 Stage93 actual entropy payload bytes 接入 total-rate accounting。相比 fixed q6 side-info，entropy codec v2 在 direct total rate 上节省 `0.0069-0.0132 MiB/frame`，同时 decoded rendered quality 不变。下一步应对 Stage89 的 60-task broader eval 运行 entropy codec v2，检查压缩率和 positive deltas 是否保持。
 
+## 2026-06-28：Stage95 Broader Entropy Codec Eval
+
+### 目标
+
+把 Stage93 entropy codec v2 扩展到 Stage89 的 60-task broader eval，验证压缩率、decode 一致性和 rendered PSNR gain 是否保持。
+
+### 操作计划
+
+- 参数化 `scripts/run_stage93_residual_sideinfo_entropy_codec_smoke.py` 的 stage number、mode、output prefix 和 report title。
+- 运行 q12 eval `max_tasks=60`，gaps `4/8/16`。
+- Base methods：linear 和 Stage65 adapter。
+- Keep fraction：`0.1`，side bits：`6`。
+- 输出 entropy payload bytes、ratio vs fixed、decode diff、rendered PSNR delta 和 positive count。
+- 运行前按要求检查 `nvidia-smi`，并选择空闲 GPU。
+
+### Stage95 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU0 忙，GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。
+
+修改脚本：
+
+```text
+scripts/run_stage93_residual_sideinfo_entropy_codec_smoke.py
+```
+
+参数化 stage number、mode、output prefix 和 report title，默认 Stage93 输出保持不变。
+
+运行命令：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage93_residual_sideinfo_entropy_codec_smoke.py --stage 95 --mode "broader entropy-coded residual side-info codec eval" --summary_root experiments/stage95_broader_entropy_residual_sideinfo_eval --output_prefix stage95_broader_entropy_residual_sideinfo_eval --report_title "Stage95 Broader Entropy-Coded Residual Side-Info Eval" --max_tasks 60
+```
+
+仓库内输出：
+
+```text
+experiments/stage95_broader_entropy_residual_sideinfo_eval/stage95_broader_entropy_residual_sideinfo_eval_rows.csv
+experiments/stage95_broader_entropy_residual_sideinfo_eval/stage95_broader_entropy_residual_sideinfo_eval_summary.csv
+experiments/stage95_broader_entropy_residual_sideinfo_eval/stage95_broader_entropy_residual_sideinfo_eval_summary.json
+experiments/stage95_broader_entropy_residual_sideinfo_eval/stage95_broader_entropy_residual_sideinfo_eval_report.md
+```
+
+Summary：
+
+| base | gap | tasks | fixed bytes | entropy bytes | ratio | entropy MiB/intermediate | max decode diff | entropy PSNR | delta | positives |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| linear | 4 | 18 | 43381.0 | 29869.833333333332 | 0.6885464450642754 | 0.028486092885335285 | 0.0 | 23.403532118481326 | 3.4187356956292225 | 18 |
+| linear | 8 | 19 | 43381.0 | 30440.894736842107 | 0.7017103048994284 | 0.02903069947895251 | 0.0 | 21.51362735577916 | 3.05603754877287 | 19 |
+| linear | 16 | 23 | 43381.0 | 30239.565217391304 | 0.6970693441228029 | 0.028838696687117867 | 0.0 | 20.344147709407626 | 3.2599322732336695 | 23 |
+| stage65_adapter | 4 | 18 | 43381.0 | 34757.88888888889 | 0.8012237820448788 | 0.033147705925835505 | 0.0 | 22.841151135422116 | 2.7994188265782376 | 18 |
+| stage65_adapter | 8 | 19 | 43381.0 | 35513.15789473684 | 0.8186339156482526 | 0.033867986578690376 | 0.0 | 21.39901144086742 | 2.692464222747122 | 19 |
+| stage65_adapter | 16 | 23 | 43381.0 | 35406.434782608696 | 0.8161737807475322 | 0.03376620748768682 | 0.0 | 20.292022340267458 | 2.9637922008291264 | 23 |
+
+结论：Stage95 证明 entropy codec v2 在 60-task broader eval 上保持稳定：所有 row decode diff 为 `0.0`，所有 task positive。linear entropy side-info rate 约为 fixed 的 `0.69-0.70`，Stage65 adapter 约为 fixed 的 `0.80-0.82`。下一步 Stage96 应将 Stage95 broader entropy side-info 接入 total-rate RD accounting。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。
