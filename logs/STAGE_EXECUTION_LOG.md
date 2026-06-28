@@ -6842,6 +6842,69 @@ Summary：
 
 结论：Stage98 说明 decoder-available features 能预测部分 high-energy residual Gaussians，MLP importance 在所有 base/gap 上都提升 energy recall。当前模型仍只达到 oracle top10 energy recall 的约 `0.41-0.70`，还不足以替代 teacher residual side-info。下一步应做 Stage99 predictor-selected side-info rendered smoke，检验用 predicted top10 indices + teacher residual values 时 RGB PSNR 会损失多少，从而分离“选点误差”和“值预测误差”。
 
+## 2026-06-28：Stage99 Predictor-Selected Side-Info Rendered Smoke
+
+### 目标
+
+隔离 residual side-info 的选点误差：用 feed-forward predictor 选择 top10 indices，但仍使用 teacher residual values 渲染，比较与 teacher-oracle top10 side-info 的差距。
+
+### 操作计划
+
+- 新增 `scripts/run_stage99_predictor_selected_sideinfo_render_smoke.py`。
+- 复用 Stage98 小型 MLP 训练设置，不保存 checkpoint。
+- Eval candidates：teacher oracle top10、MLP predicted top10、endpoint-diff top10。
+- 对每个 candidate 用 q6 residual values 构造 side-info anchor 并渲染。
+- 输出 base PSNR、side-info PSNR、delta vs base、gap to teacher-oracle PSNR、precision 和 energy recall。
+- 该阶段 target dense anchor 仍用于 teacher residual values，因此不是 deployable final codec。
+- 运行前按要求检查 `nvidia-smi`，并选择空闲 GPU。
+
+### Stage99 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU0 忙，GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage99_predictor_selected_sideinfo_render_smoke.py
+```
+
+新增脚本：
+
+```text
+scripts/run_stage99_predictor_selected_sideinfo_render_smoke.py
+```
+
+输出目录：
+
+```text
+experiments/stage99_predictor_selected_sideinfo_render_smoke/
+```
+
+配置：train tasks `24`，eval tasks `12`，sampled train examples `196608`，keep fraction `0.1`，side bits `6`。
+
+主要结果：
+
+| candidate | base | gap | side PSNR | teacher PSNR | delta vs base | gap to teacher |
+|---|---|---:|---:|---:|---:|---:|
+| endpoint_diff_baseline | linear | 4 | 22.458850438236322 | 23.885431661756513 | 1.1001223888947578 | -1.4265812235201907 |
+| endpoint_diff_baseline | linear | 8 | 19.175455055729827 | 21.570274743383234 | 1.316684641288311 | -2.3948196876534076 |
+| endpoint_diff_baseline | linear | 16 | 21.141569946002704 | 23.557251435789382 | 1.3992381366908475 | -2.4156814897866785 |
+| endpoint_diff_baseline | stage65_adapter | 4 | 22.477210308778595 | 23.578794305433277 | 1.0642003339816728 | -1.1015839966546832 |
+| endpoint_diff_baseline | stage65_adapter | 8 | 19.71179701504451 | 21.846056896259956 | 1.1427972088150398 | -2.134259881215447 |
+| endpoint_diff_baseline | stage65_adapter | 16 | 20.34492281493807 | 22.273016824369922 | 1.0102426189350968 | -1.9280940094318566 |
+| mlp_importance | linear | 4 | 22.234808578712798 | 23.885431661756513 | 0.8760805293712325 | -1.650623083043716 |
+| mlp_importance | linear | 8 | 19.37854214011173 | 21.570274743383234 | 1.519771725670217 | -2.1917326032715017 |
+| mlp_importance | linear | 16 | 21.05049723125056 | 23.557251435789382 | 1.308165421938705 | -2.506754204538821 |
+| mlp_importance | stage65_adapter | 4 | 22.23873956177556 | 23.578794305433277 | 0.825729586978642 | -1.3400547436577142 |
+| mlp_importance | stage65_adapter | 8 | 19.824055179121583 | 21.846056896259956 | 1.2550553728921099 | -2.0220017171383766 |
+| mlp_importance | stage65_adapter | 16 | 20.408320198765917 | 22.273016824369922 | 1.0736400027629471 | -1.8646966256040063 |
+| teacher_oracle_topk | linear | 4 | 23.885431661756513 | 23.885431661756513 | 2.5267036124149485 | 0.0 |
+| teacher_oracle_topk | linear | 8 | 21.570274743383234 | 21.570274743383234 | 3.7115043289417184 | 0.0 |
+| teacher_oracle_topk | linear | 16 | 23.557251435789382 | 23.557251435789382 | 3.814919626477526 | 0.0 |
+| teacher_oracle_topk | stage65_adapter | 4 | 23.578794305433277 | 23.578794305433277 | 2.165784330636356 | 0.0 |
+| teacher_oracle_topk | stage65_adapter | 8 | 21.846056896259956 | 21.846056896259956 | 3.2770570900304867 | 0.0 |
+| teacher_oracle_topk | stage65_adapter | 16 | 22.273016824369922 | 22.273016824369922 | 2.938336628366953 | 0.0 |
+
+结论：Stage99 成功隔离了 top10 index selection error。MLP-selected side-info 在所有 base/gap 上仍带来正 PSNR 增益，但相对 teacher-oracle top10 仍低约 `1.34-2.51 dB`；MLP 在 linear gap8、stage65 gap8 和 stage65 gap16 的 rendered PSNR 上超过 endpoint-diff baseline，但不是全面优于 endpoint。下一步不宜直接进入 residual value prediction，应先改进 selector objective 或扩大训练评估规模。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。

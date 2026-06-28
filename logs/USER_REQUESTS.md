@@ -1253,3 +1253,17 @@ Stage98 先做 residual predictor baseline smoke，不直接预测 residual valu
 ### 后续执行更新
 
 Stage98 residual importance predictor smoke 已完成：运行前检查 `nvidia-smi`，GPU0 忙、GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 与 venv Python。新增 `scripts/run_stage98_residual_importance_predictor_smoke.py`，训练 `24` 个 train tasks、`196608` 个 sampled Gaussian examples，评估 `12` 个 eval tasks。MLP 输入只用 decoder 可得 anchor features、time 和 method id；target dense anchor 只用于离线 teacher labels/metrics。结果：MLP 在所有 base/gap 的 energy recall 上都超过 endpoint-diff baseline。linear gap4/8/16 MLP precision `0.3100/0.2927/0.2643`，energy recall `0.2948/0.2801/0.3037`，relative oracle recall `0.4699/0.4128/0.4130`；Stage65 adapter gap4/8/16 MLP precision `0.3889/0.3738/0.2843`，energy recall `0.1469/0.1679/0.1467`，relative oracle recall `0.6976/0.6168/0.6157`。结论：feed-forward importance predictor 有信号，明显优于 endpoint-diff baseline，但离 oracle top10 energy recall 仍有差距；下一步应做 Stage99 predictor-selected side-info rendered smoke 或改进 predictor 目标。
+
+## 2026-06-28：继续 Stage99 predictor-selected side-info rendered smoke
+
+### 用户原始问题
+
+用户要求继续做后面的 stages，并且一直做完后续步骤。
+
+### 当前执行决策
+
+Stage99 用 Stage98 同类 MLP 预测 top10 residual side-info indices，并用 teacher residual values 填充这些 predicted indices 后渲染，专门评估“选点误差”。对比三种 indices：teacher oracle top10、MLP predicted top10、endpoint-diff baseline top10。输出每种 candidate 的 rendered PSNR、delta vs base、gap to teacher-oracle side-info PSNR、precision 和 energy recall。该阶段仍不是 deployable full residual codec，因为 residual values 仍来自 teacher target；但它能判断 learned selector 是否值得继续。
+
+### 后续执行更新
+
+Stage99 predictor-selected side-info rendered smoke 已完成：运行前检查 `nvidia-smi`，GPU0 忙、GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 与 venv Python。新增 `scripts/run_stage99_predictor_selected_sideinfo_render_smoke.py`，输出目录 `experiments/stage99_predictor_selected_sideinfo_render_smoke/`。配置为 train tasks `24`、eval tasks `12`、sampled train examples `196608`、keep fraction `0.1`、side bits `6`。MLP-selected side-info 在所有 base/gap 上均为正 PSNR 增益：linear gap4/8/16 delta 为 `+0.8761/+1.5198/+1.3082 dB`，Stage65 adapter gap4/8/16 delta 为 `+0.8257/+1.2551/+1.0736 dB`；但相对 teacher-oracle top10 仍低约 `1.34-2.51 dB`。MLP 在 linear gap8、stage65 gap8 和 stage65 gap16 的 rendered PSNR 上超过 endpoint-diff baseline，但不是全面优于 endpoint。结论：当前 predictor 有用但 selection error 仍大；下一步应先改进 selector objective 或扩大训练评估规模，再进入 residual value prediction。
