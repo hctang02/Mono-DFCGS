@@ -6962,6 +6962,64 @@ Best learned objective by group：
 
 结论：Stage100 在更大的 60-task eval 上验证 learned selector 全部超过 endpoint-diff baseline，说明 decoder-available features 的学习信号稳定存在。但 objective sweep 没有产生显著优于 `topk_bce` 的单一目标，最佳 objective 分散在不同 base/gap，且 relative oracle recall 仍约 `0.42-0.69`。下一步应从模型/feature 层面改进 selector，例如加入 Gaussian neighborhood/coordinate context、base/gap-specific heads，或做更大规模训练后再做 rendered validation。
 
+## 2026-06-28：Stage101 Enhanced Selector Feature Sweep
+
+### 目标
+
+在不预测 residual values、不渲染的前提下，测试更强的 decoder-available selector features 是否能改善 Stage100 的 index selection bottleneck。
+
+### 操作计划
+
+- 新增 `scripts/run_stage101_enhanced_selector_feature_sweep.py`。
+- 复用 Stage97 manifest、Stage98 anchor loading/topk metrics、Stage100 objective setup。
+- 一次构造 full features，再按 feature mode 切片训练，避免重复加载 anchors。
+- 比较 `stage100_base`、`gap_endpoint_norms`、`gap_endpoint_rank` 三种 feature mode。
+- 每种 feature mode 训练 `topk_bce` 和 `energy_regression` 两个 objective。
+- 额外 features 只使用 decoder-available 信息：reference gap、normalized endpoint attribute motion、endpoint-score rank/percentile 等。
+- 输出离线 precision、energy recall、oracle recall、relative recall；不保存 checkpoint 或 heavy tensors。
+- 运行前按要求检查 `nvidia-smi`，并选择空闲 GPU。
+
+### Stage101 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。GPU0 忙，GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。先运行语法检查：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage101_enhanced_selector_feature_sweep.py
+```
+
+随后再次检查 GPU，并运行完整 sweep：
+
+```text
+CUDA_VISIBLE_DEVICES=1 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage101_enhanced_selector_feature_sweep.py
+```
+
+新增脚本：
+
+```text
+scripts/run_stage101_enhanced_selector_feature_sweep.py
+```
+
+输出目录：
+
+```text
+experiments/stage101_enhanced_selector_feature_sweep/
+```
+
+配置：train tasks `96`，eval tasks `60`，sampled train examples `589824`，full feature dim `75`，keep fraction `0.1`，feature modes 为 `stage100_base`、`gap_endpoint_norms`、`gap_endpoint_rank`，objectives 为 `topk_bce`、`energy_regression`。
+
+Best learned feature by group：
+
+| base | gap | endpoint energy recall | best feature | best objective | best energy recall | best relative recall |
+|---|---:|---:|---|---|---:|---:|
+| linear | 4 | 0.2578457370400429 | stage100_base | energy_regression | 0.2935174204733061 | 0.47064504675243213 |
+| linear | 8 | 0.27749040722846985 | gap_endpoint_norms | energy_regression | 0.32395490298145696 | 0.4845810360030124 |
+| linear | 16 | 0.2058291733264923 | stage100_base | topk_bce | 0.2517792292767101 | 0.41649167074097526 |
+| stage65_adapter | 4 | 0.13412074485550757 | stage100_base | topk_bce | 0.16204810336880063 | 0.6889743960422018 |
+| stage65_adapter | 8 | 0.13563174087750285 | stage100_base | topk_bce | 0.17060783230944684 | 0.6881267146060341 |
+| stage65_adapter | 16 | 0.11971673224535254 | gap_endpoint_norms | energy_regression | 0.15503261362512907 | 0.634711515572336 |
+
+结论：Stage101 验证 endpoint/gap/rank extras 没有带来实质性突破。`gap_endpoint_norms` 仅在 linear gap8 和 stage65 gap16 成为最佳，但提升幅度极小；多数 group 的最佳仍是 Stage100 base features。下一步应避免继续堆 hand-crafted endpoint extras，转向 group-specific heads、larger train scale 或 rendered validation of the current best learned selector。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。

@@ -1281,3 +1281,17 @@ Stage100 先解决 Stage99 暴露的 selection bottleneck，不做 residual valu
 ### 后续执行更新
 
 Stage100 residual selector objective sweep 已完成：运行前检查 `nvidia-smi`，GPU0 忙、GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。新增 `scripts/run_stage100_residual_selector_objective_sweep.py`，先通过 `py_compile`，再运行完整 sweep。输出目录 `experiments/stage100_residual_selector_objective_sweep/`，大小约 `152K`。配置为 train tasks `96`、eval tasks `60`、sampled train examples `589824`、keep fraction `0.1`、每个 objective 训练 `300` steps。结果：learned selector 在所有 base/gap 上都超过 endpoint-diff baseline。best learned energy recall 对比 endpoint：linear gap4 `0.2933 vs 0.2578`，gap8 `0.3231 vs 0.2775`，gap16 `0.2518 vs 0.2058`；Stage65 adapter gap4 `0.1620 vs 0.1341`，gap8 `0.1707 vs 0.1356`，gap16 `0.1551 vs 0.1197`。最佳 objective 分别为 linear gap4/8 `energy_regression`、linear gap16 `topk_bce`、adapter gap4 `topk_bce`、adapter gap8 `energy_weighted_bce`、adapter gap16 `energy_regression`。结论：learned selector 信号稳定，但 objective sweep 没有显著解决 oracle gap；下一步应改模型/feature 或扩大训练，而不是直接做 residual value prediction。
+
+## 2026-06-28：继续 Stage101 enhanced selector feature sweep
+
+### 用户原始问题
+
+用户要求如果有下一步就继续执行；如果不确定如何推进，再停下来询问。
+
+### 当前执行决策
+
+Stage101 继续处理 Stage99/100 的 selector bottleneck，优先测试 decoder-available feature 改进，而不是 residual value prediction。计划新增 feature sweep：一次构造包含 Stage100 base features 和 endpoint/gap/rank extras 的 full feature，然后比较 `stage100_base`、`gap_endpoint_norms`、`gap_endpoint_rank` 三种 feature mode；每种 feature mode 训练 `topk_bce` 与 `energy_regression` 两个 objective，并和 endpoint-diff baseline 对比。该阶段仍只做离线 precision/energy recall，不渲染、不保存 checkpoint、不写 heavy tensors。
+
+### 后续执行更新
+
+Stage101 enhanced selector feature sweep 已完成：运行前检查 `nvidia-smi`，GPU0 忙、GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1`。新增 `scripts/run_stage101_enhanced_selector_feature_sweep.py`，先通过 `py_compile`，再运行完整 sweep。输出目录 `experiments/stage101_enhanced_selector_feature_sweep/`，大小约 `224K`。配置为 train tasks `96`、eval tasks `60`、sampled train examples `589824`、full feature dim `75`、keep fraction `0.1`。结果：best learned feature/objective 为 linear gap4 `stage100_base + energy_regression` energy recall `0.2935`，linear gap8 `gap_endpoint_norms + energy_regression` `0.3240`，linear gap16 `stage100_base + topk_bce` `0.2518`，Stage65 adapter gap4 `stage100_base + topk_bce` `0.1620`，gap8 `stage100_base + topk_bce` `0.1706`，gap16 `gap_endpoint_norms + energy_regression` `0.1550`。结论：endpoint/gap/rank extras 只有极小提升，多数组仍由 Stage100 base features 胜出；下一步应转向 group-specific heads、larger train scale 或对当前最佳 learned selector 做 rendered validation，而不是继续堆 endpoint hand-crafted features。
