@@ -1239,3 +1239,17 @@ Stage97 不直接训练模型，先为 learned/deployable residual predictor 建
 ### 后续执行更新
 
 Stage97 residual predictor task manifest 已完成：首次运行误用系统 Python 间接导入 Stage85 导致缺少 `torch`，脚本随后改为自包含 CSV parser，不再依赖 torch；重新按要求检查 `nvidia-smi` 后运行成功。新增 `scripts/run_stage97_residual_predictor_task_manifest.py`，输出目录 `experiments/stage97_residual_predictor_task_manifest/`。结果：q12 train/eval tasks 共 `15554`，missing dense targets `0`，base methods 为 `linear;stage65_adapter`，潜在 base-method label count `31108`。按 split/gap：eval gap4/8/16 为 `1463/1707/1830` tasks，train gap4/8/16 为 `3087/3604/3863` tasks。输出只含文本引用和配置，不含 residual labels、payload 或 `.pt` tensors；tasks CSV 约 `13M`。
+
+## 2026-06-28：继续 Stage98 residual importance predictor smoke
+
+### 用户原始问题
+
+用户要求继续做后面的 stages，并且一直做完后续步骤。
+
+### 当前执行决策
+
+Stage98 先做 residual predictor baseline smoke，不直接预测 residual values。计划使用 Stage97 manifest，训练一个小 MLP 预测每个 Gaussian 是否属于 teacher top10 residual-energy mask。训练标签由 target dense anchor 在 training/encoder side 生成；模型输入只包含 decoder 可得信息：left/right q12 keyframe anchors、base anchor、normalized time、base method id。评估指标包括 top10 precision、total residual energy recall、relative recall vs oracle top10，并对比一个无需训练的 endpoint-difference baseline。该阶段只保存 metrics/CSV/report，不保存模型 checkpoint 或 heavy tensor。
+
+### 后续执行更新
+
+Stage98 residual importance predictor smoke 已完成：运行前检查 `nvidia-smi`，GPU0 忙、GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 与 venv Python。新增 `scripts/run_stage98_residual_importance_predictor_smoke.py`，训练 `24` 个 train tasks、`196608` 个 sampled Gaussian examples，评估 `12` 个 eval tasks。MLP 输入只用 decoder 可得 anchor features、time 和 method id；target dense anchor 只用于离线 teacher labels/metrics。结果：MLP 在所有 base/gap 的 energy recall 上都超过 endpoint-diff baseline。linear gap4/8/16 MLP precision `0.3100/0.2927/0.2643`，energy recall `0.2948/0.2801/0.3037`，relative oracle recall `0.4699/0.4128/0.4130`；Stage65 adapter gap4/8/16 MLP precision `0.3889/0.3738/0.2843`，energy recall `0.1469/0.1679/0.1467`，relative oracle recall `0.6976/0.6168/0.6157`。结论：feed-forward importance predictor 有信号，明显优于 endpoint-diff baseline，但离 oracle top10 energy recall 仍有差距；下一步应做 Stage99 predictor-selected side-info rendered smoke 或改进 predictor 目标。

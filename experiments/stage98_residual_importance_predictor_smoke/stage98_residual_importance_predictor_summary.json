@@ -1,0 +1,153 @@
+{
+  "stage": 98,
+  "mode": "residual importance predictor smoke",
+  "tasks_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage97_residual_predictor_task_manifest/stage97_residual_predictor_tasks.csv",
+  "adapter": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors",
+  "gaps": [
+    4,
+    8,
+    16
+  ],
+  "base_methods": [
+    "linear",
+    "stage65_adapter"
+  ],
+  "train_task_count": 24,
+  "eval_task_count": 12,
+  "train_example_count": 196608,
+  "feature_dim": 67,
+  "positive_rate": 0.10089111328125,
+  "keep_fraction": 0.1,
+  "train_steps": 200,
+  "rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage98_residual_importance_predictor_smoke/stage98_residual_importance_predictor_rows.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage98_residual_importance_predictor_smoke/stage98_residual_importance_predictor_summary.csv",
+  "train_log_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage98_residual_importance_predictor_smoke/stage98_residual_importance_predictor_train_log.csv",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage98_residual_importance_predictor_smoke/stage98_residual_importance_predictor_report.md",
+  "summary_rows": [
+    {
+      "candidate": "endpoint_diff_baseline",
+      "base_method": "linear",
+      "reference_gap": 4,
+      "task_count": 6,
+      "mean_precision_at_keep": 0.3122626145680745,
+      "mean_energy_recall_total": 0.2655188664793968,
+      "mean_oracle_energy_recall_total": 0.6100062330563863,
+      "mean_relative_energy_recall_vs_oracle": 0.42121463517347973
+    },
+    {
+      "candidate": "endpoint_diff_baseline",
+      "base_method": "linear",
+      "reference_gap": 8,
+      "task_count": 3,
+      "mean_precision_at_keep": 0.24724181989828745,
+      "mean_energy_recall_total": 0.23293344179789224,
+      "mean_oracle_energy_recall_total": 0.6551332771778107,
+      "mean_relative_energy_recall_vs_oracle": 0.34736502170562744
+    },
+    {
+      "candidate": "endpoint_diff_baseline",
+      "base_method": "linear",
+      "reference_gap": 16,
+      "task_count": 3,
+      "mean_precision_at_keep": 0.2551998645067215,
+      "mean_energy_recall_total": 0.29756257434686023,
+      "mean_oracle_energy_recall_total": 0.6923819482326508,
+      "mean_relative_energy_recall_vs_oracle": 0.38490988314151764
+    },
+    {
+      "candidate": "endpoint_diff_baseline",
+      "base_method": "stage65_adapter",
+      "reference_gap": 4,
+      "task_count": 6,
+      "mean_precision_at_keep": 0.27450714260339737,
+      "mean_energy_recall_total": 0.12835493932167688,
+      "mean_oracle_energy_recall_total": 0.21536186089118323,
+      "mean_relative_energy_recall_vs_oracle": 0.6087801853815714
+    },
+    {
+      "candidate": "endpoint_diff_baseline",
+      "base_method": "stage65_adapter",
+      "reference_gap": 8,
+      "task_count": 3,
+      "mean_precision_at_keep": 0.2631578892469406,
+      "mean_energy_recall_total": 0.13744011024634042,
+      "mean_oracle_energy_recall_total": 0.27263158559799194,
+      "mean_relative_energy_recall_vs_oracle": 0.5076933900515238
+    },
+    {
+      "candidate": "endpoint_diff_baseline",
+      "base_method": "stage65_adapter",
+      "reference_gap": 16,
+      "task_count": 3,
+      "mean_precision_at_keep": 0.18972689906756082,
+      "mean_energy_recall_total": 0.11895131816466649,
+      "mean_oracle_energy_recall_total": 0.2499206562836965,
+      "mean_relative_energy_recall_vs_oracle": 0.5244861443837484
+    },
+    {
+      "candidate": "mlp_importance",
+      "base_method": "linear",
+      "reference_gap": 4,
+      "task_count": 6,
+      "mean_precision_at_keep": 0.310047022998333,
+      "mean_energy_recall_total": 0.2947804356614749,
+      "mean_oracle_energy_recall_total": 0.6100062330563863,
+      "mean_relative_energy_recall_vs_oracle": 0.46986613670984906
+    },
+    {
+      "candidate": "mlp_importance",
+      "base_method": "linear",
+      "reference_gap": 8,
+      "task_count": 3,
+      "mean_precision_at_keep": 0.292729248603185,
+      "mean_energy_recall_total": 0.2800879975159963,
+      "mean_oracle_energy_recall_total": 0.6551332771778107,
+      "mean_relative_energy_recall_vs_oracle": 0.4127636154492696
+    },
+    {
+      "candidate": "mlp_importance",
+      "base_method": "linear",
+      "reference_gap": 16,
+      "task_count": 3,
+      "mean_precision_at_keep": 0.26433352132638294,
+      "mean_energy_recall_total": 0.3037059058745702,
+      "mean_oracle_energy_recall_total": 0.6923819482326508,
+      "mean_relative_energy_recall_vs_oracle": 0.4129539728164673
+    },
+    {
+      "candidate": "mlp_importance",
+      "base_method": "stage65_adapter",
+      "reference_gap": 4,
+      "task_count": 6,
+      "mean_precision_at_keep": 0.3889039605855942,
+      "mean_energy_recall_total": 0.14692467202742895,
+      "mean_oracle_energy_recall_total": 0.21536186089118323,
+      "mean_relative_energy_recall_vs_oracle": 0.6976491312185923
+    },
+    {
+      "candidate": "mlp_importance",
+      "base_method": "stage65_adapter",
+      "reference_gap": 8,
+      "task_count": 3,
+      "mean_precision_at_keep": 0.37384698788324994,
+      "mean_energy_recall_total": 0.1679172863562902,
+      "mean_oracle_energy_recall_total": 0.27263158559799194,
+      "mean_relative_energy_recall_vs_oracle": 0.6167584160963694
+    },
+    {
+      "candidate": "mlp_importance",
+      "base_method": "stage65_adapter",
+      "reference_gap": 16,
+      "task_count": 3,
+      "mean_precision_at_keep": 0.28431904315948486,
+      "mean_energy_recall_total": 0.14672287801901499,
+      "mean_oracle_energy_recall_total": 0.2499206562836965,
+      "mean_relative_energy_recall_vs_oracle": 0.6156713565190634
+    }
+  ],
+  "notes": [
+    "No model checkpoint or heavy tensor is saved.",
+    "Teacher labels are generated from target dense anchors for training/evaluation only.",
+    "Predictor inputs are decoder-available anchor features, time, and base method id."
+  ]
+}
