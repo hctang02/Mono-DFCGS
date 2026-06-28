@@ -1,5 +1,24 @@
 # 用户问题与执行要求记录
 
+## 2026-06-29：FCGS 优化、DAVIS FCGS 和完整日志要求
+
+### 用户原始要求摘要
+
+用户要求：
+
+- 当前几个对比实验的输出必须写入日志。
+- FCGS 当前 PSNR 只有约 7-11 dB，不应这么差；需要继续优化 FCGS，直到达到达标结果，至少 PSNR 大约 20 dB 以上。
+- 补跑 DAVIS 的 FCGS baseline。
+- 最后的完整对比结果要写入完整日志文件。
+- 所有这些完成后再汇报。
+
+### 当前执行决策
+
+- 先补日志，然后做 FCGS 低 PSNR 根因定位，区分 adapter 映射、FCGS codec 失真、decoded PLY 反变换/render 三类问题。
+- 优先用单帧/少帧 smoke 实验验证修复，不直接大规模重跑。
+- 若能将 FCGS decoded/render PSNR 提升到合理范围，再重跑四代表序列和 DAVIS FCGS，并重新生成 exp_stage 总表/图。
+- 若发现 FCGS 官方 codec 对 Mono anchor 表示本身存在硬性不适配，会记录证据和 blocker，但仍会尽力优化映射与参数。
+
 ## 2026-06-25：阶段 1-5 执行要求
 
 ### 用户原始要求摘要
@@ -1515,3 +1534,17 @@ Stage115 将实现 deterministic-index value-only residual side-info codec smoke
 ### 后续执行更新
 
 Stage115 deterministic-index residual side-info codec smoke 已完成：运行前检查 `nvidia-smi`，GPU1/2/3/5/6/7 空闲，因此使用 `CUDA_VISIBLE_DEVICES=2`。扩展 `mono_dfcgs/residual_sideinfo_codec.py`，新增 caller-supplied selected indices 的 fixed index+value encode helper，以及 deterministic value-only encode/decode helper。新增 `scripts/run_stage115_deterministic_index_residual_codec_smoke.py`，读取 Stage114 `strict_safe_endpoint_selector_v1`，对 `12` 个 q12 eval tasks、linear/stage65_adapter 两种 base method 执行 smoke。输出目录 `experiments/stage115_deterministic_index_residual_codec_smoke/`。结果：fixed index+value payload `43381 bytes` / `0.04137134552001953 MiB/intermediate`；deterministic value-only payload `36009 bytes` / `0.034340858459472656 MiB/intermediate`；节省 `7372 bytes`，ratio `0.8300638528388004`；deterministic decode 与 fixed decode 最大差异 `0.0`。结论：在 decoder 可复现 endpoint-diff indices 时，可以无损省掉 index bytes，但 residual values 仍是 teacher-derived，尚不是 residual value prediction。
+
+## 2026-06-29：继续 Stage116 deterministic vs entropy side-info accounting
+
+### 用户原始问题
+
+用户要求如果有下一步就继续执行；Stage115 已提交并推送，因此进入 Stage116。
+
+### 当前执行决策
+
+Stage116 将对比 Stage115 deterministic-index value-only residual side-info 与既有 entropy-coded index+value residual side-info。目标是统一列出 payload bytes、MiB/intermediate、index bytes 是否传输、metadata/residual payload 是否计入，并明确所有 transmitted side-info 都必须计入 total rate。该阶段先做 accounting/summary，不训练、不重新渲染、不保存 anchors/checkpoints/heavy tensors。运行任何 Python 前仍先检查 `nvidia-smi`。
+
+### 后续执行更新
+
+Stage116 deterministic vs entropy side-info accounting 已完成：新增 `scripts/run_stage116_deterministic_vs_entropy_sideinfo_accounting.py`，读取 Stage93 12-task entropy smoke summary、Stage96 60-task broader entropy RD rows、Stage115 deterministic summary 和 Stage78 q12 main-rate table。运行前检查 `nvidia-smi`，GPU2 空闲；该脚本为 CPU-only accounting，但仍使用 `CUDA_VISIBLE_DEVICES=2`。输出目录 `experiments/stage116_deterministic_vs_entropy_sideinfo_accounting/`，生成 rows/points/summary/report，row count `12`，point count `72`。关键结果：deterministic value-only payload 固定为 `36009 bytes` / `0.034340858459472656 MiB/intermediate`；相对 Stage96 broader entropy，linear gap4/8/16 ratio 分别为 `1.2055306636015155`、`1.182915295732714`、`1.1907909303963997`，Stage65 adapter gap4/8/16 ratio 分别为 `1.0359950259093857`、`1.0139622082252686`、`1.017018522793695`。结论：deterministic 省掉 index bytes，但未 entropy-compress metadata/residual values，因此 Stage96 broader entropy-coded index+value 仍更小；Stage116 只做 rate accounting，deterministic endpoint-diff residual 质量标记为 `not_rendered_rate_only`。下一步是 Stage117 q-bit / keep-fraction sweep。

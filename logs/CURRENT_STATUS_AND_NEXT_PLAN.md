@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage115: `e4145ed Package strict-safe selector fallback`
+- Latest pushed commit before Stage116: `25c4f98 Smoke deterministic-index residual codec`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -70,6 +70,7 @@ Key Stage96 direct total rates:
 - Stage113: held-out switch diagnostic over Stage111 out-of-fold rows; Stage112 is aggregate group-safe but not fold-group safe under a zero-regression criterion.
 - Stage114: packaged strict-safe endpoint-only selector fallback `strict_safe_endpoint_selector_v1` after user chose strict safety.
 - Stage115: deterministic-index residual side-info codec smoke; value-only payload removes endpoint-diff selected index bytes and decodes identically to fixed index+value payload.
+- Stage116: deterministic vs entropy side-info accounting; all transmitted bytes are counted, and deterministic endpoint-diff quality is explicitly marked rate-only / not rendered.
 
 ## Current Best Selector Policy
 
@@ -129,6 +130,7 @@ Stage113 held-out diagnostic:
 - Stage114 freezes endpoint-only as the strict-safe selector fallback chosen by the user.
 - Stage112 is aggregate group-safe and improves over endpoint overall, but Stage113 shows it is not fold-group safe under a strict zero-regression criterion.
 - Stage115 confirms index bytes can be removed when selected indices are decoder-reproducible, reducing q6 top10 side-info payload from `43381` to `36009` bytes on the smoke tasks.
+- Stage116 shows deterministic value-only side-info is still larger than zlib entropy-coded index+value side-info for Stage96 broader linear groups (`1.1907909303963997`-`1.2055306636015155x`) and slightly larger for Stage65 adapter groups (`1.0139622082252686`-`1.0359950259093857x`).
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -292,11 +294,28 @@ Result:
 
 Goal: remove transmitted selected-index bytes when decoder can reproduce selected indices.
 
+### Stage116: Deterministic vs Entropy Side-Info Accounting
+
+Status: completed on 2026-06-29.
+
+Result:
+
+- Added `scripts/run_stage116_deterministic_vs_entropy_sideinfo_accounting.py`.
+- Output: `experiments/stage116_deterministic_vs_entropy_sideinfo_accounting/`.
+- Inputs: Stage93 entropy smoke summary, Stage96 broader entropy RD rows, Stage115 deterministic summary, Stage78 q12 main anchor rate table.
+- Row count: `12`; point count: `72`.
+- Deterministic value-only payload: `36009 bytes`, `0.034340858459472656 MiB/intermediate`.
+- Stage96 broader linear entropy side-info: `0.028486092885335285`, `0.02903069947895251`, `0.028838696687117867 MiB/intermediate`; deterministic ratio `1.2055306636015155`, `1.182915295732714`, `1.1907909303963997`.
+- Stage96 broader Stage65 adapter entropy side-info: `0.033147705925835505`, `0.033867986578690376`, `0.03376620748768682 MiB/intermediate`; deterministic ratio `1.0359950259093857`, `1.0139622082252686`, `1.017018522793695`.
+- Deterministic direct total rates with all side-info counted: gap4 `0.2162790792273858`, gap8 `0.131966245212987`, gap16 `0.08980982820578763 MiB/frame`.
+- Limitation: deterministic endpoint-diff residual values are not rendered in this package; quality status is `not_rendered_rate_only`.
+
+Goal: make index+value entropy vs deterministic value-only side-info accounting explicit before q-bit / keep-fraction sweeps.
+
 ## Later Plan After Selector Stabilizes
 
 ### Deterministic-Index Side-Info Codec
 
-- Stage116: compare index+value entropy side-info vs deterministic-index value-only side-info.
 - Stage117: sweep q-bit and keep fraction.
 - Stage118: package broader RD with all side-info bytes counted.
 
@@ -353,6 +372,7 @@ Goal: remove transmitted selected-index bytes when decoder can reproduce selecte
 - Stage113 held-out switch validation: `scripts/run_stage113_heldout_switch_validation.py`
 - Stage114 strict-safe selector fallback package: `scripts/run_stage114_package_strict_safe_selector_fallback.py`
 - Stage115 deterministic-index codec smoke: `scripts/run_stage115_deterministic_index_residual_codec_smoke.py`
+- Stage116 deterministic vs entropy accounting: `scripts/run_stage116_deterministic_vs_entropy_sideinfo_accounting.py`
 
 ### Important Outputs
 
@@ -371,6 +391,7 @@ Goal: remove transmitted selected-index bytes when decoder can reproduce selecte
 - Stage113 held-out switch validation: `experiments/stage113_heldout_switch_validation/`
 - Stage114 strict-safe selector fallback: `experiments/stage114_strict_safe_selector_fallback_package/`
 - Stage115 deterministic-index codec smoke: `experiments/stage115_deterministic_index_residual_codec_smoke/`
+- Stage116 deterministic vs entropy accounting: `experiments/stage116_deterministic_vs_entropy_sideinfo_accounting/`
 
 ### Heavy External Paths
 
@@ -390,4 +411,6 @@ These existing dirty/untracked items are unrelated to this line and should remai
 - `scripts/run_exp_stage03_fcgs_anchor_adapter_smoke.py`
 - `scripts/run_exp_stage04_fcgs_decoded_center_square_smoke.py`
 - `scripts/run_exp_stage05_fcgs_perframe_representatives.py`
+- `scripts/run_exp_stage07_davis_ours_center_square_252.py`
+- `scripts/run_exp_stage08_dfcgs_mono_adapter_diagnostic.py`
 - `scripts/run_exp_stage_streamsplat_comparison.py`

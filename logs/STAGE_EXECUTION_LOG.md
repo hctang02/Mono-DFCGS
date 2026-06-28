@@ -1,5 +1,43 @@
 # Mono-DFCGS 阶段执行日志
 
+## 2026-06-29：exp_stage 对比实验当前状态与 FCGS 优化任务启动
+
+### 已完成的 exp_stage 对比状态
+
+- 正式协议：`center_square_252`。
+- exp_stage 输出根目录：`/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/exp_stage_streamsplat_comparison`。
+- 当前总 RD rows：`412`。
+- 当前方法 rows：`Ours=120`，`ZipSplat=280`，`FCGS=12`。
+- 当前已绘制 baseline：`ZipSplat`、`FCGS`。
+- 当前 blocked method：`D-FCGS`。
+- DAVIS Ours 已新增 scoped `center_square_252` reevaluation，输出 `24` rows。
+- D-FCGS 已完成 diagnostic：Mono anchors 在检查的相邻帧 pair 上 shape/order 稳定，但 D-FCGS 仍需要 protocol-safe monocular sequence adapter 和 control-point codec 语义 patch，暂无正式 RD rows。
+
+### 当前关键输出
+
+```text
+experiments/exp_stage_streamsplat_comparison/exp_stage_streamsplat_comparison_summary.json
+experiments/exp_stage_streamsplat_comparison/exp_stage_streamsplat_comparison_report.md
+experiments/exp_stage_streamsplat_comparison/exp_stage06_rd_tables_and_plots/exp_stage06_all_rd_rows.csv
+experiments/exp_stage_streamsplat_comparison/exp_stage06_rd_tables_and_plots/exp_stage06_mean_rd_rows.csv
+experiments/exp_stage_streamsplat_comparison/exp_stage06_rd_tables_and_plots/exp_stage06_representative_meetroom_n3dv_driving_robot_rd.png
+experiments/exp_stage_streamsplat_comparison/exp_stage06_rd_tables_and_plots/exp_stage06_dataset_mean_rd.png
+experiments/exp_stage_streamsplat_comparison/exp_stage07_davis_ours_center_square_252/exp_stage07_davis_ours_center_square_252_rows.csv
+experiments/exp_stage_streamsplat_comparison/exp_stage08_dfcgs_mono_adapter_diagnostic/exp_stage08_dfcgs_mono_adapter_diagnostic_summary.json
+```
+
+### FCGS 当前问题
+
+- 当前 FCGS 是 per-frame Mono-DFCGS anchor -> FCGS PLY -> FCGS encode/decode -> Mono renderer 的 baseline。
+- 当前四代表序列 mean PSNR 约为 `6.78-11.51 dB`，明显偏低。
+- 用户要求继续优化 FCGS，目标至少达到约 `20 dB+`，并补跑 DAVIS FCGS。
+
+### 下一步执行
+
+- 先用单帧定位低 PSNR 根因：adapter value space、FCGS decoded 字段失真、decoded PLY 反变换、render metric。
+- 优化 FCGS adapter/参数后先 smoke 验证，再决定是否重跑完整四代表序列和 DAVIS。
+- 每个关键诊断和重跑结果继续写入本日志。
+
 ## 2026-06-25：执行基线
 
 ### 当前仓库
@@ -8051,3 +8089,83 @@ experiments/stage115_deterministic_index_residual_codec_smoke/stage115_determini
 - Run `git diff --cached --check` before committing.
 - Commit as `Smoke deterministic-index residual codec` with the required OpenCode identity and push `main`.
 - Continue to ignore unrelated Stage53/StreamSplat comparison and exp_stage07/08 dirty files.
+
+### Commit/Push Result
+
+- Stage115 committed and pushed as `25c4f98 Smoke deterministic-index residual codec`.
+- Post-push status check shows only pre-existing unrelated dirty files remain.
+
+## 2026-06-29：Stage116 Deterministic vs Entropy Side-Info Accounting
+
+### 目标
+
+Compare deterministic-index value-only residual side-info from Stage115 against existing entropy-coded index+value residual side-info accounting. All transmitted side-info bytes, including metadata and residual payload, must be counted in total rate.
+
+### 操作计划
+
+- Inspect Stage93/94/96 entropy side-info scripts and outputs plus Stage115 deterministic output schema.
+- Build the smallest Stage116 accounting script that consumes existing summaries where possible and recomputes only lightweight summaries if needed.
+- Output rows/report under `experiments/stage116_deterministic_vs_entropy_sideinfo_accounting/`.
+- Do not train, render, or save anchors/checkpoints/heavy tensors.
+- Check `nvidia-smi` before any Python execution.
+
+### 实现
+
+Added:
+
+```text
+scripts/run_stage116_deterministic_vs_entropy_sideinfo_accounting.py
+```
+
+Inputs:
+
+```text
+experiments/stage93_residual_sideinfo_entropy_codec_smoke/stage93_residual_sideinfo_entropy_codec_summary.csv
+experiments/stage96_broader_entropy_residual_sideinfo_rd_package/stage96_broader_entropy_residual_sideinfo_rd_rows.csv
+experiments/stage115_deterministic_index_residual_codec_smoke/stage115_deterministic_index_residual_codec_summary.csv
+experiments/stage78_integrated_davis_rd_package/stage78_anchor_only_rate_table.csv
+```
+
+### 执行
+
+运行前检查 `nvidia-smi`：GPU0 忙、GPU4 有进程，GPU1/2/3/5/6/7 空闲。Stage116 是 CPU-only accounting，但仍使用 `CUDA_VISIBLE_DEVICES=2`。
+
+Syntax check and run:
+
+```text
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage116_deterministic_vs_entropy_sideinfo_accounting.py
+CUDA_VISIBLE_DEVICES=2 /mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage116_deterministic_vs_entropy_sideinfo_accounting.py
+```
+
+### 输出文件
+
+```text
+experiments/stage116_deterministic_vs_entropy_sideinfo_accounting/stage116_deterministic_vs_entropy_sideinfo_accounting_rows.csv
+experiments/stage116_deterministic_vs_entropy_sideinfo_accounting/stage116_deterministic_vs_entropy_sideinfo_accounting_points.csv
+experiments/stage116_deterministic_vs_entropy_sideinfo_accounting/stage116_deterministic_vs_entropy_sideinfo_accounting_summary.json
+experiments/stage116_deterministic_vs_entropy_sideinfo_accounting/stage116_deterministic_vs_entropy_sideinfo_accounting_report.md
+```
+
+### 结果
+
+| source | base | gap | entropy side MiB | deterministic side MiB | det/entropy | det direct MiB/frame | det amortized MiB/frame |
+|---|---|---:|---:|---:|---:|---:|---:|
+| stage93_entropy_smoke | linear | 4 | 0.028384844462076824 | 0.034340858459472656 | 1.2098307780179414 | 0.2162790792273858 | 0.20769386461251763 |
+| stage93_entropy_smoke | linear | 8 | 0.029387855529785158 | 0.034340858459472656 | 1.1685391070698417 | 0.131966245212987 | 0.12767363790555292 |
+| stage93_entropy_smoke | linear | 16 | 0.028190135955810547 | 0.034340858459472656 | 1.2181870464656033 | 0.08980982820578763 | 0.08766352455207059 |
+| stage93_entropy_smoke | stage65_adapter | 4 | 0.03340339660644531 | 0.034340858459472656 | 1.028064866099469 | 0.2162790792273858 | 0.20769386461251763 |
+| stage93_entropy_smoke | stage65_adapter | 8 | 0.03443698883056641 | 0.034340858459472656 | 0.9972085140322017 | 0.131966245212987 | 0.12767363790555292 |
+| stage93_entropy_smoke | stage65_adapter | 16 | 0.03329300880432129 | 0.034340858459472656 | 1.0314735643543085 | 0.08980982820578763 | 0.08766352455207059 |
+| stage96_entropy_broader | linear | 4 | 0.028486092885335285 | 0.034340858459472656 | 1.2055306636015155 | 0.2162790792273858 | 0.20769386461251763 |
+| stage96_entropy_broader | linear | 8 | 0.02903069947895251 | 0.034340858459472656 | 1.182915295732714 | 0.131966245212987 | 0.12767363790555292 |
+| stage96_entropy_broader | linear | 16 | 0.028838696687117867 | 0.034340858459472656 | 1.1907909303963997 | 0.08980982820578763 | 0.08766352455207059 |
+| stage96_entropy_broader | stage65_adapter | 4 | 0.033147705925835505 | 0.034340858459472656 | 1.0359950259093857 | 0.2162790792273858 | 0.20769386461251763 |
+| stage96_entropy_broader | stage65_adapter | 8 | 0.033867986578690376 | 0.034340858459472656 | 1.0139622082252686 | 0.131966245212987 | 0.12767363790555292 |
+| stage96_entropy_broader | stage65_adapter | 16 | 0.03376620748768682 | 0.034340858459472656 | 1.017018522793695 | 0.08980982820578763 | 0.08766352455207059 |
+
+### 结论
+
+- Deterministic value-only side-info removes transmitted selected-index bytes, but without entropy-compressing metadata/residual values it is still larger than Stage96 broader zlib entropy-coded index+value side-info.
+- Deterministic direct total rates with all side-info counted are `0.2162790792273858`, `0.131966245212987`, and `0.08980982820578763 MiB/frame` for gap4/8/16.
+- Stage116 is rate accounting only; deterministic endpoint-diff residual quality is marked `not_rendered_rate_only`.
+- Next step: Stage117 q-bit / keep-fraction sweep.
