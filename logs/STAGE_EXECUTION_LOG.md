@@ -7805,3 +7805,84 @@ Validation summary：
 - Stage111 learned switch is not packaged despite better overall PSNR because it still regresses Stage65 adapter gap4.
 - This still only selects index-selection candidates; Stage110/111 validation residual values are teacher residuals, so this is not a complete residual-value codec.
 - Next step: Stage113 held-out validation before treating v2 as the final selector policy.
+
+## 2026-06-29：Stage113 Held-Out Switch Validation
+
+### 目标
+
+验证 Stage112 `render_aware_group_switch_v2` 在 held-out split 下是否仍是安全的 decoder-side selector-switch candidate，同时和 Stage106 fixed policy、Stage111 learned switch 以及 oracle/task upper bound 对比。
+
+### 操作计划
+
+- 先检查 Stage110 rendered rows、Stage110 policy summaries、Stage111 switch predictor rows/summary 的字段结构。
+- 优先实现 CPU-only held-out diagnostic，不重新渲染、不训练大模型、不保存 heavy tensors。
+- 对比 endpoint-only、Stage106 fixed group policy、Stage112 fixed v2、train-fold group policy、Stage111 `score_stat_mlp_cv` 和 oracle task best。
+- 如果 Stage111 rows 已包含 fold/prediction 信息，则直接复用；否则只评估 fixed/group policies，并明确 learned switch 需要 rerun 或额外输出。
+- 重点检查每个 base/gap group 的 gain vs endpoint，尤其是 Stage65 adapter gap4。
+- 运行代码前仍检查 `nvidia-smi`。
+
+### 执行
+
+运行前检查 `nvidia-smi`：GPU0 忙，GPU4/6 有进程，GPU1/2/3/5/7 空闲。Stage113 是 CPU-only diagnostic，不需要 CUDA 计算。
+
+Syntax check and run：
+
+```text
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python -m py_compile scripts/run_stage113_heldout_switch_validation.py
+/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python scripts/run_stage113_heldout_switch_validation.py
+```
+
+### 输出文件
+
+```text
+experiments/stage113_heldout_switch_validation/stage113_heldout_switch_validation_rows.csv
+experiments/stage113_heldout_switch_validation/stage113_heldout_switch_validation_overall_summary.csv
+experiments/stage113_heldout_switch_validation/stage113_heldout_switch_validation_group_summary.csv
+experiments/stage113_heldout_switch_validation/stage113_heldout_switch_validation_fold_summary.csv
+experiments/stage113_heldout_switch_validation/stage113_heldout_switch_validation_fold_group_summary.csv
+experiments/stage113_heldout_switch_validation/stage113_heldout_switch_validation_sequence_summary.csv
+experiments/stage113_heldout_switch_validation/stage113_heldout_switch_validation_safety_summary.csv
+experiments/stage113_heldout_switch_validation/stage113_heldout_switch_validation_summary.json
+experiments/stage113_heldout_switch_validation/stage113_heldout_switch_validation_report.md
+```
+
+### 配置
+
+| item | value |
+|---|---:|
+| held-out unit | Stage111 `stage97_task_id` modulo fold |
+| fold count | 5 |
+| task-policy rows | 2880 |
+| unique tasks per policy | 480 |
+| Stage112 alias mismatch count | 0 |
+
+注意：这是基于 Stage111 out-of-fold rows 的 CPU diagnostic，不是新的 sequence-heldout render run。
+
+### Overall Results
+
+| policy | selected PSNR | gain vs endpoint | accuracy | selections |
+|---|---:|---:|---:|---|
+| endpoint_only | 20.3212149854921 | 0.0 | 0.5791666666666667 | endpoint_diff_baseline:480 |
+| stage106_fixed_group_policy | 20.322996715243978 | 0.0017817297518578745 | 0.51875 | endpoint_diff_baseline:240;shared_energy_regression:240 |
+| stage112_group_switch_v2 | 20.32704687107235 | 0.005831885580240304 | 0.55625 | endpoint_diff_baseline:323;shared_energy_regression:157 |
+| train_fold_group_policy | 20.325313259771452 | 0.00409827427933979 | 0.5541666666666667 | endpoint_diff_baseline:338;shared_energy_regression:142 |
+| score_stat_mlp_cv | 20.33325220653739 | 0.012037221045259486 | 0.6041666666666666 | endpoint_diff_baseline:274;shared_energy_regression:130;shared_topk_bce:76 |
+| oracle_task_best | 20.382843220952545 | 0.06162823546041816 | 1.0 | endpoint_diff_baseline:278;shared_energy_regression:121;shared_topk_bce:81 |
+
+### Safety Results
+
+| policy | mean gain | min fold gain | neg folds | min group gain | neg groups | min fold-group gain | neg fold-groups | Stage65 gap4 gain | aggregate safe | fold-group safe |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| endpoint_only | 0.0 | 0.0 | 0 | 0.0 | 0 | 0.0 | 0 | 0.0 | 1 | 1 |
+| stage106_fixed_group_policy | 0.0017817297518578745 | -0.007288316466769011 | 3 | -0.023422587923175493 | 1 | -0.06427740265352 | 8 | 0.0 | 0 | 0 |
+| stage112_group_switch_v2 | 0.005831885580240304 | -0.0059710516126523045 | 1 | 0.0 | 0 | -0.03366017781158855 | 4 | 0.0 | 1 | 0 |
+| train_fold_group_policy | 0.00409827427933979 | -0.0059710516126523045 | 1 | -0.0012260626580379986 | 1 | -0.03366017781158855 | 4 | 0.0 | 0 | 0 |
+| score_stat_mlp_cv | 0.012037221045259486 | 0.0002971711561230069 | 0 | -0.00797889356792674 | 1 | -0.039626239935121585 | 10 | -0.00797889356792674 | 0 | 0 |
+
+### 结论
+
+- Stage112 v2 is better than Stage106 and aggregate group-safe on the Stage111 fold rows.
+- Stage112 v2 is not fold-group safe if zero held-out fold-group regression is a hard requirement.
+- Stage111 `score_stat_mlp_cv` remains unsafe because Stage65 adapter gap4 regresses despite the best overall PSNR.
+- Endpoint-only is the only policy that is trivially safe at aggregate, fold, group, and fold-group levels in this diagnostic.
+- Do not treat Stage112 v2 as final before either more rendered held-out validation or a stricter fallback policy decision.

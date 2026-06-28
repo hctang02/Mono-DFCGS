@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage112: `c808413 Evaluate broader switch predictor`
+- Latest pushed commit before Stage113: `56119f6 Package broader group switch policy`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -67,10 +67,13 @@ Key Stage96 direct total rates:
 - Stage110: broader rendered selector labels with 240 eval tasks; Stage106 fixed policy remains slightly positive but much weaker, and a broader group-best pattern changes linear gap4 back to endpoint.
 - Stage111: broader switch predictor on Stage110 labels; score-stat MLP beats fixed group policies overall but still has Stage65 adapter gap4 regression.
 - Stage112: packaged conservative broader metadata group switch policy `render_aware_group_switch_v2`; it uses only `base_method` and `reference_gap` and selects endpoint for linear gap4 plus all Stage65 adapter groups.
+- Stage113: held-out switch diagnostic over Stage111 out-of-fold rows; Stage112 is aggregate group-safe but not fold-group safe under a zero-regression criterion.
 
 ## Current Best Selector Policy
 
-Current packaged candidate for held-out validation: Stage112 `render_aware_group_switch_v2`.
+Current packaged aggregate-safe candidate: Stage112 `render_aware_group_switch_v2`.
+
+Strictest safe fallback under Stage113 fold-group diagnostic: endpoint-only selector.
 
 Previous safe baseline: Stage106 `render_aware_group_switch_v1`.
 
@@ -102,6 +105,17 @@ Validation summary on Stage110 broader rows:
 | oracle task best PSNR | 20.382843220952523 |
 | teacher oracle top10 PSNR | 22.077800340877268 |
 
+Stage113 held-out diagnostic:
+
+| metric | value |
+|---|---:|
+| Stage112 overall gain vs endpoint | 0.005831885580240304 |
+| Stage112 min fold gain | -0.0059710516126523045 |
+| Stage112 min group gain | 0.0 |
+| Stage112 min fold-group gain | -0.03366017781158855 |
+| Stage112 negative fold-group count | 4 |
+| Stage112 Stage65 adapter gap4 gain | 0.0 |
+
 ## Current Interpretation
 
 - Residual-energy topk is useful but not render-aligned enough.
@@ -109,10 +123,11 @@ Validation summary on Stage110 broader rows:
 - Metadata-only task-level switching is too weak.
 - Anchor-stat task-level switching has signal but overfits on the current 120 rendered-label tasks.
 - Selector-score task-level switching has signal but does not fix adapter-group regressions and remains below Stage106.
-- Stage112 is the current packaged conservative selector-switch candidate, but it still needs Stage113 held-out validation before being treated as final.
+- Stage112 is aggregate group-safe and improves over endpoint overall, but Stage113 shows it is not fold-group safe under a strict zero-regression criterion.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
+- If strict safety is required, endpoint-only is currently the fallback selector policy.
 - Residual value prediction should wait until selector switching and index/value accounting are more stable.
 
 ## Next Plan
@@ -221,6 +236,17 @@ Actions:
 
 ### Stage113: Held-Out Switch Validation
 
+Status: completed on 2026-06-29.
+
+Result:
+
+- Stage112 alias mismatch count vs packaged selection table: `0`.
+- Stage112 overall gain vs endpoint: `+0.005831885580240304 dB`.
+- Stage112 aggregate group safety: pass (`min_group_gain = 0.0`, Stage65 adapter gap4 gain `0.0`).
+- Stage112 fold-group safety: fail if zero regression is required (`min_fold_group_gain = -0.03366017781158855`, `4` negative fold-groups).
+- Stage111 `score_stat_mlp_cv` remains unsafe: overall gain `+0.012037221045259486 dB`, but Stage65 adapter gap4 gain `-0.00797889356792674 dB`.
+- Conclusion: do not treat Stage112 as final under strict held-out fold-group safety; either freeze endpoint-only fallback or collect broader rendered validation before using v2 as final.
+
 Goal: validate the selected switch policy on held-out sequences or a broader eval set.
 
 Actions:
@@ -232,6 +258,7 @@ Actions:
 
 ### Deterministic-Index Side-Info Codec
 
+- Before Stage114 deterministic-index codec: decide whether to use endpoint-only strict-safe selector or keep Stage112 only as an aggregate-safe candidate.
 - Stage114: build deterministic-index residual codec where decoder predicts indices and bitstream carries values/scales only.
 - Stage115: compare index+value entropy side-info vs deterministic-index value-only side-info.
 - Stage116: sweep q-bit and keep fraction.
@@ -287,6 +314,7 @@ Actions:
 - Stage108 anchor-stat switch predictor: `scripts/run_stage108_anchor_stat_task_switch_predictor_preflight.py`
 - Stage109/111 selector-score switch predictor: `scripts/run_stage109_selector_score_switch_feature_preflight.py`
 - Stage112 policy package: `scripts/run_stage112_package_broader_group_switch_policy.py`
+- Stage113 held-out switch validation: `scripts/run_stage113_heldout_switch_validation.py`
 
 ### Important Outputs
 
@@ -302,6 +330,7 @@ Actions:
 - Stage110 broader rendered labels: `experiments/stage110_broader_rendered_selector_labels/`
 - Stage111 broader switch predictor: `experiments/stage111_broader_switch_predictor/`
 - Stage112 packaged policy: `experiments/stage112_broader_group_switch_policy_package/`
+- Stage113 held-out switch validation: `experiments/stage113_heldout_switch_validation/`
 
 ### Heavy External Paths
 

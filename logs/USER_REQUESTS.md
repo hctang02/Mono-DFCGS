@@ -1473,3 +1473,17 @@ Stage112 将新增 `scripts/run_stage112_package_broader_group_switch_policy.py`
 ### 后续执行更新
 
 Stage112 package conservative switch policy 已完成：运行前检查 `nvidia-smi`，GPU2 空闲；该阶段为 CPU packaging，使用 `/mnt/hdd2tC/tmp/opencode/streamsplat_venv/bin/python` 运行。新增脚本 `scripts/run_stage112_package_broader_group_switch_policy.py`，输出目录 `experiments/stage112_broader_group_switch_policy_package/`。打包 policy 为 `render_aware_group_switch_v2`，policy type 为 `metadata_group_switch`，decoder inputs 仅为 `base_method` 和 `reference_gap`，fallback 为 `endpoint_diff_baseline`。选择表：linear gap4 -> endpoint，linear gap8/16 -> `shared_energy_regression`，Stage65 adapter gap4/8/16 -> endpoint。验证 summary：task count `480`，endpoint PSNR `20.3212149854921`，policy PSNR `20.327046871072337`，gain `+0.005831885580240304 dB`，teacher oracle PSNR `22.077800340877268`。Stage111 `score_stat_mlp_cv` 虽整体 gain `+0.012037221045259486 dB`，但因 Stage65 adapter gap4 regression 仍未打包。下一步应执行 Stage113 held-out validation。
+
+## 2026-06-29：执行 Stage113 held-out switch validation
+
+### 用户原始问题
+
+用户要求如果有下一步就继续执行；Stage112 已完成、提交并推送，因此继续进入 Stage113。
+
+### 当前执行决策
+
+Stage113 先基于已有 Stage110 broader rendered rows 和 Stage111 switch predictor outputs 做 held-out validation，不重新渲染、不训练大模型、不保存 heavy tensors。目标是比较 endpoint-only、Stage106 fixed group policy、Stage112 `render_aware_group_switch_v2`、可从训练折估计的 group policy、以及 Stage111 learned switch 在 held-out sequence/fold 上的稳定性，重点检查 Stage112 是否在 held-out 切分下仍无 Stage65 adapter group regression。如果已有 outputs 不足以直接做 sequence-heldout，会先实现一个 CPU summary/diagnostic 脚本并明确限制，再决定是否需要更重的 rerender validation。
+
+### 后续执行更新
+
+Stage113 held-out switch validation 已完成：运行前检查 `nvidia-smi`，GPU1/2/3/5/7 空闲；该阶段为 CPU-only diagnostic，不重新渲染、不训练、不保存 heavy tensors。新增 `scripts/run_stage113_heldout_switch_validation.py`，读取 Stage111 out-of-fold rows，并将 `stage110_group_best_policy` alias 为 Stage112 `stage112_group_switch_v2`；alias 与 Stage112 package selection table mismatch count 为 `0`。输出目录为 `experiments/stage113_heldout_switch_validation/`，共 `2880` policy rows、`480` unique tasks per policy。结果：Stage112 v2 overall PSNR `20.32704687107235`，gain `+0.005831885580240304 dB`，aggregate group safe `1`，Stage65 adapter gap4 gain `0.0`；但 min fold gain `-0.0059710516126523045`，min fold-group gain `-0.03366017781158855`，negative fold-group count `4`，fold-group safe `0`。Stage111 `score_stat_mlp_cv` overall gain 更高 `+0.012037221045259486 dB`，但 Stage65 adapter gap4 gain `-0.00797889356792674`，aggregate safe `0`。结论：Stage112 可作为 aggregate-safe candidate，但若要求 held-out fold-group 零退化，则不能作为最终 safe policy；下一步应冻结更严格的 endpoint-safe fallback 或先扩展 rendered labels，而不是继续堆 learned switch predictor。

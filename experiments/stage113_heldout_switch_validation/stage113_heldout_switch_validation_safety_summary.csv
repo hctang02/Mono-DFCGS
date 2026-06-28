@@ -1,0 +1,7 @@
+policy,task_count,mean_delta_psnr_vs_endpoint,min_fold_gain_vs_endpoint,negative_fold_count,min_group_gain_vs_endpoint,negative_group_count,min_fold_group_gain_vs_endpoint,negative_fold_group_count,min_sequence_gain_vs_endpoint,negative_sequence_count,stage65_adapter_gap4_gain_vs_endpoint,aggregate_safe_no_group_regression,fold_group_safe_no_regression,selected_candidate_counts
+endpoint_only,480,0.0,0.0,0,0.0,0,0.0,0,0.0,0,0.0,1,1,endpoint_diff_baseline:480
+oracle_task_best,480,0.06162823546041816,0.054184702328432775,0,0.024125012306258554,0,0.012998149861998876,0,0.0,0,0.024125012306258554,1,1,endpoint_diff_baseline:278;shared_energy_regression:121;shared_topk_bce:81
+score_stat_mlp_cv,480,0.012037221045259486,0.0002971711561230069,0,-0.00797889356792674,1,-0.039626239935121585,10,-0.08098172383799906,14,-0.00797889356792674,0,0,endpoint_diff_baseline:274;shared_energy_regression:130;shared_topk_bce:76
+stage106_fixed_group_policy,480,0.0017817297518578745,-0.007288316466769011,3,-0.023422587923175493,1,-0.06427740265352,8,-0.14196078985156418,14,0.0,0,0,endpoint_diff_baseline:240;shared_energy_regression:240
+stage112_group_switch_v2,480,0.005831885580240304,-0.0059710516126523045,1,0.0,0,-0.03366017781158855,4,-0.1181588340943472,10,0.0,1,0,endpoint_diff_baseline:323;shared_energy_regression:157
+train_fold_group_policy,480,0.00409827427933979,-0.0059710516126523045,1,-0.0012260626580379986,1,-0.03366017781158855,4,-0.1181588340943472,9,0.0,0,0,endpoint_diff_baseline:338;shared_energy_regression:142
