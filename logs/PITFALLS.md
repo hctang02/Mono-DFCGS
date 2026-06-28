@@ -544,3 +544,9 @@ The official StreamSplat checkout currently has untracked local runtime artifact
 
 - Keep Stage75 corrected StreamSplat paper-protocol reference separate from Stage77/78 scoped anchor-only RD protocol. The reference gap table is diagnostic, not an apples-to-apples RD curve.
 - Stage78 confirms q12 adapter is the current best anchor-only scoped point, but the middle-frame gap to corrected StreamSplat remains large. Do not overemphasize codec changes as the main innovation path from here.
+
+## Stage79 Adapter Task Manifest Notes
+
+- Adapter training manifests should reference Stage61 gap1 anchor `.pt` files and source sides instead of copying tensors into new artifacts.
+- For dense gap1 anchors, the canonical source choice should mimic Stage66 loading: frame 0 from the first row's left anchor, later frames from the previous row's right anchor unless already seen.
+- Keep `task_split=train` and `task_split=eval` separate so Stage80 can validate on DAVIS val without accidentally mixing train sequences.

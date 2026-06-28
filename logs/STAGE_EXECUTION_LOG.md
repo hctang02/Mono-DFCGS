@@ -5605,6 +5605,68 @@ Method averages：
 
 诊断结论：q12 adapter 是当前 anchor-only scoped RD 中最好点，但 middle-frame PSNR 与 corrected StreamSplat reference 仍差约 `4.5-4.8 dB`。后续优先做 stronger adapter training、rendered-label selector 和 dynamic side-info。
 
+## 2026-06-28：Stage79 Adapter Training Task Manifest
+
+### 目标
+
+为 Stage80 更强 Gaussian adapter training 构建统一任务 manifest，覆盖 q10/q12 输入和 gap4/8/16 中间帧监督。
+
+### 操作计划
+
+- 输入：Stage61 DAVIS full gap1 anchor manifest。
+- 输出：train/val adapter task CSV、sequence summary、codec/gap summary。
+- 每个 task 记录 split、sequence、codec、reference gap、left/right index、target index、normalized time、target RGB path。
+- 不复制 `.pt` anchors，不生成 heavy tensors。
+- Stage79 为 CPU-only manifest generation；运行前仍按要求检查 `nvidia-smi`。
+
+### Stage79 执行结果
+
+运行前按要求使用 `nvidia-smi` 检查 GPU。该阶段为 CPU-only manifest generation。
+
+新增脚本：
+
+```text
+scripts/run_stage79_adapter_training_task_manifest.py
+```
+
+输出：
+
+```text
+experiments/stage79_adapter_training_task_manifest/stage79_adapter_training_task_manifest_summary.json
+experiments/stage79_adapter_training_task_manifest/stage79_adapter_training_tasks.csv
+experiments/stage79_adapter_training_task_manifest/stage79_adapter_sequence_summary.csv
+experiments/stage79_adapter_training_task_manifest/stage79_adapter_task_summary.csv
+experiments/stage79_adapter_training_task_manifest/stage79_adapter_training_task_manifest_report.md
+```
+
+Coverage：
+
+| split | sequences | frames |
+|---|---:|---:|
+| train | 60 | 4209 |
+| val | 30 | 1999 |
+
+Task count：`31108`。
+
+Task summary：
+
+| split | codec | gap | sequences | tasks |
+|---|---|---:|---:|---:|
+| eval | q10 | 4 | 30 | 1463 |
+| eval | q10 | 8 | 30 | 1707 |
+| eval | q10 | 16 | 30 | 1830 |
+| eval | q12 | 4 | 30 | 1463 |
+| eval | q12 | 8 | 30 | 1707 |
+| eval | q12 | 16 | 30 | 1830 |
+| train | q10 | 4 | 60 | 3087 |
+| train | q10 | 8 | 60 | 3604 |
+| train | q10 | 16 | 60 | 3863 |
+| train | q12 | 4 | 60 | 3087 |
+| train | q12 | 8 | 60 | 3604 |
+| train | q12 | 16 | 60 | 3863 |
+
+结论：Stage79 已为 Stage80 adapter training 准备好 manifest。该 manifest 不复制 heavy anchor tensors，只引用 Stage61 gap1 `.pt` 和 source side。
+
 ### Stage76 执行结果
 
 运行前按要求使用 `nvidia-smi` 检查 GPU。GPU1 空闲，因此使用 `CUDA_VISIBLE_DEVICES=1` 运行 scoped sweep。

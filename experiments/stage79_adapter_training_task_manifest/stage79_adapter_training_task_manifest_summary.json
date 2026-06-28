@@ -1,0 +1,136 @@
+{
+  "stage": 79,
+  "mode": "adapter training task manifest",
+  "manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage61_davis_anchor_export_data_full/stage61_davis_anchor_export_manifest.csv",
+  "davis_root": "/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS",
+  "splits": [
+    "train",
+    "val"
+  ],
+  "gaps": [
+    4,
+    8,
+    16
+  ],
+  "codecs": [
+    "q10",
+    "q12"
+  ],
+  "sequence_count": 90,
+  "task_count": 31108,
+  "tasks_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage79_adapter_training_task_manifest/stage79_adapter_training_tasks.csv",
+  "sequence_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage79_adapter_training_task_manifest/stage79_adapter_sequence_summary.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage79_adapter_training_task_manifest/stage79_adapter_task_summary.csv",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage79_adapter_training_task_manifest/stage79_adapter_training_task_manifest_report.md",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage79_adapter_training_task_manifest/stage79_adapter_training_task_manifest_summary.json",
+  "task_summary": [
+    {
+      "task_split": "eval",
+      "codec": "q10",
+      "bits": 10,
+      "reference_gap": 4,
+      "sequence_count": 30,
+      "task_count": 1463,
+      "mean_tasks_per_sequence": 48.766666666666666
+    },
+    {
+      "task_split": "eval",
+      "codec": "q10",
+      "bits": 10,
+      "reference_gap": 8,
+      "sequence_count": 30,
+      "task_count": 1707,
+      "mean_tasks_per_sequence": 56.9
+    },
+    {
+      "task_split": "eval",
+      "codec": "q10",
+      "bits": 10,
+      "reference_gap": 16,
+      "sequence_count": 30,
+      "task_count": 1830,
+      "mean_tasks_per_sequence": 61.0
+    },
+    {
+      "task_split": "eval",
+      "codec": "q12",
+      "bits": 12,
+      "reference_gap": 4,
+      "sequence_count": 30,
+      "task_count": 1463,
+      "mean_tasks_per_sequence": 48.766666666666666
+    },
+    {
+      "task_split": "eval",
+      "codec": "q12",
+      "bits": 12,
+      "reference_gap": 8,
+      "sequence_count": 30,
+      "task_count": 1707,
+      "mean_tasks_per_sequence": 56.9
+    },
+    {
+      "task_split": "eval",
+      "codec": "q12",
+      "bits": 12,
+      "reference_gap": 16,
+      "sequence_count": 30,
+      "task_count": 1830,
+      "mean_tasks_per_sequence": 61.0
+    },
+    {
+      "task_split": "train",
+      "codec": "q10",
+      "bits": 10,
+      "reference_gap": 4,
+      "sequence_count": 60,
+      "task_count": 3087,
+      "mean_tasks_per_sequence": 51.45
+    },
+    {
+      "task_split": "train",
+      "codec": "q10",
+      "bits": 10,
+      "reference_gap": 8,
+      "sequence_count": 60,
+      "task_count": 3604,
+      "mean_tasks_per_sequence": 60.06666666666667
+    },
+    {
+      "task_split": "train",
+      "codec": "q10",
+      "bits": 10,
+      "reference_gap": 16,
+      "sequence_count": 60,
+      "task_count": 3863,
+      "mean_tasks_per_sequence": 64.38333333333334
+    },
+    {
+      "task_split": "train",
+      "codec": "q12",
+      "bits": 12,
+      "reference_gap": 4,
+      "sequence_count": 60,
+      "task_count": 3087,
+      "mean_tasks_per_sequence": 51.45
+    },
+    {
+      "task_split": "train",
+      "codec": "q12",
+      "bits": 12,
+      "reference_gap": 8,
+      "sequence_count": 60,
+      "task_count": 3604,
+      "mean_tasks_per_sequence": 60.06666666666667
+    },
+    {
+      "task_split": "train",
+      "codec": "q12",
+      "bits": 12,
+      "reference_gap": 16,
+      "sequence_count": 60,
+      "task_count": 3863,
+      "mean_tasks_per_sequence": 64.38333333333334
+    }
+  ]
+}
