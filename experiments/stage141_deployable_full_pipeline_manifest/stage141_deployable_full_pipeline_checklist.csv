@@ -1,0 +1,10 @@
+item,status,evidence
+no_teacher_decoder_input,pass,teacher residual side-info is listed as forbidden input
+no_target_dense_anchor_decoder_input,pass,target_dense_anchor is listed as forbidden input
+no_target_rgb_decoder_input,pass,target_rgb is listed as forbidden input; used only for offline validation
+zero_residual_payload,pass,primary transmitted_residual_payload_bytes=0
+zero_selected_index_payload,pass,primary transmitted_selected_index_bytes=0
+policy_scale_not_sideinfo,pass,adapter_delta_scale is a fixed policy constant with zero per-frame payload
+deterministic_index_selection,pass,endpoint_diff_topk_v1
+pre_shared_adapter_declared,pass,/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors
+mlp_rejected,pass,Stage140 rows=18; MLP rejected due to Stage129/134 rendered regression

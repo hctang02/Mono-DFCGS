@@ -1,0 +1,16 @@
+{
+  "stage": 141,
+  "mode": "deployable full-pipeline manifest",
+  "manifest_name": "deployable_render_aware_scaled_adapter_delta_full_pipeline_v1",
+  "policy_name": "deployable_render_aware_scaled_adapter_delta_selected_residual_codec_v1",
+  "manifest_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage141_deployable_full_pipeline_manifest/stage141_deployable_full_pipeline_manifest.json",
+  "checklist_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage141_deployable_full_pipeline_manifest/stage141_deployable_full_pipeline_checklist.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage141_deployable_full_pipeline_manifest/stage141_deployable_full_pipeline_manifest_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage141_deployable_full_pipeline_manifest/stage141_deployable_full_pipeline_manifest_report.md",
+  "primary_rate": 0.11729838135687401,
+  "primary_psnr": 19.022109503207204,
+  "low_rate_psnr": 18.997890662360874,
+  "residual_payload_bytes": 0,
+  "selected_index_payload_bytes": 0,
+  "teacher_sideinfo_deployable": 0
+}
