@@ -1,0 +1,138 @@
+{
+  "stage": 138,
+  "policy_name": "deployable_render_aware_scaled_adapter_delta_selected_residual_codec_v1",
+  "policy_type": "deployable_predictor_policy",
+  "status": "current_best_no_teacher_deployable_render_aware",
+  "replaces_policy": "deployable_adapter_delta_selected_residual_codec_v1",
+  "selected_primary_setting": "q4_top20",
+  "selected_primary_adapter_delta_scale": 0.75,
+  "optional_low_rate_setting": "q4_top10",
+  "optional_low_rate_adapter_delta_scale": 0.75,
+  "predictor": {
+    "name": "render_aware_scaled_adapter_delta_selected_predictor",
+    "rule": "run pre-shared Stage65 adapter and use adapter_delta_scale * (adapter_attrs - linear_attrs) at deterministic selected indices",
+    "stage65_adapter_checkpoint": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors",
+    "checkpoint_exists": 1,
+    "checkpoint_rate_accounting": "pre-shared model; not counted per frame. If transmitted in-session, account separately."
+  },
+  "index_selection": {
+    "rule_name": "endpoint_diff_topk_v1",
+    "keep_count_rule": "min(max(round(N * keep_fraction), 0), N)",
+    "score_rule": "sum((right_attrs[0].float() - left_attrs[0].float()) ** 2, dim=-1)",
+    "selection_rule": "select top keep_count largest scores, then sort selected indices ascending",
+    "transmitted_selected_index_bytes": 0
+  },
+  "rate_accounting": {
+    "transmitted_residual_payload_bytes": 0,
+    "transmitted_selected_index_bytes": 0,
+    "direct_total_rate": "q12_main_anchor_mib_per_frame only for predictor residuals",
+    "amortized_total_rate": "same as direct for predictor residuals in this package",
+    "adapter_delta_scale_rate": "policy constant; no per-frame side-info bytes"
+  },
+  "settings": [
+    {
+      "role": "primary",
+      "setting_label": "q4_top20",
+      "keep_fraction": 0.2,
+      "side_bits": 4,
+      "adapter_delta_scale": 0.75,
+      "direct_total_mib_per_frame": 0.11729838135687401,
+      "psnr": 19.022109503207204,
+      "delta_psnr_vs_linear_base": 0.07130650677606927,
+      "delta_psnr_vs_full_adapter": -0.1655337899182917,
+      "transmitted_residual_payload_bytes": 0,
+      "transmitted_selected_index_bytes": 0,
+      "previous_stage132_psnr": 19.010259350474836,
+      "delta_psnr_vs_stage132_policy": 0.011850152732368002
+    },
+    {
+      "role": "low_rate",
+      "setting_label": "q4_top10",
+      "keep_fraction": 0.1,
+      "side_bits": 4,
+      "adapter_delta_scale": 0.75,
+      "direct_total_mib_per_frame": 0.11729838135687401,
+      "psnr": 18.997890662360874,
+      "delta_psnr_vs_linear_base": 0.047087665929735116,
+      "delta_psnr_vs_full_adapter": -0.18975263076462587,
+      "transmitted_residual_payload_bytes": 0,
+      "transmitted_selected_index_bytes": 0,
+      "previous_stage132_psnr": 18.994813480380337,
+      "delta_psnr_vs_stage132_policy": 0.0030771819805366363
+    }
+  ],
+  "decoder_contract": {
+    "inputs": [
+      "left_anchor",
+      "right_anchor",
+      "normalized_time",
+      "pre-shared Stage65 adapter checkpoint",
+      "policy setting keep_fraction",
+      "policy setting adapter_delta_scale"
+    ],
+    "steps": [
+      "compute linear base attrs from left/right anchors and normalized time",
+      "compute Stage65 adapter attrs from left/right anchors and normalized time",
+      "recompute endpoint-diff selected indices",
+      "compute adapter_delta_scale * (adapter_attrs - linear_attrs) residual values",
+      "apply scaled residual values at selected indices"
+    ],
+    "forbidden_inputs": [
+      "target_dense_anchor",
+      "target_residual",
+      "target_rgb",
+      "oracle_task_label",
+      "transmitted selected indices",
+      "transmitted residual values",
+      "teacher residual side-info"
+    ]
+  },
+  "references": {
+    "stage132_previous_policy": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage132_deployable_predictor_policy_package/stage132_deployable_predictor_policy.json",
+    "stage137_summary": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage137_broader_render_aware_scale_validation/stage137_broader_render_aware_scale_validation_summary.json",
+    "stage137_broader_best_summary_row": {
+      "predictor_name": "adapter_delta_selected_scaled_v1",
+      "setting_label": "q4_top20",
+      "setting_role": "primary",
+      "keep_fraction": 0.2,
+      "side_bits": 4,
+      "adapter_delta_scale": 0.75,
+      "task_count": 60,
+      "mean_keep_gaussians": 7373.0,
+      "mean_direct_total_mib_per_frame": 0.11729838135687401,
+      "mean_amortized_total_mib_per_frame": 0.11729838135687401,
+      "mean_base_psnr": 18.950802996431143,
+      "mean_full_predictor_psnr": 19.1876432931255,
+      "mean_selected_predicted_psnr": 19.022109503207204,
+      "mean_delta_psnr_vs_base": 0.07130650677606927,
+      "mean_delta_psnr_vs_full_predictor": -0.1655337899182917,
+      "positive_delta_vs_base_count": 49,
+      "near_full_within_0p10db_count": 12
+    },
+    "stage137_smoke_selected_summary_row": {
+      "predictor_name": "adapter_delta_selected_scaled_v1",
+      "setting_label": "q4_top20",
+      "setting_role": "primary",
+      "keep_fraction": 0.2,
+      "side_bits": 4,
+      "adapter_delta_scale": 0.5,
+      "task_count": 60,
+      "mean_keep_gaussians": 7373.0,
+      "mean_direct_total_mib_per_frame": 0.11729838135687401,
+      "mean_amortized_total_mib_per_frame": 0.11729838135687401,
+      "mean_base_psnr": 18.950802996431143,
+      "mean_full_predictor_psnr": 19.1876432931255,
+      "mean_selected_predicted_psnr": 19.01421663314399,
+      "mean_delta_psnr_vs_base": 0.06341363671285936,
+      "mean_delta_psnr_vs_full_predictor": -0.1734266599815016,
+      "positive_delta_vs_base_count": 49,
+      "near_full_within_0p10db_count": 13
+    }
+  },
+  "limitations": [
+    "Quality gain over Stage132 is small but positive on the 60-task Stage137 validation slice.",
+    "Pre-shared Stage65 adapter checkpoint is required for deployment.",
+    "Scale is a fixed policy constant selected offline; target RGB is not available to the decoder.",
+    "Dedicated selected residual MLP remains rejected because Stage129/Stage134 showed rendered PSNR regression."
+  ]
+}

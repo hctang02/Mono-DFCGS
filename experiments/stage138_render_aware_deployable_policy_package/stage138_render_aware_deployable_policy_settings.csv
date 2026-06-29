@@ -1,0 +1,3 @@
+role,setting_label,keep_fraction,side_bits,adapter_delta_scale,direct_total_mib_per_frame,psnr,delta_psnr_vs_linear_base,delta_psnr_vs_full_adapter,transmitted_residual_payload_bytes,transmitted_selected_index_bytes,previous_stage132_psnr,delta_psnr_vs_stage132_policy
+primary,q4_top20,0.2,4,0.75,0.11729838135687401,19.022109503207204,0.07130650677606927,-0.1655337899182917,0,0,19.010259350474836,0.011850152732368002
+low_rate,q4_top10,0.1,4,0.75,0.11729838135687401,18.997890662360874,0.047087665929735116,-0.18975263076462587,0,0,18.994813480380337,0.0030771819805366363

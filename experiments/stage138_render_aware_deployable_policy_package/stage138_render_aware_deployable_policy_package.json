@@ -1,0 +1,22 @@
+{
+  "stage": 138,
+  "mode": "render-aware deployable predictor policy package",
+  "policy_name": "deployable_render_aware_scaled_adapter_delta_selected_residual_codec_v1",
+  "status": "current_best_no_teacher_deployable_render_aware",
+  "replaces_policy": "deployable_adapter_delta_selected_residual_codec_v1",
+  "policy_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage138_render_aware_deployable_policy_package/stage138_render_aware_deployable_policy.json",
+  "settings_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage138_render_aware_deployable_policy_package/stage138_render_aware_deployable_policy_settings.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage138_render_aware_deployable_policy_package/stage138_render_aware_deployable_policy_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage138_render_aware_deployable_policy_package/stage138_render_aware_deployable_policy_report.md",
+  "primary_setting": "q4_top20",
+  "primary_adapter_delta_scale": 0.75,
+  "optional_low_rate_setting": "q4_top10",
+  "optional_low_rate_adapter_delta_scale": 0.75,
+  "adapter_checkpoint_exists": 1,
+  "notes": [
+    "Quality gain over Stage132 is small but positive on the 60-task Stage137 validation slice.",
+    "Pre-shared Stage65 adapter checkpoint is required for deployment.",
+    "Scale is a fixed policy constant selected offline; target RGB is not available to the decoder.",
+    "Dedicated selected residual MLP remains rejected because Stage129/Stage134 showed rendered PSNR regression."
+  ]
+}
