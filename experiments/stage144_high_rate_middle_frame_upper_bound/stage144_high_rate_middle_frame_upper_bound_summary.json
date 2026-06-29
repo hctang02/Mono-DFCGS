@@ -1,0 +1,69 @@
+{
+  "stage": 144,
+  "mode": "high-rate middle-frame upper-bound decision package",
+  "stage143_summary": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage143_middle_frame_psnr_collapse_diagnostic/stage143_middle_frame_psnr_collapse_summary.csv",
+  "stage143_package": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage143_middle_frame_psnr_collapse_diagnostic/stage143_middle_frame_psnr_collapse_package.json",
+  "stage143_row_count": 144,
+  "upper_bound_rows": [
+    {
+      "reference_gap": 4,
+      "target_middle_psnr": 23.004337221027775,
+      "q12_adapter_middle_psnr": 18.25528373980314,
+      "q16_adapter_middle_psnr": 18.255332804105823,
+      "float32_adapter_middle_psnr": 18.255332640417755,
+      "q12_dense_direct_middle_psnr": 29.722410525860948,
+      "q16_dense_direct_middle_psnr": 29.749435689288717,
+      "float32_dense_direct_middle_psnr": 29.749654363336436,
+      "q16_minus_q12_adapter_middle_psnr": 4.9064302682921834e-05,
+      "float32_minus_q12_adapter_middle_psnr": 4.890061461537698e-05,
+      "float32_dense_minus_float32_adapter_middle_psnr": 11.49432172291868,
+      "float32_adapter_gap_to_target": -4.74900458061002,
+      "float32_dense_gap_to_target": 6.745317142308661,
+      "decision": "model_training_or_sideinfo_required"
+    },
+    {
+      "reference_gap": 8,
+      "target_middle_psnr": 21.56004909948801,
+      "q12_adapter_middle_psnr": 17.06788939572344,
+      "q16_adapter_middle_psnr": 17.067879472412265,
+      "float32_adapter_middle_psnr": 17.067872741131573,
+      "q12_dense_direct_middle_psnr": 29.718262412631926,
+      "q16_dense_direct_middle_psnr": 29.745294520564382,
+      "float32_dense_direct_middle_psnr": 29.74550454012203,
+      "q16_minus_q12_adapter_middle_psnr": -9.92331117544154e-06,
+      "float32_minus_q12_adapter_middle_psnr": -1.6654591867393265e-05,
+      "float32_dense_minus_float32_adapter_middle_psnr": 12.677631798990458,
+      "float32_adapter_gap_to_target": -4.492176358356435,
+      "float32_dense_gap_to_target": 8.185455440634023,
+      "decision": "model_training_or_sideinfo_required"
+    }
+  ],
+  "decisions": [
+    {
+      "item": "raise_anchor_qbit",
+      "decision": "reject_as_primary_fix",
+      "evidence": "max abs(float32-q12 adapter middle) = 4.890061461537698e-05 dB"
+    },
+    {
+      "item": "renderer_data_ceiling",
+      "decision": "not_bottleneck",
+      "evidence": "min float32 dense gap to target = 6.745317142308661 dB"
+    },
+    {
+      "item": "dynamic_model",
+      "decision": "primary_bottleneck",
+      "evidence": "min dense-direct minus adapter middle = 11.49432172291868 dB; best float32 adapter target gap = -4.74900458061002 dB"
+    },
+    {
+      "item": "next_stage",
+      "decision": "start_large_scale_adapter_training_and_prepare_rate_counted_sideinfo_fallback",
+      "evidence": "High-rate anchors do not move adapter middle PSNR; dense-direct has ample ceiling."
+    }
+  ],
+  "upper_bound_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage144_high_rate_middle_frame_upper_bound/stage144_high_rate_middle_frame_upper_bound_rows.csv",
+  "decisions_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage144_high_rate_middle_frame_upper_bound/stage144_high_rate_middle_frame_upper_bound_decisions.csv",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage144_high_rate_middle_frame_upper_bound/stage144_high_rate_middle_frame_upper_bound_summary.json",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage144_high_rate_middle_frame_upper_bound/stage144_high_rate_middle_frame_upper_bound_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage144_high_rate_middle_frame_upper_bound/stage144_high_rate_middle_frame_upper_bound_report.md",
+  "first_phase_decision": "quality collapse is dynamic-model-side; proceed to large-scale adapter training and keep side-info fallback"
+}

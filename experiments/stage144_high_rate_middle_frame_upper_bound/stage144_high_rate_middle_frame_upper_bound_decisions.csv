@@ -1,0 +1,5 @@
+item,decision,evidence
+raise_anchor_qbit,reject_as_primary_fix,max abs(float32-q12 adapter middle) = 4.890061461537698e-05 dB
+renderer_data_ceiling,not_bottleneck,min float32 dense gap to target = 6.745317142308661 dB
+dynamic_model,primary_bottleneck,min dense-direct minus adapter middle = 11.49432172291868 dB; best float32 adapter target gap = -4.74900458061002 dB
+next_stage,start_large_scale_adapter_training_and_prepare_rate_counted_sideinfo_fallback,High-rate anchors do not move adapter middle PSNR; dense-direct has ample ceiling.
