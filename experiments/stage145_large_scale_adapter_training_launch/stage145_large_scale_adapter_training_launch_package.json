@@ -1,0 +1,50 @@
+{
+  "stage": 145,
+  "mode": "large-scale lazy-load adapter training launch",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage145_large_scale_adapter_training_launch/stage145_large_scale_adapter_training_launch_summary.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage145_large_scale_adapter_training_launch/stage145_large_scale_adapter_training_launch_report.md",
+  "best_checkpoint": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage145_large_scale_adapter_training_launch/best_adapter.safetensors",
+  "final_checkpoint": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage145_large_scale_adapter_training_launch/final_adapter.safetensors",
+  "latest_state": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage145_large_scale_adapter_training_launch/latest_training_state.pt",
+  "selected_train_rows": 6691,
+  "selected_eval_rows": 32,
+  "best_step": 80,
+  "best_eval": {
+    "task_count": 32,
+    "model_psnr_avg": 19.313366675051686,
+    "linear_psnr_avg": 19.200317738313426,
+    "margin_over_linear_psnr": 0.11304893673826172,
+    "model_psnr_by_gap": {
+      "4": 20.067089750864742,
+      "8": 18.459147189130217
+    },
+    "linear_psnr_by_gap": {
+      "4": 20.015439770835943,
+      "8": 18.276512768121233
+    },
+    "margin_over_linear_psnr_by_gap": {
+      "4": 0.05164998002879758,
+      "8": 0.18263442100898775
+    },
+    "min_gap_margin_over_linear_psnr": 0.05164998002879758
+  },
+  "final_eval": {
+    "task_count": 32,
+    "model_psnr_avg": 19.313366675051686,
+    "linear_psnr_avg": 19.200317738313426,
+    "margin_over_linear_psnr": 0.11304893673826172,
+    "model_psnr_by_gap": {
+      "4": 20.067089750864742,
+      "8": 18.459147189130217
+    },
+    "linear_psnr_by_gap": {
+      "4": 20.015439770835943,
+      "8": 18.276512768121233
+    },
+    "margin_over_linear_psnr_by_gap": {
+      "4": 0.05164998002879758,
+      "8": 0.18263442100898775
+    },
+    "min_gap_margin_over_linear_psnr": 0.05164998002879758
+  }
+}

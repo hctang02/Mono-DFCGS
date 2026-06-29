@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage144: `3a38fae Diagnose middle-frame PSNR collapse`
+- Latest pushed commit before Stage145: `1e28307 Package high-rate middle-frame upper bound`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -99,6 +99,7 @@ Key Stage96 direct total rates:
 - Stage142: completed middle-frame protocol/reference alignment audit.
 - Stage143: completed middle-frame PSNR collapse decomposition across renderer/data, quantization, and dynamic model.
 - Stage144: completed high-rate/uncompressed middle-frame upper-bound decision package.
+- Stage145: completed large-scale lazy-load adapter training launch for q12 gap4/gap8.
 
 ## Current Best Selector Policy
 
@@ -187,6 +188,7 @@ Stage113 held-out diagnostic:
 - Stage142 confirms the current Stage78 q12 adapter middle-frame gaps to corrected StreamSplat reference are large: gap4 `-4.748141051550093 dB`, gap8 `-4.490355146869977 dB`; Stage78 is diagnostic only because Stage75 is full DAVIS val paper protocol while Stage77/78 used 4 scoped DAVIS val sequences. Stage141 remains a decoder-safe accounting checkpoint, not a paper-level quality result.
 - Stage143 shows the collapse is model-side, not renderer/data or q12 quantization: float32 dense-direct middle PSNR is gap4 `29.749654363336436` and gap8 `29.74550454012203`, while float32 adapter middle PSNR is gap4 `18.255332640417755` and gap8 `17.067872741131573`; q16 vs q12 adapter middle changes are only about `0.00005 dB` / `-0.00001 dB`.
 - Stage144 rejects higher q-bit as the primary fix: float32-q12 adapter middle gain is only gap4 `+0.00004890061461537698 dB` and gap8 `-0.000016654591867393265 dB`; dynamic model training and/or rate-counted side-info is required to recover the `4.5-4.75 dB` middle-frame target gap.
+- Stage145 completed a bounded large-scale lazy-load launch: selected all Stage79 q12 gap4/gap8 train rows (`6691`) with `32` eval rows and initialized from Stage65 `rgb_h256`; 80 steps improved sampled mean PSNR from `19.30193946735575` to `19.313366675051686` (`+0.011427207695936569 dB`) and min gap margin from `0.03760697804374987` to `0.05164998002879758`. This validates the training path but does not solve the middle-frame quality gap.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.

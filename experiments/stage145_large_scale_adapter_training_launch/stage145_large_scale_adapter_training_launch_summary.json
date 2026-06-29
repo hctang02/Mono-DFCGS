@@ -1,0 +1,140 @@
+{
+  "stage": 145,
+  "mode": "large-scale lazy-load adapter training launch",
+  "task_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage79_adapter_training_task_manifest/stage79_adapter_training_tasks.csv",
+  "codecs": [
+    "q12"
+  ],
+  "gaps": [
+    4,
+    8
+  ],
+  "available_train_rows": 6691,
+  "available_eval_rows": 3170,
+  "selected_train_rows": 6691,
+  "selected_eval_rows": 32,
+  "available_train_rows_by_group": {
+    "q12_gap4": 3087,
+    "q12_gap8": 3604
+  },
+  "selected_train_rows_by_group": {
+    "q12_gap4": 3087,
+    "q12_gap8": 3604
+  },
+  "selected_eval_rows_by_group": {
+    "q12_gap4": 17,
+    "q12_gap8": 15
+  },
+  "selected_train_sequences": 60,
+  "selected_eval_sequences": 24,
+  "selected_train_rows_by_gap": {
+    "4": 3087,
+    "8": 3604
+  },
+  "steps": 80,
+  "eval_interval": 40,
+  "hidden_dim": 256,
+  "lr": 4e-06,
+  "weight_decay": 0.0001,
+  "gap_loss_weights": {
+    "4": 2.0,
+    "8": 1.5
+  },
+  "best_metric": "min_gap_margin",
+  "gap4_penalty": 2.0,
+  "seed": 20260630,
+  "heavy_root": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage145_large_scale_adapter_training_launch",
+  "summary_root": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage145_large_scale_adapter_training_launch",
+  "init_checkpoint": {
+    "path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors",
+    "tensor_count": 14,
+    "parameter_count": 402445
+  },
+  "resume_state": null,
+  "best_step": 80,
+  "best_selection_score": 0.05164998002879758,
+  "initial_eval": {
+    "task_count": 32,
+    "model_psnr_avg": 19.30193946735575,
+    "linear_psnr_avg": 19.200317738313426,
+    "margin_over_linear_psnr": 0.10162172904232497,
+    "model_psnr_by_gap": {
+      "4": 20.05304674887969,
+      "8": 18.45068454829528
+    },
+    "linear_psnr_by_gap": {
+      "4": 20.015439770835943,
+      "8": 18.276512768121233
+    },
+    "margin_over_linear_psnr_by_gap": {
+      "4": 0.03760697804374987,
+      "8": 0.17417178017404342
+    },
+    "min_gap_margin_over_linear_psnr": 0.03760697804374987
+  },
+  "best_eval": {
+    "task_count": 32,
+    "model_psnr_avg": 19.313366675051686,
+    "linear_psnr_avg": 19.200317738313426,
+    "margin_over_linear_psnr": 0.11304893673826172,
+    "model_psnr_by_gap": {
+      "4": 20.067089750864742,
+      "8": 18.459147189130217
+    },
+    "linear_psnr_by_gap": {
+      "4": 20.015439770835943,
+      "8": 18.276512768121233
+    },
+    "margin_over_linear_psnr_by_gap": {
+      "4": 0.05164998002879758,
+      "8": 0.18263442100898775
+    },
+    "min_gap_margin_over_linear_psnr": 0.05164998002879758
+  },
+  "final_eval": {
+    "task_count": 32,
+    "model_psnr_avg": 19.313366675051686,
+    "linear_psnr_avg": 19.200317738313426,
+    "margin_over_linear_psnr": 0.11304893673826172,
+    "model_psnr_by_gap": {
+      "4": 20.067089750864742,
+      "8": 18.459147189130217
+    },
+    "linear_psnr_by_gap": {
+      "4": 20.015439770835943,
+      "8": 18.276512768121233
+    },
+    "margin_over_linear_psnr_by_gap": {
+      "4": 0.05164998002879758,
+      "8": 0.18263442100898775
+    },
+    "min_gap_margin_over_linear_psnr": 0.05164998002879758
+  },
+  "best_checkpoint": {
+    "path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage145_large_scale_adapter_training_launch/best_adapter.safetensors",
+    "tensor_count": 14,
+    "parameter_count": 402445
+  },
+  "final_checkpoint": {
+    "path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage145_large_scale_adapter_training_launch/final_adapter.safetensors",
+    "tensor_count": 14,
+    "parameter_count": 402445
+  },
+  "latest_state": {
+    "path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage145_large_scale_adapter_training_launch/latest_training_state.pt",
+    "step": 80,
+    "best_step": 80
+  },
+  "train_anchor_cache": 96,
+  "train_rgb_cache": 32,
+  "final_anchor_cache_items": 96,
+  "final_rgb_cache_items": 32,
+  "train_log_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage145_large_scale_adapter_training_launch/stage145_train_log.csv",
+  "validation_log_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage145_large_scale_adapter_training_launch/stage145_validation_log.csv",
+  "initial_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage145_large_scale_adapter_training_launch/stage145_initial_eval_rows.csv",
+  "best_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage145_large_scale_adapter_training_launch/stage145_best_eval_rows.csv",
+  "final_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage145_large_scale_adapter_training_launch/stage145_final_eval_rows.csv",
+  "selected_train_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage145_large_scale_adapter_training_launch/stage145_selected_train_rows.csv",
+  "selected_eval_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage145_large_scale_adapter_training_launch/stage145_selected_eval_rows.csv",
+  "notes": "Offline RGB targets supervise training only; deployable decoder inputs remain endpoint Gaussian anchors plus normalized time."
+}
