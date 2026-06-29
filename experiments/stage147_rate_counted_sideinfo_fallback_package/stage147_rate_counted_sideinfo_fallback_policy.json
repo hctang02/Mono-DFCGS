@@ -1,0 +1,134 @@
+{
+  "stage": 147,
+  "policy_name": "rate_counted_entropy_index_value_residual_sideinfo_fallback_v1",
+  "policy_type": "fallback_sideinfo_policy_package",
+  "status": "candidate_for_stage148_full_rendered_revalidation",
+  "setting_label": "q6_top10_entropy_index_value",
+  "base_method": "stage65_adapter",
+  "codec": "q12",
+  "keep_fraction": 0.1,
+  "side_bits": 6,
+  "index_selection": {
+    "rule_name": "encoder_residual_energy_top10_with_transmitted_indices_v1",
+    "encoder_side": true,
+    "decoder_reproducible_without_payload": false,
+    "selected_indices_transmitted": true,
+    "selected_index_payload_counted": true,
+    "selection_rule": "select top 10 percent Gaussian residual-energy indices at encoder, sort/delta-code, and zlib-compress the index stream"
+  },
+  "sideinfo_codec": {
+    "codec_family": "entropy-coded index+value residual side-info",
+    "residual_values_quantized": true,
+    "residual_side_bits": 6,
+    "zlib_compressed_components": [
+      "metadata",
+      "index_deltas",
+      "residual_values"
+    ],
+    "all_payload_bytes_counted": true
+  },
+  "encoder_contract": {
+    "allowed_inputs": [
+      "left_anchor",
+      "right_anchor",
+      "normalized_time",
+      "intermediate frame or encoder-side target representation used only to form transmitted residual side-info"
+    ],
+    "steps": [
+      "build base adapter prediction",
+      "compute residual values for selected Gaussian attributes",
+      "encode selected indices and quantized residual values into a payload",
+      "include payload bytes in total rate"
+    ]
+  },
+  "decoder_contract": {
+    "allowed_inputs": [
+      "left_anchor",
+      "right_anchor",
+      "normalized_time",
+      "encoded residual side-info payload"
+    ],
+    "forbidden_inputs": [
+      "target_dense_anchor",
+      "target_rgb",
+      "unencoded target residual tensor",
+      "oracle labels not represented in the payload"
+    ],
+    "steps": [
+      "build base adapter prediction",
+      "decode selected indices and quantized residual values from payload",
+      "apply decoded residual values to base anchor attributes",
+      "render corrected anchor"
+    ]
+  },
+  "rate_accounting": {
+    "all_sideinfo_bytes_counted": true,
+    "direct_total_rate": "q12_main_anchor_mib_per_frame + entropy_sideinfo_mib_per_intermediate_frame",
+    "amortized_total_rate": "q12_main_anchor_mib_per_frame + entropy_sideinfo_mib_per_intermediate_frame * uniform_intermediate_frame_ratio",
+    "rate_rows": [
+      {
+        "reference_gap": 4,
+        "target_middle_psnr": 23.004337221027775,
+        "base_method": "stage65_adapter",
+        "codec": "q12",
+        "setting_label": "q6_top10_entropy_index_value",
+        "keep_fraction": 0.1,
+        "side_bits": 6,
+        "task_count": 18,
+        "mean_base_psnr": 20.041732308843873,
+        "mean_sideinfo_psnr": 22.841151135422116,
+        "mean_delta_psnr_vs_base": 2.7994188265782376,
+        "base_gap_to_target": -2.9626049121839024,
+        "sideinfo_gap_to_target": -0.16318608560565906,
+        "positive_delta_count": 18,
+        "positive_delta_fraction": 1.0,
+        "entropy_sideinfo_mib_per_intermediate_frame": 0.033147705925835505,
+        "entropy_sideinfo_payload_bytes_per_intermediate_frame": 34757.88888888889,
+        "entropy_direct_total_mib_per_frame": 0.21508592669374865,
+        "entropy_amortized_total_mib_per_frame": 0.20679900021228975,
+        "uniform_intermediate_frame_ratio": 0.75,
+        "q12_main_anchor_mib_per_frame": 0.18193822076791313,
+        "rate_counted": 1,
+        "transmitted_index_payload_counted": 1,
+        "decision": "promote_for_stage148_revalidation"
+      },
+      {
+        "reference_gap": 8,
+        "target_middle_psnr": 21.56004909948801,
+        "base_method": "stage65_adapter",
+        "codec": "q12",
+        "setting_label": "q6_top10_entropy_index_value",
+        "keep_fraction": 0.1,
+        "side_bits": 6,
+        "task_count": 19,
+        "mean_base_psnr": 18.706547218120296,
+        "mean_sideinfo_psnr": 21.39901144086742,
+        "mean_delta_psnr_vs_base": 2.692464222747122,
+        "base_gap_to_target": -2.8535018813677127,
+        "sideinfo_gap_to_target": -0.1610376586205895,
+        "positive_delta_count": 19,
+        "positive_delta_fraction": 1.0,
+        "entropy_sideinfo_mib_per_intermediate_frame": 0.033867986578690376,
+        "entropy_sideinfo_payload_bytes_per_intermediate_frame": 35513.15789473684,
+        "entropy_direct_total_mib_per_frame": 0.13149337333220473,
+        "entropy_amortized_total_mib_per_frame": 0.12725987500986843,
+        "uniform_intermediate_frame_ratio": 0.875,
+        "q12_main_anchor_mib_per_frame": 0.09762538675351436,
+        "rate_counted": 1,
+        "transmitted_index_payload_counted": 1,
+        "decision": "promote_for_stage148_revalidation"
+      }
+    ]
+  },
+  "scope_limitations": [
+    "Stage96 evidence is a 60-task broader side-info eval slice, not the full Stage75 paper-protocol video evaluation.",
+    "This package promotes the fallback for Stage148 revalidation; it is not the final full-video RD claim.",
+    "Payload transmission is required; without the payload this is not decoder-side feed-forward prediction."
+  ],
+  "source_paths": {
+    "stage96_summary": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage96_broader_entropy_residual_sideinfo_rd_package/stage96_broader_entropy_residual_sideinfo_rd_summary.json",
+    "stage142_targets": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage142_middle_frame_protocol_alignment_audit/stage142_middle_frame_targets.csv",
+    "stage144_package": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage144_high_rate_middle_frame_upper_bound/stage144_high_rate_middle_frame_upper_bound_package.json",
+    "stage146_summary": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage146_gap_balanced_adapter_training_v2/stage146_gap_balanced_adapter_training_v2_summary.json"
+  }
+}

@@ -1,0 +1,6 @@
+item,decision,evidence
+feedforward_only_path,not_enough_as_current_primary,Stage146 best_step=0; final mean PSNR delta vs init = -0.019897326878577815 dB
+higher_qbit_path,already_rejected,quality collapse is dynamic-model-side; proceed to large-scale adapter training and keep side-info fallback
+rate_counted_sideinfo_fallback,promote_for_stage148_revalidation,worst side-info gap to corrected target = -0.16318608560565906 dB with tolerance 0.25 dB
+rate_accounting,all_payload_bytes_counted,max direct total rate among gap4/gap8 rows = 0.21508592669374865 MiB/frame; index payload is transmitted and counted
+task_positivity,positive_on_all_stage96_gap4_gap8_adapter_tasks,min positive delta fraction = 1.0

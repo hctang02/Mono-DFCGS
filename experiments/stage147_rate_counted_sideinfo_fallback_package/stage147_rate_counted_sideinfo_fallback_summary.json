@@ -1,0 +1,95 @@
+{
+  "stage": 147,
+  "mode": "rate-counted side-info fallback package",
+  "stage96_scope_note": "This package uses the 60-task broader q6 top10 entropy eval slice, not final full-video RD.",
+  "near_target_tolerance": 0.25,
+  "rows": [
+    {
+      "reference_gap": 4,
+      "target_middle_psnr": 23.004337221027775,
+      "base_method": "stage65_adapter",
+      "codec": "q12",
+      "setting_label": "q6_top10_entropy_index_value",
+      "keep_fraction": 0.1,
+      "side_bits": 6,
+      "task_count": 18,
+      "mean_base_psnr": 20.041732308843873,
+      "mean_sideinfo_psnr": 22.841151135422116,
+      "mean_delta_psnr_vs_base": 2.7994188265782376,
+      "base_gap_to_target": -2.9626049121839024,
+      "sideinfo_gap_to_target": -0.16318608560565906,
+      "positive_delta_count": 18,
+      "positive_delta_fraction": 1.0,
+      "entropy_sideinfo_mib_per_intermediate_frame": 0.033147705925835505,
+      "entropy_sideinfo_payload_bytes_per_intermediate_frame": 34757.88888888889,
+      "entropy_direct_total_mib_per_frame": 0.21508592669374865,
+      "entropy_amortized_total_mib_per_frame": 0.20679900021228975,
+      "uniform_intermediate_frame_ratio": 0.75,
+      "q12_main_anchor_mib_per_frame": 0.18193822076791313,
+      "rate_counted": 1,
+      "transmitted_index_payload_counted": 1,
+      "decision": "promote_for_stage148_revalidation"
+    },
+    {
+      "reference_gap": 8,
+      "target_middle_psnr": 21.56004909948801,
+      "base_method": "stage65_adapter",
+      "codec": "q12",
+      "setting_label": "q6_top10_entropy_index_value",
+      "keep_fraction": 0.1,
+      "side_bits": 6,
+      "task_count": 19,
+      "mean_base_psnr": 18.706547218120296,
+      "mean_sideinfo_psnr": 21.39901144086742,
+      "mean_delta_psnr_vs_base": 2.692464222747122,
+      "base_gap_to_target": -2.8535018813677127,
+      "sideinfo_gap_to_target": -0.1610376586205895,
+      "positive_delta_count": 19,
+      "positive_delta_fraction": 1.0,
+      "entropy_sideinfo_mib_per_intermediate_frame": 0.033867986578690376,
+      "entropy_sideinfo_payload_bytes_per_intermediate_frame": 35513.15789473684,
+      "entropy_direct_total_mib_per_frame": 0.13149337333220473,
+      "entropy_amortized_total_mib_per_frame": 0.12725987500986843,
+      "uniform_intermediate_frame_ratio": 0.875,
+      "q12_main_anchor_mib_per_frame": 0.09762538675351436,
+      "rate_counted": 1,
+      "transmitted_index_payload_counted": 1,
+      "decision": "promote_for_stage148_revalidation"
+    }
+  ],
+  "decisions": [
+    {
+      "item": "feedforward_only_path",
+      "decision": "not_enough_as_current_primary",
+      "evidence": "Stage146 best_step=0; final mean PSNR delta vs init = -0.019897326878577815 dB"
+    },
+    {
+      "item": "higher_qbit_path",
+      "decision": "already_rejected",
+      "evidence": "quality collapse is dynamic-model-side; proceed to large-scale adapter training and keep side-info fallback"
+    },
+    {
+      "item": "rate_counted_sideinfo_fallback",
+      "decision": "promote_for_stage148_revalidation",
+      "evidence": "worst side-info gap to corrected target = -0.16318608560565906 dB with tolerance 0.25 dB"
+    },
+    {
+      "item": "rate_accounting",
+      "decision": "all_payload_bytes_counted",
+      "evidence": "max direct total rate among gap4/gap8 rows = 0.21508592669374865 MiB/frame; index payload is transmitted and counted"
+    },
+    {
+      "item": "task_positivity",
+      "decision": "positive_on_all_stage96_gap4_gap8_adapter_tasks",
+      "evidence": "min positive delta fraction = 1.0"
+    }
+  ],
+  "policy_name": "rate_counted_entropy_index_value_residual_sideinfo_fallback_v1",
+  "recommendation": "Run Stage148 full rendered revalidation of q6/top10 entropy index+value residual side-info fallback.",
+  "rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage147_rate_counted_sideinfo_fallback_package/stage147_rate_counted_sideinfo_fallback_rows.csv",
+  "decisions_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage147_rate_counted_sideinfo_fallback_package/stage147_rate_counted_sideinfo_fallback_decisions.csv",
+  "policy_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage147_rate_counted_sideinfo_fallback_package/stage147_rate_counted_sideinfo_fallback_policy.json",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage147_rate_counted_sideinfo_fallback_package/stage147_rate_counted_sideinfo_fallback_summary.json",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage147_rate_counted_sideinfo_fallback_package/stage147_rate_counted_sideinfo_fallback_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage147_rate_counted_sideinfo_fallback_package/stage147_rate_counted_sideinfo_fallback_report.md"
+}

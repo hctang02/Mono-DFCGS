@@ -1,0 +1,15 @@
+{
+  "stage": 147,
+  "mode": "rate-counted side-info fallback package",
+  "policy_name": "rate_counted_entropy_index_value_residual_sideinfo_fallback_v1",
+  "decision": "promote_rate_counted_sideinfo_fallback_for_stage148_revalidation",
+  "rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage147_rate_counted_sideinfo_fallback_package/stage147_rate_counted_sideinfo_fallback_rows.csv",
+  "decisions_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage147_rate_counted_sideinfo_fallback_package/stage147_rate_counted_sideinfo_fallback_decisions.csv",
+  "policy_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage147_rate_counted_sideinfo_fallback_package/stage147_rate_counted_sideinfo_fallback_policy.json",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage147_rate_counted_sideinfo_fallback_package/stage147_rate_counted_sideinfo_fallback_summary.json",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage147_rate_counted_sideinfo_fallback_package/stage147_rate_counted_sideinfo_fallback_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage147_rate_counted_sideinfo_fallback_package/stage147_rate_counted_sideinfo_fallback_report.md",
+  "all_sideinfo_bytes_counted": true,
+  "decoder_target_dense_anchor_input": false,
+  "teacher_sideinfo_uncounted": false
+}
