@@ -1,0 +1,31 @@
+{
+  "stage": 135,
+  "mode": "render-aware predictor protocol package",
+  "protocol_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage135_render_aware_predictor_protocol/stage135_render_aware_predictor_protocol.csv",
+  "protocol_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage135_render_aware_predictor_protocol/stage135_render_aware_predictor_protocol.json",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage135_render_aware_predictor_protocol/stage135_render_aware_predictor_protocol_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage135_render_aware_predictor_protocol/stage135_render_aware_predictor_protocol_report.md",
+  "protocol_name": "render_aware_adapter_delta_scale_calibration_v1",
+  "scale_candidates": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0,
+    1.25
+  ],
+  "settings": [
+    {
+      "label": "q4_top20",
+      "role": "primary",
+      "keep_fraction": 0.2,
+      "side_bits": 4
+    },
+    {
+      "label": "q4_top10",
+      "role": "low_rate",
+      "keep_fraction": 0.1,
+      "side_bits": 4
+    }
+  ]
+}

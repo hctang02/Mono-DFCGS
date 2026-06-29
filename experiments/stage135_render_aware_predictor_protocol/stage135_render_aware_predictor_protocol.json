@@ -1,0 +1,51 @@
+{
+  "stage": 135,
+  "protocol_name": "render_aware_adapter_delta_scale_calibration_v1",
+  "source_diagnostic": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage134_mlp_render_regression_diagnostic/stage134_mlp_render_regression_diagnostic_package.json",
+  "source_diagnostic_mode": "mlp render regression diagnostic",
+  "predictor_family": "adapter_delta_selected_predictor",
+  "residual_rule": "adapter_delta_scale * (adapter_attrs - linear_attrs) at deterministic endpoint-diff selected indices",
+  "scale_candidates": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0,
+    1.25
+  ],
+  "settings": [
+    {
+      "label": "q4_top20",
+      "role": "primary",
+      "keep_fraction": 0.2,
+      "side_bits": 4
+    },
+    {
+      "label": "q4_top10",
+      "role": "low_rate",
+      "keep_fraction": 0.1,
+      "side_bits": 4
+    }
+  ],
+  "forbidden_training_or_decoder_inputs": [
+    "teacher residual side-info",
+    "target dense anchor as decoder input",
+    "target residual as decoder input",
+    "target RGB as decoder input",
+    "transmitted selected indices",
+    "transmitted residual values"
+  ],
+  "offline_validation_inputs": [
+    "target RGB for rendered metric only"
+  ],
+  "acceptance_criteria": [
+    "Stage136 chooses the best rendered scale/setting on a smoke slice.",
+    "Stage137 keeps only candidates with non-negative broader mean delta vs linear base.",
+    "If no calibrated candidate improves Stage132, keep Stage132 q4/top20."
+  ],
+  "next_stages": {
+    "stage136": "render-aware scale calibration smoke",
+    "stage137": "broader validation of selected scale",
+    "stage138": "policy update if broader validation is successful"
+  }
+}

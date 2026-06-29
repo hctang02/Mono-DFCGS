@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage134: `3f75e8a Report final predictor RD`
+- Latest pushed commit before Stage135: `023866b Diagnose MLP render regression`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -89,6 +89,7 @@ Key Stage96 direct total rates:
 - Stage132: packaged current deployable no-teacher policy.
 - Stage133: completed final RD report and plots for teacher reference vs predictor-only policies.
 - Stage134: diagnosed why the dedicated MLP residual predictor regresses rendered PSNR.
+- Stage135: packaged render-aware adapter-delta calibration protocol.
 
 ## Current Best Selector Policy
 
@@ -167,6 +168,7 @@ Stage113 held-out diagnostic:
 - Stage132 packaged deployable policy `deployable_adapter_delta_selected_residual_codec_v1`: primary q4/top20 direct rate `0.11729838135687401`, PSNR `19.010259350474836`, zero residual/index payload bytes, decoder forbidden target dense/residual/RGB/oracle inputs.
 - Stage133 final report confirms the current final deployable predictor is adapter-delta q4/top20; teacher q4/top20 remains reference-only at PSNR `20.689270746602087` with `28320.791666666668` residual payload bytes, and dedicated MLP remains rejected due to render regression.
 - Stage134 confirms MLP underperforms adapter-delta on `47/60` tasks for both q4/top10 and q4/top20; q4/top20 mean MLP delta vs adapter is `-0.24505629983174473 dB`, so render-aware gating/training is required.
+- Stage135 defines protocol `render_aware_adapter_delta_scale_calibration_v1`: sweep adapter-delta scales `[0.0, 0.25, 0.5, 0.75, 1.0, 1.25]` for q4/top20 and q4/top10 without teacher residuals or target dense anchors.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
