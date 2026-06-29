@@ -1,0 +1,56 @@
+{
+  "stage": 129,
+  "mode": "broader predictor codec rendered validation",
+  "stage128_settings": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage128_predictor_codec_integration_package/stage128_predictor_codec_integration_settings.csv",
+  "stage126_stats": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage126_selected_residual_predictor_dataset_package/stage126_selected_residual_predictor_train_stats.json",
+  "task_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage79_adapter_training_task_manifest/stage79_adapter_training_tasks.csv",
+  "adapter": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors",
+  "task_count": 60,
+  "row_count": 120,
+  "rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage129_broader_predictor_codec_rendered_validation/stage129_broader_predictor_codec_rendered_validation_rows.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage129_broader_predictor_codec_rendered_validation/stage129_broader_predictor_codec_rendered_validation_summary.csv",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage129_broader_predictor_codec_rendered_validation/stage129_broader_predictor_codec_rendered_validation_summary.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage129_broader_predictor_codec_rendered_validation/stage129_broader_predictor_codec_rendered_validation_report.md",
+  "summary_rows": [
+    {
+      "setting_label": "q4_top10",
+      "setting_role": "low_rate",
+      "keep_fraction": "0.1",
+      "side_bits": "4",
+      "task_count": 60,
+      "mean_keep_gaussians": 3686.0,
+      "mean_direct_total_mib_per_frame": 0.11729838135687401,
+      "mean_amortized_total_mib_per_frame": 0.11729838135687401,
+      "mean_base_psnr": 18.950802996431143,
+      "mean_full_adapter_psnr": 19.1876432931255,
+      "mean_predictor_psnr": 18.865777753557193,
+      "mean_delta_psnr_vs_base": -0.08502524287394495,
+      "mean_delta_psnr_vs_full_adapter": -0.321865539568306,
+      "positive_delta_vs_base_count": 32,
+      "near_full_within_0p10db_count": 13
+    },
+    {
+      "setting_label": "q4_top20",
+      "setting_role": "primary",
+      "keep_fraction": "0.2",
+      "side_bits": "4",
+      "task_count": 60,
+      "mean_keep_gaussians": 7373.0,
+      "mean_direct_total_mib_per_frame": 0.11729838135687401,
+      "mean_amortized_total_mib_per_frame": 0.11729838135687401,
+      "mean_base_psnr": 18.950802996431143,
+      "mean_full_adapter_psnr": 19.1876432931255,
+      "mean_predictor_psnr": 18.76520305064309,
+      "mean_delta_psnr_vs_base": -0.1855999457880447,
+      "mean_delta_psnr_vs_full_adapter": -0.4224402424824056,
+      "positive_delta_vs_base_count": 26,
+      "near_full_within_0p10db_count": 12
+    }
+  ],
+  "notes": [
+    "Target dense anchors are not loaded or used.",
+    "No residual payload bytes are transmitted.",
+    "No selected-index bytes are transmitted.",
+    "Target RGB is used only for offline rendered metrics."
+  ]
+}

@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage128: `ed1f8db Train selected residual predictor smoke`
+- Latest pushed commit before Stage129: `0ef87cf Package predictor codec integration`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -83,6 +83,7 @@ Key Stage96 direct total rates:
 - Stage126: packaged selected residual value predictor dataset manifest and normalization stats.
 - Stage127: trained dedicated selected residual value predictor smoke with checkpoints saved outside git.
 - Stage128: packaged predictor-only codec integration manifest.
+- Stage129: broader rendered validation of predictor-only integrated codec completed; MSE-trained MLP regresses rendered PSNR.
 
 ## Current Best Selector Policy
 
@@ -155,6 +156,7 @@ Stage113 held-out diagnostic:
 - Stage126 packaged selected residual predictor training data metadata: q4/top20 has `884760` train samples, q4/top10 has `442320`, feature dim `56`, residual dim `13`; no per-Gaussian tensors are saved.
 - Stage127 trained small selected-residual MLPs: q4/top20 eval residual MSE reduction `0.08808295024199653`, q4/top10 eval reduction `0.10293283119315721`; checkpoints live under `/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage127_selected_residual_predictor_training_smoke` and are not committed.
 - Stage128 integrated the Stage127 predictors into policy `predictor_only_selected_residual_codec_v1`; q4/top20 and q4/top10 checkpoints both exist/load, and predictor residual/index payload bytes are `0`.
+- Stage129 shows the dedicated MSE-trained MLP is not render-safe: q4/top10 predictor PSNR `18.865777753557193` (`-0.08502524287394495 dB` vs linear) and q4/top20 `18.76520305064309` (`-0.1855999457880447 dB` vs linear), despite zero residual/index payload bytes.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
