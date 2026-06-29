@@ -1,0 +1,3 @@
+setting_label,setting_role,keep_fraction,side_bits,train_task_count,train_sample_count,feature_dim,residual_dim,feature_rms,label_rms
+q4_top20,primary,0.2,4,120,884760,56,13,0.46078898367726934,0.13244603771996774
+q4_top10,low_rate,0.1,4,120,442320,56,13,0.4704328888850035,0.1438315651016054

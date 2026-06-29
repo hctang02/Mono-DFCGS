@@ -1,0 +1,42 @@
+{
+  "stage": 126,
+  "mode": "selected residual predictor dataset package",
+  "task_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage79_adapter_training_task_manifest/stage79_adapter_training_tasks.csv",
+  "dense_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage61_davis_anchor_export_data_full/stage61_davis_anchor_export_manifest.csv",
+  "codecs": [
+    "q12"
+  ],
+  "gaps": [
+    4,
+    8,
+    16
+  ],
+  "train_task_count": 120,
+  "eval_task_count": 60,
+  "dataset_row_count": 360,
+  "settings": [
+    {
+      "label": "q4_top20",
+      "role": "primary",
+      "keep_fraction": 0.2,
+      "side_bits": 4
+    },
+    {
+      "label": "q4_top10",
+      "role": "low_rate",
+      "keep_fraction": 0.1,
+      "side_bits": 4
+    }
+  ],
+  "dataset_rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage126_selected_residual_predictor_dataset_package/stage126_selected_residual_predictor_dataset_rows.csv",
+  "dataset_summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage126_selected_residual_predictor_dataset_package/stage126_selected_residual_predictor_dataset_summary.csv",
+  "stats_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage126_selected_residual_predictor_dataset_package/stage126_selected_residual_predictor_train_stats.csv",
+  "stats_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage126_selected_residual_predictor_dataset_package/stage126_selected_residual_predictor_train_stats.json",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage126_selected_residual_predictor_dataset_package/stage126_selected_residual_predictor_dataset_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage126_selected_residual_predictor_dataset_package/stage126_selected_residual_predictor_dataset_report.md",
+  "notes": [
+    "Target dense anchors are used only for label/stat computation.",
+    "No per-Gaussian tensor data is saved in this package.",
+    "Decoder-side features use left/right/base attrs and normalized time only."
+  ]
+}

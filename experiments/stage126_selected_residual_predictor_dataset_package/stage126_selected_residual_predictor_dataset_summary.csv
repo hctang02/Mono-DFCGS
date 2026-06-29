@@ -1,0 +1,5 @@
+task_split,setting_label,setting_role,keep_fraction,side_bits,task_count,sample_count,mean_keep_gaussians,feature_dim,residual_dim,mean_feature_rms,mean_label_rms
+eval,q4_top10,low_rate,0.1,4,60,221160,3686.0,56,13,0.4686119039853414,0.13427672560016315
+eval,q4_top20,primary,0.2,4,60,442380,7373.0,56,13,0.461015955110391,0.12549363765865565
+train,q4_top10,low_rate,0.1,4,120,442320,3686.0,56,13,0.4699477088948091,0.14150386080145835
+train,q4_top20,primary,0.2,4,120,884760,7373.0,56,13,0.46037831778327626,0.1297483650036156

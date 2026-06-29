@@ -1,6 +1,17 @@
 import torch
 
 
+def residual_time_features(t, count, device=None, dtype=None):
+    t_value = torch.as_tensor(t, device=device, dtype=dtype).reshape(1)
+    feats = torch.stack([
+        t_value[0],
+        t_value[0] * t_value[0],
+        torch.sin(torch.pi * t_value[0]),
+        torch.cos(torch.pi * t_value[0]),
+    ]).reshape(1, 4)
+    return feats.expand(int(count), -1)
+
+
 def endpoint_diff_topk_indices(left_attrs, right_attrs, keep_fraction):
     """Return decoder-reproducible endpoint-diff top-k indices."""
     if left_attrs.shape != right_attrs.shape or left_attrs.ndim != 3 or left_attrs.shape[0] != 1:
@@ -40,3 +51,23 @@ def apply_selected_residual_values(base_attrs, selected_indices, residual_values
             raise ValueError("selected index out of range")
         out[0, keep_idx, :] += residual_values
     return out
+
+
+def selected_residual_feature_matrix(left_attrs, right_attrs, base_attrs, selected_indices, t):
+    """Build per-selected-Gaussian decoder-side features for residual value prediction."""
+    if left_attrs.shape != right_attrs.shape or left_attrs.shape != base_attrs.shape:
+        raise ValueError(f"expected matching attrs, got {left_attrs.shape}, {right_attrs.shape}, {base_attrs.shape}")
+    if left_attrs.ndim != 3 or left_attrs.shape[0] != 1:
+        raise ValueError(f"expected [1, N, D] attrs, got {left_attrs.shape}")
+    keep_idx = torch.as_tensor(selected_indices, dtype=torch.int64, device=left_attrs.device).reshape(-1)
+    attr_dim = int(left_attrs.shape[-1])
+    if keep_idx.numel() == 0:
+        return torch.empty((0, attr_dim * 4 + 4), dtype=left_attrs.dtype, device=left_attrs.device)
+    if int(keep_idx.min().item()) < 0 or int(keep_idx.max().item()) >= int(left_attrs.shape[1]):
+        raise ValueError("selected index out of range")
+    left = left_attrs[0, keep_idx, :]
+    right = right_attrs[0, keep_idx, :]
+    base = base_attrs[0, keep_idx, :]
+    diff = right - left
+    time = residual_time_features(t, int(keep_idx.numel()), device=left_attrs.device, dtype=left_attrs.dtype)
+    return torch.cat([left, right, base, diff, time], dim=-1)
