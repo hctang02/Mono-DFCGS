@@ -1,0 +1,3 @@
+reference_gap,target_middle_psnr,achieved_middle_psnr,gap_to_target_psnr,base_method,codec,keep_fraction,side_bits,task_count,positive_delta_count,positive_delta_fraction,payload_bytes_per_intermediate_frame,sideinfo_mib_per_intermediate_frame,direct_total_mib_per_frame,amortized_total_mib_per_frame,decode_max_abs_diff
+4,23.004337221027775,23.104893423851635,0.10055620282386002,linear,q12,0.1,6,1463,1463,1.0,30062.867395762132,0.028670184512865193,0.21060840528077832,0.20344085915256202,0.0
+8,21.56004909948801,22.020188948523128,0.4601398490351194,linear,q12,0.1,6,1707,1707,1.0,30203.919156414762,0.028804701954283488,0.12643008870779784,0.12282950096351242,0.0

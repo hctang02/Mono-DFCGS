@@ -1,0 +1,122 @@
+{
+  "stage": 151,
+  "mode": "middle-frame recovery policy package",
+  "policy": {
+    "stage": 151,
+    "policy_name": "middle_frame_recovery_linear_base_entropy_sideinfo_v1",
+    "policy_type": "rate_counted_middle_frame_recovery_policy",
+    "status": "target_recovered_on_full_q12_gap4_gap8_eval_rows",
+    "base_reconstruction": {
+      "method": "linear",
+      "decoder_reproducible": true,
+      "inputs": [
+        "left_anchor",
+        "right_anchor",
+        "normalized_time"
+      ]
+    },
+    "anchor_codec": {
+      "codec": "q12",
+      "source": "Stage79/Stage150 q12 endpoint anchors"
+    },
+    "sideinfo_codec": {
+      "setting_label": "q6_top10_entropy_index_value",
+      "keep_fraction": 0.1,
+      "side_bits": 6,
+      "index_payload": "encoder selected residual-energy top10 indices, sorted/delta-coded, zlib-compressed",
+      "value_payload": "q6 residual values, bitpacked and zlib-compressed",
+      "metadata_payload": "float16 residual min/max per attr, zlib-compressed",
+      "all_payload_bytes_counted": true
+    },
+    "decoder_contract": {
+      "allowed_inputs": [
+        "left_anchor",
+        "right_anchor",
+        "normalized_time",
+        "encoded_sideinfo_payload"
+      ],
+      "forbidden_inputs": [
+        "target_dense_anchor",
+        "target_rgb",
+        "unencoded_target_residual",
+        "oracle labels not represented in payload"
+      ],
+      "steps": [
+        "compute linear base anchor from endpoints and normalized time",
+        "decode side-info payload into selected indices and residual values",
+        "apply decoded residual values to base anchor attributes",
+        "render corrected anchor"
+      ]
+    },
+    "evidence": [
+      {
+        "reference_gap": 4,
+        "target_middle_psnr": 23.004337221027775,
+        "achieved_middle_psnr": 23.104893423851635,
+        "gap_to_target_psnr": 0.10055620282386002,
+        "base_method": "linear",
+        "codec": "q12",
+        "keep_fraction": 0.1,
+        "side_bits": 6,
+        "task_count": 1463,
+        "positive_delta_count": 1463,
+        "positive_delta_fraction": 1.0,
+        "payload_bytes_per_intermediate_frame": 30062.867395762132,
+        "sideinfo_mib_per_intermediate_frame": 0.028670184512865193,
+        "direct_total_mib_per_frame": 0.21060840528077832,
+        "amortized_total_mib_per_frame": 0.20344085915256202,
+        "decode_max_abs_diff": 0.0
+      },
+      {
+        "reference_gap": 8,
+        "target_middle_psnr": 21.56004909948801,
+        "achieved_middle_psnr": 22.020188948523128,
+        "gap_to_target_psnr": 0.4601398490351194,
+        "base_method": "linear",
+        "codec": "q12",
+        "keep_fraction": 0.1,
+        "side_bits": 6,
+        "task_count": 1707,
+        "positive_delta_count": 1707,
+        "positive_delta_fraction": 1.0,
+        "payload_bytes_per_intermediate_frame": 30203.919156414762,
+        "sideinfo_mib_per_intermediate_frame": 0.028804701954283488,
+        "direct_total_mib_per_frame": 0.12643008870779784,
+        "amortized_total_mib_per_frame": 0.12282950096351242,
+        "decode_max_abs_diff": 0.0
+      }
+    ],
+    "target_recovery": {
+      "all_gap_rows_above_corrected_targets": true,
+      "min_gap_to_target_psnr": 0.10055620282386002,
+      "max_decode_abs_diff": 0.0,
+      "min_positive_delta_fraction": 1.0
+    },
+    "source_paths": {
+      "stage150_summary": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage150_full_linear_base_sideinfo_rendered_validation/stage150_full_linear_base_sideinfo_rendered_validation_package_summary.json",
+      "stage150_package": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage150_full_linear_base_sideinfo_rendered_validation/stage150_full_linear_base_sideinfo_rendered_validation_package.json"
+    },
+    "next_optional_work": [
+      "Build full-video RD plots around this policy.",
+      "Evaluate lower-rate variants once the recovered target point is locked.",
+      "Extend the same policy to gap16/all-gap packaging if needed."
+    ]
+  },
+  "package": {
+    "stage": 151,
+    "mode": "middle-frame recovery policy package",
+    "policy_name": "middle_frame_recovery_linear_base_entropy_sideinfo_v1",
+    "status": "target_recovered_on_full_q12_gap4_gap8_eval_rows",
+    "policy_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage151_middle_frame_recovery_policy_package/stage151_middle_frame_recovery_policy.json",
+    "evidence_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage151_middle_frame_recovery_policy_package/stage151_middle_frame_recovery_evidence.csv",
+    "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage151_middle_frame_recovery_policy_package/stage151_middle_frame_recovery_policy_summary.json",
+    "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage151_middle_frame_recovery_policy_package/stage151_middle_frame_recovery_policy_package.json",
+    "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage151_middle_frame_recovery_policy_package/stage151_middle_frame_recovery_policy_report.md",
+    "target_recovery": {
+      "all_gap_rows_above_corrected_targets": true,
+      "min_gap_to_target_psnr": 0.10055620282386002,
+      "max_decode_abs_diff": 0.0,
+      "min_positive_delta_fraction": 1.0
+    }
+  }
+}

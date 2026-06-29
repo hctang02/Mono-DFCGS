@@ -1,0 +1,17 @@
+{
+  "stage": 151,
+  "mode": "middle-frame recovery policy package",
+  "policy_name": "middle_frame_recovery_linear_base_entropy_sideinfo_v1",
+  "status": "target_recovered_on_full_q12_gap4_gap8_eval_rows",
+  "policy_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage151_middle_frame_recovery_policy_package/stage151_middle_frame_recovery_policy.json",
+  "evidence_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage151_middle_frame_recovery_policy_package/stage151_middle_frame_recovery_evidence.csv",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage151_middle_frame_recovery_policy_package/stage151_middle_frame_recovery_policy_summary.json",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage151_middle_frame_recovery_policy_package/stage151_middle_frame_recovery_policy_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage151_middle_frame_recovery_policy_package/stage151_middle_frame_recovery_policy_report.md",
+  "target_recovery": {
+    "all_gap_rows_above_corrected_targets": true,
+    "min_gap_to_target_psnr": 0.10055620282386002,
+    "max_decode_abs_diff": 0.0,
+    "min_positive_delta_fraction": 1.0
+  }
+}
