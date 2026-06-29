@@ -1,0 +1,37 @@
+{
+  "stage": 140,
+  "mode": "multi-setting ablation package",
+  "stage129_summary": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage129_broader_predictor_codec_rendered_validation/stage129_broader_predictor_codec_rendered_validation_summary.csv",
+  "stage134_package": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage134_mlp_render_regression_diagnostic/stage134_mlp_render_regression_diagnostic_package.json",
+  "stage137_summary": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage137_broader_render_aware_scale_validation/stage137_broader_render_aware_scale_validation_summary.json",
+  "stage138_policy": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage138_render_aware_deployable_policy_package/stage138_render_aware_deployable_policy.json",
+  "stage139_package": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage139_full_pipeline_rd_package/stage139_full_pipeline_rd_package.json",
+  "row_count": 18,
+  "final_policy": "deployable_render_aware_scaled_adapter_delta_selected_residual_codec_v1",
+  "final_primary": {
+    "role": "primary",
+    "setting_label": "q4_top20",
+    "keep_fraction": 0.2,
+    "side_bits": 4,
+    "adapter_delta_scale": 0.75,
+    "direct_total_mib_per_frame": 0.11729838135687401,
+    "psnr": 19.022109503207204,
+    "delta_psnr_vs_linear_base": 0.07130650677606927,
+    "delta_psnr_vs_full_adapter": -0.1655337899182917,
+    "transmitted_residual_payload_bytes": 0,
+    "transmitted_selected_index_bytes": 0,
+    "previous_stage132_psnr": 19.010259350474836,
+    "delta_psnr_vs_stage132_policy": 0.011850152732368002
+  },
+  "stage134_row_count": 120,
+  "stage139_row_count": 8,
+  "ablation_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage140_multi_setting_ablation_package/stage140_multi_setting_ablation_rows.csv",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage140_multi_setting_ablation_package/stage140_multi_setting_ablation_summary.json",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage140_multi_setting_ablation_package/stage140_multi_setting_ablation_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage140_multi_setting_ablation_package/stage140_multi_setting_ablation_report.md",
+  "notes": [
+    "Stage137 scale sweep supports the Stage138 scale 0.75 policy.",
+    "Stage129/134 MLP is rejected due to rendered PSNR regression.",
+    "Teacher residual side-info is not optimized or included as deployable side-info."
+  ]
+}

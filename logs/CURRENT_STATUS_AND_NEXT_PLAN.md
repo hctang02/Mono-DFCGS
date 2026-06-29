@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage139: `be01a49 Package render-aware deployable policy`
+- Latest pushed commit before Stage140: `99dfc6d Package full-pipeline predictor RD`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -94,6 +94,7 @@ Key Stage96 direct total rates:
 - Stage137: completed broader render-aware adapter-delta scale validation.
 - Stage138: completed render-aware scaled deployable predictor policy package.
 - Stage139: completed full-pipeline RD accounting package for the Stage138 policy.
+- Stage140: completed multi-setting predictor ablation package.
 
 ## Current Best Selector Policy
 
@@ -177,6 +178,7 @@ Stage113 held-out diagnostic:
 - Stage137 broader validation selects q4/top20 scale `0.75`: mean PSNR `19.022109503207204`, delta vs base `+0.07130650677606927`, improving over current Stage132/Stage125 q4/top20 scale `1.0` PSNR `19.010259350474836`; q4/top10 best is also scale `0.75` with PSNR `18.997890662360874`.
 - Stage138 packages current best no-teacher deployable policy `deployable_render_aware_scaled_adapter_delta_selected_residual_codec_v1`: primary q4/top20 scale `0.75`, PSNR `19.022109503207204`, rate `0.11729838135687401`, zero residual/index payload bytes; optional q4/top10 scale `0.75`, PSNR `18.997890662360874`.
 - Stage139 packages full-pipeline accounting for Stage138: aggregate q4/top20 scale `0.75` rate `0.11729838135687401`, PSNR `19.022109503207204`, zero residual/index/scale payload; gap q12 rates are gap4 `0.18193822076791313`, gap8 `0.09762538675351436`, gap16 `0.055468969746314975`; low-rate q4/top10 scale `0.75` is aggregate-positive but gap16 is `-0.0028379883519171756 dB` vs Stage132 scale1.
+- Stage140 ablation package confirms final primary q4/top20 scale `0.75` and final low-rate q4/top10 scale `0.75`; dedicated MLP remains rejected with q4/top20 PSNR `18.76520305064309` and q4/top10 PSNR `18.865777753557193`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.

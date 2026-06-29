@@ -1,0 +1,15 @@
+{
+  "stage": 140,
+  "mode": "multi-setting ablation package",
+  "final_policy": "deployable_render_aware_scaled_adapter_delta_selected_residual_codec_v1",
+  "row_count": 18,
+  "ablation_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage140_multi_setting_ablation_package/stage140_multi_setting_ablation_rows.csv",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage140_multi_setting_ablation_package/stage140_multi_setting_ablation_summary.json",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage140_multi_setting_ablation_package/stage140_multi_setting_ablation_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage140_multi_setting_ablation_package/stage140_multi_setting_ablation_report.md",
+  "notes": [
+    "Stage137 scale sweep supports the Stage138 scale 0.75 policy.",
+    "Stage129/134 MLP is rejected due to rendered PSNR regression.",
+    "Teacher residual side-info is not optimized or included as deployable side-info."
+  ]
+}

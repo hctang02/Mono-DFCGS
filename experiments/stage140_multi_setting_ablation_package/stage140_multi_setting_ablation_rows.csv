@@ -1,0 +1,19 @@
+method_family,setting_label,setting_role,keep_fraction,adapter_delta_scale,task_count,direct_total_mib_per_frame,psnr,delta_psnr_vs_base,delta_psnr_vs_stage132_scale1,deployable_no_teacher,final_selected,rejected_final,rejection_reason,transmitted_residual_payload_bytes,transmitted_selected_index_bytes,source_stage
+adapter_delta_selected_scaled,q4_top10,low_rate,0.1,0.0,60,0.11729838135687401,18.950802996431143,0.0,-0.04401048394919371,1,0,0,not selected by Stage138 policy,0,0,137
+adapter_delta_selected_scaled,q4_top10,low_rate,0.1,0.25,60,0.11729838135687401,18.975705384520165,0.024902388089036383,-0.01910809586017237,1,0,0,not selected by Stage138 policy,0,0,137
+adapter_delta_selected_scaled,q4_top10,low_rate,0.1,0.5,60,0.11729838135687401,18.991120388758215,0.0403173923270864,-0.0036930916221216137,1,0,0,not selected by Stage138 policy,0,0,137
+adapter_delta_selected_scaled,q4_top10,low_rate,0.1,0.75,60,0.11729838135687401,18.997890662360874,0.047087665929735116,0.0030771819805366363,1,1,0,,0,0,137
+adapter_delta_selected_scaled,q4_top10,low_rate,0.1,1.0,60,0.11729838135687401,18.994813480380337,0.04401048394920189,0.0,1,0,0,not selected by Stage138 policy,0,0,137
+adapter_delta_selected_scaled,q4_top10,low_rate,0.1,1.25,60,0.11729838135687401,18.965716849670873,0.014913853239735679,-0.029096630709464222,1,0,0,not selected by Stage138 policy,0,0,137
+dedicated_mlp_selected_predictor,q4_top10,low_rate,0.1,n/a,60,0.11729838135687401,18.865777753557193,-0.08502524287394495,,1,0,1,rendered PSNR regression in Stage129 and Stage134,0,0,129
+full_stage65_adapter_reference,q4_top10,low_rate,0.1,full,60,0.11729838135687401,19.1876432931255,0.23684029669435702,,1,0,0,reference only; not the selected sparse residual codec,0,0,137
+linear_base_reference,q4_top10,low_rate,0.1,0.0,60,0.11729838135687401,18.950802996431143,0.0,,1,0,0,reference only,0,0,137
+adapter_delta_selected_scaled,q4_top20,primary,0.2,0.0,60,0.11729838135687401,18.950802996431143,0.0,-0.05945635404369298,1,0,0,not selected by Stage138 policy,0,0,137
+adapter_delta_selected_scaled,q4_top20,primary,0.2,0.25,60,0.11729838135687401,18.991578113259152,0.04077511682801213,-0.018681237215684376,1,0,0,not selected by Stage138 policy,0,0,137
+adapter_delta_selected_scaled,q4_top20,primary,0.2,0.5,60,0.11729838135687401,19.01421663314399,0.06341363671285936,0.003957282669155404,1,0,0,not selected by Stage138 policy,0,0,137
+adapter_delta_selected_scaled,q4_top20,primary,0.2,0.75,60,0.11729838135687401,19.022109503207204,0.07130650677606927,0.011850152732368002,1,1,0,,0,0,137
+adapter_delta_selected_scaled,q4_top20,primary,0.2,1.0,60,0.11729838135687401,19.010259350474836,0.059456354043700026,0.0,1,0,0,not selected by Stage138 policy,0,0,137
+adapter_delta_selected_scaled,q4_top20,primary,0.2,1.25,60,0.11729838135687401,18.937363148695617,-0.013439847735522974,-0.07289620177921918,1,0,0,not selected by Stage138 policy,0,0,137
+dedicated_mlp_selected_predictor,q4_top20,primary,0.2,n/a,60,0.11729838135687401,18.76520305064309,-0.1855999457880447,,1,0,1,rendered PSNR regression in Stage129 and Stage134,0,0,129
+full_stage65_adapter_reference,q4_top20,primary,0.2,full,60,0.11729838135687401,19.1876432931255,0.23684029669435702,,1,0,0,reference only; not the selected sparse residual codec,0,0,137
+linear_base_reference,q4_top20,primary,0.2,0.0,60,0.11729838135687401,18.950802996431143,0.0,,1,0,0,reference only,0,0,137
