@@ -1,0 +1,6 @@
+item,decision,evidence
+entropy_decode,matches_fixed_decode,max decoded abs diff vs fixed = 0.0
+target_alignment,passes_sample_revalidation,worst entropy gap to corrected target = -0.15419354559560006 dB with tolerance 0.25 dB
+task_positivity,positive_on_all_sampled_tasks,min positive delta fraction = 1.0
+rate_accounting,all_sideinfo_bytes_counted,max direct total rate = 0.21511227459583468 MiB/frame; payload bytes from experiments/stage148_rate_counted_sideinfo_rendered_revalidation/stage148_rate_counted_sideinfo_rendered_revalidation_rows.csv
+next_step,run_full_all_row_or_full_video_rd,"Stage148 is sampled rendered revalidation, not full all-row eval."

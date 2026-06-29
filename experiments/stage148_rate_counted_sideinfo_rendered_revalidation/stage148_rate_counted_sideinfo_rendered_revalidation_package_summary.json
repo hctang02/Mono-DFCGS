@@ -1,0 +1,88 @@
+{
+  "stage": 148,
+  "mode": "rate-counted side-info rendered revalidation package",
+  "render_summary": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage148_rate_counted_sideinfo_rendered_revalidation/stage148_rate_counted_sideinfo_rendered_revalidation_summary.json",
+  "near_target_tolerance": 0.25,
+  "rows": [
+    {
+      "reference_gap": 4,
+      "target_middle_psnr": 23.004337221027775,
+      "base_method": "stage65_adapter",
+      "codec": "q12",
+      "task_count": 60,
+      "keep_fraction": 0.1,
+      "side_bits": 6,
+      "mean_base_psnr": 20.264133489387127,
+      "mean_entropy_psnr": 22.850143675432175,
+      "mean_delta_psnr_vs_base": 2.5860101860450535,
+      "base_gap_to_target": -2.740203731640648,
+      "entropy_gap_to_target": -0.15419354559560006,
+      "positive_delta_count": 60,
+      "positive_delta_fraction": 1.0,
+      "max_decoded_max_abs_diff_vs_fixed": 0.0,
+      "mean_entropy_payload_bytes": 34785.51666666667,
+      "mean_entropy_mib_per_intermediate_frame": 0.03317405382792155,
+      "q12_main_anchor_mib_per_frame": 0.18193822076791313,
+      "uniform_intermediate_frame_ratio": 0.75,
+      "mean_direct_total_mib_per_frame": 0.21511227459583468,
+      "mean_amortized_total_mib_per_frame": 0.2068187611388543,
+      "decision": "passes_sample_revalidation"
+    },
+    {
+      "reference_gap": 8,
+      "target_middle_psnr": 21.56004909948801,
+      "base_method": "stage65_adapter",
+      "codec": "q12",
+      "task_count": 60,
+      "keep_fraction": 0.1,
+      "side_bits": 6,
+      "mean_base_psnr": 19.062352986913425,
+      "mean_entropy_psnr": 21.965723744155056,
+      "mean_delta_psnr_vs_base": 2.9033707572416314,
+      "base_gap_to_target": -2.497696112574584,
+      "entropy_gap_to_target": 0.40567464466704806,
+      "positive_delta_count": 60,
+      "positive_delta_fraction": 1.0,
+      "max_decoded_max_abs_diff_vs_fixed": 0.0,
+      "mean_entropy_payload_bytes": 35153.03333333333,
+      "mean_entropy_mib_per_intermediate_frame": 0.033524545033772786,
+      "q12_main_anchor_mib_per_frame": 0.09762538675351436,
+      "uniform_intermediate_frame_ratio": 0.875,
+      "mean_direct_total_mib_per_frame": 0.13114993178728715,
+      "mean_amortized_total_mib_per_frame": 0.12695936365806554,
+      "decision": "passes_sample_revalidation"
+    }
+  ],
+  "decisions": [
+    {
+      "item": "entropy_decode",
+      "decision": "matches_fixed_decode",
+      "evidence": "max decoded abs diff vs fixed = 0.0"
+    },
+    {
+      "item": "target_alignment",
+      "decision": "passes_sample_revalidation",
+      "evidence": "worst entropy gap to corrected target = -0.15419354559560006 dB with tolerance 0.25 dB"
+    },
+    {
+      "item": "task_positivity",
+      "decision": "positive_on_all_sampled_tasks",
+      "evidence": "min positive delta fraction = 1.0"
+    },
+    {
+      "item": "rate_accounting",
+      "decision": "all_sideinfo_bytes_counted",
+      "evidence": "max direct total rate = 0.21511227459583468 MiB/frame; payload bytes from experiments/stage148_rate_counted_sideinfo_rendered_revalidation/stage148_rate_counted_sideinfo_rendered_revalidation_rows.csv"
+    },
+    {
+      "item": "next_step",
+      "decision": "run_full_all_row_or_full_video_rd",
+      "evidence": "Stage148 is sampled rendered revalidation, not full all-row eval."
+    }
+  ],
+  "rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage148_rate_counted_sideinfo_rendered_revalidation/stage148_rate_counted_sideinfo_rendered_revalidation_package_rows.csv",
+  "decisions_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage148_rate_counted_sideinfo_rendered_revalidation/stage148_rate_counted_sideinfo_rendered_revalidation_package_decisions.csv",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage148_rate_counted_sideinfo_rendered_revalidation/stage148_rate_counted_sideinfo_rendered_revalidation_package_summary.json",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage148_rate_counted_sideinfo_rendered_revalidation/stage148_rate_counted_sideinfo_rendered_revalidation_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage148_rate_counted_sideinfo_rendered_revalidation/stage148_rate_counted_sideinfo_rendered_revalidation_package_report.md"
+}

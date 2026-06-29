@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage147: `ec61bbe Validate gap-balanced adapter continuation`
+- Latest pushed commit before Stage148: `2469caf Package rate-counted side-info fallback`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -102,6 +102,7 @@ Key Stage96 direct total rates:
 - Stage145: completed large-scale lazy-load adapter training launch for q12 gap4/gap8.
 - Stage146: completed longer gap-balanced q12 gap4/gap8 adapter training initialized from Stage145 best; same objective regressed on broader eval.
 - Stage147: completed rate-counted side-info fallback package based on Stage96 q6/top10 entropy residual side-info.
+- Stage148: completed actual encode/decode/render revalidation of the Stage147 rate-counted side-info fallback on 120 sampled q12 gap4/gap8 eval tasks.
 
 ## Current Best Selector Policy
 
@@ -193,6 +194,7 @@ Stage113 held-out diagnostic:
 - Stage145 completed a bounded large-scale lazy-load launch: selected all Stage79 q12 gap4/gap8 train rows (`6691`) with `32` eval rows and initialized from Stage65 `rgb_h256`; 80 steps improved sampled mean PSNR from `19.30193946735575` to `19.313366675051686` (`+0.011427207695936569 dB`) and min gap margin from `0.03760697804374987` to `0.05164998002879758`. This validates the training path but does not solve the middle-frame quality gap.
 - Stage146 continued from Stage145 best with `64` eval rows and `240` steps; best step stayed at `0` with mean PSNR `19.697228869272262`, while final regressed to `19.677331542393684`. This suggests the current RGB render-loss adapter objective/schedule is saturated or unstable, so the next phase should change objective/model selection or use rate-counted side-info rather than simply adding more steps.
 - Stage147 packages the first viable quality-rescue fallback: q6/top10 entropy index+value residual side-info with all payload bytes counted. On Stage96 broader slice, gap4 side-info PSNR is `22.841151135422116` vs corrected target `23.004337221027775` (`-0.16318608560565906 dB`) at direct rate `0.21508592669374865 MiB/frame`; gap8 side-info PSNR is `21.39901144086742` vs target `21.56004909948801` (`-0.1610376586205895 dB`) at direct rate `0.13149337333220473 MiB/frame`. Stage148 must full-render revalidate before final claim.
+- Stage148 actual encode/decode/render revalidation passes on `120` sampled q12 gap4/gap8 eval tasks: entropy decode max diff vs fixed decode is `0.0`; gap4 side-info PSNR is `22.850143675432175` vs corrected target `23.004337221027775` (`-0.15419354559560006 dB`) at direct rate `0.21511227459583468 MiB/frame`; gap8 side-info PSNR is `21.965723744155056` vs target `21.56004909948801` (`+0.40567464466704806 dB`) at direct rate `0.13114993178728715 MiB/frame`; positive deltas are `60/60` for both gaps. Still sampled, so next step is full all-row/full-video RD validation.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.

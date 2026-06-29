@@ -1,0 +1,13 @@
+{
+  "stage": 148,
+  "mode": "rate-counted side-info rendered revalidation package",
+  "decision": "sample_revalidation_passed",
+  "rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage148_rate_counted_sideinfo_rendered_revalidation/stage148_rate_counted_sideinfo_rendered_revalidation_package_rows.csv",
+  "decisions_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage148_rate_counted_sideinfo_rendered_revalidation/stage148_rate_counted_sideinfo_rendered_revalidation_package_decisions.csv",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage148_rate_counted_sideinfo_rendered_revalidation/stage148_rate_counted_sideinfo_rendered_revalidation_package_summary.json",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage148_rate_counted_sideinfo_rendered_revalidation/stage148_rate_counted_sideinfo_rendered_revalidation_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage148_rate_counted_sideinfo_rendered_revalidation/stage148_rate_counted_sideinfo_rendered_revalidation_package_report.md",
+  "all_sideinfo_bytes_counted": true,
+  "actual_entropy_encode_decode_render": true,
+  "decoder_target_dense_anchor_input": false
+}

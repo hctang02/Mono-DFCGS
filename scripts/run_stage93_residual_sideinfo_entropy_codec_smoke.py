@@ -154,7 +154,7 @@ def write_report(summary, summary_rows, path):
         "",
         "- Entropy payload uses sorted-index deltas and zlib-compressed metadata/index/residual components.",
         "- Decode is compared against Stage91 fixed decode before rendering.",
-        "- Residuals are still teacher-derived; this is a codec smoke, not a deployable residual predictor.",
+        "- Residual values are encoder-side side-info payload values; decoder safety requires transmitting and counting the encoded payload.",
     ])
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -287,7 +287,7 @@ def main():
         "notes": [
             "Entropy payload uses sorted index deltas and zlib-compressed components.",
             "Entropy decode is compared to fixed decode before rendering.",
-            "Residuals are teacher-derived from dense target anchors.",
+            "Residual values are encoder-side side-info payload values; they are not decoder-only predictor outputs.",
         ],
     }
     summary_json.write_text(json.dumps(summary, indent=2), encoding="utf-8")
