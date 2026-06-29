@@ -1,0 +1,17 @@
+{
+  "stage": 134,
+  "mode": "mlp render regression diagnostic",
+  "diagnostic_rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage134_mlp_render_regression_diagnostic/stage134_mlp_render_regression_diagnostic_rows.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage134_mlp_render_regression_diagnostic/stage134_mlp_render_regression_diagnostic_summary.csv",
+  "worst_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage134_mlp_render_regression_diagnostic/stage134_mlp_render_regression_worst_rows.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage134_mlp_render_regression_diagnostic/stage134_mlp_render_regression_diagnostic_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage134_mlp_render_regression_diagnostic/stage134_mlp_render_regression_diagnostic_report.md",
+  "row_count": 120,
+  "summary_row_count": 8,
+  "worst_row_count": 20,
+  "notes": [
+    "Teacher side-info is not used in this diagnostic.",
+    "Rows compare no-teacher adapter-delta and no-teacher MLP predictors.",
+    "The next protocol should be render-aware rather than attribute-MSE-only."
+  ]
+}
