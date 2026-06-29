@@ -1,0 +1,103 @@
+{
+  "stage": 132,
+  "policy_name": "deployable_adapter_delta_selected_residual_codec_v1",
+  "policy_type": "deployable_predictor_policy",
+  "status": "current_best_no_teacher_deployable",
+  "selected_primary_setting": "q4_top20",
+  "optional_low_rate_setting": "q4_top10",
+  "predictor": {
+    "name": "adapter_delta_selected_predictor",
+    "rule": "run pre-shared Stage65 adapter and use adapter_attrs - linear_attrs at deterministic selected indices",
+    "stage65_adapter_checkpoint": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors",
+    "checkpoint_exists": 1,
+    "checkpoint_rate_accounting": "pre-shared model; not counted per frame. If transmitted in-session, account separately."
+  },
+  "index_selection": {
+    "rule_name": "endpoint_diff_topk_v1",
+    "keep_count_rule": "min(max(round(N * keep_fraction), 0), N)",
+    "score_rule": "sum((right_attrs[0].float() - left_attrs[0].float()) ** 2, dim=-1)",
+    "selection_rule": "select top keep_count largest scores, then sort selected indices ascending",
+    "transmitted_selected_index_bytes": 0
+  },
+  "rate_accounting": {
+    "transmitted_residual_payload_bytes": 0,
+    "transmitted_selected_index_bytes": 0,
+    "direct_total_rate": "q12_main_anchor_mib_per_frame only for predictor residuals",
+    "amortized_total_rate": "same as direct for predictor residuals in this package"
+  },
+  "settings": [
+    {
+      "role": "primary",
+      "setting_label": "q4_top20",
+      "keep_fraction": "0.2",
+      "side_bits": "4",
+      "direct_total_mib_per_frame": "0.11729838135687401",
+      "psnr": "19.010259350474836",
+      "delta_psnr_vs_linear_base": "0.059456354043700026",
+      "delta_psnr_vs_full_adapter": "-0.17738394265066096",
+      "transmitted_residual_payload_bytes": 0,
+      "transmitted_selected_index_bytes": 0
+    },
+    {
+      "role": "low_rate",
+      "setting_label": "q4_top10",
+      "keep_fraction": "0.1",
+      "side_bits": "4",
+      "direct_total_mib_per_frame": "0.11729838135687401",
+      "psnr": "18.994813480380337",
+      "delta_psnr_vs_linear_base": "0.04401048394920189",
+      "delta_psnr_vs_full_adapter": "-0.19282981274515912",
+      "transmitted_residual_payload_bytes": 0,
+      "transmitted_selected_index_bytes": 0
+    }
+  ],
+  "decoder_contract": {
+    "inputs": [
+      "left_anchor",
+      "right_anchor",
+      "normalized_time",
+      "pre-shared Stage65 adapter checkpoint",
+      "policy setting keep_fraction"
+    ],
+    "steps": [
+      "compute linear base attrs from left/right anchors and normalized time",
+      "compute Stage65 adapter attrs from left/right anchors and normalized time",
+      "recompute endpoint-diff selected indices",
+      "apply adapter_attrs - linear_attrs residual values at selected indices"
+    ],
+    "forbidden_inputs": [
+      "target_dense_anchor",
+      "target_residual",
+      "target_rgb",
+      "oracle_task_label",
+      "transmitted selected indices",
+      "transmitted residual values"
+    ]
+  },
+  "references": {
+    "stage130_best_deployable": {
+      "source_stage": 125,
+      "method_label": "adapter_delta_selected_predictor",
+      "setting_label": "q4_top20",
+      "setting_role": "primary",
+      "teacher_required": 0,
+      "deployable_no_teacher": 1,
+      "residual_payload_bytes": 0,
+      "selected_index_payload_bytes": 0,
+      "direct_total_mib_per_frame": "0.11729838135687401",
+      "amortized_total_mib_per_frame": "0.11729838135687401",
+      "psnr": "19.010259350474836",
+      "delta_psnr_vs_linear_base": "0.059456354043700026",
+      "delta_psnr_vs_full_adapter": "-0.17738394265066096",
+      "note": "No teacher target input; uses Stage65 adapter delta at selected indices."
+    },
+    "stage131_recommended": "adapter_delta_selected_predictor/q4_top20",
+    "stage131_rejected_final_predictor": "dedicated_mlp_selected_predictor_v1",
+    "stage131_rejection_reason": "MSE-trained MLP regresses rendered PSNR in Stage129."
+  },
+  "limitations": [
+    "Quality gain is small relative to teacher residual side-info.",
+    "Pre-shared Stage65 adapter checkpoint is required for deployment.",
+    "Dedicated selected residual MLP is not selected because Stage129 rendered PSNR regressed."
+  ]
+}

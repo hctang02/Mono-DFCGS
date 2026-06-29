@@ -1,0 +1,18 @@
+{
+  "stage": 132,
+  "mode": "deployable predictor policy package",
+  "policy_name": "deployable_adapter_delta_selected_residual_codec_v1",
+  "status": "current_best_no_teacher_deployable",
+  "policy_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage132_deployable_predictor_policy_package/stage132_deployable_predictor_policy.json",
+  "settings_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage132_deployable_predictor_policy_package/stage132_deployable_predictor_policy_settings.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage132_deployable_predictor_policy_package/stage132_deployable_predictor_policy_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage132_deployable_predictor_policy_package/stage132_deployable_predictor_policy_report.md",
+  "primary_setting": "q4_top20",
+  "optional_low_rate_setting": "q4_top10",
+  "adapter_checkpoint_exists": 1,
+  "notes": [
+    "Quality gain is small relative to teacher residual side-info.",
+    "Pre-shared Stage65 adapter checkpoint is required for deployment.",
+    "Dedicated selected residual MLP is not selected because Stage129 rendered PSNR regressed."
+  ]
+}

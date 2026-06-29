@@ -1,0 +1,3 @@
+role,setting_label,keep_fraction,side_bits,direct_total_mib_per_frame,psnr,delta_psnr_vs_linear_base,delta_psnr_vs_full_adapter,transmitted_residual_payload_bytes,transmitted_selected_index_bytes
+primary,q4_top20,0.2,4,0.11729838135687401,19.010259350474836,0.059456354043700026,-0.17738394265066096,0,0
+low_rate,q4_top10,0.1,4,0.11729838135687401,18.994813480380337,0.04401048394920189,-0.19282981274515912,0,0
