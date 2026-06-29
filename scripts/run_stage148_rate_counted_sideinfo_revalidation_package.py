@@ -76,7 +76,11 @@ def rate_reference_by_gap(rows):
     return out
 
 
-def build_rows(stage148_summary, targets, rates, tolerance):
+def pass_label(validation_scope):
+    return "passes_full_eval_validation" if validation_scope == "full_eval" else "passes_sample_revalidation"
+
+
+def build_rows(stage148_summary, targets, rates, tolerance, validation_scope):
     out = []
     for row in stage148_summary["summary_rows"]:
         if row["base_method"] != "stage65_adapter":
@@ -97,7 +101,7 @@ def build_rows(stage148_summary, targets, rates, tolerance):
         task_count = int(row["task_count"])
         positive_count = int(row["positive_delta_count"])
         decode_diff = float(row["max_decoded_max_abs_diff_vs_fixed"])
-        decision = "passes_sample_revalidation" if entropy_gap >= -float(tolerance) and decode_diff == 0.0 else "needs_followup"
+        decision = pass_label(validation_scope) if entropy_gap >= -float(tolerance) and decode_diff == 0.0 else "needs_followup"
         out.append({
             "reference_gap": gap,
             "target_middle_psnr": target,
@@ -127,11 +131,15 @@ def build_rows(stage148_summary, targets, rates, tolerance):
     return out
 
 
-def build_decisions(rows, stage148_summary, tolerance):
+def build_decisions(rows, stage148_summary, tolerance, validation_scope):
     worst_gap = min(float(row["entropy_gap_to_target"]) for row in rows)
     max_decode_diff = max(float(row["max_decoded_max_abs_diff_vs_fixed"]) for row in rows)
     min_positive_fraction = min(float(row["positive_delta_fraction"]) for row in rows)
     max_direct_rate = max(float(row["mean_direct_total_mib_per_frame"]) for row in rows)
+    target_pass_decision = "passes_full_eval_validation" if validation_scope == "full_eval" else "passes_sample_revalidation"
+    next_pass_decision = "run_full_video_rd" if validation_scope == "full_eval" else "run_full_all_row_or_full_video_rd"
+    next_pass_evidence = "Full q12 gap4/gap8 eval rows pass; next is full-video RD packaging." if validation_scope == "full_eval" else "Stage148 is sampled rendered revalidation, not full all-row eval."
+    positive_pass_decision = "positive_on_all_full_eval_tasks" if validation_scope == "full_eval" else "positive_on_all_sampled_tasks"
     return [
         {
             "item": "entropy_decode",
@@ -140,12 +148,12 @@ def build_decisions(rows, stage148_summary, tolerance):
         },
         {
             "item": "target_alignment",
-            "decision": "passes_sample_revalidation" if worst_gap >= -float(tolerance) else "below_target_tolerance",
+            "decision": target_pass_decision if worst_gap >= -float(tolerance) else "below_target_tolerance",
             "evidence": f"worst entropy gap to corrected target = {worst_gap} dB with tolerance {tolerance} dB",
         },
         {
             "item": "task_positivity",
-            "decision": "positive_on_all_sampled_tasks" if min_positive_fraction >= 1.0 else "mixed_task_deltas",
+            "decision": positive_pass_decision if min_positive_fraction >= 1.0 else "mixed_task_deltas",
             "evidence": f"min positive delta fraction = {min_positive_fraction}",
         },
         {
@@ -155,15 +163,15 @@ def build_decisions(rows, stage148_summary, tolerance):
         },
         {
             "item": "next_step",
-            "decision": "run_full_all_row_or_full_video_rd" if worst_gap >= -float(tolerance) and max_decode_diff == 0.0 else "adjust_sideinfo_setting_or_model",
-            "evidence": "Stage148 is sampled rendered revalidation, not full all-row eval.",
+            "decision": next_pass_decision if worst_gap >= -float(tolerance) and max_decode_diff == 0.0 else "adjust_sideinfo_setting_or_model",
+            "evidence": next_pass_evidence,
         },
     ]
 
 
 def write_report(rows, decisions, package, path):
     lines = [
-        "# Stage148 Rate-Counted Side-Info Rendered Revalidation Package",
+        f"# {package['report_title']}",
         "",
         "## Summary",
         "",
@@ -205,6 +213,11 @@ def write_report(rows, decisions, package, path):
 
 def parse_args():
     parser = argparse.ArgumentParser()
+    parser.add_argument("--stage", type=int, default=148)
+    parser.add_argument("--mode", default="rate-counted side-info rendered revalidation package")
+    parser.add_argument("--output_prefix", default="stage148_rate_counted_sideinfo_rendered_revalidation_package")
+    parser.add_argument("--report_title", default="Stage148 Rate-Counted Side-Info Rendered Revalidation Package")
+    parser.add_argument("--validation_scope", choices=["sample", "full_eval"], default="sample")
     parser.add_argument("--stage148_summary", type=Path, default=DEFAULT_STAGE148_SUMMARY)
     parser.add_argument("--stage142_targets", type=Path, default=DEFAULT_STAGE142_TARGETS)
     parser.add_argument("--stage147_rows", type=Path, default=DEFAULT_STAGE147_ROWS)
@@ -219,21 +232,23 @@ def main():
     stage148_summary = read_json(args.stage148_summary)
     targets = targets_by_gap(read_csv(args.stage142_targets))
     rates = rate_reference_by_gap(read_csv(args.stage147_rows))
-    rows = build_rows(stage148_summary, targets, rates, args.near_target_tolerance)
-    decisions = build_decisions(rows, stage148_summary, args.near_target_tolerance)
+    rows = build_rows(stage148_summary, targets, rates, args.near_target_tolerance, args.validation_scope)
+    decisions = build_decisions(rows, stage148_summary, args.near_target_tolerance, args.validation_scope)
 
-    rows_csv = args.summary_root / "stage148_rate_counted_sideinfo_rendered_revalidation_package_rows.csv"
-    decisions_csv = args.summary_root / "stage148_rate_counted_sideinfo_rendered_revalidation_package_decisions.csv"
-    summary_json = args.summary_root / "stage148_rate_counted_sideinfo_rendered_revalidation_package_summary.json"
-    package_json = args.summary_root / "stage148_rate_counted_sideinfo_rendered_revalidation_package.json"
-    report_md = args.summary_root / "stage148_rate_counted_sideinfo_rendered_revalidation_package_report.md"
+    rows_csv = args.summary_root / f"{args.output_prefix}_rows.csv"
+    decisions_csv = args.summary_root / f"{args.output_prefix}_decisions.csv"
+    summary_json = args.summary_root / f"{args.output_prefix}_summary.json"
+    package_json = args.summary_root / f"{args.output_prefix}.json"
+    report_md = args.summary_root / f"{args.output_prefix}_report.md"
 
     write_csv(rows, rows_csv, ROW_FIELDS)
     write_csv(decisions, decisions_csv, DECISION_FIELDS)
     summary = {
-        "stage": 148,
-        "mode": "rate-counted side-info rendered revalidation package",
+        "stage": args.stage,
+        "mode": args.mode,
+        "report_title": args.report_title,
         "render_summary": str(args.stage148_summary),
+        "validation_scope": args.validation_scope,
         "near_target_tolerance": args.near_target_tolerance,
         "rows": rows,
         "decisions": decisions,
@@ -244,9 +259,10 @@ def main():
         "report_md": str(report_md),
     }
     package = {
-        "stage": 148,
+        "stage": args.stage,
         "mode": summary["mode"],
-        "decision": "sample_revalidation_passed" if all(row["decision"] == "passes_sample_revalidation" for row in rows) else "needs_followup",
+        "report_title": args.report_title,
+        "decision": f"{args.validation_scope}_validation_passed" if all(row["decision"] == pass_label(args.validation_scope) for row in rows) else "needs_followup",
         "rows_csv": str(rows_csv),
         "decisions_csv": str(decisions_csv),
         "summary_json": str(summary_json),

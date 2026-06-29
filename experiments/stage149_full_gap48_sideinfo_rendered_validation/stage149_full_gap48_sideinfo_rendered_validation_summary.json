@@ -1,0 +1,73 @@
+{
+  "stage": 149,
+  "mode": "full q12 gap4/gap8 rate-counted side-info rendered validation",
+  "report_title": "Stage149 Full Gap4/Gap8 Side-Info Rendered Validation",
+  "task_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage79_adapter_training_task_manifest/stage79_adapter_training_tasks.csv",
+  "dense_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage61_davis_anchor_export_data_full/stage61_davis_anchor_export_manifest.csv",
+  "adapter": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors",
+  "task_split": "eval",
+  "codecs": [
+    "q12"
+  ],
+  "gaps": [
+    4,
+    8
+  ],
+  "base_methods": [
+    "stage65_adapter"
+  ],
+  "task_count": 3170,
+  "keep_fraction": 0.1,
+  "side_bits": 6,
+  "zlib_level": 9,
+  "cache_enabled": false,
+  "progress_interval": 100,
+  "rows_csv": "experiments/stage149_full_gap48_sideinfo_rendered_validation/stage149_full_gap48_sideinfo_rendered_validation_rows.csv",
+  "summary_csv": "experiments/stage149_full_gap48_sideinfo_rendered_validation/stage149_full_gap48_sideinfo_rendered_validation_summary.csv",
+  "report_md": "experiments/stage149_full_gap48_sideinfo_rendered_validation/stage149_full_gap48_sideinfo_rendered_validation_report.md",
+  "summary_rows": [
+    {
+      "base_method": "stage65_adapter",
+      "codec": "q12",
+      "reference_gap": 4,
+      "task_count": 1463,
+      "keep_fraction": 0.1,
+      "side_bits": 6,
+      "mean_fixed_payload_bytes": 43381.0,
+      "mean_entropy_payload_bytes": 34943.74094326726,
+      "mean_fixed_mib_per_intermediate_frame": 0.04137134552001953,
+      "mean_entropy_mib_per_intermediate_frame": 0.03332494825674749,
+      "mean_entropy_ratio_vs_fixed": 0.8055079630083977,
+      "mean_entropy_savings_bytes_vs_fixed": 8437.25905673274,
+      "max_decoded_max_abs_diff_vs_fixed": 0.0,
+      "mean_base_psnr": 20.210770635920667,
+      "mean_entropy_psnr": 22.768595216050993,
+      "mean_delta_psnr_vs_base": 2.55782458013036,
+      "positive_delta_count": 1463
+    },
+    {
+      "base_method": "stage65_adapter",
+      "codec": "q12",
+      "reference_gap": 8,
+      "task_count": 1707,
+      "keep_fraction": 0.1,
+      "side_bits": 6,
+      "mean_fixed_payload_bytes": 43381.0,
+      "mean_entropy_payload_bytes": 35172.31634446397,
+      "mean_fixed_mib_per_intermediate_frame": 0.04137134552001953,
+      "mean_entropy_mib_per_intermediate_frame": 0.03354293474623105,
+      "mean_entropy_ratio_vs_fixed": 0.8107769840359608,
+      "mean_entropy_savings_bytes_vs_fixed": 8208.683655536028,
+      "max_decoded_max_abs_diff_vs_fixed": 0.0,
+      "mean_base_psnr": 19.067097958467713,
+      "mean_entropy_psnr": 21.857517703953395,
+      "mean_delta_psnr_vs_base": 2.790419745485695,
+      "positive_delta_count": 1707
+    }
+  ],
+  "notes": [
+    "Entropy payload uses sorted index deltas and zlib-compressed components.",
+    "Entropy decode is compared to fixed decode before rendering.",
+    "Residual values are encoder-side side-info payload values; they are not decoder-only predictor outputs."
+  ]
+}

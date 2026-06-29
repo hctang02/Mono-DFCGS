@@ -1,0 +1,90 @@
+{
+  "stage": 149,
+  "mode": "full q12 gap4/gap8 rate-counted side-info rendered validation package",
+  "report_title": "Stage149 Full Gap4/Gap8 Side-Info Rendered Validation Package",
+  "render_summary": "experiments/stage149_full_gap48_sideinfo_rendered_validation/stage149_full_gap48_sideinfo_rendered_validation_summary.json",
+  "validation_scope": "full_eval",
+  "near_target_tolerance": 0.25,
+  "rows": [
+    {
+      "reference_gap": 4,
+      "target_middle_psnr": 23.004337221027775,
+      "base_method": "stage65_adapter",
+      "codec": "q12",
+      "task_count": 1463,
+      "keep_fraction": 0.1,
+      "side_bits": 6,
+      "mean_base_psnr": 20.210770635920667,
+      "mean_entropy_psnr": 22.768595216050993,
+      "mean_delta_psnr_vs_base": 2.55782458013036,
+      "base_gap_to_target": -2.793566585107108,
+      "entropy_gap_to_target": -0.23574200497678177,
+      "positive_delta_count": 1463,
+      "positive_delta_fraction": 1.0,
+      "max_decoded_max_abs_diff_vs_fixed": 0.0,
+      "mean_entropy_payload_bytes": 34943.74094326726,
+      "mean_entropy_mib_per_intermediate_frame": 0.03332494825674749,
+      "q12_main_anchor_mib_per_frame": 0.18193822076791313,
+      "uniform_intermediate_frame_ratio": 0.75,
+      "mean_direct_total_mib_per_frame": 0.21526316902466064,
+      "mean_amortized_total_mib_per_frame": 0.20693193196047374,
+      "decision": "passes_full_eval_validation"
+    },
+    {
+      "reference_gap": 8,
+      "target_middle_psnr": 21.56004909948801,
+      "base_method": "stage65_adapter",
+      "codec": "q12",
+      "task_count": 1707,
+      "keep_fraction": 0.1,
+      "side_bits": 6,
+      "mean_base_psnr": 19.067097958467713,
+      "mean_entropy_psnr": 21.857517703953395,
+      "mean_delta_psnr_vs_base": 2.790419745485695,
+      "base_gap_to_target": -2.4929511410202956,
+      "entropy_gap_to_target": 0.2974686044653865,
+      "positive_delta_count": 1707,
+      "positive_delta_fraction": 1.0,
+      "max_decoded_max_abs_diff_vs_fixed": 0.0,
+      "mean_entropy_payload_bytes": 35172.31634446397,
+      "mean_entropy_mib_per_intermediate_frame": 0.03354293474623105,
+      "q12_main_anchor_mib_per_frame": 0.09762538675351436,
+      "uniform_intermediate_frame_ratio": 0.875,
+      "mean_direct_total_mib_per_frame": 0.13116832149974542,
+      "mean_amortized_total_mib_per_frame": 0.12697545465646654,
+      "decision": "passes_full_eval_validation"
+    }
+  ],
+  "decisions": [
+    {
+      "item": "entropy_decode",
+      "decision": "matches_fixed_decode",
+      "evidence": "max decoded abs diff vs fixed = 0.0"
+    },
+    {
+      "item": "target_alignment",
+      "decision": "passes_full_eval_validation",
+      "evidence": "worst entropy gap to corrected target = -0.23574200497678177 dB with tolerance 0.25 dB"
+    },
+    {
+      "item": "task_positivity",
+      "decision": "positive_on_all_full_eval_tasks",
+      "evidence": "min positive delta fraction = 1.0"
+    },
+    {
+      "item": "rate_accounting",
+      "decision": "all_sideinfo_bytes_counted",
+      "evidence": "max direct total rate = 0.21526316902466064 MiB/frame; payload bytes from experiments/stage149_full_gap48_sideinfo_rendered_validation/stage149_full_gap48_sideinfo_rendered_validation_rows.csv"
+    },
+    {
+      "item": "next_step",
+      "decision": "run_full_video_rd",
+      "evidence": "Full q12 gap4/gap8 eval rows pass; next is full-video RD packaging."
+    }
+  ],
+  "rows_csv": "experiments/stage149_full_gap48_sideinfo_rendered_validation/stage149_full_gap48_sideinfo_rendered_validation_package_rows.csv",
+  "decisions_csv": "experiments/stage149_full_gap48_sideinfo_rendered_validation/stage149_full_gap48_sideinfo_rendered_validation_package_decisions.csv",
+  "summary_json": "experiments/stage149_full_gap48_sideinfo_rendered_validation/stage149_full_gap48_sideinfo_rendered_validation_package_summary.json",
+  "package_json": "experiments/stage149_full_gap48_sideinfo_rendered_validation/stage149_full_gap48_sideinfo_rendered_validation_package.json",
+  "report_md": "experiments/stage149_full_gap48_sideinfo_rendered_validation/stage149_full_gap48_sideinfo_rendered_validation_package_report.md"
+}

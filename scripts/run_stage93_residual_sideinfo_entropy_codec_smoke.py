@@ -135,6 +135,7 @@ def write_report(summary, summary_rows, path):
         f"- task count: `{summary['task_count']}`",
         f"- codecs: `{summary['codecs']}`",
         f"- gaps: `{summary['gaps']}`",
+        f"- base methods: `{summary['base_methods']}`",
         f"- keep fraction: `{summary['keep_fraction']}`",
         f"- side bits: `{summary['side_bits']}`",
         f"- zlib level: `{summary['zlib_level']}`",
@@ -172,12 +173,15 @@ def parse_args():
     parser.add_argument("--task_split", default="eval")
     parser.add_argument("--codecs", nargs="+", default=["q12"])
     parser.add_argument("--gaps", nargs="+", type=int, default=[4, 8, 16])
+    parser.add_argument("--base_methods", nargs="+", choices=["linear", "stage65_adapter"], default=["linear", "stage65_adapter"])
     parser.add_argument("--max_tasks", type=int, default=12)
     parser.add_argument("--keep_fraction", type=float, default=0.1)
     parser.add_argument("--side_bits", type=int, default=6)
     parser.add_argument("--zlib_level", type=int, default=9)
     parser.add_argument("--hidden_dim", type=int, default=256)
     parser.add_argument("--seed", type=int, default=20260628)
+    parser.add_argument("--disable_cache", action="store_true")
+    parser.add_argument("--progress_interval", type=int, default=0)
     parser.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     return parser.parse_args()
 
@@ -197,10 +201,10 @@ def main():
     dense_index = build_dense_index(args.dense_manifest, sorted({row["split"] for row in tasks}))
     model = load_adapter(args.adapter, args.hidden_dim, device)
 
-    cache = {}
+    cache = None if args.disable_cache else {}
     rows = []
     with torch.no_grad():
-        for task in tasks:
+        for task_index, task in enumerate(tasks, start=1):
             left = load_anchor(task["left_anchor_source_item"], task["left_anchor_source_side"], device, bits=task["bits"], cache=cache)
             right = load_anchor(task["right_anchor_source_item"], task["right_anchor_source_side"], device, bits=task["bits"], cache=cache)
             dense_key = (task["dataset"], task["split"], task["sequence"], task["target_index"])
@@ -211,10 +215,12 @@ def main():
             target_attrs = flatten_static_anchor(target_anchor)
             target_rgb = load_rgb(task["target_rgb_path"], opt.image_height, opt.image_width, device)
             t = torch.tensor([task["normalized_time"]], dtype=torch.float32, device=device)
-            base_attrs_by_method = {
-                "linear": flatten_static_anchor(linear_anchor(left, right, task["normalized_time"])),
-                "stage65_adapter": flatten_static_anchor(model(left, right, t, apply_output_constraints=False)),
-            }
+            base_methods = set(args.base_methods)
+            base_attrs_by_method = {}
+            if "linear" in base_methods:
+                base_attrs_by_method["linear"] = flatten_static_anchor(linear_anchor(left, right, task["normalized_time"]))
+            if "stage65_adapter" in base_methods:
+                base_attrs_by_method["stage65_adapter"] = flatten_static_anchor(model(left, right, t, apply_output_constraints=False))
             for method, base_attrs in base_attrs_by_method.items():
                 base_anchor = unflatten_static_anchor(base_attrs)
                 base_psnr = render_psnr(base_anchor, target_rgb, background, opt)
@@ -258,6 +264,8 @@ def main():
                 })
             if device.type == "cuda":
                 torch.cuda.empty_cache()
+            if args.progress_interval > 0 and (task_index == 1 or task_index % args.progress_interval == 0 or task_index == len(tasks)):
+                print(json.dumps({"processed_tasks": task_index, "total_tasks": len(tasks)}), flush=True)
 
     summary_rows = summarize(rows)
     rows_csv = args.summary_root / f"{args.output_prefix}_rows.csv"
@@ -276,10 +284,13 @@ def main():
         "task_split": args.task_split,
         "codecs": args.codecs,
         "gaps": args.gaps,
+        "base_methods": args.base_methods,
         "task_count": len(tasks),
         "keep_fraction": args.keep_fraction,
         "side_bits": args.side_bits,
         "zlib_level": args.zlib_level,
+        "cache_enabled": not args.disable_cache,
+        "progress_interval": args.progress_interval,
         "rows_csv": str(rows_csv),
         "summary_csv": str(summary_csv),
         "report_md": str(report_md),
