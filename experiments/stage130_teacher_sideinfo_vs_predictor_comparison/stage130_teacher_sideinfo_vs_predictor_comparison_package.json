@@ -1,0 +1,45 @@
+{
+  "stage": 130,
+  "mode": "teacher side-info vs predictor comparison",
+  "comparison_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage130_teacher_sideinfo_vs_predictor_comparison/stage130_teacher_sideinfo_vs_predictor_comparison_rows.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage130_teacher_sideinfo_vs_predictor_comparison/stage130_teacher_sideinfo_vs_predictor_comparison_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage130_teacher_sideinfo_vs_predictor_comparison/stage130_teacher_sideinfo_vs_predictor_comparison_report.md",
+  "row_count": 6,
+  "best_deployable_no_teacher": {
+    "source_stage": 125,
+    "method_label": "adapter_delta_selected_predictor",
+    "setting_label": "q4_top20",
+    "setting_role": "primary",
+    "teacher_required": 0,
+    "deployable_no_teacher": 1,
+    "residual_payload_bytes": 0,
+    "selected_index_payload_bytes": 0,
+    "direct_total_mib_per_frame": "0.11729838135687401",
+    "amortized_total_mib_per_frame": "0.11729838135687401",
+    "psnr": "19.010259350474836",
+    "delta_psnr_vs_linear_base": "0.059456354043700026",
+    "delta_psnr_vs_full_adapter": "-0.17738394265066096",
+    "note": "No teacher target input; uses Stage65 adapter delta at selected indices."
+  },
+  "best_teacher_sideinfo": {
+    "source_stage": 122,
+    "method_label": "teacher_compressed_sideinfo",
+    "setting_label": "q4_top20",
+    "setting_role": "primary",
+    "teacher_required": 1,
+    "deployable_no_teacher": 0,
+    "residual_payload_bytes": "28320.791666666668",
+    "selected_index_payload_bytes": 0,
+    "direct_total_mib_per_frame": "0.1337680887378662",
+    "amortized_total_mib_per_frame": "0.13005386354500142",
+    "psnr": "20.689270746602087",
+    "delta_psnr_vs_linear_base": "2.2052510058769683",
+    "delta_psnr_vs_full_adapter": "",
+    "note": "Teacher residual values from dense target anchors; not deployable without residual value predictor."
+  },
+  "notes": [
+    "Teacher side-info uses target residual values and is not deployable as decoder-only residual prediction.",
+    "Adapter-delta selected predictor is currently the best no-teacher predictor among compared points.",
+    "Dedicated MLP predictor needs render-aware training before final deployment."
+  ]
+}
