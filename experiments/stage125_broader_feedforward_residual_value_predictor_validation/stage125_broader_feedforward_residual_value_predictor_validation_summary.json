@@ -1,0 +1,81 @@
+{
+  "stage": 125,
+  "mode": "broader feed-forward residual value predictor validation",
+  "stage123_policy": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage123_compressed_deterministic_codec_policy_package/stage123_compressed_deterministic_codec_policy.json",
+  "task_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage79_adapter_training_task_manifest/stage79_adapter_training_tasks.csv",
+  "adapter": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors",
+  "task_split": "eval",
+  "codecs": [
+    "q12"
+  ],
+  "gaps": [
+    4,
+    8,
+    16
+  ],
+  "task_count": 60,
+  "row_count": 120,
+  "predictor_name": "adapter_delta_selected_v1",
+  "settings": [
+    {
+      "label": "q4_top20",
+      "role": "primary",
+      "keep_fraction": 0.2,
+      "side_bits": 4
+    },
+    {
+      "label": "q4_top10",
+      "role": "low_rate",
+      "keep_fraction": 0.1,
+      "side_bits": 4
+    }
+  ],
+  "rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage125_broader_feedforward_residual_value_predictor_validation/stage125_broader_feedforward_residual_value_predictor_validation_rows.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage125_broader_feedforward_residual_value_predictor_validation/stage125_broader_feedforward_residual_value_predictor_validation_summary.csv",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage125_broader_feedforward_residual_value_predictor_validation/stage125_broader_feedforward_residual_value_predictor_validation_summary.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage125_broader_feedforward_residual_value_predictor_validation/stage125_broader_feedforward_residual_value_predictor_validation_report.md",
+  "summary_rows": [
+    {
+      "predictor_name": "adapter_delta_selected_v1",
+      "setting_label": "q4_top10",
+      "setting_role": "low_rate",
+      "keep_fraction": 0.1,
+      "side_bits": 4,
+      "task_count": 60,
+      "mean_keep_gaussians": 3686.0,
+      "mean_direct_total_mib_per_frame": 0.11729838135687401,
+      "mean_amortized_total_mib_per_frame": 0.11729838135687401,
+      "mean_base_psnr": 18.950802996431143,
+      "mean_full_predictor_psnr": 19.1876432931255,
+      "mean_selected_predicted_psnr": 18.994813480380337,
+      "mean_delta_psnr_vs_base": 0.04401048394920189,
+      "mean_delta_psnr_vs_full_predictor": -0.19282981274515912,
+      "positive_delta_vs_base_count": 51,
+      "near_full_within_0p10db_count": 13
+    },
+    {
+      "predictor_name": "adapter_delta_selected_v1",
+      "setting_label": "q4_top20",
+      "setting_role": "primary",
+      "keep_fraction": 0.2,
+      "side_bits": 4,
+      "task_count": 60,
+      "mean_keep_gaussians": 7373.0,
+      "mean_direct_total_mib_per_frame": 0.11729838135687401,
+      "mean_amortized_total_mib_per_frame": 0.11729838135687401,
+      "mean_base_psnr": 18.950802996431143,
+      "mean_full_predictor_psnr": 19.1876432931255,
+      "mean_selected_predicted_psnr": 19.010259350474836,
+      "mean_delta_psnr_vs_base": 0.059456354043700026,
+      "mean_delta_psnr_vs_full_predictor": -0.17738394265066096,
+      "positive_delta_vs_base_count": 48,
+      "near_full_within_0p10db_count": 13
+    }
+  ],
+  "notes": [
+    "No residual payload bytes are transmitted in this predictor validation.",
+    "No selected-index bytes are transmitted; indices are reproduced from endpoint-diff top-k.",
+    "Target dense anchors are not loaded or used.",
+    "Target RGB is used only for offline rendered metrics."
+  ]
+}

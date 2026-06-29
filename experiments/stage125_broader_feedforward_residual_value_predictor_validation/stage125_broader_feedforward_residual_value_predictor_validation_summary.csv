@@ -1,0 +1,3 @@
+predictor_name,setting_label,setting_role,keep_fraction,side_bits,task_count,mean_keep_gaussians,mean_direct_total_mib_per_frame,mean_amortized_total_mib_per_frame,mean_base_psnr,mean_full_predictor_psnr,mean_selected_predicted_psnr,mean_delta_psnr_vs_base,mean_delta_psnr_vs_full_predictor,positive_delta_vs_base_count,near_full_within_0p10db_count
+adapter_delta_selected_v1,q4_top10,low_rate,0.1,4,60,3686.0,0.11729838135687401,0.11729838135687401,18.950802996431143,19.1876432931255,18.994813480380337,0.04401048394920189,-0.19282981274515912,51,13
+adapter_delta_selected_v1,q4_top20,primary,0.2,4,60,7373.0,0.11729838135687401,0.11729838135687401,18.950802996431143,19.1876432931255,19.010259350474836,0.059456354043700026,-0.17738394265066096,48,13

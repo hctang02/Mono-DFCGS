@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage124: `4c9fac5 Package deterministic codec policy`
+- Latest pushed commit before Stage125: `2c53da9 Smoke feedforward residual value predictor`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -79,6 +79,7 @@ Key Stage96 direct total rates:
 - Stage122: packaged compressed deterministic RD rows/points; q4/top20 is primary, q4/top10 low-rate, q5/top10 near-anchor, q6/top10 anchor.
 - Stage123: packaged codec policy manifest around strict-safe endpoint selector and compressed deterministic value-only side-info.
 - Stage124: feed-forward residual value predictor smoke using Stage65 adapter delta over linear base completed.
+- Stage125: broadened no-teacher feed-forward residual value predictor validation from 12 to 60 eval tasks.
 
 ## Current Best Selector Policy
 
@@ -147,6 +148,7 @@ Stage113 held-out diagnostic:
 - Stage122 RD package compares against Stage96 entropy reference: q4/top20 is lower rate by `-0.004194490114847849 MiB/frame` but lower PSNR by `-0.8305321438068527 dB`; q4/top10 is lower rate by `-0.016716535886128772 MiB/frame` and lower PSNR by `-1.781314716027025 dB`.
 - Stage123 codec policy package freezes policy `compressed_deterministic_value_only_residual_codec_v1`; status remains `package_not_full_residual_predictor` because residual values are still teacher-derived.
 - Stage124 no-teacher residual value predictor smoke: `adapter_delta_selected_v1` q4/top10 improves over linear base by `+0.027863362265533247 dB` and q4/top20 by `+0.019370720622054066 dB` on 12 rendered tasks, with zero residual/index payload bytes and no target dense anchor input.
+- Stage125 broader validation confirms the no-teacher predictor gain is stable on 60 tasks: q4/top10 improves over linear by `+0.04401048394920189 dB`, q4/top20 by `+0.059456354043700026 dB`, both with zero residual/index payload bytes.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
