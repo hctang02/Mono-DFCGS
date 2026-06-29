@@ -1,0 +1,67 @@
+{
+  "stage": 127,
+  "mode": "selected residual predictor training smoke",
+  "dataset_rows": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage126_selected_residual_predictor_dataset_package/stage126_selected_residual_predictor_dataset_rows.csv",
+  "stats_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage126_selected_residual_predictor_dataset_package/stage126_selected_residual_predictor_train_stats.json",
+  "summary_root": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage127_selected_residual_predictor_training_smoke",
+  "heavy_root": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage127_selected_residual_predictor_training_smoke",
+  "settings": [
+    "q4_top20",
+    "q4_top10"
+  ],
+  "metrics_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage127_selected_residual_predictor_training_smoke/stage127_selected_residual_predictor_training_smoke_metrics.csv",
+  "train_log_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage127_selected_residual_predictor_training_smoke/stage127_selected_residual_predictor_training_smoke_train_log.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage127_selected_residual_predictor_training_smoke/stage127_selected_residual_predictor_training_smoke_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage127_selected_residual_predictor_training_smoke/stage127_selected_residual_predictor_training_smoke_report.md",
+  "metrics": [
+    {
+      "setting_label": "q4_top20",
+      "setting_role": "primary",
+      "keep_fraction": 0.2,
+      "side_bits": 4,
+      "train_task_count": 120,
+      "eval_task_count": 60,
+      "train_sample_count": 61440,
+      "eval_sample_count": 30720,
+      "feature_dim": 56,
+      "residual_dim": 13,
+      "hidden_dim": 128,
+      "train_steps": 300,
+      "batch_size": 4096,
+      "train_zero_mse": 0.01760004833340645,
+      "train_pred_mse": 0.015285275876522064,
+      "train_mse_reduction": 0.1315208011384117,
+      "eval_zero_mse": 0.016353415325284004,
+      "eval_pred_mse": 0.01491295825690031,
+      "eval_mse_reduction": 0.08808295024199653,
+      "checkpoint_path": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage127_selected_residual_predictor_training_smoke/q4_top20/selected_residual_value_mlp.safetensors"
+    },
+    {
+      "setting_label": "q4_top10",
+      "setting_role": "low_rate",
+      "keep_fraction": 0.1,
+      "side_bits": 4,
+      "train_task_count": 120,
+      "eval_task_count": 60,
+      "train_sample_count": 61440,
+      "eval_sample_count": 30720,
+      "feature_dim": 56,
+      "residual_dim": 13,
+      "hidden_dim": 128,
+      "train_steps": 300,
+      "batch_size": 4096,
+      "train_zero_mse": 0.020726380869746208,
+      "train_pred_mse": 0.01783580146729946,
+      "train_mse_reduction": 0.13946377906555096,
+      "eval_zero_mse": 0.018400665372610092,
+      "eval_pred_mse": 0.016506632789969444,
+      "eval_mse_reduction": 0.10293283119315721,
+      "checkpoint_path": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage127_selected_residual_predictor_training_smoke/q4_top10/selected_residual_value_mlp.safetensors"
+    }
+  ],
+  "notes": [
+    "Model checkpoints are saved outside git.",
+    "Target dense anchors are used only for training/eval labels.",
+    "Committed outputs contain metrics and checkpoint paths only."
+  ]
+}

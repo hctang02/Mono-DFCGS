@@ -1,4 +1,5 @@
 import torch
+import torch.nn as nn
 
 
 def residual_time_features(t, count, device=None, dtype=None):
@@ -71,3 +72,23 @@ def selected_residual_feature_matrix(left_attrs, right_attrs, base_attrs, select
     diff = right - left
     time = residual_time_features(t, int(keep_idx.numel()), device=left_attrs.device, dtype=left_attrs.dtype)
     return torch.cat([left, right, base, diff, time], dim=-1)
+
+
+class SelectedResidualValueMLP(nn.Module):
+    """Small per-Gaussian residual value predictor for selected deterministic indices."""
+
+    def __init__(self, feature_dim=56, residual_dim=13, hidden_dim=128):
+        super().__init__()
+        self.feature_dim = int(feature_dim)
+        self.residual_dim = int(residual_dim)
+        self.hidden_dim = int(hidden_dim)
+        self.net = nn.Sequential(
+            nn.Linear(self.feature_dim, self.hidden_dim),
+            nn.SiLU(),
+            nn.Linear(self.hidden_dim, self.hidden_dim),
+            nn.SiLU(),
+            nn.Linear(self.hidden_dim, self.residual_dim),
+        )
+
+    def forward(self, features):
+        return self.net(features)

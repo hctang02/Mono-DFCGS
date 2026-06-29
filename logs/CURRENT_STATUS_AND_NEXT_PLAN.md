@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage126: `2361b8d Broaden feedforward residual predictor validation`
+- Latest pushed commit before Stage127: `03179fb Package selected residual predictor dataset`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -81,6 +81,7 @@ Key Stage96 direct total rates:
 - Stage124: feed-forward residual value predictor smoke using Stage65 adapter delta over linear base completed.
 - Stage125: broadened no-teacher feed-forward residual value predictor validation from 12 to 60 eval tasks.
 - Stage126: packaged selected residual value predictor dataset manifest and normalization stats.
+- Stage127: trained dedicated selected residual value predictor smoke with checkpoints saved outside git.
 
 ## Current Best Selector Policy
 
@@ -151,6 +152,7 @@ Stage113 held-out diagnostic:
 - Stage124 no-teacher residual value predictor smoke: `adapter_delta_selected_v1` q4/top10 improves over linear base by `+0.027863362265533247 dB` and q4/top20 by `+0.019370720622054066 dB` on 12 rendered tasks, with zero residual/index payload bytes and no target dense anchor input.
 - Stage125 broader validation confirms the no-teacher predictor gain is stable on 60 tasks: q4/top10 improves over linear by `+0.04401048394920189 dB`, q4/top20 by `+0.059456354043700026 dB`, both with zero residual/index payload bytes.
 - Stage126 packaged selected residual predictor training data metadata: q4/top20 has `884760` train samples, q4/top10 has `442320`, feature dim `56`, residual dim `13`; no per-Gaussian tensors are saved.
+- Stage127 trained small selected-residual MLPs: q4/top20 eval residual MSE reduction `0.08808295024199653`, q4/top10 eval reduction `0.10293283119315721`; checkpoints live under `/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage127_selected_residual_predictor_training_smoke` and are not committed.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
