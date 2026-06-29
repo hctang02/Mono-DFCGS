@@ -1,0 +1,7 @@
+method_label,setting_label,deployable_no_teacher,teacher_required,direct_total_mib_per_frame,psnr,delta_psnr_vs_linear_base,residual_payload_bytes,selected_index_payload_bytes,final_role
+adapter_delta_selected_predictor,q4_top10,1,0,0.11729838135687401,18.994813480380337,0.04401048394920189,0,0,final_deployable_low_rate
+adapter_delta_selected_predictor,q4_top20,1,0,0.11729838135687401,19.010259350474836,0.059456354043700026,0,0,final_deployable_primary
+dedicated_mlp_selected_predictor,q4_top10,1,0,0.11729838135687401,18.865777753557193,-0.08502524287394495,0,0,rejected_render_regression
+dedicated_mlp_selected_predictor,q4_top20,1,0,0.11729838135687401,18.76520305064309,-0.1855999457880447,0,0,rejected_render_regression
+teacher_compressed_sideinfo,q4_top10,0,1,0.12124604296658527,19.73848817438193,1.2544684336567946,15190.475,0,teacher_reference_only
+teacher_compressed_sideinfo,q4_top20,0,1,0.1337680887378662,20.689270746602087,2.2052510058769683,28320.791666666668,0,teacher_reference_only

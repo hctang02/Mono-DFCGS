@@ -1,0 +1,20 @@
+{
+  "stage": 133,
+  "mode": "final predictor RD report",
+  "stage130_rows": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage130_teacher_sideinfo_vs_predictor_comparison/stage130_teacher_sideinfo_vs_predictor_comparison_rows.csv",
+  "stage132_policy": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage132_deployable_predictor_policy_package/stage132_deployable_predictor_policy.json",
+  "final_rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage133_final_predictor_rd_report/stage133_final_predictor_rd_rows.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage133_final_predictor_rd_report/stage133_final_predictor_rd_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage133_final_predictor_rd_report/stage133_final_predictor_rd_report.md",
+  "rd_plot_png": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage133_final_predictor_rd_report/stage133_final_predictor_rd_plot.png",
+  "rd_plot_pdf": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage133_final_predictor_rd_report/stage133_final_predictor_rd_plot.pdf",
+  "row_count": 6,
+  "final_deployable_policy": "deployable_adapter_delta_selected_residual_codec_v1",
+  "primary_setting": "q4_top20",
+  "optional_low_rate_setting": "q4_top10",
+  "notes": [
+    "Teacher residual side-info is reference-only and not decoder-only deployable.",
+    "Final deployable policy uses adapter-delta selected residual values with no per-frame residual/index payload.",
+    "Dedicated MLP predictor is rejected due to Stage129 rendered regression."
+  ]
+}
