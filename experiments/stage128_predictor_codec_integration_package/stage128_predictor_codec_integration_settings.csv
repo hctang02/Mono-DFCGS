@@ -1,0 +1,3 @@
+setting_label,setting_role,keep_fraction,side_bits,feature_dim,residual_dim,hidden_dim,checkpoint_exists,checkpoint_load_ok,checkpoint_path,eval_mse_reduction,transmitted_residual_payload_bytes,transmitted_selected_index_bytes
+q4_top20,primary,0.2,4,56,13,128,1,1,/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage127_selected_residual_predictor_training_smoke/q4_top20/selected_residual_value_mlp.safetensors,0.08808295024199653,0,0
+q4_top10,low_rate,0.1,4,56,13,128,1,1,/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage127_selected_residual_predictor_training_smoke/q4_top10/selected_residual_value_mlp.safetensors,0.10293283119315721,0,0

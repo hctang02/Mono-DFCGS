@@ -1,0 +1,143 @@
+{
+  "stage": 128,
+  "policy_name": "predictor_only_selected_residual_codec_v1",
+  "policy_type": "predictor_codec_integration_manifest",
+  "status": "predictor_integrated_pending_rendered_validation",
+  "base_codec_policy": "compressed_deterministic_value_only_residual_codec_v1",
+  "selector_policy": {
+    "policy_name": "strict_safe_endpoint_selector_v1",
+    "policy_type": "fixed_candidate_selector",
+    "selected_candidate": "endpoint_diff_baseline",
+    "source_policy_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage114_strict_safe_selector_fallback_package/stage114_strict_safe_selector_fallback_policy.json",
+    "validation_summary": {
+      "policy_name": "strict_safe_endpoint_selector_v1",
+      "policy_type": "fixed_candidate_selector",
+      "selected_candidate": "endpoint_diff_baseline",
+      "task_count": 480,
+      "mean_selected_sideinfo_psnr": 20.3212149854921,
+      "mean_endpoint_sideinfo_psnr": 20.3212149854921,
+      "mean_gain_vs_endpoint": 0.0,
+      "min_fold_gain_vs_endpoint": 0.0,
+      "min_group_gain_vs_endpoint": 0.0,
+      "min_fold_group_gain_vs_endpoint": 0.0,
+      "aggregate_safe_no_group_regression": 1,
+      "fold_group_safe_no_regression": 1
+    }
+  },
+  "index_selection": {
+    "rule_name": "endpoint_diff_topk_v1",
+    "selected_candidate": "endpoint_diff_baseline",
+    "decoder_reproducible": true,
+    "transmitted_index_bytes": 0,
+    "input_attrs": [
+      "left_anchor_static_attrs",
+      "right_anchor_static_attrs"
+    ],
+    "shape_contract": "left_attrs and right_attrs must be matching [1, N, D] tensors with stable Gaussian ordering",
+    "keep_count_rule": "min(max(round(N * keep_fraction), 0), N)",
+    "score_rule": "sum((right_attrs[0].float() - left_attrs[0].float()) ** 2, dim=-1)",
+    "selection_rule": "select top keep_count largest scores, then sort selected indices ascending"
+  },
+  "residual_value_predictor": {
+    "predictor_name": "selected_residual_value_mlp_v1",
+    "module": "mono_dfcgs.residual_value_predictor.SelectedResidualValueMLP",
+    "feature_builder": "mono_dfcgs.residual_value_predictor.selected_residual_feature_matrix",
+    "checkpoint_source": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage127_selected_residual_predictor_training_smoke/stage127_selected_residual_predictor_training_smoke_package.json",
+    "normalization_stats_source": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage126_selected_residual_predictor_dataset_package/stage126_selected_residual_predictor_train_stats.json",
+    "settings": [
+      {
+        "setting_label": "q4_top20",
+        "setting_role": "primary",
+        "keep_fraction": 0.2,
+        "side_bits": 4,
+        "feature_dim": 56,
+        "residual_dim": 13,
+        "hidden_dim": 128,
+        "checkpoint_exists": 1,
+        "checkpoint_load_ok": 1,
+        "checkpoint_path": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage127_selected_residual_predictor_training_smoke/q4_top20/selected_residual_value_mlp.safetensors",
+        "eval_mse_reduction": 0.08808295024199653,
+        "transmitted_residual_payload_bytes": 0,
+        "transmitted_selected_index_bytes": 0
+      },
+      {
+        "setting_label": "q4_top10",
+        "setting_role": "low_rate",
+        "keep_fraction": 0.1,
+        "side_bits": 4,
+        "feature_dim": 56,
+        "residual_dim": 13,
+        "hidden_dim": 128,
+        "checkpoint_exists": 1,
+        "checkpoint_load_ok": 1,
+        "checkpoint_path": "/mnt/hdd2tC/tmp/opencode/mono_dfcgs_runs/stage127_selected_residual_predictor_training_smoke/q4_top10/selected_residual_value_mlp.safetensors",
+        "eval_mse_reduction": 0.10293283119315721,
+        "transmitted_residual_payload_bytes": 0,
+        "transmitted_selected_index_bytes": 0
+      }
+    ]
+  },
+  "rate_accounting": {
+    "transmitted_residual_payload_bytes": 0,
+    "transmitted_selected_index_bytes": 0,
+    "sideinfo_bytes_for_selected_residual_values": 0,
+    "note": "Predictor-only residual values are decoder-generated; model weights are assumed pre-shared by the policy package and are not counted per frame."
+  },
+  "decoder_contract": {
+    "inputs": [
+      "left_anchor",
+      "right_anchor",
+      "base linear anchor attrs",
+      "normalized_time",
+      "policy setting keep_fraction",
+      "pre-shared selected residual MLP checkpoint and normalization stats"
+    ],
+    "steps": [
+      "recompute endpoint-diff top-k selected indices",
+      "build selected residual feature matrix from left/right/base attrs and time",
+      "normalize features with Stage126 train stats",
+      "predict normalized residual values with the Stage127 MLP",
+      "denormalize residual values and add them at selected indices"
+    ],
+    "forbidden_inputs": [
+      "target_dense_anchor",
+      "target_residual",
+      "target_rgb",
+      "oracle_task_label",
+      "transmitted selected indices",
+      "transmitted residual values"
+    ]
+  },
+  "validation_sources": {
+    "stage123_policy": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage123_compressed_deterministic_codec_policy_package/stage123_compressed_deterministic_codec_policy.json",
+    "stage126_stats": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage126_selected_residual_predictor_dataset_package/stage126_selected_residual_predictor_train_stats.json",
+    "stage127_package": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage127_selected_residual_predictor_training_smoke/stage127_selected_residual_predictor_training_smoke_package.json"
+  },
+  "stage126_stats_digest": {
+    "q4_top20": {
+      "feature_dim": 56,
+      "residual_dim": 13,
+      "sample_count": 884760,
+      "feature_rms": 0.46078898367726934,
+      "label_rms": 0.13244603771996774
+    },
+    "q4_top10": {
+      "feature_dim": 56,
+      "residual_dim": 13,
+      "sample_count": 442320,
+      "feature_rms": 0.4704328888850035,
+      "label_rms": 0.1438315651016054
+    }
+  },
+  "limitations": [
+    "Stage128 only packages the predictor codec integration; rendered validation follows in Stage129.",
+    "Model checkpoints are external files and are not committed to git.",
+    "Policy assumes checkpoint weights are pre-shared and not counted per-frame."
+  ],
+  "output_paths": {
+    "policy_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage128_predictor_codec_integration_package/stage128_predictor_codec_integration_policy.json",
+    "settings_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage128_predictor_codec_integration_package/stage128_predictor_codec_integration_settings.csv",
+    "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage128_predictor_codec_integration_package/stage128_predictor_codec_integration_package.json",
+    "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage128_predictor_codec_integration_package/stage128_predictor_codec_integration_report.md"
+  }
+}

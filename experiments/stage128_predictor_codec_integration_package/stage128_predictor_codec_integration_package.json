@@ -1,0 +1,20 @@
+{
+  "stage": 128,
+  "mode": "predictor codec integration package",
+  "policy_name": "predictor_only_selected_residual_codec_v1",
+  "status": "predictor_integrated_pending_rendered_validation",
+  "stage123_policy": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage123_compressed_deterministic_codec_policy_package/stage123_compressed_deterministic_codec_policy.json",
+  "stage126_stats": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage126_selected_residual_predictor_dataset_package/stage126_selected_residual_predictor_train_stats.json",
+  "stage127_package": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage127_selected_residual_predictor_training_smoke/stage127_selected_residual_predictor_training_smoke_package.json",
+  "policy_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage128_predictor_codec_integration_package/stage128_predictor_codec_integration_policy.json",
+  "settings_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage128_predictor_codec_integration_package/stage128_predictor_codec_integration_settings.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage128_predictor_codec_integration_package/stage128_predictor_codec_integration_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage128_predictor_codec_integration_package/stage128_predictor_codec_integration_report.md",
+  "setting_count": 2,
+  "all_checkpoints_load_ok": 1,
+  "notes": [
+    "Stage128 only packages the predictor codec integration; rendered validation follows in Stage129.",
+    "Model checkpoints are external files and are not committed to git.",
+    "Policy assumes checkpoint weights are pre-shared and not counted per-frame."
+  ]
+}
