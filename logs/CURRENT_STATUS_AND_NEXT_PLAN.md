@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage130: `5e69719 Validate predictor codec rendering`
+- Latest pushed commit before Stage131: `c4a0228 Compare teacher sideinfo and predictors`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -85,6 +85,7 @@ Key Stage96 direct total rates:
 - Stage128: packaged predictor-only codec integration manifest.
 - Stage129: broader rendered validation of predictor-only integrated codec completed; MSE-trained MLP regresses rendered PSNR.
 - Stage130: compared teacher side-info, adapter-delta predictor, and dedicated MLP predictor RD points.
+- Stage131: ablated keep fraction, predictor source, validation scale, and MSE/render mismatch.
 
 ## Current Best Selector Policy
 
@@ -159,6 +160,7 @@ Stage113 held-out diagnostic:
 - Stage128 integrated the Stage127 predictors into policy `predictor_only_selected_residual_codec_v1`; q4/top20 and q4/top10 checkpoints both exist/load, and predictor residual/index payload bytes are `0`.
 - Stage129 shows the dedicated MSE-trained MLP is not render-safe: q4/top10 predictor PSNR `18.865777753557193` (`-0.08502524287394495 dB` vs linear) and q4/top20 `18.76520305064309` (`-0.1855999457880447 dB` vs linear), despite zero residual/index payload bytes.
 - Stage130 comparison identifies the current best no-teacher deployable point as Stage125 `adapter_delta_selected_predictor` q4/top20: direct rate `0.11729838135687401`, PSNR `19.010259350474836`, zero residual/index payload bytes.
+- Stage131 recommends `adapter_delta_selected_predictor/q4_top20` for Stage132 deployable policy and rejects `dedicated_mlp_selected_predictor_v1` as final because it regresses rendered PSNR.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.

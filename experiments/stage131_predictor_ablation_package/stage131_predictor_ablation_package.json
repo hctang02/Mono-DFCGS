@@ -1,0 +1,11 @@
+{
+  "stage": 131,
+  "mode": "predictor ablation package",
+  "ablation_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage131_predictor_ablation_package/stage131_predictor_ablation_rows.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage131_predictor_ablation_package/stage131_predictor_ablation_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage131_predictor_ablation_package/stage131_predictor_ablation_report.md",
+  "row_count": 14,
+  "recommended_deployable_predictor": "adapter_delta_selected_predictor/q4_top20",
+  "rejected_final_predictor": "dedicated_mlp_selected_predictor_v1",
+  "rejection_reason": "MSE-trained MLP regresses rendered PSNR in Stage129."
+}
