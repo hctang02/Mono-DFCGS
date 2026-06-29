@@ -261,7 +261,7 @@ def write_report(summary, path):
     best = summary["best_eval"]
     final = summary["final_eval"]
     lines = [
-        "# Stage145 Large-Scale Adapter Training Launch",
+        f"# {summary['stage_label']}",
         "",
         "## Configuration",
         "",
@@ -311,6 +311,10 @@ def write_report(summary, path):
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--stage", type=int, default=145)
+    parser.add_argument("--stage_label", default="Stage145 Large-Scale Adapter Training Launch")
+    parser.add_argument("--mode", default="large-scale lazy-load adapter training launch")
+    parser.add_argument("--output_prefix", default="stage145")
+    parser.add_argument("--summary_name", default="stage145_large_scale_adapter_training_launch")
     parser.add_argument("--task_manifest", type=Path, default=DEFAULT_TASK_MANIFEST)
     parser.add_argument("--codecs", nargs="+", default=["q12"])
     parser.add_argument("--gaps", nargs="+", type=int, default=[4, 8])
@@ -463,13 +467,13 @@ def main():
     final_checkpoint = save_model(model, args.heavy_root / "final_adapter.safetensors")
     latest_state = save_training_state(args.heavy_root / "latest_training_state.pt", model, optimizer, args.steps, best_step, best_eval)
 
-    train_csv = args.summary_root / "stage145_train_log.csv"
-    validation_csv = args.summary_root / "stage145_validation_log.csv"
-    initial_eval_csv = args.summary_root / "stage145_initial_eval_rows.csv"
-    best_eval_csv = args.summary_root / "stage145_best_eval_rows.csv"
-    final_eval_csv = args.summary_root / "stage145_final_eval_rows.csv"
-    selected_train_csv = args.summary_root / "stage145_selected_train_rows.csv"
-    selected_eval_csv = args.summary_root / "stage145_selected_eval_rows.csv"
+    train_csv = args.summary_root / f"{args.output_prefix}_train_log.csv"
+    validation_csv = args.summary_root / f"{args.output_prefix}_validation_log.csv"
+    initial_eval_csv = args.summary_root / f"{args.output_prefix}_initial_eval_rows.csv"
+    best_eval_csv = args.summary_root / f"{args.output_prefix}_best_eval_rows.csv"
+    final_eval_csv = args.summary_root / f"{args.output_prefix}_final_eval_rows.csv"
+    selected_train_csv = args.summary_root / f"{args.output_prefix}_selected_train_rows.csv"
+    selected_eval_csv = args.summary_root / f"{args.output_prefix}_selected_eval_rows.csv"
     write_csv(train_log, train_csv, TRAIN_FIELDS)
     write_csv(validation_log, validation_csv, VALIDATION_FIELDS)
     write_csv(initial_rows, initial_eval_csv, EVAL_FIELDS)
@@ -480,7 +484,8 @@ def main():
 
     summary = {
         "stage": args.stage,
-        "mode": "large-scale lazy-load adapter training launch",
+        "stage_label": args.stage_label,
+        "mode": args.mode,
         "task_manifest": str(args.task_manifest),
         "codecs": args.codecs,
         "gaps": args.gaps,
@@ -528,9 +533,9 @@ def main():
         "selected_eval_csv": str(selected_eval_csv),
         "notes": "Offline RGB targets supervise training only; deployable decoder inputs remain endpoint Gaussian anchors plus normalized time.",
     }
-    summary_path = args.summary_root / "stage145_large_scale_adapter_training_launch_summary.json"
-    report_path = args.summary_root / "stage145_large_scale_adapter_training_launch_report.md"
-    package_path = args.summary_root / "stage145_large_scale_adapter_training_launch_package.json"
+    summary_path = args.summary_root / f"{args.summary_name}_summary.json"
+    report_path = args.summary_root / f"{args.summary_name}_report.md"
+    package_path = args.summary_root / f"{args.summary_name}_package.json"
     summary_path.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
     package = {
         "stage": args.stage,
