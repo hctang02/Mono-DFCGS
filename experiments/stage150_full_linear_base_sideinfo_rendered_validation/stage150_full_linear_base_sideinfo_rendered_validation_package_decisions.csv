@@ -1,0 +1,6 @@
+item,decision,evidence
+entropy_decode,matches_fixed_decode,max decoded abs diff vs fixed = 0.0
+target_alignment,passes_full_eval_validation,worst entropy gap to corrected target = 0.10055620282386002 dB with tolerance 0.25 dB
+task_positivity,positive_on_all_full_eval_tasks,min positive delta fraction = 1.0
+rate_accounting,all_sideinfo_bytes_counted,max direct total rate = 0.21060840528077832 MiB/frame; payload bytes from experiments/stage150_full_linear_base_sideinfo_rendered_validation/stage150_full_linear_base_sideinfo_rendered_validation_rows.csv
+next_step,run_full_video_rd,Full q12 gap4/gap8 eval rows pass; next is full-video RD packaging.

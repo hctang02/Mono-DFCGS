@@ -80,10 +80,10 @@ def pass_label(validation_scope):
     return "passes_full_eval_validation" if validation_scope == "full_eval" else "passes_sample_revalidation"
 
 
-def build_rows(stage148_summary, targets, rates, tolerance, validation_scope):
+def build_rows(stage148_summary, targets, rates, tolerance, validation_scope, base_method):
     out = []
     for row in stage148_summary["summary_rows"]:
-        if row["base_method"] != "stage65_adapter":
+        if row["base_method"] != base_method:
             continue
         if row["codec"] != "q12":
             continue
@@ -127,7 +127,7 @@ def build_rows(stage148_summary, targets, rates, tolerance, validation_scope):
             "decision": decision,
         })
     if sorted(row["reference_gap"] for row in out) != [4, 8]:
-        raise RuntimeError("Stage148 package expects stage65_adapter q12 gap4/gap8 summary rows")
+        raise RuntimeError(f"Stage package expects {base_method} q12 gap4/gap8 summary rows")
     return out
 
 
@@ -218,6 +218,7 @@ def parse_args():
     parser.add_argument("--output_prefix", default="stage148_rate_counted_sideinfo_rendered_revalidation_package")
     parser.add_argument("--report_title", default="Stage148 Rate-Counted Side-Info Rendered Revalidation Package")
     parser.add_argument("--validation_scope", choices=["sample", "full_eval"], default="sample")
+    parser.add_argument("--base_method", default="stage65_adapter")
     parser.add_argument("--stage148_summary", type=Path, default=DEFAULT_STAGE148_SUMMARY)
     parser.add_argument("--stage142_targets", type=Path, default=DEFAULT_STAGE142_TARGETS)
     parser.add_argument("--stage147_rows", type=Path, default=DEFAULT_STAGE147_ROWS)
@@ -232,7 +233,7 @@ def main():
     stage148_summary = read_json(args.stage148_summary)
     targets = targets_by_gap(read_csv(args.stage142_targets))
     rates = rate_reference_by_gap(read_csv(args.stage147_rows))
-    rows = build_rows(stage148_summary, targets, rates, args.near_target_tolerance, args.validation_scope)
+    rows = build_rows(stage148_summary, targets, rates, args.near_target_tolerance, args.validation_scope, args.base_method)
     decisions = build_decisions(rows, stage148_summary, args.near_target_tolerance, args.validation_scope)
 
     rows_csv = args.summary_root / f"{args.output_prefix}_rows.csv"
@@ -248,6 +249,7 @@ def main():
         "mode": args.mode,
         "report_title": args.report_title,
         "render_summary": str(args.stage148_summary),
+        "base_method": args.base_method,
         "validation_scope": args.validation_scope,
         "near_target_tolerance": args.near_target_tolerance,
         "rows": rows,

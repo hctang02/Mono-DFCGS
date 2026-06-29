@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage149: `f926586 Revalidate rate-counted side-info rendering`
+- Latest pushed commit before Stage150: `84ee4d1 Validate full gap side-info rendering`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -104,6 +104,7 @@ Key Stage96 direct total rates:
 - Stage147: completed rate-counted side-info fallback package based on Stage96 q6/top10 entropy residual side-info.
 - Stage148: completed actual encode/decode/render revalidation of the Stage147 rate-counted side-info fallback on 120 sampled q12 gap4/gap8 eval tasks.
 - Stage149: completed full q12 gap4/gap8 eval-row rendered validation of the rate-counted q6/top10 entropy side-info fallback.
+- Stage150: completed full q12 gap4/gap8 linear-base side-info validation; both gaps exceed corrected StreamSplat targets.
 
 ## Current Best Selector Policy
 
@@ -197,6 +198,7 @@ Stage113 held-out diagnostic:
 - Stage147 packages the first viable quality-rescue fallback: q6/top10 entropy index+value residual side-info with all payload bytes counted. On Stage96 broader slice, gap4 side-info PSNR is `22.841151135422116` vs corrected target `23.004337221027775` (`-0.16318608560565906 dB`) at direct rate `0.21508592669374865 MiB/frame`; gap8 side-info PSNR is `21.39901144086742` vs target `21.56004909948801` (`-0.1610376586205895 dB`) at direct rate `0.13149337333220473 MiB/frame`. Stage148 must full-render revalidate before final claim.
 - Stage148 actual encode/decode/render revalidation passes on `120` sampled q12 gap4/gap8 eval tasks: entropy decode max diff vs fixed decode is `0.0`; gap4 side-info PSNR is `22.850143675432175` vs corrected target `23.004337221027775` (`-0.15419354559560006 dB`) at direct rate `0.21511227459583468 MiB/frame`; gap8 side-info PSNR is `21.965723744155056` vs target `21.56004909948801` (`+0.40567464466704806 dB`) at direct rate `0.13114993178728715 MiB/frame`; positive deltas are `60/60` for both gaps. Still sampled, so next step is full all-row/full-video RD validation.
 - Stage149 full q12 gap4/gap8 eval-row validation passes using actual entropy payload encode/decode/render on all `3170` rows: gap4 side-info PSNR is `22.768595216050993` vs corrected target `23.004337221027775` (`-0.23574200497678177 dB`) at direct rate `0.21526316902466064 MiB/frame`; gap8 side-info PSNR is `21.857517703953395` vs target `21.56004909948801` (`+0.2974686044653865 dB`) at direct rate `0.13116832149974542 MiB/frame`; decode diff is `0.0`; positive deltas are `1463/1463` and `1707/1707`. Next step is full-video RD packaging and/or a small q/keep refinement to close the remaining gap4 `0.236 dB`.
+- Stage150 closes the remaining middle-frame gap using decoder-safe linear base plus rate-counted q6/top10 entropy index+value residual side-info on all `3170` q12 gap4/gap8 eval rows: gap4 side-info PSNR is `23.104893423851635` vs corrected target `23.004337221027775` (`+0.10055620282386002 dB`) at direct rate `0.21060840528077832 MiB/frame`; gap8 side-info PSNR is `22.020188948523128` vs target `21.56004909948801` (`+0.4601398490351194 dB`) at direct rate `0.12643008870779784 MiB/frame`; decode diff is `0.0`; positive deltas are `1463/1463` and `1707/1707`. Next stage should package final full-video RD policy around this Stage150 fallback.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.

@@ -1,0 +1,3 @@
+base_method,codec,reference_gap,task_count,keep_fraction,side_bits,mean_fixed_payload_bytes,mean_entropy_payload_bytes,mean_fixed_mib_per_intermediate_frame,mean_entropy_mib_per_intermediate_frame,mean_entropy_ratio_vs_fixed,mean_entropy_savings_bytes_vs_fixed,max_decoded_max_abs_diff_vs_fixed,mean_base_psnr,mean_entropy_psnr,mean_delta_psnr_vs_base,positive_delta_count
+linear,q12,4,1463,0.1,6,43381.0,30062.867395762132,0.04137134552001953,0.028670184512865193,0.6929961825629228,13318.132604237868,0.0,19.983964182290645,23.104893423851635,3.120929241560934,1463
+linear,q12,8,1707,0.1,6,43381.0,30203.919156414762,0.04137134552001953,0.028804701954283488,0.6962476465829451,13177.080843585238,0.0,18.76642882721105,22.020188948523128,3.253760121312108,1707

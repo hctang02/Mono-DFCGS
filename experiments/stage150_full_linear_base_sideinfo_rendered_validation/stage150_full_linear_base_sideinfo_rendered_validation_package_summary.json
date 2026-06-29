@@ -1,0 +1,91 @@
+{
+  "stage": 150,
+  "mode": "full q12 gap4/gap8 linear-base rate-counted side-info rendered validation package",
+  "report_title": "Stage150 Full Linear-Base Side-Info Rendered Validation Package",
+  "render_summary": "experiments/stage150_full_linear_base_sideinfo_rendered_validation/stage150_full_linear_base_sideinfo_rendered_validation_summary.json",
+  "base_method": "linear",
+  "validation_scope": "full_eval",
+  "near_target_tolerance": 0.25,
+  "rows": [
+    {
+      "reference_gap": 4,
+      "target_middle_psnr": 23.004337221027775,
+      "base_method": "linear",
+      "codec": "q12",
+      "task_count": 1463,
+      "keep_fraction": 0.1,
+      "side_bits": 6,
+      "mean_base_psnr": 19.983964182290645,
+      "mean_entropy_psnr": 23.104893423851635,
+      "mean_delta_psnr_vs_base": 3.120929241560934,
+      "base_gap_to_target": -3.02037303873713,
+      "entropy_gap_to_target": 0.10055620282386002,
+      "positive_delta_count": 1463,
+      "positive_delta_fraction": 1.0,
+      "max_decoded_max_abs_diff_vs_fixed": 0.0,
+      "mean_entropy_payload_bytes": 30062.867395762132,
+      "mean_entropy_mib_per_intermediate_frame": 0.028670184512865193,
+      "q12_main_anchor_mib_per_frame": 0.18193822076791313,
+      "uniform_intermediate_frame_ratio": 0.75,
+      "mean_direct_total_mib_per_frame": 0.21060840528077832,
+      "mean_amortized_total_mib_per_frame": 0.20344085915256202,
+      "decision": "passes_full_eval_validation"
+    },
+    {
+      "reference_gap": 8,
+      "target_middle_psnr": 21.56004909948801,
+      "base_method": "linear",
+      "codec": "q12",
+      "task_count": 1707,
+      "keep_fraction": 0.1,
+      "side_bits": 6,
+      "mean_base_psnr": 18.76642882721105,
+      "mean_entropy_psnr": 22.020188948523128,
+      "mean_delta_psnr_vs_base": 3.253760121312108,
+      "base_gap_to_target": -2.793620272276957,
+      "entropy_gap_to_target": 0.4601398490351194,
+      "positive_delta_count": 1707,
+      "positive_delta_fraction": 1.0,
+      "max_decoded_max_abs_diff_vs_fixed": 0.0,
+      "mean_entropy_payload_bytes": 30203.919156414762,
+      "mean_entropy_mib_per_intermediate_frame": 0.028804701954283488,
+      "q12_main_anchor_mib_per_frame": 0.09762538675351436,
+      "uniform_intermediate_frame_ratio": 0.875,
+      "mean_direct_total_mib_per_frame": 0.12643008870779784,
+      "mean_amortized_total_mib_per_frame": 0.12282950096351242,
+      "decision": "passes_full_eval_validation"
+    }
+  ],
+  "decisions": [
+    {
+      "item": "entropy_decode",
+      "decision": "matches_fixed_decode",
+      "evidence": "max decoded abs diff vs fixed = 0.0"
+    },
+    {
+      "item": "target_alignment",
+      "decision": "passes_full_eval_validation",
+      "evidence": "worst entropy gap to corrected target = 0.10055620282386002 dB with tolerance 0.25 dB"
+    },
+    {
+      "item": "task_positivity",
+      "decision": "positive_on_all_full_eval_tasks",
+      "evidence": "min positive delta fraction = 1.0"
+    },
+    {
+      "item": "rate_accounting",
+      "decision": "all_sideinfo_bytes_counted",
+      "evidence": "max direct total rate = 0.21060840528077832 MiB/frame; payload bytes from experiments/stage150_full_linear_base_sideinfo_rendered_validation/stage150_full_linear_base_sideinfo_rendered_validation_rows.csv"
+    },
+    {
+      "item": "next_step",
+      "decision": "run_full_video_rd",
+      "evidence": "Full q12 gap4/gap8 eval rows pass; next is full-video RD packaging."
+    }
+  ],
+  "rows_csv": "experiments/stage150_full_linear_base_sideinfo_rendered_validation/stage150_full_linear_base_sideinfo_rendered_validation_package_rows.csv",
+  "decisions_csv": "experiments/stage150_full_linear_base_sideinfo_rendered_validation/stage150_full_linear_base_sideinfo_rendered_validation_package_decisions.csv",
+  "summary_json": "experiments/stage150_full_linear_base_sideinfo_rendered_validation/stage150_full_linear_base_sideinfo_rendered_validation_package_summary.json",
+  "package_json": "experiments/stage150_full_linear_base_sideinfo_rendered_validation/stage150_full_linear_base_sideinfo_rendered_validation_package.json",
+  "report_md": "experiments/stage150_full_linear_base_sideinfo_rendered_validation/stage150_full_linear_base_sideinfo_rendered_validation_package_report.md"
+}

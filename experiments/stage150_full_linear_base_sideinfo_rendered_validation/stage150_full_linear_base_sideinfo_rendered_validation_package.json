@@ -1,0 +1,14 @@
+{
+  "stage": 150,
+  "mode": "full q12 gap4/gap8 linear-base rate-counted side-info rendered validation package",
+  "report_title": "Stage150 Full Linear-Base Side-Info Rendered Validation Package",
+  "decision": "full_eval_validation_passed",
+  "rows_csv": "experiments/stage150_full_linear_base_sideinfo_rendered_validation/stage150_full_linear_base_sideinfo_rendered_validation_package_rows.csv",
+  "decisions_csv": "experiments/stage150_full_linear_base_sideinfo_rendered_validation/stage150_full_linear_base_sideinfo_rendered_validation_package_decisions.csv",
+  "summary_json": "experiments/stage150_full_linear_base_sideinfo_rendered_validation/stage150_full_linear_base_sideinfo_rendered_validation_package_summary.json",
+  "package_json": "experiments/stage150_full_linear_base_sideinfo_rendered_validation/stage150_full_linear_base_sideinfo_rendered_validation_package.json",
+  "report_md": "experiments/stage150_full_linear_base_sideinfo_rendered_validation/stage150_full_linear_base_sideinfo_rendered_validation_package_report.md",
+  "all_sideinfo_bytes_counted": true,
+  "actual_entropy_encode_decode_render": true,
+  "decoder_target_dense_anchor_input": false
+}
