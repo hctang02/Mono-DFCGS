@@ -1,0 +1,79 @@
+{
+  "stage": 142,
+  "mode": "middle-frame protocol alignment audit",
+  "stage75_root": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage75_corrected_streamsplat_paper_protocol_package",
+  "stage77_root": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage77_qbit_full_video_anchor_only_rd_sweep",
+  "stage78_root": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage78_integrated_davis_rd_package",
+  "stage141_package": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage141_deployable_full_pipeline_manifest/stage141_deployable_full_pipeline_manifest_package.json",
+  "target_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage142_middle_frame_protocol_alignment_audit/stage142_middle_frame_targets.csv",
+  "comparison_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage142_middle_frame_protocol_alignment_audit/stage142_protocol_comparison_rows.csv",
+  "findings_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage142_middle_frame_protocol_alignment_audit/stage142_protocol_alignment_findings.csv",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage142_middle_frame_protocol_alignment_audit/stage142_middle_frame_protocol_alignment_summary.json",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage142_middle_frame_protocol_alignment_audit/stage142_middle_frame_protocol_alignment_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage142_middle_frame_protocol_alignment_audit/stage142_middle_frame_protocol_alignment_report.md",
+  "target_rows": [
+    {
+      "target_name": "paper_level_middle_frame_target",
+      "reference_source": "Stage75 corrected StreamSplat paper-protocol package",
+      "reference_scope": "DAVIS val full 30 sequences, sliding fixed intervals, official_256_float",
+      "local_gap": "5",
+      "paper_setting": "Middle-4 frames",
+      "paper_psnr": "23.66",
+      "local_corrected_middle_psnr": "23.004337221027775",
+      "local_corrected_all_psnr": "26.994540075591946",
+      "local_corrected_given_psnr": "34.97494578472027"
+    },
+    {
+      "target_name": "paper_level_middle_frame_target",
+      "reference_source": "Stage75 corrected StreamSplat paper-protocol package",
+      "reference_scope": "DAVIS val full 30 sequences, sliding fixed intervals, official_256_float",
+      "local_gap": "8",
+      "paper_setting": "8-frame interval",
+      "paper_psnr": "22.1",
+      "local_corrected_middle_psnr": "21.56004909948801",
+      "local_corrected_all_psnr": "24.534872014837706",
+      "local_corrected_given_psnr": "34.94675221856166"
+    }
+  ],
+  "q12_adapter_gap4_diagnostic": {
+    "comparison_name": "Stage78_anchor_only_vs_Stage75_reference",
+    "reference_scope": "DAVIS val full 30 sequences, sliding fixed intervals, official_256_float",
+    "ours_scope": "Stage77 scoped 4 DAVIS val sequences: bmx-trees, car-shadow, goat, soapbox",
+    "reference_gap": "5",
+    "ours_gap": "4",
+    "ours_codec": "q12",
+    "ours_method": "adapter",
+    "ours_rate_mib_per_frame": "0.18193822076791313",
+    "ours_middle_psnr": "18.256196169477683",
+    "reference_middle_psnr": "23.004337221027775",
+    "middle_gap_to_reference": "-4.748141051550093",
+    "scope_matched": 0,
+    "metric_matched": 1,
+    "rate_matched": "n/a_reference_has_no_anchor_codec_rate",
+    "use_as_final_claim": 0
+  },
+  "q12_adapter_gap8_diagnostic": {
+    "comparison_name": "Stage78_anchor_only_vs_Stage75_reference",
+    "reference_scope": "DAVIS val full 30 sequences, sliding fixed intervals, official_256_float",
+    "ours_scope": "Stage77 scoped 4 DAVIS val sequences: bmx-trees, car-shadow, goat, soapbox",
+    "reference_gap": "8",
+    "ours_gap": "8",
+    "ours_codec": "q12",
+    "ours_method": "adapter",
+    "ours_rate_mib_per_frame": "0.09762538675351436",
+    "ours_middle_psnr": "17.06969395261803",
+    "reference_middle_psnr": "21.56004909948801",
+    "middle_gap_to_reference": "-4.490355146869977",
+    "scope_matched": 0,
+    "metric_matched": 1,
+    "rate_matched": "n/a_reference_has_no_anchor_codec_rate",
+    "use_as_final_claim": 0
+  },
+  "scope_matched_for_current_stage78_gap": 0,
+  "use_stage78_as_final_claim": 0,
+  "next_required_stages": [
+    "Stage143: PSNR collapse decomposition on matched diagnostics",
+    "Stage144: high-rate/uncompressed anchor upper-bound evaluation",
+    "Stage145+: large-scale render-loss adapter training if model ceiling is the bottleneck"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "stage": 142,
+  "mode": "middle-frame protocol alignment audit",
+  "target_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage142_middle_frame_protocol_alignment_audit/stage142_middle_frame_targets.csv",
+  "comparison_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage142_middle_frame_protocol_alignment_audit/stage142_protocol_comparison_rows.csv",
+  "findings_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage142_middle_frame_protocol_alignment_audit/stage142_protocol_alignment_findings.csv",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage142_middle_frame_protocol_alignment_audit/stage142_middle_frame_protocol_alignment_summary.json",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage142_middle_frame_protocol_alignment_audit/stage142_middle_frame_protocol_alignment_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage142_middle_frame_protocol_alignment_audit/stage142_middle_frame_protocol_alignment_report.md",
+  "critical_findings": [
+    {
+      "severity": "critical",
+      "finding": "Stage78 reference comparison is diagnostic, not a final apples-to-apples paper-protocol claim.",
+      "evidence": "Stage75 uses full DAVIS val 30 sequences; Stage77/78 anchor-only rows use 4 scoped DAVIS val sequences.",
+      "required_action": "Rerun our anchor/adapter pipeline on the same full DAVIS val paper-style protocol before final claims."
+    },
+    {
+      "severity": "critical",
+      "finding": "Current middle-frame quality is far below the corrected StreamSplat/paper-level target.",
+      "evidence": "q12 adapter gap4 middle gap=-4.748141051550093; q12 adapter gap8 middle gap=-4.490355146869977.",
+      "required_action": "Run Stage143/144 to separate renderer/data/quantization/model causes, then train or add rate-counted side-info until middle PSNR recovers."
+    }
+  ]
+}
