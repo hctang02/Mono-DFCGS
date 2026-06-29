@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage142: `b02cb99 Package deployable pipeline manifest`
+- Latest pushed commit before Stage143: `cca4294 Audit middle-frame protocol alignment`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -97,6 +97,7 @@ Key Stage96 direct total rates:
 - Stage140: completed multi-setting predictor ablation package.
 - Stage141: completed final deployable full-pipeline manifest.
 - Stage142: completed middle-frame protocol/reference alignment audit.
+- Stage143: completed middle-frame PSNR collapse decomposition across renderer/data, quantization, and dynamic model.
 
 ## Current Best Selector Policy
 
@@ -183,6 +184,7 @@ Stage113 held-out diagnostic:
 - Stage140 ablation package confirms final primary q4/top20 scale `0.75` and final low-rate q4/top10 scale `0.75`; dedicated MLP remains rejected with q4/top20 PSNR `18.76520305064309` and q4/top10 PSNR `18.865777753557193`.
 - Stage141 final manifest `deployable_render_aware_scaled_adapter_delta_full_pipeline_v1`: primary q4/top20 scale `0.75`, rate `0.11729838135687401`, PSNR `19.022109503207204`; low-rate q4/top10 scale `0.75`, PSNR `18.997890662360874`; residual/index/scale payload bytes all zero; teacher side-info deployable `0`; checklist all pass.
 - Stage142 confirms the current Stage78 q12 adapter middle-frame gaps to corrected StreamSplat reference are large: gap4 `-4.748141051550093 dB`, gap8 `-4.490355146869977 dB`; Stage78 is diagnostic only because Stage75 is full DAVIS val paper protocol while Stage77/78 used 4 scoped DAVIS val sequences. Stage141 remains a decoder-safe accounting checkpoint, not a paper-level quality result.
+- Stage143 shows the collapse is model-side, not renderer/data or q12 quantization: float32 dense-direct middle PSNR is gap4 `29.749654363336436` and gap8 `29.74550454012203`, while float32 adapter middle PSNR is gap4 `18.255332640417755` and gap8 `17.067872741131573`; q16 vs q12 adapter middle changes are only about `0.00005 dB` / `-0.00001 dB`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.

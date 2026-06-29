@@ -1,0 +1,5 @@
+severity,finding,evidence,required_action
+critical,gap4 float32 dense-direct ceiling greatly exceeds adapter prediction,"dense_direct=29.749654363336436, adapter=18.255332640417755, dense-adapter=11.49432172291868",Prioritize dynamic adapter training and/or rate-counted motion/residual side-info.
+medium,gap4 q16-vs-q12 quantization sensitivity,"q16_adapter=18.255332804105823, q12_adapter=18.25528373980314, q16-q12=4.9064302682921834e-05","If q_gap is small, raising keyframe quantization alone will not recover paper-level middle PSNR."
+critical,gap8 float32 dense-direct ceiling greatly exceeds adapter prediction,"dense_direct=29.74550454012203, adapter=17.067872741131573, dense-adapter=12.677631798990458",Prioritize dynamic adapter training and/or rate-counted motion/residual side-info.
+medium,gap8 q16-vs-q12 quantization sensitivity,"q16_adapter=17.067879472412265, q12_adapter=17.06788939572344, q16-q12=-9.92331117544154e-06","If q_gap is small, raising keyframe quantization alone will not recover paper-level middle PSNR."

@@ -1,0 +1,25 @@
+{
+  "stage": 143,
+  "mode": "middle-frame PSNR collapse diagnostic",
+  "rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage143_middle_frame_psnr_collapse_diagnostic/stage143_middle_frame_psnr_collapse_rows.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage143_middle_frame_psnr_collapse_diagnostic/stage143_middle_frame_psnr_collapse_summary.csv",
+  "findings_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage143_middle_frame_psnr_collapse_diagnostic/stage143_middle_frame_psnr_collapse_findings.csv",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage143_middle_frame_psnr_collapse_diagnostic/stage143_middle_frame_psnr_collapse_summary.json",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage143_middle_frame_psnr_collapse_diagnostic/stage143_middle_frame_psnr_collapse_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage143_middle_frame_psnr_collapse_diagnostic/stage143_middle_frame_psnr_collapse_report.md",
+  "row_count": 144,
+  "critical_findings": [
+    {
+      "severity": "critical",
+      "finding": "gap4 float32 dense-direct ceiling greatly exceeds adapter prediction",
+      "evidence": "dense_direct=29.749654363336436, adapter=18.255332640417755, dense-adapter=11.49432172291868",
+      "required_action": "Prioritize dynamic adapter training and/or rate-counted motion/residual side-info."
+    },
+    {
+      "severity": "critical",
+      "finding": "gap8 float32 dense-direct ceiling greatly exceeds adapter prediction",
+      "evidence": "dense_direct=29.74550454012203, adapter=17.067872741131573, dense-adapter=12.677631798990458",
+      "required_action": "Prioritize dynamic adapter training and/or rate-counted motion/residual side-info."
+    }
+  ]
+}

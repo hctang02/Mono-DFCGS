@@ -1,0 +1,59 @@
+{
+  "stage": 143,
+  "mode": "middle-frame PSNR collapse diagnostic",
+  "manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage61_davis_anchor_export_data_full/stage61_davis_anchor_export_manifest.csv",
+  "adapter": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors",
+  "stage142_targets": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage142_middle_frame_protocol_alignment_audit/stage142_middle_frame_targets.csv",
+  "split": "val",
+  "sequences": [
+    "bmx-trees",
+    "car-shadow",
+    "goat",
+    "soapbox"
+  ],
+  "gaps": [
+    4,
+    8,
+    16
+  ],
+  "codecs": [
+    "float32",
+    "q8",
+    "q12",
+    "q16"
+  ],
+  "row_count": 144,
+  "summary_row_count": 36,
+  "findings": [
+    {
+      "severity": "critical",
+      "finding": "gap4 float32 dense-direct ceiling greatly exceeds adapter prediction",
+      "evidence": "dense_direct=29.749654363336436, adapter=18.255332640417755, dense-adapter=11.49432172291868",
+      "required_action": "Prioritize dynamic adapter training and/or rate-counted motion/residual side-info."
+    },
+    {
+      "severity": "medium",
+      "finding": "gap4 q16-vs-q12 quantization sensitivity",
+      "evidence": "q16_adapter=18.255332804105823, q12_adapter=18.25528373980314, q16-q12=4.9064302682921834e-05",
+      "required_action": "If q_gap is small, raising keyframe quantization alone will not recover paper-level middle PSNR."
+    },
+    {
+      "severity": "critical",
+      "finding": "gap8 float32 dense-direct ceiling greatly exceeds adapter prediction",
+      "evidence": "dense_direct=29.74550454012203, adapter=17.067872741131573, dense-adapter=12.677631798990458",
+      "required_action": "Prioritize dynamic adapter training and/or rate-counted motion/residual side-info."
+    },
+    {
+      "severity": "medium",
+      "finding": "gap8 q16-vs-q12 quantization sensitivity",
+      "evidence": "q16_adapter=17.067879472412265, q12_adapter=17.06788939572344, q16-q12=-9.92331117544154e-06",
+      "required_action": "If q_gap is small, raising keyframe quantization alone will not recover paper-level middle PSNR."
+    }
+  ],
+  "rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage143_middle_frame_psnr_collapse_diagnostic/stage143_middle_frame_psnr_collapse_rows.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage143_middle_frame_psnr_collapse_diagnostic/stage143_middle_frame_psnr_collapse_summary.csv",
+  "findings_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage143_middle_frame_psnr_collapse_diagnostic/stage143_middle_frame_psnr_collapse_findings.csv",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage143_middle_frame_psnr_collapse_diagnostic/stage143_middle_frame_psnr_collapse_summary.json",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage143_middle_frame_psnr_collapse_diagnostic/stage143_middle_frame_psnr_collapse_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage143_middle_frame_psnr_collapse_diagnostic/stage143_middle_frame_psnr_collapse_report.md"
+}
