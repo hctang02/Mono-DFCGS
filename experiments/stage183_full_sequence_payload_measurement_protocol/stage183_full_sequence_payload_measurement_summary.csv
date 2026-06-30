@@ -1,0 +1,4 @@
+schedule,sequence_count,total_frames,keyframe_rows,residual_rows,keyframe_ratio,unique_keyframe_measurements,unique_residual_measurements
+uniform_gap8,30,1999,292,1707,0.14607303651825912,292,1707
+stage165_adaptive,30,1999,358,1641,0.1790895447723862,358,1641
+uniform_gap4,30,1999,536,1463,0.2681340670335168,536,1463

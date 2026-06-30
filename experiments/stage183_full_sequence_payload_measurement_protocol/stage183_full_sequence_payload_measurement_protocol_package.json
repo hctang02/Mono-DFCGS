@@ -1,0 +1,50 @@
+{
+  "stage": 183,
+  "status": "full_sequence_payload_measurement_protocol_packaged",
+  "stage182_decision": "freeze_current_candidate_and_run_full_sequence_payload_measurement_next",
+  "frozen_policy_name": "rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate",
+  "sequence_count": 30,
+  "total_frames_per_schedule": 1999,
+  "schedule_count": 3,
+  "frame_schedule_row_count": 5997,
+  "unique_keyframe_measurement_count": 596,
+  "unique_residual_measurement_count": 3472,
+  "summary_rows": [
+    {
+      "schedule": "uniform_gap8",
+      "sequence_count": 30,
+      "total_frames": 1999,
+      "keyframe_rows": 292,
+      "residual_rows": 1707,
+      "keyframe_ratio": 0.14607303651825912,
+      "unique_keyframe_measurements": 292,
+      "unique_residual_measurements": 1707
+    },
+    {
+      "schedule": "stage165_adaptive",
+      "sequence_count": 30,
+      "total_frames": 1999,
+      "keyframe_rows": 358,
+      "residual_rows": 1641,
+      "keyframe_ratio": 0.1790895447723862,
+      "unique_keyframe_measurements": 358,
+      "unique_residual_measurements": 1641
+    },
+    {
+      "schedule": "uniform_gap4",
+      "sequence_count": 30,
+      "total_frames": 1999,
+      "keyframe_rows": 536,
+      "residual_rows": 1463,
+      "keyframe_ratio": 0.2681340670335168,
+      "unique_keyframe_measurements": 536,
+      "unique_residual_measurements": 1463
+    }
+  ],
+  "frame_schedule_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage183_full_sequence_payload_measurement_protocol/stage183_full_sequence_frame_schedule_payload_rows.csv",
+  "unique_keyframe_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage183_full_sequence_payload_measurement_protocol/stage183_unique_keyframe_payload_measurement_rows.csv",
+  "unique_residual_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage183_full_sequence_payload_measurement_protocol/stage183_unique_stage158_residual_payload_measurement_rows.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage183_full_sequence_payload_measurement_protocol/stage183_full_sequence_payload_measurement_summary.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage183_full_sequence_payload_measurement_protocol/stage183_full_sequence_payload_measurement_protocol_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage183_full_sequence_payload_measurement_protocol/stage183_full_sequence_payload_measurement_protocol_report.md"
+}

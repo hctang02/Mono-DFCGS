@@ -264,6 +264,7 @@ Stage113 held-out diagnostic:
 - Stage180 executes the Stage179 protocol. Decision: `broader_validation_ready_for_review`. It covers `270/270` rows, completes `88/88` new Stage158 middle renders and `32/32` q12 target-keyframe metric renders, reuses `150` Stage174 rows, and writes `270` final-quality rows. Overall final target PSNR/LPIPS are Stage165 adaptive `29.770752551041166/0.1427798855635855`, uniform gap8 `29.206326430809128/0.1766524552471108`, and uniform gap4 `29.46421682151917/0.16245726098616917`. Adaptive deltas are `+0.5644261202320328` dB PSNR / `-0.0338725696835253` LPIPS vs gap8 and `+0.306535729521994` dB PSNR / `-0.019677375422583687` LPIPS vs gap4. Key caveat remains sampled broader validation, not final full-sequence RD. Package path: `experiments/stage180_broader_sampled_adaptive_validation_execution/`.
 - Stage181 separates exact full-sequence schedule accounting from sampled residual estimates. Exact counts over `30` sequences / `1999` frames: uniform gap8 `292` keyframes, Stage165 adaptive `358` keyframes plus `327` metadata bytes, uniform gap4 `536` keyframes. Combined proxy using Stage180 residual payload means gives total MiB/frame uniform gap8 `0.3073179395851907`, adaptive `0.1916456087572328`, uniform gap4 `0.3688664299140155`. Decision: `adaptive_rate_promising_under_broader_sampled_proxy`. Non-claim: final full-sequence RD still requires actual q12 keyframe bitstreams and all-frame residual payload encode. Package path: `experiments/stage181_full_sequence_rd_accounting_preflight/`.
 - Stage182 combines Stage180 quality and Stage181 rate proxy evidence into a branch decision. Decision: `freeze_current_candidate_and_run_full_sequence_payload_measurement_next`. Frozen policy: `rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate`. Rationale: broader sampled quality is positive (`+0.5644261202320328` dB vs gap8, `+0.306535729521994` dB vs gap4), rate proxy is positive (`-0.11567233082795791` MiB/frame vs gap8, `-0.17722082115678273` vs gap4), and remaining risks are final measurement risks rather than immediate selector-tuning blockers. Package path: `experiments/stage182_selector_refinement_or_freeze_decision/`.
+- Stage183 packages the full-sequence payload measurement protocol. It enumerates `5997` frame/schedule rows across uniform gap8, Stage165 adaptive, and uniform gap4, and deduplicates the next measurement workload to `596` unique q12 keyframe payload rows plus `3472` unique Stage158 q6/keep1.0 residual payload rows. Per-schedule counts match Stage181 exactly: gap8 `292/1707`, adaptive `358/1641`, gap4 `536/1463` keyframe/residual rows. Package path: `experiments/stage183_full_sequence_payload_measurement_protocol/`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -1032,7 +1033,7 @@ Result:
 
 ### Stage183: Full-Sequence Payload Measurement Protocol
 
-Status: next possible stage.
+Status: completed on 2026-06-30.
 
 Goal: define the exact execution protocol for measuring actual q12 keyframe bitstreams and Stage158 residual payloads under uniform gap8, Stage165 adaptive, and uniform gap4 schedules.
 
@@ -1047,6 +1048,15 @@ Actions:
 Success condition:
 
 - A concrete full-sequence payload measurement protocol exists with row counts and executable inputs for the next stage.
+
+Result:
+
+- Package: `experiments/stage183_full_sequence_payload_measurement_protocol/stage183_full_sequence_payload_measurement_protocol_package.json`.
+- Report: `experiments/stage183_full_sequence_payload_measurement_protocol/stage183_full_sequence_payload_measurement_protocol_report.md`.
+- Frame/schedule rows: `5997`.
+- Unique q12 keyframe payload measurements: `596`.
+- Unique Stage158 residual payload measurements: `3472`.
+- Next stage: Stage184 actual payload measurement from the Stage183 unique measurement CSVs.
 
 ### Stage109: Selector-Score Feature Preflight
 
