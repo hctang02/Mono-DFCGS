@@ -1,0 +1,9 @@
+rank,target_key,source_task_id,sequence,target_index,source_gap,hard_quality_label,high_payload_label,stage166_false_negative_hard,stage166_payload_bytes,selection_score,selection_reason
+1,motocross-jump:00013,stage79_00028835,motocross-jump,13,8,1,1,0,263358.0,249.3358,positive_sequence;hard_quality_promoted;high_payload_promoted;stage166_smoke_sequence
+2,motocross-jump:00022,stage79_00028811,motocross-jump,22,4,1,1,0,253183.0,248.3183,positive_sequence;hard_quality_promoted;high_payload_promoted;stage166_smoke_sequence
+3,motocross-jump:00023,stage79_00028812,motocross-jump,23,4,1,1,0,241694.0,247.1694,positive_sequence;hard_quality_promoted;high_payload_promoted;stage166_smoke_sequence
+4,camel:00075,stage79_00022883,camel,75,8,1,1,0,244271.0,245.4271,positive_sequence;hard_quality_promoted;high_payload_promoted;stage166_smoke_sequence
+5,cows:00060,stage79_00023944,cows,60,8,1,1,0,231584.0,245.1584,positive_sequence;hard_quality_promoted;high_payload_promoted;stage166_smoke_sequence
+6,cows:00019,stage79_00023829,cows,19,4,1,1,0,225030.0,244.503,positive_sequence;hard_quality_promoted;high_payload_promoted;stage166_smoke_sequence
+7,camel:00047,stage79_00022787,camel,47,4,1,1,0,230502.0,244.0502,positive_sequence;hard_quality_promoted;high_payload_promoted;stage166_smoke_sequence
+8,camel:00051,stage79_00022790,camel,51,4,1,1,0,225503.0,243.5503,positive_sequence;hard_quality_promoted;high_payload_promoted;stage166_smoke_sequence

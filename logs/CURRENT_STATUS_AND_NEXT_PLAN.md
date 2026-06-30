@@ -123,6 +123,7 @@ Key Stage96 direct total rates:
 - Stage165: converted multi-feature RGB/motion hard-window signal into an adaptive keyframe schedule preflight with counted metadata.
 - Stage166: compared the Stage165 adaptive schedule against uniform gap4/gap8 using sampled label/RD proxy and selected a rendered-smoke set.
 - Stage167: ran a small rendered smoke on Stage166 hard false negatives; adaptive is essentially unchanged from uniform gap8 on this stress set.
+- Stage168: ran a complementary positive-coverage smoke on promoted hard/high-payload targets; promotions avoid expensive uniform-gap8 middle recovery.
 
 ## Current Best Selector Policy
 
@@ -234,6 +235,7 @@ Stage113 held-out diagnostic:
 - Stage165 improves selector signal with a multi-feature rank gate using Stage162-allowed RGB/motion features only. Selected gate: rank threshold `0.65`, minimum votes `1`; hard-quality precision/recall/F1 `0.314286/0.733333/0.44`, payload recall `0.819444`. It creates `rgb_motion_rank_gate_gap8_plus_extra_targets_v1`: start from uniform gap8 and insert selected target frames as extra keyframes. Across `30` sequences / `1999` frames, adaptive keyframes are `358` with metadata `2610` bits (`327` bytes), selecting `22/30` hard-quality rows and `59/72` high-payload rows. Package path: `experiments/stage165_multifeature_keyframe_schedule_preflight/`.
 - Stage166 runs a pre-render label/RD proxy for Stage165 schedules. Decision: `promising_for_small_rendered_smoke`. Adaptive keyframes are `358`, between uniform gap8 `292` and uniform gap4 `536`; metadata remains `2610` bits / `327` bytes. Sampled target promotions are `70/120`, hard-quality coverage `22/30`, high-payload coverage `59/72`, sampled residual payload avoided `16241740` bytes, and total proxy MiB/frame `0.19418151582689588`. Remaining hard false negatives are `8` sampled rows. Smoke candidates: `motocross-jump`, `cows`, `camel`, `breakdance`, `dance-twirl`, `scooter-black`, `india`, `shooting`, `car-roundabout`, `bike-packing`. Package path: `experiments/stage166_adaptive_schedule_label_rd_comparison/`.
 - Stage167 renders a small hard-false-negative stress smoke on `8` targets that remain middle-recovery targets under Stage165 adaptive schedule. Decision: `inspect_smoke_before_scaling`. On this biased stress set, uniform gap8 PSNR/SSIM/MS-SSIM/LPIPS is `26.203640896378754/0.8343665823340416/0.9815688729286194/0.20792134664952755`; Stage165 adaptive is `26.192677144097146/0.8337735459208488/0.9814087599515915/0.2088309582322836`, delta PSNR `-0.010963752281610173`, delta LPIPS `+0.0009096115827560425`. This mainly shows false negatives remain unchanged, not that the adaptive schedule is broadly bad. Package path: `experiments/stage167_adaptive_schedule_rendered_smoke/`. Heavy contact sheet: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage167_adaptive_schedule_rendered_smoke/stage167_adaptive_schedule_rendered_smoke_contact_sheet.jpg`.
+- Stage168 renders a complementary positive-coverage smoke on `8` adaptive-promoted targets from `motocross-jump`, `camel`, and `cows`; all selected targets are both hard-quality and high-payload labels. Decision: `positive_promotions_confirmed_for_broader_validation`. Adaptive marks all `8/8` as target keyframes and does not claim rendered middle metrics. Uniform gap8 recovery on these targets is PSNR/SSIM/MS-SSIM/LPIPS `27.889178289574676/0.8163857758045197/0.9782927110791206/0.21933318674564362` with mean residual payload `242546.25` bytes, confirming adaptive promotion avoids expensive middle recovery on positive cases. Package path: `experiments/stage168_positive_coverage_rendered_smoke/`. Heavy contact sheet: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage168_positive_coverage_rendered_smoke/stage168_positive_coverage_rendered_smoke_contact_sheet.jpg`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -578,7 +580,7 @@ Result:
 
 ### Stage168: Positive-Coverage Rendered Smoke
 
-Status: next immediate step.
+Status: completed as positive-coverage smoke on 2026-06-30.
 
 Goal: run a complementary rendered/visual smoke on Stage166 sequences where adaptive scheduling promotes hard or high-payload targets, to verify the positive side of the selector rather than only false negatives.
 
@@ -601,6 +603,34 @@ Actions:
 Success condition:
 
 - A positive-coverage smoke clarifies whether Stage165/166 adaptive scheduling is worth scaling beyond stress false negatives.
+
+Result:
+
+- Package: `experiments/stage168_positive_coverage_rendered_smoke/stage168_positive_coverage_rendered_smoke_package.json`.
+- Report: `experiments/stage168_positive_coverage_rendered_smoke/stage168_positive_coverage_rendered_smoke_report.md`.
+- Heavy contact sheet: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage168_positive_coverage_rendered_smoke/stage168_positive_coverage_rendered_smoke_contact_sheet.jpg`.
+- Decision: `positive_promotions_confirmed_for_broader_validation`.
+- Selected `8` promoted targets; all are hard-quality and high-payload labels.
+- Uniform gap8 recovery on promoted targets has mean payload `242546.25` bytes and LPIPS `0.21933318674564362`, so positive promotions are meaningful.
+- Stage165 adaptive rows are marked keyframes/no-middle-render; q12 keyframe render quality is not claimed here.
+
+### Stage169: Combined Adaptive Rendered Validation Design
+
+Status: next immediate step.
+
+Goal: design a broader but still controlled rendered validation that combines Stage167 false-negative risks and Stage168 positive promotion wins.
+
+Actions:
+
+- Include false-negative residual targets: `breakdance`, `bike-packing`, `dance-twirl`, `dogs-jump`.
+- Include positive promoted targets: `motocross-jump`, `cows`, `camel`, `scooter-black`, `india`, `shooting`, `car-roundabout`.
+- Decide whether to render q12 keyframe reconstructions for promoted targets or keep them as schedule/keyframe metadata only.
+- Count schedule metadata, keyframe additions, residual payloads, and all side-info consistently.
+- Keep heavy media out of repo.
+
+Success condition:
+
+- A clear Stage169 protocol states exact targets/sequences, metrics, rate accounting, and whether the next run should be small/medium/full.
 
 ### Stage109: Selector-Score Feature Preflight
 
