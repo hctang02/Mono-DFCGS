@@ -122,6 +122,7 @@ Key Stage96 direct total rates:
 - Stage164: completed the first RGB/motion heuristic hard-segment selector preflight.
 - Stage165: converted multi-feature RGB/motion hard-window signal into an adaptive keyframe schedule preflight with counted metadata.
 - Stage166: compared the Stage165 adaptive schedule against uniform gap4/gap8 using sampled label/RD proxy and selected a rendered-smoke set.
+- Stage167: ran a small rendered smoke on Stage166 hard false negatives; adaptive is essentially unchanged from uniform gap8 on this stress set.
 
 ## Current Best Selector Policy
 
@@ -232,6 +233,7 @@ Stage113 held-out diagnostic:
 - Stage164 sweeps simple RGB/motion hard-segment heuristics. Best simple row-level heuristic is `edge_left_right` top-40%, with hard-quality precision/recall/F1 `0.333333/0.533333/0.410256` and high-payload recall `0.555556`. It selects higher-payload/lower-PSNR rows on average, so there is signal, but it misses important hard cases like `motocross-jump`; therefore it is a preflight only, not the final selector. Package path: `experiments/stage164_rgb_motion_heuristic_selector_preflight/`.
 - Stage165 improves selector signal with a multi-feature rank gate using Stage162-allowed RGB/motion features only. Selected gate: rank threshold `0.65`, minimum votes `1`; hard-quality precision/recall/F1 `0.314286/0.733333/0.44`, payload recall `0.819444`. It creates `rgb_motion_rank_gate_gap8_plus_extra_targets_v1`: start from uniform gap8 and insert selected target frames as extra keyframes. Across `30` sequences / `1999` frames, adaptive keyframes are `358` with metadata `2610` bits (`327` bytes), selecting `22/30` hard-quality rows and `59/72` high-payload rows. Package path: `experiments/stage165_multifeature_keyframe_schedule_preflight/`.
 - Stage166 runs a pre-render label/RD proxy for Stage165 schedules. Decision: `promising_for_small_rendered_smoke`. Adaptive keyframes are `358`, between uniform gap8 `292` and uniform gap4 `536`; metadata remains `2610` bits / `327` bytes. Sampled target promotions are `70/120`, hard-quality coverage `22/30`, high-payload coverage `59/72`, sampled residual payload avoided `16241740` bytes, and total proxy MiB/frame `0.19418151582689588`. Remaining hard false negatives are `8` sampled rows. Smoke candidates: `motocross-jump`, `cows`, `camel`, `breakdance`, `dance-twirl`, `scooter-black`, `india`, `shooting`, `car-roundabout`, `bike-packing`. Package path: `experiments/stage166_adaptive_schedule_label_rd_comparison/`.
+- Stage167 renders a small hard-false-negative stress smoke on `8` targets that remain middle-recovery targets under Stage165 adaptive schedule. Decision: `inspect_smoke_before_scaling`. On this biased stress set, uniform gap8 PSNR/SSIM/MS-SSIM/LPIPS is `26.203640896378754/0.8343665823340416/0.9815688729286194/0.20792134664952755`; Stage165 adaptive is `26.192677144097146/0.8337735459208488/0.9814087599515915/0.2088309582322836`, delta PSNR `-0.010963752281610173`, delta LPIPS `+0.0009096115827560425`. This mainly shows false negatives remain unchanged, not that the adaptive schedule is broadly bad. Package path: `experiments/stage167_adaptive_schedule_rendered_smoke/`. Heavy contact sheet: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage167_adaptive_schedule_rendered_smoke/stage167_adaptive_schedule_rendered_smoke_contact_sheet.jpg`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -535,7 +537,7 @@ Result:
 
 ### Stage167: Adaptive Schedule Rendered Smoke
 
-Status: next immediate step.
+Status: completed as hard-false-negative stress smoke on 2026-06-30.
 
 Goal: run a small rendered smoke on the Stage166-selected sequences to validate whether the adaptive schedule remains visually/RD plausible after inserted keyframes change interpolation intervals.
 
@@ -563,6 +565,42 @@ Actions:
 Success condition:
 
 - A small rendered smoke package confirms whether Stage165/166 adaptive scheduling is worth scaling up.
+
+Result:
+
+- Package: `experiments/stage167_adaptive_schedule_rendered_smoke/stage167_adaptive_schedule_rendered_smoke_package.json`.
+- Report: `experiments/stage167_adaptive_schedule_rendered_smoke/stage167_adaptive_schedule_rendered_smoke_report.md`.
+- Heavy contact sheet: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage167_adaptive_schedule_rendered_smoke/stage167_adaptive_schedule_rendered_smoke_contact_sheet.jpg`.
+- Decision: `inspect_smoke_before_scaling`.
+- Stress target set: `8` Stage166 hard false negatives.
+- Stage165 adaptive is nearly identical to uniform gap8 on this stress set: PSNR delta `-0.010963752281610173`, LPIPS delta `+0.0009096115827560425`.
+- Interpretation: missed hard rows remain hard; this is a selector false-negative risk check, not a representative adaptive schedule validation.
+
+### Stage168: Positive-Coverage Rendered Smoke
+
+Status: next immediate step.
+
+Goal: run a complementary rendered/visual smoke on Stage166 sequences where adaptive scheduling promotes hard or high-payload targets, to verify the positive side of the selector rather than only false negatives.
+
+Candidate sequences:
+
+- `motocross-jump`
+- `cows`
+- `camel`
+- `scooter-black`
+- `india`
+- `shooting`
+- `car-roundabout`
+
+Actions:
+
+- Include promoted/keyframe rows and nearby remaining middle rows.
+- Compare uniform gap8 rendered recovery, adaptive keyframe promotion/no-middle status, and local adaptive middle recovery.
+- Export a lightweight report and heavy contact sheet only under `/data/hctang/tmp/opencode/mono_dfcgs_runs/`.
+
+Success condition:
+
+- A positive-coverage smoke clarifies whether Stage165/166 adaptive scheduling is worth scaling beyond stress false negatives.
 
 ### Stage109: Selector-Score Feature Preflight
 
