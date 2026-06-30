@@ -114,6 +114,7 @@ Key Stage96 direct total rates:
 - Stage156: completed sampled StreamSplat half-anchor Gaussian residual side-info sweep and found a quality-safe candidate.
 - Stage157: completed 120-task broader validation of the selected half-anchor Gaussian residual policy.
 - Stage158: packaged the selected recovered middle-frame policy and decoder contract.
+- Stage159: exported selected Stage158 gap4 subjective examples and recorded per-example size/rate.
 
 ## Current Best Selector Policy
 
@@ -216,6 +217,7 @@ Stage113 held-out diagnostic:
 - Stage156 converts the Stage155 achievability result into a Gaussian-domain candidate. The selected setting is `streamsplat_half_anchor_entropy_residual` with `best_half_selector`, `keep_fraction=1.0`, `side_bits=6`, and one counted selector byte. On 60 sampled q12 gap4/gap8 eval tasks, it reaches gap4 PSNR `29.88060850586717`, SSIM `0.8795753101507823`, MS-SSIM `0.9853506326675415`, LPIPS `0.16458002875248592`, payload `207591.66666666666` bytes, reference direct rate `0.3799130615678806`; gap8 reaches PSNR `29.54743990416001`, SSIM `0.8700549105803171`, MS-SSIM `0.9840767443180084`, LPIPS `0.17757029533386232`, payload `214067.13333333333` bytes, reference direct rate `0.30177571380022644`. This exceeds the requested `26-27 dB` target and improves LPIPS/SSIM over original StreamSplat. Next: Stage157 should broaden-validate only this selected setting on the 120-task Stage153/154 sample before final packaging.
 - Stage157 validates the selected Stage156 policy on the 120-task Stage153/154 sampled protocol. The policy `streamsplat_half_anchor_entropy_residual_best_half_keep1_q6` reaches gap4 PSNR `29.780485398070507`, SSIM `0.8779375642538071`, MS-SSIM `0.9850881884495417`, LPIPS `0.16601951060195763`, payload `209392.83333333334` bytes, reference direct rate `0.3816307879574477`; gap8 reaches PSNR `29.578682359235195`, SSIM `0.8696596751610438`, MS-SSIM `0.9838472485542298`, LPIPS `0.17853523269295693`, payload `215967.88333333333` bytes, reference direct rate `0.3035884102571357`. Both gaps exceed `26-27 dB` and improve SSIM/MS-SSIM/LPIPS over original StreamSplat. This is the current quality-safe Gaussian-domain recovered middle-frame candidate.
 - Stage158 freezes this candidate as `streamsplat_guided_half_anchor_entropy_residual_v1`. The package records allowed decoder inputs, forbidden target/oracle inputs, counted half-selector metadata, residual payload accounting, and the Stage153-157 evidence chain. Quality gate passes: minimum gap mean PSNR is `29.578682359235195`, minimum SSIM delta is `+0.2771290277441343`, minimum MS-SSIM delta is `+0.1837212438384692`, and maximum LPIPS delta is `-0.13547528696556885` vs original StreamSplat.
+- Stage159 exports a gap4 subjective example video for `car-shadow`, `goat`, and `soapbox`. The layout is `left keyframe | target middle | original StreamSplat middle | Stage158 recovered middle | right keyframe`. The heavy video is `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage159_stage158_subjective_examples/stage159_gap4_stage158_subjective_examples.mp4` (`518852` bytes), and the contact sheet is `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage159_stage158_subjective_examples/stage159_gap4_stage158_subjective_examples_contact_sheet.jpg` (`1091636` bytes). Per-example side-info payloads are `220697`, `251693`, and `246995` bytes for `car-shadow`, `goat`, and `soapbox` respectively.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -326,7 +328,7 @@ Result:
 
 ### Stage159: Optional Subjective Export Or Rate Optimization
 
-Status: next optional step.
+Status: selected subjective export completed on 2026-06-30; rate optimization remains optional.
 
 Goal: either produce human-viewable Stage158 subjective comparisons, or start reducing the high residual side-info rate while preserving the 26-27 dB quality target.
 
@@ -339,6 +341,14 @@ Actions:
 Success condition:
 
 - Subjective export shows no obvious perceptual regression, or a lower-rate candidate keeps both gaps above `26 dB` with no SSIM/MS-SSIM/LPIPS regression versus original StreamSplat.
+
+Result:
+
+- Exported selected gap4 exact-middle examples for `car-shadow` frames `8-10-12`, `goat` frames `44-46-48`, and `soapbox` frames `76-78-80`.
+- Heavy video: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage159_stage158_subjective_examples/stage159_gap4_stage158_subjective_examples.mp4`.
+- Heavy contact sheet: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage159_stage158_subjective_examples/stage159_gap4_stage158_subjective_examples_contact_sheet.jpg`.
+- Lightweight package: `experiments/stage159_stage158_subjective_examples/`.
+- The exported Stage158 recovered metrics match the Stage157 evidence rows.
 
 ### Stage109: Selector-Score Feature Preflight
 
