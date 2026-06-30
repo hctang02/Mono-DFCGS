@@ -134,6 +134,7 @@ Key Stage96 direct total rates:
 - Stage176: packaged the current adaptive schedule candidate `rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate` with decoder contract, evidence, limitations, and next validation requirements.
 - Stage177: compared Stage165 adaptive final target quality against uniform gap8 and uniform gap4 on the Stage174 medium target set; adaptive beats gap8 by `+0.4601686250283185` dB PSNR and gap4 by `+0.27128186202823` dB PSNR under the sampled final-quality definition.
 - Stage178: created the dedicated current-results and innovation summary log `logs/MONO_DFCGS_RESULTS_AND_INNOVATION_SUMMARY_2026-06-30.md` for handoff, writing, and future validation planning.
+- Stage179: built a broader sampled adaptive validation protocol with `90` targets and `270` schedule rows, retaining all `50` Stage174 core targets and marking `88` Stage180 middle renders plus `32` Stage180 q12 keyframe metrics.
 
 ## Current Best Selector Policy
 
@@ -256,6 +257,7 @@ Stage113 held-out diagnostic:
 - Stage176 packages the adaptive keyframe schedule candidate `rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate`. Status: `sampled_validated_candidate_not_final_full_sequence_rd`. Decoder receives transmitted schedule/keyframe indices and normal keyframe/Stage158 residual payloads; decoder does not compute/receive RGB/motion selector features. Encoder-side inputs remain Stage162-allowed RGB/motion features. Key evidence: hard recall `0.733333333333`, payload recall `0.819444444444`; adaptive keyframes `358/1999`, metadata `327` bytes; sampled rate proxy adaptive/gap8/gap4 `0.194181515827/0.300453182577/0.370523510564` MiB/frame; medium validation `150` rows and `54` new renders; false-negative risk PSNR/LPIPS delta `-0.0109637522816/+0.000909611582756`; false-positive keyframe risk remains. Package path: `experiments/stage176_adaptive_schedule_candidate_package/`.
 - Stage177 answers the fixed-gap quality question on the Stage174 medium set. Overall final target PSNR is uniform gap8 `28.7569272347847`, Stage165 adaptive `29.21709585981302`, and uniform gap4 `28.94581399778479`; adaptive deltas are `+0.4601686250283185` dB vs gap8 and `+0.27128186202823` dB vs gap4. Mean LPIPS also improves to `0.15723393142223357` from gap8 `0.1894791081547737` and gap4 `0.17760952532291413`. Adaptive keyframe targets are `26/50`. Interpretation caveat: keyframe rows use q12 target-keyframe reconstruction quality, not Stage158 middle-recovery quality, and the result remains sampled-medium evidence, not final full-sequence RD. Package path: `experiments/stage177_selector_fixed_gap_psnr_comparison/`.
 - Stage178 creates the compact handoff log `logs/MONO_DFCGS_RESULTS_AND_INNOVATION_SUMMARY_2026-06-30.md`. It consolidates the current main claim, best components, Stage158/161 middle-frame results, Stage162/165/172/176/177 adaptive-schedule evidence, module-level innovation points, decoder contracts, non-claims, evidence chain, and Stage179-183 validation plan. Use this file as the primary short reference before future writing or broader validation.
+- Stage179 expands the adaptive validation protocol from Stage174's `50` targets to `90` targets / `270` schedule rows. It retains all `50` Stage174 core targets, adds `40` new targets, reuses `118` Stage174 middle metric rows and `32` Stage177 keyframe metric rows, and marks `88` Stage180 middle renders plus `32` Stage180 q12 keyframe metrics. New categories include broader positive promotions, sequence coverage probes, weak-sequence probes, high-payload residual controls, false-negative residuals, and normal controls. Package path: `experiments/stage179_broader_sampled_adaptive_validation_protocol/`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -906,20 +908,50 @@ Result:
 
 ### Stage179: Broader Sampled Adaptive Validation Protocol
 
-Status: next immediate stage.
+Status: completed on 2026-06-30.
 
 Goal: design a broader sampled validation protocol for the Stage176/177 candidate evidence chain, larger than the Stage174 50-target medium set.
 
 Actions:
 
 - Build a larger target/schedule CSV that compares uniform gap8, Stage165 adaptive, and uniform gap4.
-- Include false negatives, positive promoted targets, false-positive keyframe controls, high-payload residual controls, normal controls, weak subjective sequences, and all-frame schedule coverage.
-- Reuse Stage174/177 rows where possible and mark only missing rows for future rendering.
-- Keep target-keyframe rows explicit as keyframe markers, not middle-recovery renders.
+- Include false negatives, positive promoted targets, false-positive keyframe controls, high-payload residual controls, normal controls, weak subjective sequences, and sequence coverage.
+- Reuse Stage174 middle metrics and Stage177 q12 keyframe final-quality metrics where possible.
+- Mark missing middle rows and q12 keyframe metrics for Stage180 execution.
 
 Success condition:
 
-- A concrete broader-validation protocol exists with counts for targets, schedule rows, reusable rows, new render rows, and keyframe markers.
+- A concrete broader-validation protocol exists with counts for targets, schedule rows, reusable rows, new render rows, and keyframe metric rows.
+
+Result:
+
+- Package: `experiments/stage179_broader_sampled_adaptive_validation_protocol/stage179_broader_sampled_adaptive_validation_protocol_package.json`.
+- Report: `experiments/stage179_broader_sampled_adaptive_validation_protocol/stage179_broader_sampled_adaptive_validation_protocol_report.md`.
+- Targets/schedule rows: `90 / 270`.
+- Stage174 core targets retained: `50`.
+- New targets beyond Stage174: `40`.
+- Existing Stage174 middle metric rows: `118`.
+- Existing Stage177 keyframe metric rows: `32`.
+- Stage180 middle renders required: `88`.
+- Stage180 q12 keyframe metrics required: `32`.
+
+### Stage180: Broader Sampled Adaptive Validation Execution
+
+Status: next possible stage.
+
+Goal: execute the Stage179 broader protocol, then produce a final-quality adaptive vs uniform gap8/gap4 comparison on 90 targets.
+
+Actions:
+
+- Reuse Stage174 middle metrics and Stage177 q12 keyframe metrics.
+- Render Stage158 middle recovery only for rows with `requires_stage180_render=1`.
+- Render q12 target keyframe metrics only for rows with `requires_stage180_keyframe_metric=1`.
+- Produce broader rendered rows, source summary, final-quality rows, adaptive deltas, category summaries, and report.
+- Keep heavy contact sheets outside git if generated.
+
+Success condition:
+
+- Stage179's `270` schedule rows are fully covered and the 90-target adaptive vs fixed-gap final-quality comparison is packaged.
 
 ### Stage109: Selector-Score Feature Preflight
 

@@ -1,0 +1,91 @@
+rank,target_key,category,source_task_id,sequence,target_index,source_gap,hard_quality_label,high_payload_label,adaptive_target_is_keyframe,uniform_gap8_target_is_keyframe,uniform_gap4_target_is_keyframe,stage166_payload_bytes,stage166_psnr,stage166_lpips,priority_score,stage174_core_target,selection_reason
+1,bike-packing:00026,false_negative_residual,stage79_00021354,bike-packing,26,8,1,0,0,0,0,159176.0,25.04849410359389,0.19343437254428864,11229.301346414946,1,Stage174 medium-validation core target
+2,bike-packing:00011,false_negative_residual,stage79_00021341,bike-packing,11,8,1,0,0,0,0,180774.0,25.622482706829217,0.2319265902042389,11226.491104735793,1,Stage174 medium-validation core target
+3,breakdance:00006,false_negative_residual,stage79_00022382,breakdance,6,8,1,0,0,0,0,142447.0,25.242663608239635,0.1973235011100769,11225.764533939806,1,Stage174 medium-validation core target
+4,breakdance:00061,false_negative_residual,stage79_00022430,breakdance,61,8,1,0,0,0,0,155857.0,25.42756354330215,0.17937248945236206,11224.897514356026,1,Stage174 medium-validation core target
+5,dance-twirl:00066,false_negative_residual,stage79_00024353,dance-twirl,66,4,1,0,0,0,0,197156.0,26.122999794968553,0.2735501527786255,11223.956605105886,1,Stage174 medium-validation core target
+6,breakdance:00055,false_negative_residual,stage79_00022356,breakdance,55,4,1,0,0,0,0,126100.0,25.543566837921947,0.17139467597007751,11220.602225140183,1,Stage174 medium-validation core target
+7,breakdance:00025,false_negative_residual,stage79_00022333,breakdance,25,4,1,0,0,0,0,121358.0,25.713629052613758,0.16875958442687988,11218.3747011624,1,Stage174 medium-validation core target
+8,dogs-jump:00020,false_negative_residual,stage79_00025059,dogs-jump,20,8,1,0,0,0,1,167862.0,30.57019814002359,0.2771647870540619,11176.627514340846,1,Stage174 medium-validation core target
+9,motocross-jump:00013,positive_promoted,stage79_00028835,motocross-jump,13,8,1,1,1,0,0,263358.0,31.063829825022648,0.3191358745098114,11236.3358,1,Stage174 medium-validation core target
+10,motocross-jump:00022,positive_promoted,stage79_00028811,motocross-jump,22,4,1,1,1,0,0,253183.0,30.119209546194526,0.33573687076568604,11235.318299999999,1,Stage174 medium-validation core target
+11,cows:00060,positive_promoted,stage79_00023944,cows,60,8,1,1,1,0,1,231584.0,24.68471859771818,0.20881597697734833,11233.1584,1,Stage174 medium-validation core target
+12,cows:00019,positive_promoted,stage79_00023829,cows,19,4,1,1,1,0,0,225030.0,24.70318608724209,0.20844119787216187,11232.503,1,Stage174 medium-validation core target
+13,camel:00075,positive_promoted,stage79_00022883,camel,75,8,1,1,1,0,0,244271.0,25.335479237043415,0.1993795931339264,11234.4271,1,Stage174 medium-validation core target
+14,camel:00047,positive_promoted,stage79_00022787,camel,47,4,1,1,1,0,0,230502.0,25.6279590122115,0.18633119761943817,11233.0502,1,Stage174 medium-validation core target
+15,scooter-black:00010,positive_promoted,stage79_00030345,scooter-black,10,8,1,1,1,0,0,223623.0,25.139113673960868,0.20580781996250153,11232.3623,1,Stage174 medium-validation core target
+16,scooter-black:00004,positive_promoted,stage79_00030340,scooter-black,4,8,1,0,1,0,1,218516.0,24.4885691478027,0.20375370979309082,11171.8516,1,Stage174 medium-validation core target
+17,india:00027,positive_promoted,stage79_00027040,india,27,8,1,1,1,0,0,233735.0,31.727685844595296,0.23860138654708862,11233.3735,1,Stage174 medium-validation core target
+18,india:00030,positive_promoted,stage79_00027043,india,30,8,1,1,1,0,0,230255.0,32.04372980040284,0.24491067230701447,11233.0255,1,Stage174 medium-validation core target
+19,shooting:00012,positive_promoted,stage79_00030550,shooting,12,8,1,1,1,0,1,249775.0,32.64275504495283,0.28768661618232727,11234.9775,1,Stage174 medium-validation core target
+20,shooting:00007,positive_promoted,stage79_00030516,shooting,7,4,0,1,1,0,0,238787.0,35.227434595209886,0.16433610022068024,11133.8787,1,Stage174 medium-validation core target
+21,car-roundabout:00059,positive_promoted,stage79_00023210,car-roundabout,59,4,1,1,1,0,0,224613.0,25.98485821152527,0.1529761403799057,11232.461299999999,1,Stage174 medium-validation core target
+22,car-roundabout:00029,positive_promoted,stage79_00023187,car-roundabout,29,4,0,1,1,0,0,222153.0,27.663026726106743,0.14895430207252502,11132.2153,1,Stage174 medium-validation core target
+23,libby:00018,high_payload_residual_control,stage79_00027942,libby,18,4,0,1,0,0,0,257925.0,32.7872643629876,0.17209970951080322,11359.645997095107,1,Stage174 medium-validation core target
+24,blackswan:00010,high_payload_residual_control,stage79_00021621,blackswan,10,8,0,1,0,0,0,238863.0,29.820765753596852,0.1637483835220337,11340.50048383522,1,Stage174 medium-validation core target
+25,dog:00017,high_payload_residual_control,stage79_00024692,dog,17,4,0,1,0,0,0,234218.0,30.263989567847865,0.1706315129995346,11335.924315129996,1,Stage174 medium-validation core target
+26,dog:00006,high_payload_residual_control,stage79_00024684,dog,6,4,0,1,0,0,0,233064.0,31.48631829272292,0.15496239066123962,11334.613623906613,1,Stage174 medium-validation core target
+27,motocross-jump:00023,positive_promoted_extension,stage79_00028812,motocross-jump,23,4,1,1,1,0,0,241694.0,32.663031483960296,0.265142023563385,10566.996840471267,1,Stage174 medium-validation core target
+28,camel:00051,positive_promoted_extension,stage79_00022790,camel,51,4,1,1,1,0,0,225503.0,25.53339946053153,0.18961508572101593,10549.295301714421,1,Stage174 medium-validation core target
+29,parkour:00090,positive_promoted_extension,stage79_00029702,parkour,90,8,1,1,1,0,0,223869.0,25.56769999688809,0.22302022576332092,10548.329404515267,1,Stage174 medium-validation core target
+30,parkour:00087,positive_promoted_extension,stage79_00029700,parkour,87,8,1,0,1,0,0,218629.0,25.783851442535276,0.20480650663375854,10422.725130132676,1,Stage174 medium-validation core target
+31,cows:00042,positive_promoted_extension,stage79_00023928,cows,42,8,1,0,1,0,0,215843.0,24.676416846228694,0.21696004271507263,10420.182200854302,1,Stage174 medium-validation core target
+32,dance-twirl:00082,positive_promoted_extension,stage79_00024365,dance-twirl,82,4,1,0,1,0,0,215387.0,27.389016543533767,0.2247844934463501,10419.882689868928,1,Stage174 medium-validation core target
+33,dance-twirl:00068,positive_promoted_extension,stage79_00024429,dance-twirl,68,8,1,0,1,0,1,212763.0,26.483361587273105,0.2708978056907654,10418.180956113816,1,Stage174 medium-validation core target
+34,bike-packing:00046,positive_promoted_extension,stage79_00021315,bike-packing,46,4,1,0,1,0,0,211478.0,25.72814190108804,0.19889308512210846,10415.455861702441,1,Stage174 medium-validation core target
+35,pigs:00044,high_payload_residual_control_extension,stage79_00030097,pigs,44,8,0,1,0,0,1,232006.0,32.36086746918035,0.17234298586845398,10233.729429858684,1,Stage174 medium-validation core target
+36,blackswan:00035,high_payload_residual_control_extension,stage79_00021603,blackswan,35,4,0,1,0,0,0,226344.0,29.93624604505344,0.162162184715271,10227.965621847152,1,Stage174 medium-validation core target
+37,lab-coat:00010,high_payload_residual_control_extension,stage79_00027696,lab-coat,10,4,0,1,0,0,0,225545.0,28.26420284277614,0.17963165044784546,10227.341316504479,1,Stage174 medium-validation core target
+38,blackswan:00021,high_payload_residual_control_extension,stage79_00021592,blackswan,21,4,0,1,0,0,0,224833.0,29.993041439257844,0.1594529002904892,10226.427529002905,1,Stage174 medium-validation core target
+39,blackswan:00023,high_payload_residual_control_extension,stage79_00021633,blackswan,23,8,0,1,0,0,0,224272.0,30.283530221824208,0.15252235531806946,10225.797223553182,1,Stage174 medium-validation core target
+40,parkour:00015,high_payload_residual_control_extension,stage79_00029561,parkour,15,4,0,1,0,0,0,223015.0,29.319853135921633,0.1671568751335144,10224.686568751335,1,Stage174 medium-validation core target
+41,paragliding-launch:00018,high_payload_residual_control_extension,stage79_00029170,paragliding-launch,18,8,0,1,0,0,0,222111.0,29.26343582576235,0.200591042637825,10224.116910426379,1,Stage174 medium-validation core target
+42,horsejump-high:00046,high_payload_residual_control_extension,stage79_00026663,horsejump-high,46,4,0,1,0,0,0,220517.0,27.626824875422624,0.15468835830688477,10222.063883583069,1,Stage174 medium-validation core target
+43,horsejump-high:00015,selector_false_positive_keyframe_control,stage79_00026678,horsejump-high,15,8,0,0,1,0,0,213145.0,28.119707176231408,0.1598365157842636,10217.940095473528,1,Stage174 medium-validation core target
+44,dogs-jump:00010,selector_false_positive_keyframe_control,stage79_00025050,dogs-jump,10,8,0,0,1,0,0,155854.0,31.59162098659429,0.181843563914299,10161.309306917428,1,Stage174 medium-validation core target
+45,drift-chicane:00006,selector_false_positive_keyframe_control,stage79_00025330,drift-chicane,6,8,0,0,1,0,0,124854.0,30.261442307228403,0.18118873238563538,10130.289661971568,1,Stage174 medium-validation core target
+46,drift-chicane:00035,selector_false_positive_keyframe_control,stage79_00025313,drift-chicane,35,4,0,0,1,0,0,108987.0,30.389364799075622,0.17147435247898102,10114.131230574369,1,Stage174 medium-validation core target
+47,gold-fish:00070,normal_residual_control,stage79_00026362,gold-fish,70,4,0,0,0,0,0,195876.0,33.52168948008948,0.08349402248859406,10313.959414351122,1,Stage174 medium-validation core target
+48,gold-fish:00049,normal_residual_control,stage79_00026409,gold-fish,49,8,0,0,0,0,0,184199.0,33.37035851948761,0.07448727637529373,10313.79393966737,1,Stage174 medium-validation core target
+49,gold-fish:00055,normal_residual_control,stage79_00026351,gold-fish,55,4,0,0,0,0,0,186524.0,33.303051185573665,0.07468410581350327,10312.884429739466,1,Stage174 medium-validation core target
+50,gold-fish:00002,normal_residual_control,stage79_00026368,gold-fish,2,8,0,0,0,0,0,213123.0,33.516296096969164,0.07747763395309448,10312.30110829063,1,Stage174 medium-validation core target
+51,bmx-trees:00035,broader_sequence_coverage_probe,stage79_00021991,bmx-trees,35,8,0,1,1,0,0,253702.0,28.771315232908698,0.13936297595500946,499.5952552814964,0,one representative target for sequence-level coverage
+52,car-shadow:00035,broader_sequence_coverage_probe,stage79_00023512,car-shadow,35,8,0,1,1,0,0,235640.0,29.85347333277717,0.14318694174289703,468.8532753461057,0,one representative target for sequence-level coverage
+53,drift-straight:00019,broader_sequence_coverage_probe,stage79_00025591,drift-straight,19,8,0,1,1,0,0,260238.0,30.242848185595204,0.11668480932712555,489.57278474617004,0,one representative target for sequence-level coverage
+54,goat:00075,broader_sequence_coverage_probe,stage79_00026019,goat,75,8,0,1,1,0,0,250527.0,26.625525413835764,0.17736747860908508,525.2100933226976,0,one representative target for sequence-level coverage
+55,judo:00010,broader_sequence_coverage_probe,stage79_00027251,judo,10,4,0,0,0,0,0,113232.0,31.38632279877512,0.16049990057945251,126.0719920463562,0,one representative target for sequence-level coverage
+56,kite-surf:00002,broader_sequence_coverage_probe,stage79_00027486,kite-surf,2,8,0,1,1,0,0,227373.0,32.841689286523504,0.0874297022819519,454.36737618255614,0,one representative target for sequence-level coverage
+57,loading:00035,broader_sequence_coverage_probe,stage79_00028241,loading,35,8,0,1,1,0,0,247580.0,28.600659158818136,0.16854679584503174,497.85583376178494,0,one representative target for sequence-level coverage
+58,mbike-trick:00003,broader_sequence_coverage_probe,stage79_00028557,mbike-trick,3,8,0,0,0,0,0,192946.0,29.827810910218457,0.21969108283519745,212.5875557041943,0,one representative target for sequence-level coverage
+59,soapbox:00061,broader_sequence_coverage_probe,stage79_00030985,soapbox,61,8,0,1,1,0,0,253262.0,29.652676453289992,0.19451424479484558,492.9910221441078,0,one representative target for sequence-level coverage
+60,kite-surf:00029,broader_false_negative_residual,stage79_00027470,kite-surf,29,4,0,1,0,0,0,220263.0,32.33223984735168,0.10891885310411453,448.9765082483292,0,broader residual target missed by adaptive schedule
+61,cows:00015,broader_positive_promoted,stage79_00023826,cows,15,4,1,0,1,0,0,208856.0,24.708306541723843,0.20466454327106476,788.7294849609991,0,broader adaptive-promoted hard/high-payload target
+62,goat:00078,broader_positive_promoted,stage79_00026022,goat,78,8,0,1,1,0,0,244302.0,26.541360057367047,0.18188631534576416,720.3565845392566,0,broader adaptive-promoted hard/high-payload target
+63,goat:00046,broader_positive_promoted,stage79_00025922,goat,46,4,0,1,1,0,0,251693.0,27.28725091241753,0.1750091165304184,718.246718373423,0,broader adaptive-promoted hard/high-payload target
+64,goat:00003,broader_positive_promoted,stage79_00025890,goat,3,4,0,1,1,0,0,251325.0,27.28856003850924,0.1755366176366806,717.9052089488235,0,broader adaptive-promoted hard/high-payload target
+65,camel:00023,broader_positive_promoted,stage79_00022838,camel,23,8,0,1,1,0,0,231360.0,26.20396708007785,0.18039542436599731,711.3440289883456,0,broader adaptive-promoted hard/high-payload target
+66,scooter-black:00027,broader_positive_promoted,stage79_00030326,scooter-black,27,4,0,1,1,0,0,244648.0,27.19165314212106,0.13937756419181824,709.4983674298928,0,broader adaptive-promoted hard/high-payload target
+67,scooter-black:00037,broader_positive_promoted,stage79_00030333,scooter-black,37,4,0,1,1,0,0,247692.0,27.48157589409837,0.1386011242866516,709.0011792137517,0,broader adaptive-promoted hard/high-payload target
+68,libby:00029,broader_positive_promoted,stage79_00027990,libby,29,8,0,1,1,0,0,262762.0,32.1395477949241,0.20886823534965515,699.4714588279724,0,broader adaptive-promoted hard/high-payload target
+69,loading:00013,broader_positive_promoted,stage79_00028222,loading,13,8,0,1,1,0,0,249897.0,28.725972105343534,0.12928496301174164,695.528131776817,0,broader adaptive-promoted hard/high-payload target
+70,horsejump-high:00020,broader_positive_promoted,stage79_00026682,horsejump-high,20,8,0,1,1,0,1,226888.0,27.513155614507667,0.207461416721344,693.3270459636155,0,broader adaptive-promoted hard/high-payload target
+71,loading:00038,broader_positive_promoted,stage79_00028203,loading,38,4,0,1,1,0,0,242922.0,28.567645108349154,0.15502038598060608,692.5118895782587,0,broader adaptive-promoted hard/high-payload target
+72,libby:00038,broader_positive_promoted,stage79_00027957,libby,38,4,0,1,1,0,0,257000.0,33.00996253806132,0.16725213825702667,690.3801710605621,0,broader adaptive-promoted hard/high-payload target
+73,lab-coat:00036,broader_positive_promoted,stage79_00027754,lab-coat,36,8,0,1,1,0,1,252728.0,30.554460600115835,0.157304584980011,685.312366798401,0,broader adaptive-promoted hard/high-payload target
+74,car-roundabout:00015,broader_positive_promoted,stage79_00023234,car-roundabout,15,8,0,1,1,0,0,221694.0,27.508126915916684,0.14075687527656555,682.857027031125,0,broader adaptive-promoted hard/high-payload target
+75,drift-straight:00037,broader_positive_promoted,stage79_00025566,drift-straight,37,4,0,1,1,0,0,251138.0,32.031672211797314,0.14438967406749725,682.6891739253998,0,broader adaptive-promoted hard/high-payload target
+76,drift-straight:00002,broader_positive_promoted,stage79_00025540,drift-straight,2,4,0,1,1,0,0,253474.0,31.210591956485423,0.1128348708152771,682.5007896652221,0,broader adaptive-promoted hard/high-payload target
+77,car-roundabout:00001,broader_positive_promoted,stage79_00023221,car-roundabout,1,8,0,1,1,0,0,220792.0,27.51871864418962,0.14457689225673676,682.1335276502635,0,broader adaptive-promoted hard/high-payload target
+78,lab-coat:00035,broader_positive_promoted,stage79_00027753,lab-coat,35,8,0,1,1,0,0,249864.0,31.270741398432,0.14216843247413635,681.2374745979309,0,broader adaptive-promoted hard/high-payload target
+79,soapbox:00078,broader_weak_sequence_probe,stage79_00030917,soapbox,78,4,0,1,1,0,0,246995.0,30.961850197233606,0.14360126852989197,478.48310148239136,0,additional target from weak subjective sequence set
+80,soapbox:00049,broader_weak_sequence_probe,stage79_00030895,soapbox,49,4,0,1,1,0,0,236226.0,30.851491404380763,0.10691956430673599,464.7795651445389,0,additional target from weak subjective sequence set
+81,shooting:00009,broader_weak_sequence_probe,stage79_00030547,shooting,9,8,0,1,1,0,0,233898.0,34.752288745339,0.12255455553531647,463.70236444282534,0,additional target from weak subjective sequence set
+82,shooting:00019,broader_weak_sequence_probe,stage79_00030525,shooting,19,4,0,1,1,0,0,231959.0,35.31447864697665,0.1123308539390564,460.9454683151245,0,additional target from weak subjective sequence set
+83,dance-twirl:00021,broader_weak_sequence_probe,stage79_00024388,dance-twirl,21,8,0,1,1,0,0,224250.0,30.979394772938843,0.16457435488700867,457.4159483909607,0,additional target from weak subjective sequence set
+84,soapbox:00015,broader_weak_sequence_probe,stage79_00030945,soapbox,15,8,0,0,0,0,0,213191.0,29.513427599271918,0.19582943618297577,234.69622370337504,0,additional target from weak subjective sequence set
+85,bike-packing:00001,broader_weak_sequence_probe,stage79_00021281,bike-packing,1,4,0,0,0,0,0,134579.0,26.104804335599894,0.20262430608272552,197.53129245941932,0,additional target from weak subjective sequence set
+86,india:00073,broader_normal_residual_control,stage79_00027011,india,73,4,0,0,0,0,0,212824.0,33.077209537986654,0.09934594482183456,140.96311925550992,0,broader normal/easy residual control
+87,kite-surf:00031,broader_normal_residual_control,stage79_00027472,kite-surf,31,4,0,0,0,0,0,215418.0,32.172246610110015,0.10853549838066101,137.28917647282685,0,broader normal/easy residual control
+88,paragliding-launch:00067,broader_normal_residual_control,stage79_00029146,paragliding-launch,67,4,0,0,0,0,0,209150.0,31.972203005555308,0.1762653887271881,134.82100424767748,0,broader normal/easy residual control
+89,pigs:00013,broader_normal_residual_control,stage79_00030010,pigs,13,4,0,0,0,0,0,185807.0,32.04078010586536,0.14738035202026367,134.50586338305615,0,broader normal/easy residual control
+90,paragliding-launch:00071,broader_normal_residual_control,stage79_00029217,paragliding-launch,71,8,0,0,0,0,0,208781.0,31.91899274602159,0.18131586909294128,134.48870360222753,0,broader normal/easy residual control

@@ -1,0 +1,9 @@
+source_type,source,row_count
+existing_keyframe_metric,stage177:stage168,2
+existing_keyframe_metric,stage177:stage170,18
+existing_keyframe_metric,stage177:stage174_keyframe_marker,12
+existing_middle_metric,stage174:stage168,4
+existing_middle_metric,stage174:stage170,60
+existing_middle_metric,stage174:stage174_rendered,54
+new_work,stage180_middle_render,88
+new_work,stage180_q12_keyframe_metric,32
