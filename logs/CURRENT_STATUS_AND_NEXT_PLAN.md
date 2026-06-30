@@ -266,6 +266,7 @@ Stage113 held-out diagnostic:
 - Stage182 combines Stage180 quality and Stage181 rate proxy evidence into a branch decision. Decision: `freeze_current_candidate_and_run_full_sequence_payload_measurement_next`. Frozen policy: `rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate`. Rationale: broader sampled quality is positive (`+0.5644261202320328` dB vs gap8, `+0.306535729521994` dB vs gap4), rate proxy is positive (`-0.11567233082795791` MiB/frame vs gap8, `-0.17722082115678273` vs gap4), and remaining risks are final measurement risks rather than immediate selector-tuning blockers. Package path: `experiments/stage182_selector_refinement_or_freeze_decision/`.
 - Stage183 packages the full-sequence payload measurement protocol. It enumerates `5997` frame/schedule rows across uniform gap8, Stage165 adaptive, and uniform gap4, and deduplicates the next measurement workload to `596` unique q12 keyframe payload rows plus `3472` unique Stage158 q6/keep1.0 residual payload rows. Per-schedule counts match Stage181 exactly: gap8 `292/1707`, adaptive `358/1641`, gap4 `536/1463` keyframe/residual rows. Package path: `experiments/stage183_full_sequence_payload_measurement_protocol/`.
 - Stage184 executes the full-sequence payload measurement. It measures `596/596` unique q12 single-anchor keyframe bitstreams, `3472/3472` unique Stage158 residual payloads using the PSNR-based best-half selector, and `90/90` schedule/sequence-packed q12 keyframe bitstreams. Totals are unique keyframes `409.0400505065918` MiB, unique residuals `711.6095418930054` MiB, and schedule-packed keyframe bitstreams `813.8109636306763` MiB. Package path: `experiments/stage184_full_sequence_payload_measurement_execution/`.
+- Stage185 aggregates measured full-sequence RD. Decision: `adaptive_measured_rate_not_lower_than_gap8`. Measured total MiB/frame is uniform gap8 `0.2758661759621266`, Stage165 adaptive `0.2907429328258184`, and uniform gap4 `0.33076894444307725`; adaptive is `+0.014876756863691831` MiB/frame vs gap8 and `-0.04002601161725883` vs gap4. Stage180 sampled quality still favors adaptive: PSNR/LPIPS `29.770752551041166/0.1427798855635855` vs gap8 `29.206326430809128/0.1766524552471108` and gap4 `29.46421682151917/0.16245726098616917`. Package path: `experiments/stage185_measured_full_sequence_rd_aggregation/`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -1080,6 +1081,30 @@ Result:
 - Unique Stage158 residual payloads: `3472 / 3472`, total `711.6095418930054` MiB, mean `214912.64026497694` bytes.
 - Schedule/sequence-packed q12 keyframe bitstreams: `90 / 90`, total `813.8109636306763` MiB, mean `9481584.944444444` bytes.
 - Next stage: Stage185 measured full-sequence RD aggregation.
+
+### Stage185: Measured Full-Sequence RD Aggregation
+
+Status: completed on 2026-07-01.
+
+Goal: aggregate Stage184 measured keyframe and residual payloads into per-schedule full-sequence RD totals.
+
+Actions:
+
+- Join Stage183 frame/schedule rows with Stage184 residual measurements.
+- Sum schedule/sequence-packed q12 keyframe bitstreams from Stage184.
+- Add exact metadata bytes from Stage181.
+- Compare measured totals to Stage181 proxy and fixed schedules.
+
+Result:
+
+- Package: `experiments/stage185_measured_full_sequence_rd_aggregation/stage185_measured_full_sequence_rd_aggregation_package.json`.
+- Report: `experiments/stage185_measured_full_sequence_rd_aggregation/stage185_measured_full_sequence_rd_aggregation_report.md`.
+- Decision: `adaptive_measured_rate_not_lower_than_gap8`.
+- Uniform gap8 measured total: `0.2758661759621266` MiB/frame.
+- Stage165 adaptive measured total: `0.2907429328258184` MiB/frame.
+- Uniform gap4 measured total: `0.33076894444307725` MiB/frame.
+- Adaptive measured delta: `+0.014876756863691831` MiB/frame vs gap8 and `-0.04002601161725883` MiB/frame vs gap4.
+- Interpretation: adaptive buys higher sampled quality than gap8/gap4 but does not currently beat gap8 measured rate; Stage188 should explore lower-budget selector variants.
 
 ### Stage109: Selector-Score Feature Preflight
 

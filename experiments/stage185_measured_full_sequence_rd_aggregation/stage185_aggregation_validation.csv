@@ -1,0 +1,8 @@
+item,expected,actual,status
+uniform_gap8_missing_residual_measurements,0,0,ok
+uniform_gap8_missing_schedule_keyframe_measurements,0,0,ok
+stage165_adaptive_missing_residual_measurements,0,0,ok
+stage165_adaptive_missing_schedule_keyframe_measurements,0,0,ok
+uniform_gap4_missing_residual_measurements,0,0,ok
+uniform_gap4_missing_schedule_keyframe_measurements,0,0,ok
+frame_schedule_rows_covered,5997,5997,ok
