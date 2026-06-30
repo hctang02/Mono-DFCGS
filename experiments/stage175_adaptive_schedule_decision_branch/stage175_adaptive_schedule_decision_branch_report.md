@@ -1,0 +1,25 @@
+# Stage175 Adaptive Schedule Decision Branch
+
+## Decision
+
+- Decision: `package_sampled_validated_candidate_and_scale_broader_validation`.
+- Package the current adaptive schedule as a sampled-validated candidate, not a final full-sequence RD result.
+- Broader validation is justified before final claims; selector false-positive keyframes and false negatives remain explicit risks.
+
+## Factors
+
+| factor | status | metric | value | interpretation | decision effect |
+|---|---|---|---:|---|---|
+| rate_proxy | pass_sampled_proxy | adaptive / gap8 / gap4 total proxy MiB/frame | 0.194181515827 / 0.300453182577 / 0.370523510564 | Adaptive remains lower-rate than both uniform references under Stage166 sampled proxy after charging extra keyframes and metadata. | supports scaling to broader validation |
+| protocol_completeness | pass | Stage174 output / protocol rows and new renders | 150/150 rows, 54/54 new renders | Medium validation completed without missing rows. | supports packaging current candidate evidence |
+| false_negatives | risk_neutral_quality | adaptive delta vs uniform_gap8 PSNR / LPIPS | -0.0109637522816 / 0.000909611582756 | False negatives remain unresolved but are not materially worse than uniform gap8 on sampled rendered evidence. | requires broader validation and possible selector refinement before final full RD |
+| positive_promotions | pass_schedule_behavior | positive extension uniform_gap8 PSNR / LPIPS / payload | 26.9100212409 / 0.211998779327 / 227130.875 | Adaptive correctly turns these hard rows into keyframes/no-middle-render rather than expensive residual recovery. | supports adaptive schedule candidate |
+| residual_controls | pass_neutral | high-payload extension adaptive vs gap8 PSNR / LPIPS | 29.5397100198 vs 29.5397100198 / 0.173480341211 vs 0.173480341211 | When adaptive does not promote rows, rendered residual behavior matches uniform gap8 on this extension slice. | supports no-regression claim for residual rows in sampled setting |
+| normal_controls | pass_neutral | normal adaptive vs gap8 PSNR / LPIPS | 33.4064615152 vs 33.4064615152 / 0.0759038999677 vs 0.0759038999677 | Normal/easy rows are unchanged from uniform gap8 when no promotion changes the segment. | supports bounded behavior on easy controls |
+| false_positive_keyframes | risk_precision | false-positive control uniform_gap8 PSNR / LPIPS / payload | 30.0717550621 / 0.183046225458 / 157481.25 | Some adaptive keyframes are not hard/high-payload labels; these are likely unnecessary extra keyframes and limit final selector confidence. | prevents final full-sequence claim; motivates broader validation or selector refinement |
+
+## Boundaries
+
+- Adaptive keyframe rows are schedule/rate events; no middle-render metrics are claimed for them.
+- Stage172 rate is sampled/proxy accounting, not final full-sequence RD.
+- Stage174 is medium sampled rendered validation, not full DAVIS validation.
