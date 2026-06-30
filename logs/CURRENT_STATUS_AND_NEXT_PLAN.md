@@ -13,8 +13,8 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage155: `1da189a Align original StreamSplat middle base`
-- Latest completed local stage before Stage156: `Stage155 StreamSplat-base side-info upper-bound sweep`
+- Latest pushed commit before Stage156: `d20f6ba Validate StreamSplat side-info upper bound`
+- Latest completed local stage before Stage157: `Stage156 StreamSplat half-anchor Gaussian residual side-info`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -111,6 +111,7 @@ Key Stage96 direct total rates:
 - Stage153: completed multi-metric and bad-case diagnostic for the Stage151 recovered policy.
 - Stage154: completed original StreamSplat middle-base multi-metric alignment on the Stage153 sampled task protocol.
 - Stage155: completed StreamSplat-base side-info upper-bound sweep and Gaussian shape diagnostic.
+- Stage156: completed sampled StreamSplat half-anchor Gaussian residual side-info sweep and found a quality-safe candidate.
 
 ## Current Best Selector Policy
 
@@ -210,6 +211,7 @@ Stage113 held-out diagnostic:
 - Stage153 confirms that PSNR recovery alone is not enough. On 120 sampled q12 gap4/gap8 eval tasks, Stage151 recovered side-info improves PSNR/SSIM/MS-SSIM over linear base, but LPIPS improves only slightly and some tasks regress in LPIPS despite PSNR gains. Gap4 recovered means are PSNR `22.895456117767825`, SSIM `0.6020039414366086`, MS-SSIM `0.7726786529024442`, LPIPS `0.3475280572970708`; gap8 recovered means are PSNR `21.809851951566433`, SSIM `0.5636065999666849`, MS-SSIM `0.7226341560482978`, LPIPS `0.38423423618078234`. Worst cases include `motocross-jump`, `bmx-trees`, `goat`, `drift-straight`, `loading`, `shooting`, `libby`, `scooter-black`, and `soapbox`. Decision: Stage151 remains a rate-counted PSNR recovery reference, but the final method must use original StreamSplat-guided middle prediction as the base and gate improvements by PSNR, SSIM, MS-SSIM, LPIPS, and bad-case visuals.
 - Stage154 shows why original StreamSplat must be the base: on the same 120 sampled q12 gap4/gap8 eval tasks, original StreamSplat is lower PSNR than Stage151 but better LPIPS. Gap4 original means are PSNR `22.06421822428011`, SSIM `0.6008085365096728`, MS-SSIM `0.8013669446110725`, LPIPS `0.3014947975675265`, with PSNR `-0.8312378934877117 dB` vs Stage151 but LPIPS `-0.04603325972954432` lower. Gap8 original means are PSNR `20.33727549162514`, SSIM `0.5203309365858634`, MS-SSIM `0.7005373592178027`, LPIPS `0.3593370050191879`, with PSNR `-1.4725764599412898 dB` vs Stage151 but LPIPS `-0.02489723116159439` lower. Decision: Stage155 must add rate-counted correction on top of original StreamSplat to recover PSNR while preserving perceptual plausibility.
 - Stage155 proves quality achievability with counted auxiliary information on top of original StreamSplat. On 60 sampled q12 gap4/gap8 eval tasks, q4 full-frame image residual side-info reaches gap4 PSNR `32.280546434337076`, SSIM `0.8786723375320434`, MS-SSIM `0.9775982022285461`, LPIPS `0.15282797639568646`, payload `78548.73333333334` bytes, reference direct rate `0.2568481303341566`; gap8 reaches PSNR `31.718739219329834`, SSIM `0.863465295235316`, MS-SSIM `0.9742599070072174`, LPIPS `0.17084391911824545`, payload `82349.4` bytes, reference direct rate `0.17615989450497918`. This is an upper-bound diagnostic, not the final GS-feature method. Gaussian diagnostic: target-time static evaluation matches original dynamic render exactly (`0.0` max diff), but full original base has `73728` Gaussians while Stage61 target dense anchor has `36864`, so full-base residual-to-dense-anchor is invalid. Next: Stage156 should correct one `36864`-Gaussian StreamSplat half-anchor to the target dense anchor with entropy-coded residual side-info.
+- Stage156 converts the Stage155 achievability result into a Gaussian-domain candidate. The selected setting is `streamsplat_half_anchor_entropy_residual` with `best_half_selector`, `keep_fraction=1.0`, `side_bits=6`, and one counted selector byte. On 60 sampled q12 gap4/gap8 eval tasks, it reaches gap4 PSNR `29.88060850586717`, SSIM `0.8795753101507823`, MS-SSIM `0.9853506326675415`, LPIPS `0.16458002875248592`, payload `207591.66666666666` bytes, reference direct rate `0.3799130615678806`; gap8 reaches PSNR `29.54743990416001`, SSIM `0.8700549105803171`, MS-SSIM `0.9840767443180084`, LPIPS `0.17757029533386232`, payload `214067.13333333333` bytes, reference direct rate `0.30177571380022644`. This exceeds the requested `26-27 dB` target and improves LPIPS/SSIM over original StreamSplat. Next: Stage157 should broaden-validate only this selected setting on the 120-task Stage153/154 sample before final packaging.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -270,7 +272,7 @@ Success condition:
 
 ### Stage156: StreamSplat Half-Anchor Gaussian Residual Side-Info
 
-Status: next immediate step.
+Status: completed on 2026-06-30.
 
 Goal: turn the Stage155 achievability evidence into a GS-feature method by correcting a target-time StreamSplat half-anchor instead of transmitting image residuals.
 
@@ -285,6 +287,19 @@ Actions:
 Success condition:
 
 - Find a Gaussian-domain setting that approaches or exceeds `26 dB` sampled middle PSNR while improving LPIPS/SSIM over original StreamSplat base.
+
+### Stage157: Broader Validation Of Selected Half-Anchor Policy
+
+Status: next immediate step.
+
+Goal: validate Stage156 selected `best_half_selector/keep1.0/q6` on the same 120-task sampled protocol used by Stage153/154.
+
+Actions:
+
+- Run only the selected setting to reduce runtime.
+- Report PSNR, SSIM, MS-SSIM, LPIPS, payload bytes, and reference direct rate for gap4/gap8.
+- Generate bad-case contact sheet outside git.
+- If both gaps remain above `26 dB` with LPIPS/SSIM improvements, package as the current recovered middle-frame policy.
 
 ### Stage109: Selector-Score Feature Preflight
 
