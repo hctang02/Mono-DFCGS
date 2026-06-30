@@ -13,8 +13,8 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage153: `17e38d5 Export subjective middle-frame visuals`
-- Latest completed local stage before Stage154: `Stage153 middle multi-metric bad-case evaluation`
+- Latest pushed commit before Stage154: `4818534 Add middle-frame multi-metric diagnostics`
+- Latest completed local stage before Stage155: `Stage154 original StreamSplat middle base alignment`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -109,6 +109,7 @@ Key Stage96 direct total rates:
 - Stage151: completed final middle-frame recovery policy package from Stage150.
 - Stage152: completed subjective visual export for the recovered middle-frame policy.
 - Stage153: completed multi-metric and bad-case diagnostic for the Stage151 recovered policy.
+- Stage154: completed original StreamSplat middle-base multi-metric alignment on the Stage153 sampled task protocol.
 
 ## Current Best Selector Policy
 
@@ -206,6 +207,7 @@ Stage113 held-out diagnostic:
 - Stage151 freezes the recovered policy `middle_frame_recovery_linear_base_entropy_sideinfo_v1`: q12 endpoints, decoder-safe linear base, q6/top10 entropy index+value side-info payload, all side-info bytes counted, decoder target dense/RGB/unencoded residual forbidden. Target recovery is true with minimum margin `+0.10055620282386002 dB` over corrected middle-frame targets.
 - Stage152 generated human-viewable comparison videos for the Stage151 recovered policy. Gap4 and gap8 each export `24` sampled eval frames with panels `target RGB | linear base render | recovered side-info render`; heavy videos are stored outside git at `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage152_subjective_visual_export/`. The sampled subjective export means are gap4 base/recovered PSNR `20.934637105918473` / `24.157467503772878` and gap8 base/recovered PSNR `19.312465970173346` / `22.586569251235034`.
 - Stage153 confirms that PSNR recovery alone is not enough. On 120 sampled q12 gap4/gap8 eval tasks, Stage151 recovered side-info improves PSNR/SSIM/MS-SSIM over linear base, but LPIPS improves only slightly and some tasks regress in LPIPS despite PSNR gains. Gap4 recovered means are PSNR `22.895456117767825`, SSIM `0.6020039414366086`, MS-SSIM `0.7726786529024442`, LPIPS `0.3475280572970708`; gap8 recovered means are PSNR `21.809851951566433`, SSIM `0.5636065999666849`, MS-SSIM `0.7226341560482978`, LPIPS `0.38423423618078234`. Worst cases include `motocross-jump`, `bmx-trees`, `goat`, `drift-straight`, `loading`, `shooting`, `libby`, `scooter-black`, and `soapbox`. Decision: Stage151 remains a rate-counted PSNR recovery reference, but the final method must use original StreamSplat-guided middle prediction as the base and gate improvements by PSNR, SSIM, MS-SSIM, LPIPS, and bad-case visuals.
+- Stage154 shows why original StreamSplat must be the base: on the same 120 sampled q12 gap4/gap8 eval tasks, original StreamSplat is lower PSNR than Stage151 but better LPIPS. Gap4 original means are PSNR `22.06421822428011`, SSIM `0.6008085365096728`, MS-SSIM `0.8013669446110725`, LPIPS `0.3014947975675265`, with PSNR `-0.8312378934877117 dB` vs Stage151 but LPIPS `-0.04603325972954432` lower. Gap8 original means are PSNR `20.33727549162514`, SSIM `0.5203309365858634`, MS-SSIM `0.7005373592178027`, LPIPS `0.3593370050191879`, with PSNR `-1.4725764599412898 dB` vs Stage151 but LPIPS `-0.02489723116159439` lower. Decision: Stage155 must add rate-counted correction on top of original StreamSplat to recover PSNR while preserving perceptual plausibility.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
