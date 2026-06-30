@@ -1,0 +1,77 @@
+{
+  "stage": 171,
+  "status": "combined_adaptive_evidence_review_packaged",
+  "decision": "proceed_to_rate_audit_and_medium_protocol",
+  "fixed_middle_recovery_policy": "streamsplat_guided_half_anchor_entropy_residual_v1",
+  "evidence_rows": [
+    {
+      "area": "selector_coverage",
+      "status": "positive_signal",
+      "metric": "hard_recall / payload_recall",
+      "value": "0.733333333333 / 0.819444444444",
+      "interpretation": "RGB/motion rank gate catches most sampled hard and high-payload labels, but precision is modest.",
+      "next_action": "Proceed, but keep false-negative controls in the next protocol."
+    },
+    {
+      "area": "schedule_size",
+      "status": "bounded_between_uniforms",
+      "metric": "keyframes adaptive / gap8 / gap4",
+      "value": "358 / 292 / 536",
+      "interpretation": "Adaptive adds keyframes over uniform gap8 but remains much smaller than uniform gap4.",
+      "next_action": "Audit extra-keyframe rate before larger rendering."
+    },
+    {
+      "area": "sampled_proxy_rate",
+      "status": "promising_proxy",
+      "metric": "total_proxy_mib_per_frame adaptive vs gap8",
+      "value": "0.194181515827 vs 0.300453182577",
+      "interpretation": "Stage166 proxy suggests residual-payload savings can outweigh extra keyframe cost, but this is not yet final accounting.",
+      "next_action": "Run Stage172 keyframe/residual/metadata decomposition."
+    },
+    {
+      "area": "rendered_false_negatives",
+      "status": "neutral_risk",
+      "metric": "adaptive delta vs uniform_gap8 PSNR / LPIPS",
+      "value": "-0.0109637522816 / 0.000909611582756",
+      "interpretation": "False negatives are essentially unchanged from uniform gap8, so adaptive does not fix missed hard cases.",
+      "next_action": "Keep false negatives in medium validation and do not scale directly to full validation yet."
+    },
+    {
+      "area": "positive_promotions",
+      "status": "confirmed_behavior",
+      "metric": "adaptive keyframe markers / uniform_gap8 payload",
+      "value": "14 / 238069.214286",
+      "interpretation": "Promoted adaptive targets are transmitted keyframes; no middle-render metrics are claimed, and expensive uniform-gap8 residual recovery is avoided on these rows.",
+      "next_action": "Continue marking promoted targets as keyframes/no-middle-render."
+    },
+    {
+      "area": "high_payload_controls",
+      "status": "small_positive_control",
+      "metric": "adaptive minus uniform_gap8 PSNR / LPIPS",
+      "value": "0.315564515849 / -0.0170409046113",
+      "interpretation": "On the small residual-control slice, adaptive residual rows are not worse than uniform gap8.",
+      "next_action": "Expand this control category in Stage173/174."
+    },
+    {
+      "area": "validation_scope",
+      "status": "sampled_only",
+      "metric": "Stage170 protocol rows / new renders",
+      "value": "78 / 26",
+      "interpretation": "Current rendered evidence is intentionally sampled and cannot justify final full-sequence claims alone.",
+      "next_action": "Use Stage173 medium protocol before any full-sequence validation."
+    }
+  ],
+  "required_next_stages": [
+    "Stage172 keyframe rate accounting audit",
+    "Stage173 medium rendered validation protocol",
+    "Stage174 medium rendered validation execution"
+  ],
+  "do_not_claim": [
+    "final full-sequence RD",
+    "rendered middle metrics for adaptive keyframe targets",
+    "decoder-side RGB/motion selector reproduction"
+  ],
+  "evidence_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage171_combined_adaptive_evidence_review/stage171_combined_adaptive_evidence_rows.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage171_combined_adaptive_evidence_review/stage171_combined_adaptive_evidence_review_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage171_combined_adaptive_evidence_review/stage171_combined_adaptive_evidence_review_report.md"
+}

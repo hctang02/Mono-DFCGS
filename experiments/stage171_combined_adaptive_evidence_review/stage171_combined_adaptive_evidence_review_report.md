@@ -1,0 +1,25 @@
+# Stage171 Combined Adaptive Evidence Review
+
+## Decision
+
+- Decision: `proceed_to_rate_audit_and_medium_protocol`.
+- Continue the selector/adaptive-keyframe line, but do not jump directly to full validation.
+- Next required stage is keyframe/residual/metadata rate accounting, then a medium rendered protocol.
+
+## Evidence
+
+| area | status | metric | value | interpretation | next action |
+|---|---|---|---:|---|---|
+| selector_coverage | positive_signal | hard_recall / payload_recall | 0.733333333333 / 0.819444444444 | RGB/motion rank gate catches most sampled hard and high-payload labels, but precision is modest. | Proceed, but keep false-negative controls in the next protocol. |
+| schedule_size | bounded_between_uniforms | keyframes adaptive / gap8 / gap4 | 358 / 292 / 536 | Adaptive adds keyframes over uniform gap8 but remains much smaller than uniform gap4. | Audit extra-keyframe rate before larger rendering. |
+| sampled_proxy_rate | promising_proxy | total_proxy_mib_per_frame adaptive vs gap8 | 0.194181515827 vs 0.300453182577 | Stage166 proxy suggests residual-payload savings can outweigh extra keyframe cost, but this is not yet final accounting. | Run Stage172 keyframe/residual/metadata decomposition. |
+| rendered_false_negatives | neutral_risk | adaptive delta vs uniform_gap8 PSNR / LPIPS | -0.0109637522816 / 0.000909611582756 | False negatives are essentially unchanged from uniform gap8, so adaptive does not fix missed hard cases. | Keep false negatives in medium validation and do not scale directly to full validation yet. |
+| positive_promotions | confirmed_behavior | adaptive keyframe markers / uniform_gap8 payload | 14 / 238069.214286 | Promoted adaptive targets are transmitted keyframes; no middle-render metrics are claimed, and expensive uniform-gap8 residual recovery is avoided on these rows. | Continue marking promoted targets as keyframes/no-middle-render. |
+| high_payload_controls | small_positive_control | adaptive minus uniform_gap8 PSNR / LPIPS | 0.315564515849 / -0.0170409046113 | On the small residual-control slice, adaptive residual rows are not worse than uniform gap8. | Expand this control category in Stage173/174. |
+| validation_scope | sampled_only | Stage170 protocol rows / new renders | 78 / 26 | Current rendered evidence is intentionally sampled and cannot justify final full-sequence claims alone. | Use Stage173 medium protocol before any full-sequence validation. |
+
+## Boundaries
+
+- This review does not change Stage158 `streamsplat_guided_half_anchor_entropy_residual_v1`.
+- Adaptive promoted rows remain keyframes/no-middle-render; middle-frame metrics are not invented for them.
+- Stage172 must explicitly charge extra keyframes, residual payloads, and schedule metadata.
