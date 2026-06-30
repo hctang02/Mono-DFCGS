@@ -116,6 +116,7 @@ Key Stage96 direct total rates:
 - Stage158: packaged the selected recovered middle-frame policy and decoder contract.
 - Stage159: exported selected Stage158 gap4 subjective examples and recorded per-example size/rate.
 - Stage160: exported extended Stage158 gap4 subjective evidence over 12 representative DAVIS sequences.
+- Stage161: packaged Stage158 as the current quality-first middle-frame recovery method and narrative/evidence bundle.
 
 ## Current Best Selector Policy
 
@@ -220,6 +221,7 @@ Stage113 held-out diagnostic:
 - Stage158 freezes this candidate as `streamsplat_guided_half_anchor_entropy_residual_v1`. The package records allowed decoder inputs, forbidden target/oracle inputs, counted half-selector metadata, residual payload accounting, and the Stage153-157 evidence chain. Quality gate passes: minimum gap mean PSNR is `29.578682359235195`, minimum SSIM delta is `+0.2771290277441343`, minimum MS-SSIM delta is `+0.1837212438384692`, and maximum LPIPS delta is `-0.13547528696556885` vs original StreamSplat.
 - Stage159 exports a gap4 subjective example video for `car-shadow`, `goat`, and `soapbox`. The layout is `left keyframe | target middle | original StreamSplat middle | Stage158 recovered middle | right keyframe`. The heavy video is `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage159_stage158_subjective_examples/stage159_gap4_stage158_subjective_examples.mp4` (`518852` bytes), and the contact sheet is `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage159_stage158_subjective_examples/stage159_gap4_stage158_subjective_examples_contact_sheet.jpg` (`1091636` bytes). Per-example side-info payloads are `220697`, `251693`, and `246995` bytes for `car-shadow`, `goat`, and `soapbox` respectively.
 - Stage160 expands subjective evidence without changing Stage158. It exports `24` gap4 examples from `12` representative DAVIS sequences with layout `left q12 keyframe render | target middle RGB | original StreamSplat middle | Stage158 recovered middle | right q12 keyframe render`. Heavy video: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` (`4180215` bytes). Contact sheet: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` (`8739496` bytes). Weak sequences such as `cows`, `breakdance`, `camel`, and `bike-packing` remain lower PSNR but still improve over original StreamSplat and keep LPIPS lower.
+- Stage161 packages `streamsplat_guided_half_anchor_entropy_residual_v1` as the current quality-first middle-frame recovery method. It states the innovation claim, decoder contract, evidence chain, Stage160 subjective video paths, and rate stance: all payload is counted, but rate is not over-optimized at this stage because user accepts somewhat larger bitrate for quality/innovation. Package path: `experiments/stage161_stage158_method_narrative_package/`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -368,7 +370,7 @@ Result:
 
 ### Stage161: Stage158 Method Narrative Package
 
-Status: next immediate step.
+Status: completed on 2026-06-30.
 
 Goal: package Stage158/160 as a quality-first middle-frame recovery method with a clear innovation claim and evidence chain.
 
@@ -383,9 +385,16 @@ Success condition:
 
 - A concise package exists that can be cited as the current quality-oriented middle-frame recovery method before keyframe selector work begins.
 
+Result:
+
+- Package: `experiments/stage161_stage158_method_narrative_package/stage161_stage158_method_narrative_package.json`.
+- Report: `experiments/stage161_stage158_method_narrative_package/stage161_stage158_method_narrative_report.md`.
+- Evidence chain, method comparison, and subjective sequence summary CSVs were generated.
+- The package explicitly marks Stage151 as historical/reference only, Stage155 as upper-bound only, and Stage158 as current quality-first GS-domain method.
+
 ### Stage162: Keyframe Selector Protocol And Feature-Source Audit
 
-Status: planned after Stage161.
+Status: next immediate step.
 
 Goal: start adaptive keyframe/GOP selection while explicitly auditing RGB/motion feature sources and feed-forward validity.
 
