@@ -1,0 +1,101 @@
+{
+  "stage": 172,
+  "status": "keyframe_rate_accounting_audit_packaged",
+  "decision": "adaptive_rate_promising_for_medium_protocol",
+  "stage171_decision": "proceed_to_rate_audit_and_medium_protocol",
+  "accounting_scope": "stage166_sampled_proxy",
+  "sampled_row_count": 120,
+  "per_extra_keyframe_mib_per_frame": 0.00034554440169835566,
+  "per_extra_keyframe_payload_mib": 0.690743258995013,
+  "component_rows": [
+    {
+      "schedule": "uniform_gap8",
+      "total_frames": 1999,
+      "keyframe_count": 292,
+      "keyframe_delta_vs_uniform_gap8": 0,
+      "main_anchor_mib_per_frame_proxy": 0.09762538675351436,
+      "baseline_gap8_main_anchor_mib_per_frame": 0.09762538675351436,
+      "extra_keyframe_mib_per_frame_vs_gap8": 0.0,
+      "metadata_bytes": 1,
+      "metadata_mib_per_frame": 4.770756960511505e-10,
+      "sampled_residual_row_count": 120,
+      "sampled_promoted_row_count": 0,
+      "sampled_residual_payload_bytes": 25521643.0,
+      "sampled_residual_side_mib_total": 24.339335441589355,
+      "sampled_residual_side_mib_per_sample": 0.20282779534657797,
+      "sampled_avoided_side_mib_vs_gap8": 0.0,
+      "total_proxy_mib_per_frame_recomputed": 0.300453182577168,
+      "total_proxy_mib_per_frame_source": 0.300453182577168,
+      "delta_total_proxy_vs_uniform_gap8": 0.0,
+      "delta_total_proxy_vs_uniform_gap4": -0.0700703279871771
+    },
+    {
+      "schedule": "stage165_adaptive",
+      "total_frames": 1999,
+      "keyframe_count": 358,
+      "keyframe_delta_vs_uniform_gap8": 66,
+      "main_anchor_mib_per_frame_proxy": 0.12043131726560583,
+      "baseline_gap8_main_anchor_mib_per_frame": 0.09762538675351436,
+      "extra_keyframe_mib_per_frame_vs_gap8": 0.022805930512091472,
+      "metadata_bytes": 327,
+      "metadata_mib_per_frame": 1.5564594583668787e-07,
+      "sampled_residual_row_count": 50,
+      "sampled_promoted_row_count": 70,
+      "sampled_residual_payload_bytes": 9279903.0,
+      "sampled_residual_side_mib_total": 8.850005149841309,
+      "sampled_residual_side_mib_per_sample": 0.07375004291534423,
+      "sampled_avoided_side_mib_vs_gap8": 15.489330291748047,
+      "total_proxy_mib_per_frame_recomputed": 0.19418151582689588,
+      "total_proxy_mib_per_frame_source": 0.19418151582689588,
+      "delta_total_proxy_vs_uniform_gap8": -0.10627166675027214,
+      "delta_total_proxy_vs_uniform_gap4": -0.17634199473744924
+    },
+    {
+      "schedule": "uniform_gap4",
+      "total_frames": 1999,
+      "keyframe_count": 536,
+      "keyframe_delta_vs_uniform_gap8": 244,
+      "main_anchor_mib_per_frame_proxy": 0.18193822076791313,
+      "baseline_gap8_main_anchor_mib_per_frame": 0.09762538675351436,
+      "extra_keyframe_mib_per_frame_vs_gap8": 0.08431283401439878,
+      "metadata_bytes": 1,
+      "metadata_mib_per_frame": 4.770756960511505e-10,
+      "sampled_residual_row_count": 112,
+      "sampled_promoted_row_count": 8,
+      "sampled_residual_payload_bytes": 23729521.0,
+      "sampled_residual_side_mib_total": 22.630234718322754,
+      "sampled_residual_side_mib_per_sample": 0.18858528931935628,
+      "sampled_avoided_side_mib_vs_gap8": 1.7091007232666016,
+      "total_proxy_mib_per_frame_recomputed": 0.3705235105643451,
+      "total_proxy_mib_per_frame_source": 0.3705235105643451,
+      "delta_total_proxy_vs_uniform_gap8": 0.0700703279871771,
+      "delta_total_proxy_vs_uniform_gap4": 0.0
+    }
+  ],
+  "notes": [
+    {
+      "item": "per_extra_keyframe_mib_per_frame",
+      "value": 0.00034554440169835566,
+      "note": "Derived from uniform gap8/gap4 main-anchor proxy rate difference divided by keyframe-count difference."
+    },
+    {
+      "item": "per_extra_keyframe_payload_mib",
+      "value": 0.690743258995013,
+      "note": "Dataset-level proxy payload for one added keyframe, equal to per-frame cost times total frames."
+    },
+    {
+      "item": "accounting_scope",
+      "value": "sampled_proxy",
+      "note": "Residual side-info is measured on the 120 Stage163/166 sampled rows; full-sequence residual decisions remain future work."
+    },
+    {
+      "item": "decoder_contract",
+      "value": "schedule_metadata_transmitted",
+      "note": "Decoder receives counted schedule/keyframe metadata and does not recompute selector RGB/motion features."
+    }
+  ],
+  "component_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage172_keyframe_rate_accounting_audit/stage172_rate_component_audit.csv",
+  "notes_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage172_keyframe_rate_accounting_audit/stage172_rate_accounting_notes.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage172_keyframe_rate_accounting_audit/stage172_keyframe_rate_accounting_audit_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage172_keyframe_rate_accounting_audit/stage172_keyframe_rate_accounting_audit_report.md"
+}

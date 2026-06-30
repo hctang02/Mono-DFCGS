@@ -127,6 +127,7 @@ Key Stage96 direct total rates:
 - Stage169: built the combined adaptive rendered validation protocol that reuses Stage167/168 and identifies only missing rows for Stage170 rendering.
 - Stage170: executed the combined adaptive rendered validation protocol with `26` new renders, `42` reused rows, and `10` keyframe marker rows; package is ready for review.
 - Stage171: reviewed combined adaptive evidence and decided to continue only after explicit keyframe/residual/metadata rate accounting and a medium validation protocol.
+- Stage172: audited sampled/proxy adaptive schedule rate components and confirmed adaptive remains rate-promising after charging extra keyframes and metadata.
 
 ## Current Best Selector Policy
 
@@ -242,6 +243,7 @@ Stage113 held-out diagnostic:
 - Stage169 packages the combined validation protocol. It selects `26` targets and `78` target/schedule rows: `8` false-negative residual targets, `14` positive-promoted targets, and `4` high-payload residual controls. It reuses `42` existing Stage167/168 schedule rows, marks `10` adaptive/uniform keyframe rows as no-middle-render, and leaves `26` rows for Stage170 rendering. Package path: `experiments/stage169_combined_adaptive_rendered_validation_protocol/`.
 - Stage170 executes the Stage169 combined validation protocol without changing Stage158. It covers `78/78` protocol rows: `42` reused rows, `26` newly rendered rows, and `10` keyframe marker rows. Source coverage is Stage167 `24` rows, Stage168 `18` rows, Stage170 rendered `26` rows, and Stage170 keyframe markers `10` rows. Decision: `combined_validation_ready_for_review`. Positive-promoted adaptive rows are `14` keyframes/no-middle-render with no claimed middle-render metrics. False-negative residual adaptive vs uniform gap8 remains essentially unchanged: PSNR `26.192677144097143` vs `26.203640896378754`, LPIPS `0.2088309582322836` vs `0.20792134664952755`. High-payload residual controls favor adaptive in this small control slice: PSNR `31.35483734665675` vs uniform gap8 `31.039272830807292`, LPIPS `0.1504514366388321` vs `0.1674923412501812`. Package path: `experiments/stage170_combined_adaptive_rendered_validation_execution/`. Heavy contact sheet: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage170_combined_adaptive_rendered_validation_execution/stage170_combined_adaptive_rendered_validation_contact_sheet.jpg`.
 - Stage171 packages the combined adaptive evidence review. Decision: `proceed_to_rate_audit_and_medium_protocol`. Key evidence: hard recall `0.733333333333`, payload recall `0.819444444444`; adaptive/gap8/gap4 keyframes `358/292/536`; Stage166 proxy total MiB/frame adaptive vs gap8 `0.194181515827` vs `0.300453182577`; Stage170 false-negative adaptive delta vs uniform gap8 PSNR `-0.0109637522816`, LPIPS `+0.000909611582756`; high-payload residual-control adaptive delta vs uniform gap8 PSNR `+0.315564515849`, LPIPS `-0.0170409046113`. Package path: `experiments/stage171_combined_adaptive_evidence_review/`. Next required step is Stage172 keyframe/residual/metadata rate accounting, then Stage173/174 medium validation.
+- Stage172 decomposes Stage166 sampled/proxy rate into main-anchor keyframes, extra keyframes, residual side-info, and schedule metadata. Decision: `adaptive_rate_promising_for_medium_protocol`. Per-extra-keyframe proxy cost is `0.00034554440169835566` MiB/frame (`0.690743258995013` MiB dataset-level proxy payload). Uniform gap8 total proxy is `0.300453182577` MiB/frame; Stage165 adaptive is `0.194181515827` after charging `66` extra keyframes and `327` metadata bytes; uniform gap4 is `0.370523510564`. Adaptive delta vs gap8 is `-0.106271666750` MiB/frame. Accounting scope remains `stage166_sampled_proxy`, not final full-sequence RD. Package path: `experiments/stage172_keyframe_rate_accounting_audit/`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -707,7 +709,7 @@ Result:
 
 ### Stage172: Keyframe Rate Accounting Audit
 
-Status: next immediate step.
+Status: completed on 2026-06-30.
 
 Goal: decompose adaptive schedule rate into baseline keyframes, extra keyframes, residual payload, schedule metadata, and total proxy rate.
 
@@ -721,6 +723,35 @@ Actions:
 Success condition:
 
 - A lightweight package shows whether adaptive remains rate-promising after charging extra keyframes and metadata.
+
+Result:
+
+- Package: `experiments/stage172_keyframe_rate_accounting_audit/stage172_keyframe_rate_accounting_audit_package.json`.
+- Report: `experiments/stage172_keyframe_rate_accounting_audit/stage172_keyframe_rate_accounting_audit_report.md`.
+- Decision: `adaptive_rate_promising_for_medium_protocol`.
+- Adaptive keyframes/gap8/gap4: `358/292/536`.
+- Adaptive adds `66` keyframes vs gap8, with extra keyframe proxy cost `0.022805930512091472` MiB/frame.
+- Total proxy MiB/frame: gap8 `0.300453182577168`, adaptive `0.19418151582689588`, gap4 `0.3705235105643451`.
+- Adaptive delta vs gap8: `-0.10627166675027214` MiB/frame.
+- Scope: `stage166_sampled_proxy`; full-sequence residual RD remains future work.
+
+### Stage173: Medium Rendered Validation Protocol
+
+Status: next immediate step.
+
+Goal: design a medium rendered validation protocol that reuses Stage167/168/170 rows and renders only missing schedule rows.
+
+Actions:
+
+- Select around `50` targets from Stage166 sampled rows, including Stage170 targets plus additional false-negative, positive-promotion, high-payload, and normal/easy controls.
+- Build `uniform_gap8`, `stage165_adaptive`, and `uniform_gap4` schedule rows for each target.
+- Mark rows already covered by Stage167/168/170 as reusable.
+- Mark adaptive/keyframe rows as no-middle-render where the target is transmitted as a keyframe.
+- Count expected new Stage174 render rows before execution.
+
+Success condition:
+
+- A protocol package defines exact targets, categories, schedule rows, reusable rows, missing rows, and keyframe markers for Stage174.
 
 ### Stage109: Selector-Score Feature Preflight
 

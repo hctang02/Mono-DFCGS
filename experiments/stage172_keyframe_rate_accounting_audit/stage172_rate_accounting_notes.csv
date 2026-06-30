@@ -1,0 +1,5 @@
+item,value,note
+per_extra_keyframe_mib_per_frame,0.00034554440169835566,Derived from uniform gap8/gap4 main-anchor proxy rate difference divided by keyframe-count difference.
+per_extra_keyframe_payload_mib,0.690743258995013,"Dataset-level proxy payload for one added keyframe, equal to per-frame cost times total frames."
+accounting_scope,sampled_proxy,Residual side-info is measured on the 120 Stage163/166 sampled rows; full-sequence residual decisions remain future work.
+decoder_contract,schedule_metadata_transmitted,Decoder receives counted schedule/keyframe metadata and does not recompute selector RGB/motion features.
