@@ -1,0 +1,45 @@
+{
+  "stage": 163,
+  "status": "davis_rgb_motion_selector_data_packaged",
+  "source_stage157_rows": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage157_selected_half_anchor_broader_validation/stage157_selected_half_anchor_rows.csv",
+  "source_stage162_protocol": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage162_keyframe_selector_protocol_source_audit/stage162_keyframe_selector_protocol_source_audit_package.json",
+  "fixed_middle_recovery_policy": "streamsplat_guided_half_anchor_entropy_residual_v1",
+  "row_count": 120,
+  "sequence_gap_count": 60,
+  "feature_height": 256,
+  "feature_width": 448,
+  "hist_bins": 32,
+  "inference_feature_source": "input RGB frames only",
+  "offline_label_source": "Stage157/158 rendered validation rows",
+  "rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage163_davis_rgb_motion_selector_data/stage163_davis_rgb_motion_selector_feature_rows.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage163_davis_rgb_motion_selector_data/stage163_davis_rgb_motion_selector_summary.csv",
+  "compliance_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage163_davis_rgb_motion_selector_data/stage163_davis_rgb_motion_selector_compliance.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage163_davis_rgb_motion_selector_data/stage163_davis_rgb_motion_selector_data_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage163_davis_rgb_motion_selector_data/stage163_davis_rgb_motion_selector_data_report.md",
+  "compliance_rows": [
+    {
+      "column_group": "deployable_encoder_features",
+      "columns": "rgb_*, edge_*, hist_*, temporal_*, normalized_time, segment_length",
+      "source": "DAVIS/input RGB frames available at encoder",
+      "inference_allowed": "yes",
+      "feedforward_status": "feed-forward for offline encoding; online mode would need declared lookahead",
+      "notes": "These are the only columns intended as selector inference features in the first heuristic selector."
+    },
+    {
+      "column_group": "offline_stage158_labels",
+      "columns": "stage158_*, original_*, delta_*, payload_bytes, side_mib_per_intermediate, direct_total_mib_per_frame_ref, label_*",
+      "source": "Stage157/158 rendered validation rows",
+      "inference_allowed": "no",
+      "feedforward_status": "offline labels only",
+      "notes": "Use for training/evaluation or difficulty diagnostics, not as deployable selector inputs."
+    },
+    {
+      "column_group": "schedule_metadata_future",
+      "columns": "keyframe indices or segment lengths, not present in this row-level package",
+      "source": "selector output",
+      "inference_allowed": "transmitted_output",
+      "feedforward_status": "decoder consumes transmitted metadata only",
+      "notes": "Stage164 should add candidate schedule rows and count metadata bits."
+    }
+  ]
+}

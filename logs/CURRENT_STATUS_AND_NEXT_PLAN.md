@@ -118,6 +118,7 @@ Key Stage96 direct total rates:
 - Stage160: exported extended Stage158 gap4 subjective evidence over 12 representative DAVIS sequences.
 - Stage161: packaged Stage158 as the current quality-first middle-frame recovery method and narrative/evidence bundle.
 - Stage162: packaged keyframe selector protocol and RGB/motion feature-source/feed-forward audit.
+- Stage163: built the first DAVIS RGB/motion selector data package on Stage157/158 sampled rows.
 
 ## Current Best Selector Policy
 
@@ -224,6 +225,7 @@ Stage113 held-out diagnostic:
 - Stage160 expands subjective evidence without changing Stage158. It exports `24` gap4 examples from `12` representative DAVIS sequences with layout `left q12 keyframe render | target middle RGB | original StreamSplat middle | Stage158 recovered middle | right q12 keyframe render`. Heavy video: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` (`4180215` bytes). Contact sheet: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` (`8739496` bytes). Weak sequences such as `cows`, `breakdance`, `camel`, and `bike-packing` remain lower PSNR but still improve over original StreamSplat and keep LPIPS lower.
 - Stage161 packages `streamsplat_guided_half_anchor_entropy_residual_v1` as the current quality-first middle-frame recovery method. It states the innovation claim, decoder contract, evidence chain, Stage160 subjective video paths, and rate stance: all payload is counted, but rate is not over-optimized at this stage because user accepts somewhat larger bitrate for quality/innovation. Package path: `experiments/stage161_stage158_method_narrative_package/`.
 - Stage162 starts the keyframe selector line. It allows encoder-side RGB/motion features if derived from input video frames and keyframe indices/segment lengths are transmitted and counted. Deterministic RGB/motion proxies are the primary cheap feed-forward tier; pretrained optical-flow/feature networks are optional high-compute feed-forward tier if fed only raw RGB; rendered quality/oracle metrics and target dense/residual tensors are forbidden as selector inference inputs and reserved for labels/diagnostics. Package path: `experiments/stage162_keyframe_selector_protocol_source_audit/`.
+- Stage163 creates the first selector-data slice from the Stage157/158 120 sampled q12 gap4/gap8 rows. It computes deployable encoder-side RGB/motion proxy features from DAVIS/input RGB only at `448x256`, and attaches Stage158 metrics/payloads as offline labels only. Package path: `experiments/stage163_davis_rgb_motion_selector_data/`. Early signal: motion-heavy `motocross-jump`/`scooter-black` score high and have high payload/LPIPS flags, but low-PSNR flags also appear in `cows`, `breakdance`, `camel`, and `bike-packing`, so Stage164 should not use one scalar proxy alone.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -424,7 +426,7 @@ Result:
 
 ### Stage163: DAVIS RGB/Motion Selector Data Package
 
-Status: next immediate step.
+Status: completed on 2026-06-30.
 
 Goal: build the first DAVIS selector data package for adaptive keyframe selection under the Stage162 protocol.
 
@@ -438,6 +440,32 @@ Actions:
 Success condition:
 
 - A lightweight selector data package exists with feature rows, candidate schedule metadata, and a clear separation between deployable inference features and offline labels.
+
+Result:
+
+- Package: `experiments/stage163_davis_rgb_motion_selector_data/stage163_davis_rgb_motion_selector_data_package.json`.
+- Report: `experiments/stage163_davis_rgb_motion_selector_data/stage163_davis_rgb_motion_selector_data_report.md`.
+- Rows: `120` Stage157/158 sampled q12 gap4/gap8 tasks.
+- Sequence/gap summaries: `60` rows.
+- Inference features are RGB/motion proxies from input frames only; Stage158 quality/rate values are labels only.
+
+### Stage164: First RGB/Motion Heuristic Keyframe Schedule
+
+Status: next immediate step.
+
+Goal: turn Stage163 row-level RGB/motion features into a first adaptive keyframe schedule heuristic and compare it against uniform gap4/gap8 at the metadata-accounting level.
+
+Actions:
+
+- Aggregate Stage163 features into per-segment or per-window difficulty scores.
+- Propose adaptive schedules with the same or controlled keyframe count as uniform gap4/gap8.
+- Count transmitted keyframe schedule metadata using the Stage162 rule.
+- Use Stage158 labels as offline guidance to identify which segments should get shorter GOPs.
+- Keep selector inference features limited to RGB/motion columns.
+
+Success condition:
+
+- A candidate `rgb_motion_heuristic_v1` schedule package exists with feature-only selection logic, counted schedule metadata, and offline comparison against uniform references.
 
 ### Stage109: Selector-Score Feature Preflight
 

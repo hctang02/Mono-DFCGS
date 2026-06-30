@@ -1,0 +1,4 @@
+column_group,columns,source,inference_allowed,feedforward_status,notes
+deployable_encoder_features,"rgb_*, edge_*, hist_*, temporal_*, normalized_time, segment_length",DAVIS/input RGB frames available at encoder,yes,feed-forward for offline encoding; online mode would need declared lookahead,These are the only columns intended as selector inference features in the first heuristic selector.
+offline_stage158_labels,"stage158_*, original_*, delta_*, payload_bytes, side_mib_per_intermediate, direct_total_mib_per_frame_ref, label_*",Stage157/158 rendered validation rows,no,offline labels only,"Use for training/evaluation or difficulty diagnostics, not as deployable selector inputs."
+schedule_metadata_future,"keyframe indices or segment lengths, not present in this row-level package",selector output,transmitted_output,decoder consumes transmitted metadata only,Stage164 should add candidate schedule rows and count metadata bits.
