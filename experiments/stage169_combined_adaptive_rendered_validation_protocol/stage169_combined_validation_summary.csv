@@ -1,0 +1,4 @@
+category,target_count,schedule_row_count,existing_schedule_rows,new_render_schedule_rows,keyframe_marker_rows,mean_payload_bytes,hard_count,high_payload_count
+false_negative_residual,8,24,24,0,0,156341.25,8,0
+high_payload_residual_control,4,12,0,12,0,241017.5,0,4
+positive_promoted,14,42,18,14,10,234956.07142857142,12,13

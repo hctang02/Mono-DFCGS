@@ -1,0 +1,27 @@
+rank,target_key,category,source_task_id,sequence,target_index,source_gap,hard_quality_label,high_payload_label,adaptive_target_is_keyframe,uniform_gap4_target_is_keyframe,stage166_payload_bytes,stage166_psnr,stage166_lpips,priority_score,existing_stage167_target,existing_stage168_target,selection_reason
+1,bike-packing:00026,false_negative_residual,stage79_00021354,bike-packing,26,8,1,0,0,0,159176.0,25.04849410359389,0.19343437254428864,229.30134641494686,1,0,hard row missed by adaptive selector
+2,bike-packing:00011,false_negative_residual,stage79_00021341,bike-packing,11,8,1,0,0,0,180774.0,25.622482706829217,0.2319265902042389,226.49110473579262,1,0,hard row missed by adaptive selector
+3,breakdance:00006,false_negative_residual,stage79_00022382,breakdance,6,8,1,0,0,0,142447.0,25.242663608239635,0.1973235011100769,225.76453393980518,1,0,hard row missed by adaptive selector
+4,breakdance:00061,false_negative_residual,stage79_00022430,breakdance,61,8,1,0,0,0,155857.0,25.42756354330215,0.17937248945236206,224.89751435602577,1,0,hard row missed by adaptive selector
+5,dance-twirl:00066,false_negative_residual,stage79_00024353,dance-twirl,66,4,1,0,0,0,197156.0,26.122999794968553,0.2735501527786255,223.95660510588698,1,0,hard row missed by adaptive selector
+6,breakdance:00055,false_negative_residual,stage79_00022356,breakdance,55,4,1,0,0,0,126100.0,25.543566837921947,0.17139467597007751,220.6022251401821,1,0,hard row missed by adaptive selector
+7,breakdance:00025,false_negative_residual,stage79_00022333,breakdance,25,4,1,0,0,0,121358.0,25.713629052613758,0.16875958442687988,218.37470116240002,1,0,hard row missed by adaptive selector
+8,dogs-jump:00020,false_negative_residual,stage79_00025059,dogs-jump,20,8,1,0,0,1,167862.0,30.57019814002359,0.2771647870540619,176.62751434084535,1,0,hard row missed by adaptive selector
+9,motocross-jump:00013,positive_promoted,stage79_00028835,motocross-jump,13,8,1,1,1,0,263358.0,31.063829825022648,0.3191358745098114,236.3358,0,1,adaptive promotes hard/high-payload target
+10,motocross-jump:00022,positive_promoted,stage79_00028811,motocross-jump,22,4,1,1,1,0,253183.0,30.119209546194526,0.33573687076568604,235.3183,0,1,adaptive promotes hard/high-payload target
+11,cows:00060,positive_promoted,stage79_00023944,cows,60,8,1,1,1,1,231584.0,24.68471859771818,0.20881597697734833,233.1584,0,1,adaptive promotes hard/high-payload target
+12,cows:00019,positive_promoted,stage79_00023829,cows,19,4,1,1,1,0,225030.0,24.70318608724209,0.20844119787216187,232.503,0,1,adaptive promotes hard/high-payload target
+13,camel:00075,positive_promoted,stage79_00022883,camel,75,8,1,1,1,0,244271.0,25.335479237043415,0.1993795931339264,234.4271,0,1,adaptive promotes hard/high-payload target
+14,camel:00047,positive_promoted,stage79_00022787,camel,47,4,1,1,1,0,230502.0,25.6279590122115,0.18633119761943817,233.0502,0,1,adaptive promotes hard/high-payload target
+15,scooter-black:00010,positive_promoted,stage79_00030345,scooter-black,10,8,1,1,1,0,223623.0,25.139113673960868,0.20580781996250153,232.3623,0,0,adaptive promotes hard/high-payload target
+16,scooter-black:00004,positive_promoted,stage79_00030340,scooter-black,4,8,1,0,1,1,218516.0,24.4885691478027,0.20375370979309082,171.8516,0,0,adaptive promotes hard/high-payload target
+17,india:00027,positive_promoted,stage79_00027040,india,27,8,1,1,1,0,233735.0,31.727685844595296,0.23860138654708862,233.3735,0,0,adaptive promotes hard/high-payload target
+18,india:00030,positive_promoted,stage79_00027043,india,30,8,1,1,1,0,230255.0,32.04372980040284,0.24491067230701447,233.0255,0,0,adaptive promotes hard/high-payload target
+19,shooting:00012,positive_promoted,stage79_00030550,shooting,12,8,1,1,1,1,249775.0,32.64275504495283,0.28768661618232727,234.9775,0,0,adaptive promotes hard/high-payload target
+20,shooting:00007,positive_promoted,stage79_00030516,shooting,7,4,0,1,1,0,238787.0,35.227434595209886,0.16433610022068024,133.8787,0,0,adaptive promotes hard/high-payload target
+21,car-roundabout:00059,positive_promoted,stage79_00023210,car-roundabout,59,4,1,1,1,0,224613.0,25.98485821152527,0.1529761403799057,232.4613,0,0,adaptive promotes hard/high-payload target
+22,car-roundabout:00029,positive_promoted,stage79_00023187,car-roundabout,29,4,0,1,1,0,222153.0,27.663026726106743,0.14895430207252502,132.2153,0,0,adaptive promotes hard/high-payload target
+23,libby:00018,high_payload_residual_control,stage79_00027942,libby,18,4,0,1,0,0,257925.0,32.7872643629876,0.17209970951080322,359.64599709510804,0,0,high-payload target not promoted and not hard-quality
+24,blackswan:00010,high_payload_residual_control,stage79_00021621,blackswan,10,8,0,1,0,0,238863.0,29.820765753596852,0.1637483835220337,340.50048383522034,0,0,high-payload target not promoted and not hard-quality
+25,dog:00017,high_payload_residual_control,stage79_00024692,dog,17,4,0,1,0,0,234218.0,30.263989567847865,0.1706315129995346,335.9243151299953,0,0,high-payload target not promoted and not hard-quality
+26,dog:00006,high_payload_residual_control,stage79_00024684,dog,6,4,0,1,0,0,233064.0,31.48631829272292,0.15496239066123962,334.61362390661236,0,0,high-payload target not promoted and not hard-quality

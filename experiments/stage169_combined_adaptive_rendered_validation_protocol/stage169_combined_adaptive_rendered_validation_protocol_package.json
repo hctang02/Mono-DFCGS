@@ -1,0 +1,58 @@
+{
+  "stage": 169,
+  "status": "combined_adaptive_rendered_validation_protocol_packaged",
+  "target_count": 26,
+  "schedule_row_count": 78,
+  "new_render_schedule_rows": 26,
+  "existing_schedule_rows": 42,
+  "keyframe_marker_rows": 10,
+  "positive_sequences": [
+    "motocross-jump",
+    "cows",
+    "camel",
+    "scooter-black",
+    "india",
+    "shooting",
+    "car-roundabout"
+  ],
+  "summary_rows": [
+    {
+      "category": "false_negative_residual",
+      "target_count": 8,
+      "schedule_row_count": 24,
+      "existing_schedule_rows": 24,
+      "new_render_schedule_rows": 0,
+      "keyframe_marker_rows": 0,
+      "mean_payload_bytes": 156341.25,
+      "hard_count": 8,
+      "high_payload_count": 0
+    },
+    {
+      "category": "high_payload_residual_control",
+      "target_count": 4,
+      "schedule_row_count": 12,
+      "existing_schedule_rows": 0,
+      "new_render_schedule_rows": 12,
+      "keyframe_marker_rows": 0,
+      "mean_payload_bytes": 241017.5,
+      "hard_count": 0,
+      "high_payload_count": 4
+    },
+    {
+      "category": "positive_promoted",
+      "target_count": 14,
+      "schedule_row_count": 42,
+      "existing_schedule_rows": 18,
+      "new_render_schedule_rows": 14,
+      "keyframe_marker_rows": 10,
+      "mean_payload_bytes": 234956.07142857142,
+      "hard_count": 12,
+      "high_payload_count": 13
+    }
+  ],
+  "targets_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage169_combined_adaptive_rendered_validation_protocol/stage169_combined_validation_targets.csv",
+  "schedule_rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage169_combined_adaptive_rendered_validation_protocol/stage169_combined_validation_schedule_rows.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage169_combined_adaptive_rendered_validation_protocol/stage169_combined_validation_summary.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage169_combined_adaptive_rendered_validation_protocol/stage169_combined_adaptive_rendered_validation_protocol_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage169_combined_adaptive_rendered_validation_protocol/stage169_combined_adaptive_rendered_validation_protocol_report.md"
+}
