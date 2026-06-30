@@ -1,0 +1,151 @@
+target_key,category,sequence,target_index,schedule,expected_status,existing_source,requires_stage174_render,priority_score,notes
+bike-packing:00026,false_negative_residual,bike-packing,26,uniform_gap8,rendered_middle_recovery,stage170,0,1229.301346414947,reuse existing rendered/keyframe row
+bike-packing:00026,false_negative_residual,bike-packing,26,stage165_adaptive,rendered_middle_recovery,stage170,0,1229.301346414947,reuse existing rendered/keyframe row
+bike-packing:00026,false_negative_residual,bike-packing,26,uniform_gap4,rendered_middle_recovery,stage170,0,1229.301346414947,reuse existing rendered/keyframe row
+bike-packing:00011,false_negative_residual,bike-packing,11,uniform_gap8,rendered_middle_recovery,stage170,0,1226.4911047357925,reuse existing rendered/keyframe row
+bike-packing:00011,false_negative_residual,bike-packing,11,stage165_adaptive,rendered_middle_recovery,stage170,0,1226.4911047357925,reuse existing rendered/keyframe row
+bike-packing:00011,false_negative_residual,bike-packing,11,uniform_gap4,rendered_middle_recovery,stage170,0,1226.4911047357925,reuse existing rendered/keyframe row
+breakdance:00006,false_negative_residual,breakdance,6,uniform_gap8,rendered_middle_recovery,stage170,0,1225.7645339398052,reuse existing rendered/keyframe row
+breakdance:00006,false_negative_residual,breakdance,6,stage165_adaptive,rendered_middle_recovery,stage170,0,1225.7645339398052,reuse existing rendered/keyframe row
+breakdance:00006,false_negative_residual,breakdance,6,uniform_gap4,rendered_middle_recovery,stage170,0,1225.7645339398052,reuse existing rendered/keyframe row
+breakdance:00061,false_negative_residual,breakdance,61,uniform_gap8,rendered_middle_recovery,stage170,0,1224.8975143560258,reuse existing rendered/keyframe row
+breakdance:00061,false_negative_residual,breakdance,61,stage165_adaptive,rendered_middle_recovery,stage170,0,1224.8975143560258,reuse existing rendered/keyframe row
+breakdance:00061,false_negative_residual,breakdance,61,uniform_gap4,rendered_middle_recovery,stage170,0,1224.8975143560258,reuse existing rendered/keyframe row
+dance-twirl:00066,false_negative_residual,dance-twirl,66,uniform_gap8,rendered_middle_recovery,stage170,0,1223.9566051058869,reuse existing rendered/keyframe row
+dance-twirl:00066,false_negative_residual,dance-twirl,66,stage165_adaptive,rendered_middle_recovery,stage170,0,1223.9566051058869,reuse existing rendered/keyframe row
+dance-twirl:00066,false_negative_residual,dance-twirl,66,uniform_gap4,rendered_middle_recovery,stage170,0,1223.9566051058869,reuse existing rendered/keyframe row
+breakdance:00055,false_negative_residual,breakdance,55,uniform_gap8,rendered_middle_recovery,stage170,0,1220.602225140182,reuse existing rendered/keyframe row
+breakdance:00055,false_negative_residual,breakdance,55,stage165_adaptive,rendered_middle_recovery,stage170,0,1220.602225140182,reuse existing rendered/keyframe row
+breakdance:00055,false_negative_residual,breakdance,55,uniform_gap4,rendered_middle_recovery,stage170,0,1220.602225140182,reuse existing rendered/keyframe row
+breakdance:00025,false_negative_residual,breakdance,25,uniform_gap8,rendered_middle_recovery,stage170,0,1218.3747011624,reuse existing rendered/keyframe row
+breakdance:00025,false_negative_residual,breakdance,25,stage165_adaptive,rendered_middle_recovery,stage170,0,1218.3747011624,reuse existing rendered/keyframe row
+breakdance:00025,false_negative_residual,breakdance,25,uniform_gap4,rendered_middle_recovery,stage170,0,1218.3747011624,reuse existing rendered/keyframe row
+dogs-jump:00020,false_negative_residual,dogs-jump,20,uniform_gap8,rendered_middle_recovery,stage170,0,1176.6275143408454,reuse existing rendered/keyframe row
+dogs-jump:00020,false_negative_residual,dogs-jump,20,stage165_adaptive,rendered_middle_recovery,stage170,0,1176.6275143408454,reuse existing rendered/keyframe row
+dogs-jump:00020,false_negative_residual,dogs-jump,20,uniform_gap4,target_keyframe_no_middle_render,stage170,0,1176.6275143408454,reuse existing rendered/keyframe row
+motocross-jump:00013,positive_promoted,motocross-jump,13,uniform_gap8,rendered_middle_recovery,stage170,0,1236.3358,reuse existing rendered/keyframe row
+motocross-jump:00013,positive_promoted,motocross-jump,13,stage165_adaptive,target_keyframe_no_middle_render,stage170,0,1236.3358,reuse existing rendered/keyframe row
+motocross-jump:00013,positive_promoted,motocross-jump,13,uniform_gap4,rendered_middle_recovery,stage170,0,1236.3358,reuse existing rendered/keyframe row
+motocross-jump:00022,positive_promoted,motocross-jump,22,uniform_gap8,rendered_middle_recovery,stage170,0,1235.3183,reuse existing rendered/keyframe row
+motocross-jump:00022,positive_promoted,motocross-jump,22,stage165_adaptive,target_keyframe_no_middle_render,stage170,0,1235.3183,reuse existing rendered/keyframe row
+motocross-jump:00022,positive_promoted,motocross-jump,22,uniform_gap4,rendered_middle_recovery,stage170,0,1235.3183,reuse existing rendered/keyframe row
+cows:00060,positive_promoted,cows,60,uniform_gap8,rendered_middle_recovery,stage170,0,1233.1584,reuse existing rendered/keyframe row
+cows:00060,positive_promoted,cows,60,stage165_adaptive,target_keyframe_no_middle_render,stage170,0,1233.1584,reuse existing rendered/keyframe row
+cows:00060,positive_promoted,cows,60,uniform_gap4,target_keyframe_no_middle_render,stage170,0,1233.1584,reuse existing rendered/keyframe row
+cows:00019,positive_promoted,cows,19,uniform_gap8,rendered_middle_recovery,stage170,0,1232.503,reuse existing rendered/keyframe row
+cows:00019,positive_promoted,cows,19,stage165_adaptive,target_keyframe_no_middle_render,stage170,0,1232.503,reuse existing rendered/keyframe row
+cows:00019,positive_promoted,cows,19,uniform_gap4,rendered_middle_recovery,stage170,0,1232.503,reuse existing rendered/keyframe row
+camel:00075,positive_promoted,camel,75,uniform_gap8,rendered_middle_recovery,stage170,0,1234.4270999999999,reuse existing rendered/keyframe row
+camel:00075,positive_promoted,camel,75,stage165_adaptive,target_keyframe_no_middle_render,stage170,0,1234.4270999999999,reuse existing rendered/keyframe row
+camel:00075,positive_promoted,camel,75,uniform_gap4,rendered_middle_recovery,stage170,0,1234.4270999999999,reuse existing rendered/keyframe row
+camel:00047,positive_promoted,camel,47,uniform_gap8,rendered_middle_recovery,stage170,0,1233.0502,reuse existing rendered/keyframe row
+camel:00047,positive_promoted,camel,47,stage165_adaptive,target_keyframe_no_middle_render,stage170,0,1233.0502,reuse existing rendered/keyframe row
+camel:00047,positive_promoted,camel,47,uniform_gap4,rendered_middle_recovery,stage170,0,1233.0502,reuse existing rendered/keyframe row
+scooter-black:00010,positive_promoted,scooter-black,10,uniform_gap8,rendered_middle_recovery,stage170,0,1232.3623,reuse existing rendered/keyframe row
+scooter-black:00010,positive_promoted,scooter-black,10,stage165_adaptive,target_keyframe_no_middle_render,stage170,0,1232.3623,reuse existing rendered/keyframe row
+scooter-black:00010,positive_promoted,scooter-black,10,uniform_gap4,rendered_middle_recovery,stage170,0,1232.3623,reuse existing rendered/keyframe row
+scooter-black:00004,positive_promoted,scooter-black,4,uniform_gap8,rendered_middle_recovery,stage170,0,1171.8516,reuse existing rendered/keyframe row
+scooter-black:00004,positive_promoted,scooter-black,4,stage165_adaptive,target_keyframe_no_middle_render,stage170,0,1171.8516,reuse existing rendered/keyframe row
+scooter-black:00004,positive_promoted,scooter-black,4,uniform_gap4,target_keyframe_no_middle_render,stage170,0,1171.8516,reuse existing rendered/keyframe row
+india:00027,positive_promoted,india,27,uniform_gap8,rendered_middle_recovery,stage170,0,1233.3735,reuse existing rendered/keyframe row
+india:00027,positive_promoted,india,27,stage165_adaptive,target_keyframe_no_middle_render,stage170,0,1233.3735,reuse existing rendered/keyframe row
+india:00027,positive_promoted,india,27,uniform_gap4,rendered_middle_recovery,stage170,0,1233.3735,reuse existing rendered/keyframe row
+india:00030,positive_promoted,india,30,uniform_gap8,rendered_middle_recovery,stage170,0,1233.0255,reuse existing rendered/keyframe row
+india:00030,positive_promoted,india,30,stage165_adaptive,target_keyframe_no_middle_render,stage170,0,1233.0255,reuse existing rendered/keyframe row
+india:00030,positive_promoted,india,30,uniform_gap4,rendered_middle_recovery,stage170,0,1233.0255,reuse existing rendered/keyframe row
+shooting:00012,positive_promoted,shooting,12,uniform_gap8,rendered_middle_recovery,stage170,0,1234.9775,reuse existing rendered/keyframe row
+shooting:00012,positive_promoted,shooting,12,stage165_adaptive,target_keyframe_no_middle_render,stage170,0,1234.9775,reuse existing rendered/keyframe row
+shooting:00012,positive_promoted,shooting,12,uniform_gap4,target_keyframe_no_middle_render,stage170,0,1234.9775,reuse existing rendered/keyframe row
+shooting:00007,positive_promoted,shooting,7,uniform_gap8,rendered_middle_recovery,stage170,0,1133.8787,reuse existing rendered/keyframe row
+shooting:00007,positive_promoted,shooting,7,stage165_adaptive,target_keyframe_no_middle_render,stage170,0,1133.8787,reuse existing rendered/keyframe row
+shooting:00007,positive_promoted,shooting,7,uniform_gap4,rendered_middle_recovery,stage170,0,1133.8787,reuse existing rendered/keyframe row
+car-roundabout:00059,positive_promoted,car-roundabout,59,uniform_gap8,rendered_middle_recovery,stage170,0,1232.4613,reuse existing rendered/keyframe row
+car-roundabout:00059,positive_promoted,car-roundabout,59,stage165_adaptive,target_keyframe_no_middle_render,stage170,0,1232.4613,reuse existing rendered/keyframe row
+car-roundabout:00059,positive_promoted,car-roundabout,59,uniform_gap4,rendered_middle_recovery,stage170,0,1232.4613,reuse existing rendered/keyframe row
+car-roundabout:00029,positive_promoted,car-roundabout,29,uniform_gap8,rendered_middle_recovery,stage170,0,1132.2153,reuse existing rendered/keyframe row
+car-roundabout:00029,positive_promoted,car-roundabout,29,stage165_adaptive,target_keyframe_no_middle_render,stage170,0,1132.2153,reuse existing rendered/keyframe row
+car-roundabout:00029,positive_promoted,car-roundabout,29,uniform_gap4,rendered_middle_recovery,stage170,0,1132.2153,reuse existing rendered/keyframe row
+libby:00018,high_payload_residual_control,libby,18,uniform_gap8,rendered_middle_recovery,stage170,0,1359.645997095108,reuse existing rendered/keyframe row
+libby:00018,high_payload_residual_control,libby,18,stage165_adaptive,rendered_middle_recovery,stage170,0,1359.645997095108,reuse existing rendered/keyframe row
+libby:00018,high_payload_residual_control,libby,18,uniform_gap4,rendered_middle_recovery,stage170,0,1359.645997095108,reuse existing rendered/keyframe row
+blackswan:00010,high_payload_residual_control,blackswan,10,uniform_gap8,rendered_middle_recovery,stage170,0,1340.5004838352204,reuse existing rendered/keyframe row
+blackswan:00010,high_payload_residual_control,blackswan,10,stage165_adaptive,rendered_middle_recovery,stage170,0,1340.5004838352204,reuse existing rendered/keyframe row
+blackswan:00010,high_payload_residual_control,blackswan,10,uniform_gap4,rendered_middle_recovery,stage170,0,1340.5004838352204,reuse existing rendered/keyframe row
+dog:00017,high_payload_residual_control,dog,17,uniform_gap8,rendered_middle_recovery,stage170,0,1335.9243151299952,reuse existing rendered/keyframe row
+dog:00017,high_payload_residual_control,dog,17,stage165_adaptive,rendered_middle_recovery,stage170,0,1335.9243151299952,reuse existing rendered/keyframe row
+dog:00017,high_payload_residual_control,dog,17,uniform_gap4,rendered_middle_recovery,stage170,0,1335.9243151299952,reuse existing rendered/keyframe row
+dog:00006,high_payload_residual_control,dog,6,uniform_gap8,rendered_middle_recovery,stage170,0,1334.6136239066122,reuse existing rendered/keyframe row
+dog:00006,high_payload_residual_control,dog,6,stage165_adaptive,rendered_middle_recovery,stage170,0,1334.6136239066122,reuse existing rendered/keyframe row
+dog:00006,high_payload_residual_control,dog,6,uniform_gap4,rendered_middle_recovery,stage170,0,1334.6136239066122,reuse existing rendered/keyframe row
+motocross-jump:00023,positive_promoted_extension,motocross-jump,23,uniform_gap8,rendered_middle_recovery,stage168,0,566.9968404712677,reuse existing rendered/keyframe row
+motocross-jump:00023,positive_promoted_extension,motocross-jump,23,stage165_adaptive,target_keyframe_no_middle_render,stage168,0,566.9968404712677,reuse existing rendered/keyframe row
+motocross-jump:00023,positive_promoted_extension,motocross-jump,23,uniform_gap4,rendered_middle_recovery,stage168,0,566.9968404712677,reuse existing rendered/keyframe row
+camel:00051,positive_promoted_extension,camel,51,uniform_gap8,rendered_middle_recovery,stage168,0,549.2953017144202,reuse existing rendered/keyframe row
+camel:00051,positive_promoted_extension,camel,51,stage165_adaptive,target_keyframe_no_middle_render,stage168,0,549.2953017144202,reuse existing rendered/keyframe row
+camel:00051,positive_promoted_extension,camel,51,uniform_gap4,rendered_middle_recovery,stage168,0,549.2953017144202,reuse existing rendered/keyframe row
+parkour:00090,positive_promoted_extension,parkour,90,uniform_gap8,rendered_middle_recovery,,1,548.3294045152664,render in Stage174
+parkour:00090,positive_promoted_extension,parkour,90,stage165_adaptive,target_keyframe_no_middle_render,,0,548.3294045152664,metadata/keyframe marker only
+parkour:00090,positive_promoted_extension,parkour,90,uniform_gap4,rendered_middle_recovery,,1,548.3294045152664,render in Stage174
+parkour:00087,positive_promoted_extension,parkour,87,uniform_gap8,rendered_middle_recovery,,1,422.7251301326752,render in Stage174
+parkour:00087,positive_promoted_extension,parkour,87,stage165_adaptive,target_keyframe_no_middle_render,,0,422.7251301326752,metadata/keyframe marker only
+parkour:00087,positive_promoted_extension,parkour,87,uniform_gap4,rendered_middle_recovery,,1,422.7251301326752,render in Stage174
+cows:00042,positive_promoted_extension,cows,42,uniform_gap8,rendered_middle_recovery,,1,420.1822008543014,render in Stage174
+cows:00042,positive_promoted_extension,cows,42,stage165_adaptive,target_keyframe_no_middle_render,,0,420.1822008543014,metadata/keyframe marker only
+cows:00042,positive_promoted_extension,cows,42,uniform_gap4,rendered_middle_recovery,,1,420.1822008543014,render in Stage174
+dance-twirl:00082,positive_promoted_extension,dance-twirl,82,uniform_gap8,rendered_middle_recovery,,1,419.882689868927,render in Stage174
+dance-twirl:00082,positive_promoted_extension,dance-twirl,82,stage165_adaptive,target_keyframe_no_middle_render,,0,419.882689868927,metadata/keyframe marker only
+dance-twirl:00082,positive_promoted_extension,dance-twirl,82,uniform_gap4,rendered_middle_recovery,,1,419.882689868927,render in Stage174
+dance-twirl:00068,positive_promoted_extension,dance-twirl,68,uniform_gap8,rendered_middle_recovery,,1,418.18095611381534,render in Stage174
+dance-twirl:00068,positive_promoted_extension,dance-twirl,68,stage165_adaptive,target_keyframe_no_middle_render,,0,418.18095611381534,metadata/keyframe marker only
+dance-twirl:00068,positive_promoted_extension,dance-twirl,68,uniform_gap4,target_keyframe_no_middle_render,,0,418.18095611381534,metadata/keyframe marker only
+bike-packing:00046,positive_promoted_extension,bike-packing,46,uniform_gap8,rendered_middle_recovery,,1,415.4558617024422,render in Stage174
+bike-packing:00046,positive_promoted_extension,bike-packing,46,stage165_adaptive,target_keyframe_no_middle_render,,0,415.4558617024422,metadata/keyframe marker only
+bike-packing:00046,positive_promoted_extension,bike-packing,46,uniform_gap4,rendered_middle_recovery,,1,415.4558617024422,render in Stage174
+pigs:00044,high_payload_residual_control_extension,pigs,44,uniform_gap8,rendered_middle_recovery,,1,233.72942985868454,render in Stage174
+pigs:00044,high_payload_residual_control_extension,pigs,44,stage165_adaptive,rendered_middle_recovery,,1,233.72942985868454,render in Stage174
+pigs:00044,high_payload_residual_control_extension,pigs,44,uniform_gap4,target_keyframe_no_middle_render,,0,233.72942985868454,metadata/keyframe marker only
+blackswan:00035,high_payload_residual_control_extension,blackswan,35,uniform_gap8,rendered_middle_recovery,,1,227.9656218471527,render in Stage174
+blackswan:00035,high_payload_residual_control_extension,blackswan,35,stage165_adaptive,rendered_middle_recovery,,1,227.9656218471527,render in Stage174
+blackswan:00035,high_payload_residual_control_extension,blackswan,35,uniform_gap4,rendered_middle_recovery,,1,227.9656218471527,render in Stage174
+lab-coat:00010,high_payload_residual_control_extension,lab-coat,10,uniform_gap8,rendered_middle_recovery,,1,227.34131650447844,render in Stage174
+lab-coat:00010,high_payload_residual_control_extension,lab-coat,10,stage165_adaptive,rendered_middle_recovery,,1,227.34131650447844,render in Stage174
+lab-coat:00010,high_payload_residual_control_extension,lab-coat,10,uniform_gap4,rendered_middle_recovery,,1,227.34131650447844,render in Stage174
+blackswan:00021,high_payload_residual_control_extension,blackswan,21,uniform_gap8,rendered_middle_recovery,,1,226.4275290029049,render in Stage174
+blackswan:00021,high_payload_residual_control_extension,blackswan,21,stage165_adaptive,rendered_middle_recovery,,1,226.4275290029049,render in Stage174
+blackswan:00021,high_payload_residual_control_extension,blackswan,21,uniform_gap4,rendered_middle_recovery,,1,226.4275290029049,render in Stage174
+blackswan:00023,high_payload_residual_control_extension,blackswan,23,uniform_gap8,rendered_middle_recovery,,1,225.7972235531807,render in Stage174
+blackswan:00023,high_payload_residual_control_extension,blackswan,23,stage165_adaptive,rendered_middle_recovery,,1,225.7972235531807,render in Stage174
+blackswan:00023,high_payload_residual_control_extension,blackswan,23,uniform_gap4,rendered_middle_recovery,,1,225.7972235531807,render in Stage174
+parkour:00015,high_payload_residual_control_extension,parkour,15,uniform_gap8,rendered_middle_recovery,,1,224.68656875133513,render in Stage174
+parkour:00015,high_payload_residual_control_extension,parkour,15,stage165_adaptive,rendered_middle_recovery,,1,224.68656875133513,render in Stage174
+parkour:00015,high_payload_residual_control_extension,parkour,15,uniform_gap4,rendered_middle_recovery,,1,224.68656875133513,render in Stage174
+paragliding-launch:00018,high_payload_residual_control_extension,paragliding-launch,18,uniform_gap8,rendered_middle_recovery,,1,224.11691042637824,render in Stage174
+paragliding-launch:00018,high_payload_residual_control_extension,paragliding-launch,18,stage165_adaptive,rendered_middle_recovery,,1,224.11691042637824,render in Stage174
+paragliding-launch:00018,high_payload_residual_control_extension,paragliding-launch,18,uniform_gap4,rendered_middle_recovery,,1,224.11691042637824,render in Stage174
+horsejump-high:00046,high_payload_residual_control_extension,horsejump-high,46,uniform_gap8,rendered_middle_recovery,,1,222.06388358306884,render in Stage174
+horsejump-high:00046,high_payload_residual_control_extension,horsejump-high,46,stage165_adaptive,rendered_middle_recovery,,1,222.06388358306884,render in Stage174
+horsejump-high:00046,high_payload_residual_control_extension,horsejump-high,46,uniform_gap4,rendered_middle_recovery,,1,222.06388358306884,render in Stage174
+horsejump-high:00015,selector_false_positive_keyframe_control,horsejump-high,15,uniform_gap8,rendered_middle_recovery,,1,217.94009547352792,render in Stage174
+horsejump-high:00015,selector_false_positive_keyframe_control,horsejump-high,15,stage165_adaptive,target_keyframe_no_middle_render,,0,217.94009547352792,metadata/keyframe marker only
+horsejump-high:00015,selector_false_positive_keyframe_control,horsejump-high,15,uniform_gap4,rendered_middle_recovery,,1,217.94009547352792,render in Stage174
+dogs-jump:00010,selector_false_positive_keyframe_control,dogs-jump,10,uniform_gap8,rendered_middle_recovery,,1,161.30930691742898,render in Stage174
+dogs-jump:00010,selector_false_positive_keyframe_control,dogs-jump,10,stage165_adaptive,target_keyframe_no_middle_render,,0,161.30930691742898,metadata/keyframe marker only
+dogs-jump:00010,selector_false_positive_keyframe_control,dogs-jump,10,uniform_gap4,rendered_middle_recovery,,1,161.30930691742898,render in Stage174
+drift-chicane:00006,selector_false_positive_keyframe_control,drift-chicane,6,uniform_gap8,rendered_middle_recovery,,1,130.28966197156905,render in Stage174
+drift-chicane:00006,selector_false_positive_keyframe_control,drift-chicane,6,stage165_adaptive,target_keyframe_no_middle_render,,0,130.28966197156905,metadata/keyframe marker only
+drift-chicane:00006,selector_false_positive_keyframe_control,drift-chicane,6,uniform_gap4,rendered_middle_recovery,,1,130.28966197156905,render in Stage174
+drift-chicane:00035,selector_false_positive_keyframe_control,drift-chicane,35,uniform_gap8,rendered_middle_recovery,,1,114.13123057436943,render in Stage174
+drift-chicane:00035,selector_false_positive_keyframe_control,drift-chicane,35,stage165_adaptive,target_keyframe_no_middle_render,,0,114.13123057436943,metadata/keyframe marker only
+drift-chicane:00035,selector_false_positive_keyframe_control,drift-chicane,35,uniform_gap4,rendered_middle_recovery,,1,114.13123057436943,render in Stage174
+gold-fish:00070,normal_residual_control,gold-fish,70,uniform_gap8,rendered_middle_recovery,,1,313.9594143511229,render in Stage174
+gold-fish:00070,normal_residual_control,gold-fish,70,stage165_adaptive,rendered_middle_recovery,,1,313.9594143511229,render in Stage174
+gold-fish:00070,normal_residual_control,gold-fish,70,uniform_gap4,rendered_middle_recovery,,1,313.9594143511229,render in Stage174
+gold-fish:00049,normal_residual_control,gold-fish,49,uniform_gap8,rendered_middle_recovery,,1,313.79393966737024,render in Stage174
+gold-fish:00049,normal_residual_control,gold-fish,49,stage165_adaptive,rendered_middle_recovery,,1,313.79393966737024,render in Stage174
+gold-fish:00049,normal_residual_control,gold-fish,49,uniform_gap4,rendered_middle_recovery,,1,313.79393966737024,render in Stage174
+gold-fish:00055,normal_residual_control,gold-fish,55,uniform_gap8,rendered_middle_recovery,,1,312.8844297394666,render in Stage174
+gold-fish:00055,normal_residual_control,gold-fish,55,stage165_adaptive,rendered_middle_recovery,,1,312.8844297394666,render in Stage174
+gold-fish:00055,normal_residual_control,gold-fish,55,uniform_gap4,rendered_middle_recovery,,1,312.8844297394666,render in Stage174
+gold-fish:00002,normal_residual_control,gold-fish,2,uniform_gap8,rendered_middle_recovery,,1,312.30110829062977,render in Stage174
+gold-fish:00002,normal_residual_control,gold-fish,2,stage165_adaptive,rendered_middle_recovery,,1,312.30110829062977,render in Stage174
+gold-fish:00002,normal_residual_control,gold-fish,2,uniform_gap4,rendered_middle_recovery,,1,312.30110829062977,render in Stage174

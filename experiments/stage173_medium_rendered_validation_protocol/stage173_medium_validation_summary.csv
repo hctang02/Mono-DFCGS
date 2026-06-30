@@ -1,0 +1,8 @@
+category,target_count,schedule_row_count,existing_schedule_rows,new_render_schedule_rows,keyframe_marker_rows,mean_payload_bytes,mean_psnr,mean_lpips,hard_count,high_payload_count
+false_negative_residual,8,24,24,0,0,156341.25,26.16144972343659,0.2116157691925764,8,0
+high_payload_residual_control,4,12,12,0,0,241017.5,31.089584494288808,0.1653604991734028,0,4
+high_payload_residual_control_extension,8,24,0,23,1,224830.375,29.63100023189982,0.16856854408979416,0,8
+normal_residual_control,4,12,0,12,0,194930.5,33.42784882052998,0.07753575965762138,0,0
+positive_promoted,14,42,42,0,0,234956.07142857142,28.317968239284916,0.22177624702453613,12,13
+positive_promoted_extension,8,24,6,11,7,220645.75,26.728114907754847,0.22426490858197212,8,3
+selector_false_positive_keyframe_control,4,12,0,8,4,150710.0,30.09053381728243,0.17358579114079475,0,0

@@ -128,6 +128,7 @@ Key Stage96 direct total rates:
 - Stage170: executed the combined adaptive rendered validation protocol with `26` new renders, `42` reused rows, and `10` keyframe marker rows; package is ready for review.
 - Stage171: reviewed combined adaptive evidence and decided to continue only after explicit keyframe/residual/metadata rate accounting and a medium validation protocol.
 - Stage172: audited sampled/proxy adaptive schedule rate components and confirmed adaptive remains rate-promising after charging extra keyframes and metadata.
+- Stage173: built the medium rendered validation protocol with `50` targets, `150` schedule rows, `84` reusable rows, `54` new Stage174 render rows, and `12` new keyframe markers.
 
 ## Current Best Selector Policy
 
@@ -244,6 +245,7 @@ Stage113 held-out diagnostic:
 - Stage170 executes the Stage169 combined validation protocol without changing Stage158. It covers `78/78` protocol rows: `42` reused rows, `26` newly rendered rows, and `10` keyframe marker rows. Source coverage is Stage167 `24` rows, Stage168 `18` rows, Stage170 rendered `26` rows, and Stage170 keyframe markers `10` rows. Decision: `combined_validation_ready_for_review`. Positive-promoted adaptive rows are `14` keyframes/no-middle-render with no claimed middle-render metrics. False-negative residual adaptive vs uniform gap8 remains essentially unchanged: PSNR `26.192677144097143` vs `26.203640896378754`, LPIPS `0.2088309582322836` vs `0.20792134664952755`. High-payload residual controls favor adaptive in this small control slice: PSNR `31.35483734665675` vs uniform gap8 `31.039272830807292`, LPIPS `0.1504514366388321` vs `0.1674923412501812`. Package path: `experiments/stage170_combined_adaptive_rendered_validation_execution/`. Heavy contact sheet: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage170_combined_adaptive_rendered_validation_execution/stage170_combined_adaptive_rendered_validation_contact_sheet.jpg`.
 - Stage171 packages the combined adaptive evidence review. Decision: `proceed_to_rate_audit_and_medium_protocol`. Key evidence: hard recall `0.733333333333`, payload recall `0.819444444444`; adaptive/gap8/gap4 keyframes `358/292/536`; Stage166 proxy total MiB/frame adaptive vs gap8 `0.194181515827` vs `0.300453182577`; Stage170 false-negative adaptive delta vs uniform gap8 PSNR `-0.0109637522816`, LPIPS `+0.000909611582756`; high-payload residual-control adaptive delta vs uniform gap8 PSNR `+0.315564515849`, LPIPS `-0.0170409046113`. Package path: `experiments/stage171_combined_adaptive_evidence_review/`. Next required step is Stage172 keyframe/residual/metadata rate accounting, then Stage173/174 medium validation.
 - Stage172 decomposes Stage166 sampled/proxy rate into main-anchor keyframes, extra keyframes, residual side-info, and schedule metadata. Decision: `adaptive_rate_promising_for_medium_protocol`. Per-extra-keyframe proxy cost is `0.00034554440169835566` MiB/frame (`0.690743258995013` MiB dataset-level proxy payload). Uniform gap8 total proxy is `0.300453182577` MiB/frame; Stage165 adaptive is `0.194181515827` after charging `66` extra keyframes and `327` metadata bytes; uniform gap4 is `0.370523510564`. Adaptive delta vs gap8 is `-0.106271666750` MiB/frame. Accounting scope remains `stage166_sampled_proxy`, not final full-sequence RD. Package path: `experiments/stage172_keyframe_rate_accounting_audit/`.
+- Stage173 packages a medium rendered validation protocol. It keeps all `26` Stage170 core targets and adds `24` controls/extensions, for `50` targets and `150` schedule rows. Reusable existing rows: `84`; Stage174 new render rows: `54`; new keyframe markers: `12`. Categories are false negatives (`8`), Stage170 high-payload controls (`4`), high-payload residual control extensions (`8`), normal residual controls (`4`), Stage170 positive promotions (`14`), positive-promotion extensions (`8`), and selector false-positive keyframe controls (`4`). Package path: `experiments/stage173_medium_rendered_validation_protocol/`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -737,7 +739,7 @@ Result:
 
 ### Stage173: Medium Rendered Validation Protocol
 
-Status: next immediate step.
+Status: completed on 2026-06-30.
 
 Goal: design a medium rendered validation protocol that reuses Stage167/168/170 rows and renders only missing schedule rows.
 
@@ -752,6 +754,34 @@ Actions:
 Success condition:
 
 - A protocol package defines exact targets, categories, schedule rows, reusable rows, missing rows, and keyframe markers for Stage174.
+
+Result:
+
+- Package: `experiments/stage173_medium_rendered_validation_protocol/stage173_medium_rendered_validation_protocol_package.json`.
+- Report: `experiments/stage173_medium_rendered_validation_protocol/stage173_medium_rendered_validation_protocol_report.md`.
+- Target count: `50`; schedule row count: `150`.
+- Existing rows reusable from Stage167/168/170: `84`.
+- New Stage174 renders required: `54`.
+- New keyframe marker rows: `12`.
+- Stage170 core targets retained: `26`.
+
+### Stage174: Medium Rendered Validation Execution
+
+Status: next immediate step.
+
+Goal: execute the Stage173 protocol by reusing existing rows, rendering only missing rows, and summarizing rendered metrics and keyframe markers.
+
+Actions:
+
+- Load Stage173 targets and schedule rows.
+- Load existing Stage167/168/170 rendered/keyframe rows.
+- Render only rows with `requires_stage174_render=1` using fixed Stage158 `streamsplat_guided_half_anchor_entropy_residual_v1`.
+- Mark keyframe rows as `target_keyframe_no_middle_render` without middle metrics.
+- Summarize by category/schedule/source and write a heavy contact sheet outside repo.
+
+Success condition:
+
+- Stage174 package covers all `150` protocol rows and completes exactly `54` new renders unless protocol changes.
 
 ### Stage109: Selector-Score Feature Preflight
 
