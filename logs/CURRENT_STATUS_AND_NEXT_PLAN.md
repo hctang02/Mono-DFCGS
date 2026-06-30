@@ -125,6 +125,7 @@ Key Stage96 direct total rates:
 - Stage167: ran a small rendered smoke on Stage166 hard false negatives; adaptive is essentially unchanged from uniform gap8 on this stress set.
 - Stage168: ran a complementary positive-coverage smoke on promoted hard/high-payload targets; promotions avoid expensive uniform-gap8 middle recovery.
 - Stage169: built the combined adaptive rendered validation protocol that reuses Stage167/168 and identifies only missing rows for Stage170 rendering.
+- Stage170: executed the combined adaptive rendered validation protocol with `26` new renders, `42` reused rows, and `10` keyframe marker rows; package is ready for review.
 
 ## Current Best Selector Policy
 
@@ -238,6 +239,7 @@ Stage113 held-out diagnostic:
 - Stage167 renders a small hard-false-negative stress smoke on `8` targets that remain middle-recovery targets under Stage165 adaptive schedule. Decision: `inspect_smoke_before_scaling`. On this biased stress set, uniform gap8 PSNR/SSIM/MS-SSIM/LPIPS is `26.203640896378754/0.8343665823340416/0.9815688729286194/0.20792134664952755`; Stage165 adaptive is `26.192677144097146/0.8337735459208488/0.9814087599515915/0.2088309582322836`, delta PSNR `-0.010963752281610173`, delta LPIPS `+0.0009096115827560425`. This mainly shows false negatives remain unchanged, not that the adaptive schedule is broadly bad. Package path: `experiments/stage167_adaptive_schedule_rendered_smoke/`. Heavy contact sheet: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage167_adaptive_schedule_rendered_smoke/stage167_adaptive_schedule_rendered_smoke_contact_sheet.jpg`.
 - Stage168 renders a complementary positive-coverage smoke on `8` adaptive-promoted targets from `motocross-jump`, `camel`, and `cows`; all selected targets are both hard-quality and high-payload labels. Decision: `positive_promotions_confirmed_for_broader_validation`. Adaptive marks all `8/8` as target keyframes and does not claim rendered middle metrics. Uniform gap8 recovery on these targets is PSNR/SSIM/MS-SSIM/LPIPS `27.889178289574676/0.8163857758045197/0.9782927110791206/0.21933318674564362` with mean residual payload `242546.25` bytes, confirming adaptive promotion avoids expensive middle recovery on positive cases. Package path: `experiments/stage168_positive_coverage_rendered_smoke/`. Heavy contact sheet: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage168_positive_coverage_rendered_smoke/stage168_positive_coverage_rendered_smoke_contact_sheet.jpg`.
 - Stage169 packages the combined validation protocol. It selects `26` targets and `78` target/schedule rows: `8` false-negative residual targets, `14` positive-promoted targets, and `4` high-payload residual controls. It reuses `42` existing Stage167/168 schedule rows, marks `10` adaptive/uniform keyframe rows as no-middle-render, and leaves `26` rows for Stage170 rendering. Package path: `experiments/stage169_combined_adaptive_rendered_validation_protocol/`.
+- Stage170 executes the Stage169 combined validation protocol without changing Stage158. It covers `78/78` protocol rows: `42` reused rows, `26` newly rendered rows, and `10` keyframe marker rows. Source coverage is Stage167 `24` rows, Stage168 `18` rows, Stage170 rendered `26` rows, and Stage170 keyframe markers `10` rows. Decision: `combined_validation_ready_for_review`. Positive-promoted adaptive rows are `14` keyframes/no-middle-render with no claimed middle-render metrics. False-negative residual adaptive vs uniform gap8 remains essentially unchanged: PSNR `26.192677144097143` vs `26.203640896378754`, LPIPS `0.2088309582322836` vs `0.20792134664952755`. High-payload residual controls favor adaptive in this small control slice: PSNR `31.35483734665675` vs uniform gap8 `31.039272830807292`, LPIPS `0.1504514366388321` vs `0.1674923412501812`. Package path: `experiments/stage170_combined_adaptive_rendered_validation_execution/`. Heavy contact sheet: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage170_combined_adaptive_rendered_validation_execution/stage170_combined_adaptive_rendered_validation_contact_sheet.jpg`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -645,7 +647,7 @@ Result:
 
 ### Stage170: Combined Adaptive Rendered Validation Execution
 
-Status: next immediate step.
+Status: completed on 2026-06-30.
 
 Goal: execute the Stage169 protocol by reusing Stage167/168 rows and rendering only missing schedule rows.
 
@@ -661,6 +663,37 @@ Actions:
 Success condition:
 
 - A combined rendered validation package exists and clearly separates reused rows, new renders, and keyframe markers.
+
+Result:
+
+- Package: `experiments/stage170_combined_adaptive_rendered_validation_execution/stage170_combined_adaptive_rendered_validation_execution_package.json`.
+- Report: `experiments/stage170_combined_adaptive_rendered_validation_execution/stage170_combined_adaptive_rendered_validation_execution_report.md`.
+- Protocol rows covered: `78 / 78`.
+- New renders completed: `26`; reused rows: `42`; keyframe marker rows: `10`.
+- Source coverage: Stage167 `24` rows, Stage168 `18` rows, Stage170 rendered `26` rows, Stage170 keyframe markers `10` rows.
+- Decision: `combined_validation_ready_for_review`.
+- False-negative residual adaptive vs uniform gap8: PSNR `26.192677144097143` vs `26.203640896378754`, LPIPS `0.2088309582322836` vs `0.20792134664952755`.
+- High-payload residual control adaptive vs uniform gap8: PSNR `31.35483734665675` vs `31.039272830807292`, LPIPS `0.1504514366388321` vs `0.1674923412501812`.
+- Positive-promoted adaptive rows: `14` keyframe/no-middle-render rows; no rendered middle metrics are claimed.
+- Heavy contact sheet: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage170_combined_adaptive_rendered_validation_execution/stage170_combined_adaptive_rendered_validation_contact_sheet.jpg`.
+
+### Stage171: Combined Adaptive Evidence Review
+
+Status: next immediate step.
+
+Goal: decide from Stage166-170 evidence whether Stage165 adaptive schedule should scale to broader/full-sequence rendered RD validation, or whether selector refinement is needed first.
+
+Actions:
+
+- Review Stage170 category/schedule summaries, especially false negatives, positive promotions, and high-payload residual controls.
+- Keep adaptive promoted rows as keyframes/no-middle-render and do not invent middle-frame metrics for them.
+- Account schedule metadata, additional keyframes, residual payloads, and all side-info consistently.
+- Decide whether next validation should be broader sampled, full-sequence, or selector-refinement preflight.
+- Keep heavy contact sheets/videos outside repo.
+
+Success condition:
+
+- A clear go/no-go decision for broader adaptive schedule validation, with exact next protocol and accounting rules.
 
 ### Stage109: Selector-Score Feature Preflight
 
