@@ -13,7 +13,8 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage152: `0843ecd Package middle-frame recovery policy`
+- Latest pushed commit before Stage153: `17e38d5 Export subjective middle-frame visuals`
+- Latest completed local stage before Stage154: `Stage153 middle multi-metric bad-case evaluation`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -107,6 +108,7 @@ Key Stage96 direct total rates:
 - Stage150: completed full q12 gap4/gap8 linear-base side-info validation; both gaps exceed corrected StreamSplat targets.
 - Stage151: completed final middle-frame recovery policy package from Stage150.
 - Stage152: completed subjective visual export for the recovered middle-frame policy.
+- Stage153: completed multi-metric and bad-case diagnostic for the Stage151 recovered policy.
 
 ## Current Best Selector Policy
 
@@ -203,6 +205,7 @@ Stage113 held-out diagnostic:
 - Stage150 closes the remaining middle-frame gap using decoder-safe linear base plus rate-counted q6/top10 entropy index+value residual side-info on all `3170` q12 gap4/gap8 eval rows: gap4 side-info PSNR is `23.104893423851635` vs corrected target `23.004337221027775` (`+0.10055620282386002 dB`) at direct rate `0.21060840528077832 MiB/frame`; gap8 side-info PSNR is `22.020188948523128` vs target `21.56004909948801` (`+0.4601398490351194 dB`) at direct rate `0.12643008870779784 MiB/frame`; decode diff is `0.0`; positive deltas are `1463/1463` and `1707/1707`. Next stage should package final full-video RD policy around this Stage150 fallback.
 - Stage151 freezes the recovered policy `middle_frame_recovery_linear_base_entropy_sideinfo_v1`: q12 endpoints, decoder-safe linear base, q6/top10 entropy index+value side-info payload, all side-info bytes counted, decoder target dense/RGB/unencoded residual forbidden. Target recovery is true with minimum margin `+0.10055620282386002 dB` over corrected middle-frame targets.
 - Stage152 generated human-viewable comparison videos for the Stage151 recovered policy. Gap4 and gap8 each export `24` sampled eval frames with panels `target RGB | linear base render | recovered side-info render`; heavy videos are stored outside git at `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage152_subjective_visual_export/`. The sampled subjective export means are gap4 base/recovered PSNR `20.934637105918473` / `24.157467503772878` and gap8 base/recovered PSNR `19.312465970173346` / `22.586569251235034`.
+- Stage153 confirms that PSNR recovery alone is not enough. On 120 sampled q12 gap4/gap8 eval tasks, Stage151 recovered side-info improves PSNR/SSIM/MS-SSIM over linear base, but LPIPS improves only slightly and some tasks regress in LPIPS despite PSNR gains. Gap4 recovered means are PSNR `22.895456117767825`, SSIM `0.6020039414366086`, MS-SSIM `0.7726786529024442`, LPIPS `0.3475280572970708`; gap8 recovered means are PSNR `21.809851951566433`, SSIM `0.5636065999666849`, MS-SSIM `0.7226341560482978`, LPIPS `0.38423423618078234`. Worst cases include `motocross-jump`, `bmx-trees`, `goat`, `drift-straight`, `loading`, `shooting`, `libby`, `scooter-black`, and `soapbox`. Decision: Stage151 remains a rate-counted PSNR recovery reference, but the final method must use original StreamSplat-guided middle prediction as the base and gate improvements by PSNR, SSIM, MS-SSIM, LPIPS, and bad-case visuals.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -213,7 +216,7 @@ Stage113 held-out diagnostic:
 
 ### Stage153: Full Policy/RD Presentation Package
 
-Status: optional next step.
+Status: superseded by the more urgent Stage153 multi-metric diagnostic and Stage154 StreamSplat-guided base alignment.
 
 Goal: package paper-facing evidence around `middle_frame_recovery_linear_base_entropy_sideinfo_v1` after visual inspection.
 
@@ -227,6 +230,39 @@ Actions:
 Fallback:
 
 - If subjective video quality reveals visible artifacts, run a lower/higher keep-fraction or side-bit sweep before making the paper-facing package.
+
+### Stage154: Original StreamSplat-Guided Middle Base Alignment
+
+Status: next immediate step.
+
+Goal: move the middle-frame improvement base away from linear interpolation and back onto original StreamSplat middle prediction, so any correction preserves plausible motion/geometry.
+
+Actions:
+
+- Reuse original StreamSplat DAVIS inference utilities where possible.
+- Evaluate original StreamSplat middle predictions with PSNR, SSIM, MS-SSIM, and LPIPS on the same or comparable q12 gap4/gap8 middle tasks.
+- Export bad-case tables/contact sheets for direct comparison to Stage153.
+- Keep all heavy images/videos outside git.
+
+Success condition:
+
+- Establish a decoder-safe StreamSplat-guided base profile and identify whether it is visually more stable than the linear-base Stage151 recovery.
+
+### Stage155: StreamSplat-Base Side-Info Upper-Bound Sweep
+
+Status: planned after Stage154.
+
+Goal: test whether rate-counted residual side-info on top of original StreamSplat prediction can reach the desired `26-27 dB` middle-frame target without destroying LPIPS/SSIM.
+
+Actions:
+
+- Sweep keep fraction and residual quantization bits on the StreamSplat base.
+- Include high-rate settings first to establish achievability, then compress down.
+- Report PSNR, SSIM, MS-SSIM, LPIPS, payload bytes, and direct/amortized total rate.
+
+Success condition:
+
+- Find at least one visually sane setting approaching or exceeding `26 dB` on sampled middle frames, then scale to full eval.
 
 ### Stage109: Selector-Score Feature Preflight
 
