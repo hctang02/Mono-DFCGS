@@ -1,0 +1,6 @@
+item,decision,evidence
+quality_target,passes_sampled_middle_target,"minimum gap mean PSNR = 29.578682359235195, target = 26.0"
+structural_metrics,ssim_and_msssim_improve,"min SSIM delta = 0.2771290277441343, min MS-SSIM delta = 0.1837212438384692"
+perceptual_metric,lpips_improves,max LPIPS delta vs original = -0.13547528696556885
+rate_accounting,residual_and_selector_bytes_counted,max reference direct total rate = 0.3816307879574477 MiB/frame
+method_status,current_quality_safe_gs_domain_candidate,Stage157 validates StreamSplat-guided half-anchor Gaussian residual side-info on 120 sampled q12 gap4/gap8 tasks.

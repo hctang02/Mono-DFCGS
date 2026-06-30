@@ -4,17 +4,17 @@ Date: 2026-06-30
 
 ## Current Task
 
-Continue the Mono-DFCGS self-innovation line from teacher residual side-info toward a more deployable residual selector / residual side-info codec.
+Continue the Mono-DFCGS middle-frame recovery line from low-quality adapter/linear middle frames toward a StreamSplat-guided, Gaussian-domain, rate-counted recovery policy.
 
-The current focus is not FCGS/D-FCGS comparison and not residual value prediction yet. The current focus is to make residual side-info index selection and switching more decoder-safe and render-aware.
+The current focus is not FCGS/D-FCGS comparison and not residual value prediction. The current recovered middle-frame candidate is the Stage158 packaged StreamSplat-guided half-anchor entropy residual policy.
 
 ## Current Repo State
 
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage157: `00c2d49 Validate StreamSplat half-anchor residuals`
-- Latest completed local stage before Stage158: `Stage157 selected half-anchor broader validation`
+- Latest pushed commit before Stage158: `4c80202 Validate selected half-anchor recovery`
+- Latest completed local stage before Stage159: `Stage158 recovered middle-frame policy package`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -113,6 +113,7 @@ Key Stage96 direct total rates:
 - Stage155: completed StreamSplat-base side-info upper-bound sweep and Gaussian shape diagnostic.
 - Stage156: completed sampled StreamSplat half-anchor Gaussian residual side-info sweep and found a quality-safe candidate.
 - Stage157: completed 120-task broader validation of the selected half-anchor Gaussian residual policy.
+- Stage158: packaged the selected recovered middle-frame policy and decoder contract.
 
 ## Current Best Selector Policy
 
@@ -214,6 +215,7 @@ Stage113 held-out diagnostic:
 - Stage155 proves quality achievability with counted auxiliary information on top of original StreamSplat. On 60 sampled q12 gap4/gap8 eval tasks, q4 full-frame image residual side-info reaches gap4 PSNR `32.280546434337076`, SSIM `0.8786723375320434`, MS-SSIM `0.9775982022285461`, LPIPS `0.15282797639568646`, payload `78548.73333333334` bytes, reference direct rate `0.2568481303341566`; gap8 reaches PSNR `31.718739219329834`, SSIM `0.863465295235316`, MS-SSIM `0.9742599070072174`, LPIPS `0.17084391911824545`, payload `82349.4` bytes, reference direct rate `0.17615989450497918`. This is an upper-bound diagnostic, not the final GS-feature method. Gaussian diagnostic: target-time static evaluation matches original dynamic render exactly (`0.0` max diff), but full original base has `73728` Gaussians while Stage61 target dense anchor has `36864`, so full-base residual-to-dense-anchor is invalid. Next: Stage156 should correct one `36864`-Gaussian StreamSplat half-anchor to the target dense anchor with entropy-coded residual side-info.
 - Stage156 converts the Stage155 achievability result into a Gaussian-domain candidate. The selected setting is `streamsplat_half_anchor_entropy_residual` with `best_half_selector`, `keep_fraction=1.0`, `side_bits=6`, and one counted selector byte. On 60 sampled q12 gap4/gap8 eval tasks, it reaches gap4 PSNR `29.88060850586717`, SSIM `0.8795753101507823`, MS-SSIM `0.9853506326675415`, LPIPS `0.16458002875248592`, payload `207591.66666666666` bytes, reference direct rate `0.3799130615678806`; gap8 reaches PSNR `29.54743990416001`, SSIM `0.8700549105803171`, MS-SSIM `0.9840767443180084`, LPIPS `0.17757029533386232`, payload `214067.13333333333` bytes, reference direct rate `0.30177571380022644`. This exceeds the requested `26-27 dB` target and improves LPIPS/SSIM over original StreamSplat. Next: Stage157 should broaden-validate only this selected setting on the 120-task Stage153/154 sample before final packaging.
 - Stage157 validates the selected Stage156 policy on the 120-task Stage153/154 sampled protocol. The policy `streamsplat_half_anchor_entropy_residual_best_half_keep1_q6` reaches gap4 PSNR `29.780485398070507`, SSIM `0.8779375642538071`, MS-SSIM `0.9850881884495417`, LPIPS `0.16601951060195763`, payload `209392.83333333334` bytes, reference direct rate `0.3816307879574477`; gap8 reaches PSNR `29.578682359235195`, SSIM `0.8696596751610438`, MS-SSIM `0.9838472485542298`, LPIPS `0.17853523269295693`, payload `215967.88333333333` bytes, reference direct rate `0.3035884102571357`. Both gaps exceed `26-27 dB` and improve SSIM/MS-SSIM/LPIPS over original StreamSplat. This is the current quality-safe Gaussian-domain recovered middle-frame candidate.
+- Stage158 freezes this candidate as `streamsplat_guided_half_anchor_entropy_residual_v1`. The package records allowed decoder inputs, forbidden target/oracle inputs, counted half-selector metadata, residual payload accounting, and the Stage153-157 evidence chain. Quality gate passes: minimum gap mean PSNR is `29.578682359235195`, minimum SSIM delta is `+0.2771290277441343`, minimum MS-SSIM delta is `+0.1837212438384692`, and maximum LPIPS delta is `-0.13547528696556885` vs original StreamSplat.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -305,7 +307,7 @@ Actions:
 
 ### Stage158: Package Current Recovered Middle-Frame Policy
 
-Status: next immediate step.
+Status: completed on 2026-06-30.
 
 Goal: freeze the Stage157 selected policy as the current middle-frame recovery candidate.
 
@@ -315,6 +317,28 @@ Actions:
 - State decoder contract and forbidden inputs explicitly.
 - Include Stage153/154/155/156/157 evidence chain.
 - Mark image residual Stage155 as upper-bound only and Stage157 as current GS-domain candidate.
+
+Result:
+
+- Packaged policy `streamsplat_guided_half_anchor_entropy_residual_v1` in `experiments/stage158_recovered_middle_policy_package/`.
+- Primary evidence is Stage157 broader validation: gap4 PSNR `29.780485398070507`, SSIM `0.8779375642538071`, MS-SSIM `0.9850881884495417`, LPIPS `0.16601951060195763`; gap8 PSNR `29.578682359235195`, SSIM `0.8696596751610438`, MS-SSIM `0.9838472485542298`, LPIPS `0.17853523269295693`.
+- Quality gate passes: both gaps exceed `26 dB`, SSIM/MS-SSIM improve, LPIPS decreases versus original StreamSplat, and residual payload plus half-selector metadata are counted.
+
+### Stage159: Optional Subjective Export Or Rate Optimization
+
+Status: next optional step.
+
+Goal: either produce human-viewable Stage158 subjective comparisons, or start reducing the high residual side-info rate while preserving the 26-27 dB quality target.
+
+Actions:
+
+- If visual presentation is needed, export contact sheets/videos comparing target RGB, original StreamSplat, and Stage158 recovered render for gap4/gap8; keep heavy outputs outside git.
+- If rate optimization is more important, sweep lower qbits/keep fractions or adaptive half selection with the same Stage157 metric gates.
+- Preserve the decoder contract: no target dense/RGB/unencoded residual/oracle input at decode time, and count all transmitted metadata.
+
+Success condition:
+
+- Subjective export shows no obvious perceptual regression, or a lower-rate candidate keeps both gaps above `26 dB` with no SSIM/MS-SSIM/LPIPS regression versus original StreamSplat.
 
 ### Stage109: Selector-Score Feature Preflight
 

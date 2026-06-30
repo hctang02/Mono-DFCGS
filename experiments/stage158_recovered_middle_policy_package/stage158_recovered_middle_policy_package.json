@@ -1,0 +1,104 @@
+{
+  "stage": 158,
+  "policy_name": "streamsplat_guided_half_anchor_entropy_residual_v1",
+  "status": "current_quality_safe_middle_frame_candidate",
+  "base_method": "original_streamsplat_target_time_half_anchor",
+  "correction": "entropy_coded_residual_to_encoder_side_target_dense_anchor",
+  "half_policy": "best_half_selector",
+  "keep_fraction": 1.0,
+  "side_bits": 6,
+  "half_selector_payload_bytes": 1,
+  "validation_scope": "120 sampled q12 gap4/gap8 eval tasks from Stage153/154 protocol",
+  "evidence": [
+    {
+      "gap": 4,
+      "task_count": 60,
+      "mean_psnr": 29.780485398070507,
+      "p10_psnr": 25.726690616240614,
+      "mean_ssim": 0.8779375642538071,
+      "mean_ms_ssim": 0.9850881884495417,
+      "mean_lpips": 0.16601951060195763,
+      "p90_lpips": 0.20979373008012772,
+      "mean_original_psnr": 22.06421822428011,
+      "mean_original_ssim": 0.6008085365096728,
+      "mean_original_ms_ssim": 0.8013669446110725,
+      "mean_original_lpips": 0.3014947975675265,
+      "mean_payload_bytes": 209392.83333333334,
+      "mean_side_mib_per_intermediate": 0.19969256718953451,
+      "mean_direct_total_mib_per_frame_ref": 0.3816307879574477,
+      "mean_delta_psnr_vs_original": 7.7162671737904,
+      "mean_delta_ssim_vs_original": 0.2771290277441343,
+      "mean_delta_ms_ssim_vs_original": 0.1837212438384692,
+      "mean_delta_lpips_vs_original": -0.13547528696556885,
+      "passes_quality_gate": true
+    },
+    {
+      "gap": 8,
+      "task_count": 60,
+      "mean_psnr": 29.578682359235195,
+      "p10_psnr": 25.326197674163037,
+      "mean_ssim": 0.8696596751610438,
+      "mean_ms_ssim": 0.9838472485542298,
+      "mean_lpips": 0.17853523269295693,
+      "p90_lpips": 0.2392323151230812,
+      "mean_original_psnr": 20.33727549162514,
+      "mean_original_ssim": 0.5203309365858634,
+      "mean_original_ms_ssim": 0.7005373592178027,
+      "mean_original_lpips": 0.3593370050191879,
+      "mean_payload_bytes": 215967.88333333333,
+      "mean_side_mib_per_intermediate": 0.20596302350362142,
+      "mean_direct_total_mib_per_frame_ref": 0.3035884102571357,
+      "mean_delta_psnr_vs_original": 9.24140686761006,
+      "mean_delta_ssim_vs_original": 0.3493287385751804,
+      "mean_delta_ms_ssim_vs_original": 0.28330988933642703,
+      "mean_delta_lpips_vs_original": -0.18080177232623101,
+      "passes_quality_gate": true
+    }
+  ],
+  "decisions": [
+    {
+      "item": "quality_target",
+      "decision": "passes_sampled_middle_target",
+      "evidence": "minimum gap mean PSNR = 29.578682359235195, target = 26.0"
+    },
+    {
+      "item": "structural_metrics",
+      "decision": "ssim_and_msssim_improve",
+      "evidence": "min SSIM delta = 0.2771290277441343, min MS-SSIM delta = 0.1837212438384692"
+    },
+    {
+      "item": "perceptual_metric",
+      "decision": "lpips_improves",
+      "evidence": "max LPIPS delta vs original = -0.13547528696556885"
+    },
+    {
+      "item": "rate_accounting",
+      "decision": "residual_and_selector_bytes_counted",
+      "evidence": "max reference direct total rate = 0.3816307879574477 MiB/frame"
+    },
+    {
+      "item": "method_status",
+      "decision": "current_quality_safe_gs_domain_candidate",
+      "evidence": "Stage157 validates StreamSplat-guided half-anchor Gaussian residual side-info on 120 sampled q12 gap4/gap8 tasks."
+    }
+  ],
+  "decoder_allowed_inputs": [
+    "original StreamSplat endpoint inputs/base",
+    "normalized time",
+    "encoded entropy residual payload for selected half-anchor",
+    "counted half-selector metadata"
+  ],
+  "decoder_forbidden_inputs": [
+    "unencoded target dense anchor",
+    "target RGB",
+    "unencoded target residual tensors",
+    "oracle labels not represented in transmitted payload"
+  ],
+  "source_stage157_package": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage157_selected_half_anchor_broader_validation/stage157_selected_half_anchor_broader_validation_package.json",
+  "evidence_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage158_recovered_middle_policy_package/stage158_recovered_middle_policy_evidence.csv",
+  "decisions_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage158_recovered_middle_policy_package/stage158_recovered_middle_policy_decisions.csv",
+  "policy_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage158_recovered_middle_policy_package/stage158_recovered_middle_policy.json",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage158_recovered_middle_policy_package/stage158_recovered_middle_policy_summary.json",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage158_recovered_middle_policy_package/stage158_recovered_middle_policy_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage158_recovered_middle_policy_package/stage158_recovered_middle_policy_report.md"
+}
