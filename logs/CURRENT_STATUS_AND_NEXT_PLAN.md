@@ -135,6 +135,7 @@ Key Stage96 direct total rates:
 - Stage177: compared Stage165 adaptive final target quality against uniform gap8 and uniform gap4 on the Stage174 medium target set; adaptive beats gap8 by `+0.4601686250283185` dB PSNR and gap4 by `+0.27128186202823` dB PSNR under the sampled final-quality definition.
 - Stage178: created the dedicated current-results and innovation summary log `logs/MONO_DFCGS_RESULTS_AND_INNOVATION_SUMMARY_2026-06-30.md` for handoff, writing, and future validation planning.
 - Stage179: built a broader sampled adaptive validation protocol with `90` targets and `270` schedule rows, retaining all `50` Stage174 core targets and marking `88` Stage180 middle renders plus `32` Stage180 q12 keyframe metrics.
+- Stage180: executed the broader sampled adaptive validation with `270/270` rows covered, `88/88` new middle renders, `32/32` new q12 keyframe metrics, and adaptive final PSNR gains of `+0.5644261202320328` dB vs gap8 and `+0.306535729521994` dB vs gap4 on `90` targets.
 
 ## Current Best Selector Policy
 
@@ -258,6 +259,7 @@ Stage113 held-out diagnostic:
 - Stage177 answers the fixed-gap quality question on the Stage174 medium set. Overall final target PSNR is uniform gap8 `28.7569272347847`, Stage165 adaptive `29.21709585981302`, and uniform gap4 `28.94581399778479`; adaptive deltas are `+0.4601686250283185` dB vs gap8 and `+0.27128186202823` dB vs gap4. Mean LPIPS also improves to `0.15723393142223357` from gap8 `0.1894791081547737` and gap4 `0.17760952532291413`. Adaptive keyframe targets are `26/50`. Interpretation caveat: keyframe rows use q12 target-keyframe reconstruction quality, not Stage158 middle-recovery quality, and the result remains sampled-medium evidence, not final full-sequence RD. Package path: `experiments/stage177_selector_fixed_gap_psnr_comparison/`.
 - Stage178 creates the compact handoff log `logs/MONO_DFCGS_RESULTS_AND_INNOVATION_SUMMARY_2026-06-30.md`. It consolidates the current main claim, best components, Stage158/161 middle-frame results, Stage162/165/172/176/177 adaptive-schedule evidence, module-level innovation points, decoder contracts, non-claims, evidence chain, and Stage179-183 validation plan. Use this file as the primary short reference before future writing or broader validation.
 - Stage179 expands the adaptive validation protocol from Stage174's `50` targets to `90` targets / `270` schedule rows. It retains all `50` Stage174 core targets, adds `40` new targets, reuses `118` Stage174 middle metric rows and `32` Stage177 keyframe metric rows, and marks `88` Stage180 middle renders plus `32` Stage180 q12 keyframe metrics. New categories include broader positive promotions, sequence coverage probes, weak-sequence probes, high-payload residual controls, false-negative residuals, and normal controls. Package path: `experiments/stage179_broader_sampled_adaptive_validation_protocol/`.
+- Stage180 executes the Stage179 protocol. Decision: `broader_validation_ready_for_review`. It covers `270/270` rows, completes `88/88` new Stage158 middle renders and `32/32` q12 target-keyframe metric renders, reuses `150` Stage174 rows, and writes `270` final-quality rows. Overall final target PSNR/LPIPS are Stage165 adaptive `29.770752551041166/0.1427798855635855`, uniform gap8 `29.206326430809128/0.1766524552471108`, and uniform gap4 `29.46421682151917/0.16245726098616917`. Adaptive deltas are `+0.5644261202320328` dB PSNR / `-0.0338725696835253` LPIPS vs gap8 and `+0.306535729521994` dB PSNR / `-0.019677375422583687` LPIPS vs gap4. Key caveat remains sampled broader validation, not final full-sequence RD. Package path: `experiments/stage180_broader_sampled_adaptive_validation_execution/`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -937,7 +939,7 @@ Result:
 
 ### Stage180: Broader Sampled Adaptive Validation Execution
 
-Status: next possible stage.
+Status: completed on 2026-06-30.
 
 Goal: execute the Stage179 broader protocol, then produce a final-quality adaptive vs uniform gap8/gap4 comparison on 90 targets.
 
@@ -952,6 +954,40 @@ Actions:
 Success condition:
 
 - Stage179's `270` schedule rows are fully covered and the 90-target adaptive vs fixed-gap final-quality comparison is packaged.
+
+Result:
+
+- Package: `experiments/stage180_broader_sampled_adaptive_validation_execution/stage180_broader_sampled_adaptive_validation_execution_package.json`.
+- Report: `experiments/stage180_broader_sampled_adaptive_validation_execution/stage180_broader_sampled_adaptive_validation_execution_report.md`.
+- Decision: `broader_validation_ready_for_review`.
+- Protocol rows covered: `270 / 270`.
+- New middle renders: `88 / 88`.
+- New q12 keyframe metrics: `32 / 32`.
+- Final-quality rows: `270`.
+- Overall final PSNR: Stage165 adaptive `29.770752551041166`, uniform gap8 `29.206326430809128`, uniform gap4 `29.46421682151917`.
+- Adaptive PSNR delta: `+0.5644261202320328` dB vs gap8, `+0.306535729521994` dB vs gap4.
+- Overall final LPIPS: Stage165 adaptive `0.1427798855635855`, uniform gap8 `0.1766524552471108`, uniform gap4 `0.16245726098616917`.
+- Adaptive LPIPS delta: `-0.0338725696835253` vs gap8, `-0.019677375422583687` vs gap4.
+- Caveat: sampled broader validation, not final full-sequence RD.
+
+### Stage181: Full-Sequence RD Accounting Preflight
+
+Status: next possible stage.
+
+Goal: convert sampled/proxy adaptive schedule accounting toward full-sequence/frame rate accounting before any final RD claim.
+
+Actions:
+
+- Use Stage165 full-sequence keyframe schedules over `30` DAVIS sequences / `1999` frames.
+- Count uniform gap8, Stage165 adaptive, and uniform gap4 keyframe anchors.
+- Count adaptive schedule metadata and mode signaling.
+- Estimate or compute Stage158 residual payload for non-keyframe recovery rows using available Stage157/174/180 sampled payload distributions and clearly label the scope.
+- Report main-anchor, residual side-info, metadata, and total MiB/frame components.
+- Keep exact distinction between sampled proxy, broader sampled validation, and full-sequence accounting.
+
+Success condition:
+
+- A rate-accounting package exists that clarifies what is fully counted, what remains sampled-estimated, and what is still required for final full-sequence RD.
 
 ### Stage109: Selector-Score Feature Preflight
 

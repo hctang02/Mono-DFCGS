@@ -18,6 +18,7 @@ The method is not a final full-sequence RD claim yet. It is a sampled-validated 
 | keyframe selector protocol | Stage162 | transmitted schedule with encoder-side RGB/motion features | feature-source and decoder contract audited |
 | adaptive keyframe schedule | Stage165/176 | `rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate` | sampled-validated candidate, not final full-sequence RD |
 | fixed-gap comparison | Stage177 | adaptive vs uniform gap8/gap4 | sampled-medium final target quality comparison completed |
+| broader sampled validation | Stage180 | adaptive vs uniform gap8/gap4 | 90-target sampled-broader final quality comparison completed |
 
 ## Middle-Frame Recovery Evidence
 
@@ -103,6 +104,42 @@ Interpretation caveat:
 - Residual rows where adaptive keeps the same segment as uniform gap8 should match gap8 by construction.
 - The comparison is sampled-medium evidence, not final full-sequence RD.
 
+## Stage180 Broader Sampled Validation
+
+Stage180 executes the Stage179 broader sampled protocol. It covers 90 targets and 270 schedule rows, reusing Stage174/177 evidence where possible and rendering only missing middle/keyframe metrics.
+
+Execution coverage:
+
+| item | value |
+|---|---:|
+| targets | 90 |
+| schedule rows covered | 270 / 270 |
+| new Stage158 middle renders | 88 / 88 |
+| new q12 keyframe metrics | 32 / 32 |
+| reused Stage174 rows | 150 |
+| keyframe marker rows | 64 |
+
+Overall final target quality:
+
+| schedule | targets | keyframes | middle recovery | mean PSNR | p10 PSNR | mean LPIPS | mean payload bytes/target |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Stage165 adaptive | 90 | 56 | 34 | 29.770753 | 25.424549 | 0.142780 | 74673.433 |
+| uniform_gap4 | 90 | 8 | 82 | 29.464217 | 25.431154 | 0.162457 | 196008.433 |
+| uniform_gap8 | 90 | 0 | 90 | 29.206326 | 25.418355 | 0.176652 | 219878.578 |
+
+Adaptive deltas:
+
+- Adaptive minus uniform gap8 PSNR: `+0.5644261202320328` dB.
+- Adaptive minus uniform gap4 PSNR: `+0.306535729521994` dB.
+- Adaptive minus uniform gap8 LPIPS: `-0.0338725696835253`.
+- Adaptive minus uniform gap4 LPIPS: `-0.019677375422583687`.
+
+Interpretation caveat:
+
+- Stage180 is stronger than Stage177 because it expands from 50 to 90 sampled targets.
+- It is still sampled broader validation, not final full-sequence RD.
+- Adaptive keyframe rows use q12 keyframe reconstruction quality, not Stage158 middle-recovery quality.
+
 ## Module-Level Innovation Points
 
 ### StreamSplat-Guided Gaussian Recovery
@@ -160,13 +197,14 @@ The adaptive schedule is evaluated jointly with Stage158 residual cost: selected
 | 174 | medium rendered validation | covers 150 rows with 54 new renders |
 | 176 | candidate package | freezes sampled-validated adaptive schedule candidate |
 | 177 | fixed-gap PSNR comparison | adaptive beats gap8/gap4 in sampled-medium final target PSNR |
+| 180 | broader sampled validation | adaptive beats gap8/gap4 on 90-target final quality with +0.5644 dB vs gap8 |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
 | 179 | broader sampled adaptive protocol | a larger target/schedule CSV with reuse/new-render/keyframe marker decisions |
-| 180 | execute broader sampled validation | rendered metrics and final-quality comparison if runtime is acceptable |
+| 180 | execute broader sampled validation | completed; 90-target final-quality comparison packaged |
 | 181 | full-sequence RD accounting preflight | all-frame/keyframe/residual/metadata rate table |
 | 182 | selector refinement or freeze decision | stricter gate/per-sequence budget if false positives are costly, otherwise freeze |
 | 183 | paper-facing package | tables, figures, decoder contract, limitations, and subjective evidence paths |
@@ -180,5 +218,6 @@ The adaptive schedule is evaluated jointly with Stage158 residual cost: selected
 | Stage172 rate audit | `experiments/stage172_keyframe_rate_accounting_audit/` |
 | Stage176 adaptive candidate | `experiments/stage176_adaptive_schedule_candidate_package/` |
 | Stage177 fixed-gap comparison | `experiments/stage177_selector_fixed_gap_psnr_comparison/` |
+| Stage180 broader validation | `experiments/stage180_broader_sampled_adaptive_validation_execution/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |
