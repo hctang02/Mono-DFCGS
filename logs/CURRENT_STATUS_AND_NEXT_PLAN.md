@@ -136,6 +136,7 @@ Key Stage96 direct total rates:
 - Stage178: created the dedicated current-results and innovation summary log `logs/MONO_DFCGS_RESULTS_AND_INNOVATION_SUMMARY_2026-06-30.md` for handoff, writing, and future validation planning.
 - Stage179: built a broader sampled adaptive validation protocol with `90` targets and `270` schedule rows, retaining all `50` Stage174 core targets and marking `88` Stage180 middle renders plus `32` Stage180 q12 keyframe metrics.
 - Stage180: executed the broader sampled adaptive validation with `270/270` rows covered, `88/88` new middle renders, `32/32` new q12 keyframe metrics, and adaptive final PSNR gains of `+0.5644261202320328` dB vs gap8 and `+0.306535729521994` dB vs gap4 on `90` targets.
+- Stage181: packaged a full-sequence RD accounting preflight that counts Stage165 keyframes/metadata exactly over `1999` frames and combines them with Stage180 broader sampled residual payload proxies; adaptive total proxy is `0.1916456087572328` MiB/frame, `-0.11567233082795791` vs gap8 and `-0.17722082115678273` vs gap4.
 
 ## Current Best Selector Policy
 
@@ -260,6 +261,7 @@ Stage113 held-out diagnostic:
 - Stage178 creates the compact handoff log `logs/MONO_DFCGS_RESULTS_AND_INNOVATION_SUMMARY_2026-06-30.md`. It consolidates the current main claim, best components, Stage158/161 middle-frame results, Stage162/165/172/176/177 adaptive-schedule evidence, module-level innovation points, decoder contracts, non-claims, evidence chain, and Stage179-183 validation plan. Use this file as the primary short reference before future writing or broader validation.
 - Stage179 expands the adaptive validation protocol from Stage174's `50` targets to `90` targets / `270` schedule rows. It retains all `50` Stage174 core targets, adds `40` new targets, reuses `118` Stage174 middle metric rows and `32` Stage177 keyframe metric rows, and marks `88` Stage180 middle renders plus `32` Stage180 q12 keyframe metrics. New categories include broader positive promotions, sequence coverage probes, weak-sequence probes, high-payload residual controls, false-negative residuals, and normal controls. Package path: `experiments/stage179_broader_sampled_adaptive_validation_protocol/`.
 - Stage180 executes the Stage179 protocol. Decision: `broader_validation_ready_for_review`. It covers `270/270` rows, completes `88/88` new Stage158 middle renders and `32/32` q12 target-keyframe metric renders, reuses `150` Stage174 rows, and writes `270` final-quality rows. Overall final target PSNR/LPIPS are Stage165 adaptive `29.770752551041166/0.1427798855635855`, uniform gap8 `29.206326430809128/0.1766524552471108`, and uniform gap4 `29.46421682151917/0.16245726098616917`. Adaptive deltas are `+0.5644261202320328` dB PSNR / `-0.0338725696835253` LPIPS vs gap8 and `+0.306535729521994` dB PSNR / `-0.019677375422583687` LPIPS vs gap4. Key caveat remains sampled broader validation, not final full-sequence RD. Package path: `experiments/stage180_broader_sampled_adaptive_validation_execution/`.
+- Stage181 separates exact full-sequence schedule accounting from sampled residual estimates. Exact counts over `30` sequences / `1999` frames: uniform gap8 `292` keyframes, Stage165 adaptive `358` keyframes plus `327` metadata bytes, uniform gap4 `536` keyframes. Combined proxy using Stage180 residual payload means gives total MiB/frame uniform gap8 `0.3073179395851907`, adaptive `0.1916456087572328`, uniform gap4 `0.3688664299140155`. Decision: `adaptive_rate_promising_under_broader_sampled_proxy`. Non-claim: final full-sequence RD still requires actual q12 keyframe bitstreams and all-frame residual payload encode. Package path: `experiments/stage181_full_sequence_rd_accounting_preflight/`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -972,7 +974,7 @@ Result:
 
 ### Stage181: Full-Sequence RD Accounting Preflight
 
-Status: next possible stage.
+Status: completed on 2026-06-30.
 
 Goal: convert sampled/proxy adaptive schedule accounting toward full-sequence/frame rate accounting before any final RD claim.
 
@@ -988,6 +990,35 @@ Actions:
 Success condition:
 
 - A rate-accounting package exists that clarifies what is fully counted, what remains sampled-estimated, and what is still required for final full-sequence RD.
+
+Result:
+
+- Package: `experiments/stage181_full_sequence_rd_accounting_preflight/stage181_full_sequence_rd_accounting_preflight_package.json`.
+- Report: `experiments/stage181_full_sequence_rd_accounting_preflight/stage181_full_sequence_rd_accounting_preflight_report.md`.
+- Decision: `adaptive_rate_promising_under_broader_sampled_proxy`.
+- Exact full-sequence counts: uniform gap8 `292` keyframes, Stage165 adaptive `358` keyframes and `327` metadata bytes, uniform gap4 `536` keyframes across `1999` frames.
+- Stage180 residual proxy MiB/target: uniform gap8 `0.2096925523546007`, Stage165 adaptive `0.07121413548787435`, uniform gap4 `0.18692820866902668`.
+- Combined proxy MiB/frame: uniform gap8 `0.3073179395851907`, Stage165 adaptive `0.1916456087572328`, uniform gap4 `0.3688664299140155`.
+- Adaptive combined proxy delta: `-0.11567233082795791` vs gap8, `-0.17722082115678273` vs gap4.
+- Caveat: residual payload and main-anchor payload remain proxy/sampled estimates; not final full-sequence RD.
+
+### Stage182: Selector Refinement Or Freeze Decision
+
+Status: next possible stage.
+
+Goal: decide whether the Stage165 adaptive schedule should be frozen as the current candidate or refined before final RD work.
+
+Actions:
+
+- Review Stage180 category deltas and Stage181 rate proxy together.
+- Quantify false-negative residual risk and false-positive keyframe cost.
+- Compare current threshold/min-votes against a stricter schedule option if a cheap proxy can be generated without new rendering.
+- Decide among `freeze_current_candidate`, `tune_threshold_before_full_rd`, or `run_full_sequence_payload_measurement_next`.
+- Preserve Stage162 decoder contract and counted schedule metadata.
+
+Success condition:
+
+- A branch decision exists with explicit evidence and next action.
 
 ### Stage109: Selector-Score Feature Preflight
 

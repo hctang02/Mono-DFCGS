@@ -1,0 +1,176 @@
+{
+  "stage": 181,
+  "status": "full_sequence_rd_accounting_preflight_packaged",
+  "decision": "adaptive_rate_promising_under_broader_sampled_proxy",
+  "accounting_scope": "full_sequence_keyframe_metadata_plus_stage180_broader_sampled_residual_proxy",
+  "not_final_full_sequence_rd": true,
+  "total_frames": 1999,
+  "sequence_count": 30,
+  "adaptive_total_proxy_mib_per_frame": 0.1916456087572328,
+  "adaptive_delta_total_proxy_vs_gap8": -0.11567233082795791,
+  "adaptive_delta_total_proxy_vs_gap4": -0.17722082115678273,
+  "keyframe_rows": [
+    {
+      "schedule": "uniform_gap8",
+      "sequence_count": 30,
+      "total_frames": 1999,
+      "keyframe_count": 292,
+      "keyframe_ratio": 0.14607303651825912,
+      "delta_keyframes_vs_gap8": 0,
+      "delta_keyframes_vs_gap4": -244,
+      "main_anchor_mib_per_frame_proxy": 0.09762538675351436,
+      "main_anchor_total_mib_proxy": 195.1531481202752,
+      "metadata_bits": 8,
+      "metadata_bytes": 1,
+      "metadata_mib_total": 9.5367431640625e-07,
+      "metadata_mib_per_frame": 4.770756960511505e-10,
+      "keyframe_metadata_scope": "exact_schedule_counts_main_anchor_proxy_payload"
+    },
+    {
+      "schedule": "stage165_adaptive",
+      "sequence_count": 30,
+      "total_frames": 1999,
+      "keyframe_count": 358,
+      "keyframe_ratio": 0.1790895447723862,
+      "delta_keyframes_vs_gap8": 66,
+      "delta_keyframes_vs_gap4": -178,
+      "main_anchor_mib_per_frame_proxy": 0.12043131726560583,
+      "main_anchor_total_mib_proxy": 240.74220321394606,
+      "metadata_bits": 2610,
+      "metadata_bytes": 327,
+      "metadata_mib_total": 0.00031185150146484375,
+      "metadata_mib_per_frame": 1.5600375260872624e-07,
+      "keyframe_metadata_scope": "exact_schedule_counts_main_anchor_proxy_payload"
+    },
+    {
+      "schedule": "uniform_gap4",
+      "sequence_count": 30,
+      "total_frames": 1999,
+      "keyframe_count": 536,
+      "keyframe_ratio": 0.2681340670335168,
+      "delta_keyframes_vs_gap8": 244,
+      "delta_keyframes_vs_gap4": 0,
+      "main_anchor_mib_per_frame_proxy": 0.18193822076791313,
+      "main_anchor_total_mib_proxy": 363.69450331505834,
+      "metadata_bits": 8,
+      "metadata_bytes": 1,
+      "metadata_mib_total": 9.5367431640625e-07,
+      "metadata_mib_per_frame": 4.770756960511505e-10,
+      "keyframe_metadata_scope": "exact_schedule_counts_main_anchor_proxy_payload"
+    }
+  ],
+  "residual_proxy_rows": [
+    {
+      "schedule": "uniform_gap8",
+      "validation_scope": "stage180_broader_sampled_90_targets",
+      "target_count": 90,
+      "keyframe_count": 0,
+      "middle_recovery_count": 90,
+      "mean_payload_bytes_per_target": 219878.57777777777,
+      "sampled_residual_mib_per_target": 0.2096925523546007,
+      "mean_psnr": 29.206326430809128,
+      "mean_lpips": 0.1766524552471108,
+      "residual_scope": "sampled_estimate_not_full_sequence_payload_measurement"
+    },
+    {
+      "schedule": "stage165_adaptive",
+      "validation_scope": "stage180_broader_sampled_90_targets",
+      "target_count": 90,
+      "keyframe_count": 56,
+      "middle_recovery_count": 34,
+      "mean_payload_bytes_per_target": 74673.43333333333,
+      "sampled_residual_mib_per_target": 0.07121413548787435,
+      "mean_psnr": 29.770752551041166,
+      "mean_lpips": 0.1427798855635855,
+      "residual_scope": "sampled_estimate_not_full_sequence_payload_measurement"
+    },
+    {
+      "schedule": "uniform_gap4",
+      "validation_scope": "stage180_broader_sampled_90_targets",
+      "target_count": 90,
+      "keyframe_count": 8,
+      "middle_recovery_count": 82,
+      "mean_payload_bytes_per_target": 196008.43333333332,
+      "sampled_residual_mib_per_target": 0.18692820866902668,
+      "mean_psnr": 29.46421682151917,
+      "mean_lpips": 0.16245726098616917,
+      "residual_scope": "sampled_estimate_not_full_sequence_payload_measurement"
+    }
+  ],
+  "total_proxy_rows": [
+    {
+      "schedule": "uniform_gap8",
+      "main_anchor_mib_per_frame_proxy": 0.09762538675351436,
+      "metadata_mib_per_frame_exact": 4.770756960511505e-10,
+      "stage180_residual_mib_per_target_proxy": 0.2096925523546007,
+      "stage180_broader_total_proxy_mib_per_frame": 0.3073179395851907,
+      "delta_total_proxy_vs_gap8": 0.0,
+      "delta_total_proxy_vs_gap4": -0.06154849032882481,
+      "mean_psnr_stage180": 29.206326430809128,
+      "mean_lpips_stage180": 0.1766524552471108,
+      "rate_scope": "full_sequence_keyframe_metadata_plus_stage180_sampled_residual_proxy"
+    },
+    {
+      "schedule": "stage165_adaptive",
+      "main_anchor_mib_per_frame_proxy": 0.12043131726560583,
+      "metadata_mib_per_frame_exact": 1.5600375260872624e-07,
+      "stage180_residual_mib_per_target_proxy": 0.07121413548787435,
+      "stage180_broader_total_proxy_mib_per_frame": 0.1916456087572328,
+      "delta_total_proxy_vs_gap8": -0.11567233082795791,
+      "delta_total_proxy_vs_gap4": -0.17722082115678273,
+      "mean_psnr_stage180": 29.770752551041166,
+      "mean_lpips_stage180": 0.1427798855635855,
+      "rate_scope": "full_sequence_keyframe_metadata_plus_stage180_sampled_residual_proxy"
+    },
+    {
+      "schedule": "uniform_gap4",
+      "main_anchor_mib_per_frame_proxy": 0.18193822076791313,
+      "metadata_mib_per_frame_exact": 4.770756960511505e-10,
+      "stage180_residual_mib_per_target_proxy": 0.18692820866902668,
+      "stage180_broader_total_proxy_mib_per_frame": 0.3688664299140155,
+      "delta_total_proxy_vs_gap8": 0.06154849032882481,
+      "delta_total_proxy_vs_gap4": 0.0,
+      "mean_psnr_stage180": 29.46421682151917,
+      "mean_lpips_stage180": 0.16245726098616917,
+      "rate_scope": "full_sequence_keyframe_metadata_plus_stage180_sampled_residual_proxy"
+    }
+  ],
+  "requirements": [
+    {
+      "item": "full_sequence_keyframe_indices",
+      "status": "counted_exact_from_stage165_schedule_rows",
+      "next_required_work": "none_for_schedule_counting"
+    },
+    {
+      "item": "schedule_metadata",
+      "status": "counted_exact_as_327_bytes_for_adaptive_and_1_byte_mode_for_uniforms",
+      "next_required_work": "replace with actual bitstream syntax if final codec changes"
+    },
+    {
+      "item": "main_anchor_payload",
+      "status": "proxy_from_stage172_interpolated_anchor_accounting",
+      "next_required_work": "measure actual q12 keyframe bitstreams for every transmitted keyframe before paper-level RD"
+    },
+    {
+      "item": "stage158_residual_payload",
+      "status": "stage180_broader_sampled_estimate",
+      "next_required_work": "run all-frame/full-sequence residual payload encode for every non-keyframe recovered frame"
+    },
+    {
+      "item": "all_frame_quality",
+      "status": "not_final_full_sequence_quality",
+      "next_required_work": "evaluate all frames or declared sampled protocol with sequence-level reporting"
+    },
+    {
+      "item": "decoder_contract",
+      "status": "schedule_and_payload_transmitted_no_rgb_motion_features_at_decoder",
+      "next_required_work": "keep in final package and count any additional side-info"
+    }
+  ],
+  "keyframe_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage181_full_sequence_rd_accounting_preflight/stage181_full_sequence_keyframe_metadata_accounting.csv",
+  "residual_proxy_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage181_full_sequence_rd_accounting_preflight/stage181_stage180_residual_payload_proxy.csv",
+  "total_proxy_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage181_full_sequence_rd_accounting_preflight/stage181_total_rate_proxy_comparison.csv",
+  "requirements_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage181_full_sequence_rd_accounting_preflight/stage181_final_rd_requirements.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage181_full_sequence_rd_accounting_preflight/stage181_full_sequence_rd_accounting_preflight_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage181_full_sequence_rd_accounting_preflight/stage181_full_sequence_rd_accounting_preflight_report.md"
+}

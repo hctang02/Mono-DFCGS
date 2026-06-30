@@ -1,0 +1,7 @@
+item,status,next_required_work
+full_sequence_keyframe_indices,counted_exact_from_stage165_schedule_rows,none_for_schedule_counting
+schedule_metadata,counted_exact_as_327_bytes_for_adaptive_and_1_byte_mode_for_uniforms,replace with actual bitstream syntax if final codec changes
+main_anchor_payload,proxy_from_stage172_interpolated_anchor_accounting,measure actual q12 keyframe bitstreams for every transmitted keyframe before paper-level RD
+stage158_residual_payload,stage180_broader_sampled_estimate,run all-frame/full-sequence residual payload encode for every non-keyframe recovered frame
+all_frame_quality,not_final_full_sequence_quality,evaluate all frames or declared sampled protocol with sequence-level reporting
+decoder_contract,schedule_and_payload_transmitted_no_rgb_motion_features_at_decoder,keep in final package and count any additional side-info

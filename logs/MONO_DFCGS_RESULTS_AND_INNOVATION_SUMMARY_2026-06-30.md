@@ -19,6 +19,7 @@ The method is not a final full-sequence RD claim yet. It is a sampled-validated 
 | adaptive keyframe schedule | Stage165/176 | `rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate` | sampled-validated candidate, not final full-sequence RD |
 | fixed-gap comparison | Stage177 | adaptive vs uniform gap8/gap4 | sampled-medium final target quality comparison completed |
 | broader sampled validation | Stage180 | adaptive vs uniform gap8/gap4 | 90-target sampled-broader final quality comparison completed |
+| rate accounting preflight | Stage181 | full-sequence keyframe/metadata plus Stage180 residual proxy | adaptive remains rate-promising under broader sampled proxy |
 
 ## Middle-Frame Recovery Evidence
 
@@ -166,6 +167,33 @@ The adaptive schedule uses features derived from encoder input RGB/motion proxie
 
 The adaptive schedule is evaluated jointly with Stage158 residual cost: selected hard/high-payload targets are promoted to keyframes, reducing expensive residual recovery on those targets while preserving middle recovery on unselected rows.
 
+## Stage181 Rate Accounting Preflight
+
+Stage181 separates exact schedule/keyframe counts from sampled residual payload estimates.
+
+Full-sequence keyframe and metadata counts over 30 DAVIS sequences / 1999 frames:
+
+| schedule | keyframes | keyframe ratio | main anchor MiB/frame proxy | metadata bytes |
+|---|---:|---:|---:|---:|
+| uniform_gap8 | 292 | 0.146073 | 0.097625386754 | 1 |
+| Stage165 adaptive | 358 | 0.179090 | 0.120431317266 | 327 |
+| uniform_gap4 | 536 | 0.268134 | 0.181938220768 | 1 |
+
+Combined proxy using Stage180 broader residual payload means:
+
+| schedule | main anchor | metadata | residual proxy | total proxy | delta vs gap8 | delta vs gap4 |
+|---|---:|---:|---:|---:|---:|---:|
+| uniform_gap8 | 0.097625386754 | 0.000000000477 | 0.209692552355 | 0.307317939585 | 0.000000000000 | -0.061548490329 |
+| Stage165 adaptive | 0.120431317266 | 0.000000156004 | 0.071214135488 | 0.191645608757 | -0.115672330828 | -0.177220821157 |
+| uniform_gap4 | 0.181938220768 | 0.000000000477 | 0.186928208669 | 0.368866429914 | +0.061548490329 | 0.000000000000 |
+
+Interpretation caveat:
+
+- Keyframe indices and schedule metadata are exact for the Stage165 full schedule.
+- Main-anchor payload remains Stage172 proxy/interpolated accounting.
+- Residual payload remains Stage180 broader sampled estimate, not all-frame/full-sequence measurement.
+- Final full-sequence RD still requires actual q12 keyframe bitstreams and all-frame Stage158 residual payload encodes.
+
 ## Non-Claims And Risks
 
 | item | status |
@@ -198,6 +226,7 @@ The adaptive schedule is evaluated jointly with Stage158 residual cost: selected
 | 176 | candidate package | freezes sampled-validated adaptive schedule candidate |
 | 177 | fixed-gap PSNR comparison | adaptive beats gap8/gap4 in sampled-medium final target PSNR |
 | 180 | broader sampled validation | adaptive beats gap8/gap4 on 90-target final quality with +0.5644 dB vs gap8 |
+| 181 | rate accounting preflight | adaptive combined proxy 0.1916 MiB/frame, below gap8/gap4 under Stage180 residual proxy |
 
 ## Next Validation Plan
 
@@ -205,7 +234,7 @@ The adaptive schedule is evaluated jointly with Stage158 residual cost: selected
 |---:|---|---|
 | 179 | broader sampled adaptive protocol | a larger target/schedule CSV with reuse/new-render/keyframe marker decisions |
 | 180 | execute broader sampled validation | completed; 90-target final-quality comparison packaged |
-| 181 | full-sequence RD accounting preflight | all-frame/keyframe/residual/metadata rate table |
+| 181 | full-sequence RD accounting preflight | completed; exact keyframe/metadata plus sampled residual proxy packaged |
 | 182 | selector refinement or freeze decision | stricter gate/per-sequence budget if false positives are costly, otherwise freeze |
 | 183 | paper-facing package | tables, figures, decoder contract, limitations, and subjective evidence paths |
 
@@ -219,5 +248,6 @@ The adaptive schedule is evaluated jointly with Stage158 residual cost: selected
 | Stage176 adaptive candidate | `experiments/stage176_adaptive_schedule_candidate_package/` |
 | Stage177 fixed-gap comparison | `experiments/stage177_selector_fixed_gap_psnr_comparison/` |
 | Stage180 broader validation | `experiments/stage180_broader_sampled_adaptive_validation_execution/` |
+| Stage181 rate preflight | `experiments/stage181_full_sequence_rd_accounting_preflight/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |

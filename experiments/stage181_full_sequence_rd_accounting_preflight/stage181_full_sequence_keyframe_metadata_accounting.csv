@@ -1,0 +1,4 @@
+schedule,sequence_count,total_frames,keyframe_count,keyframe_ratio,delta_keyframes_vs_gap8,delta_keyframes_vs_gap4,main_anchor_mib_per_frame_proxy,main_anchor_total_mib_proxy,metadata_bits,metadata_bytes,metadata_mib_total,metadata_mib_per_frame,keyframe_metadata_scope
+uniform_gap8,30,1999,292,0.14607303651825912,0,-244,0.09762538675351436,195.1531481202752,8,1,9.5367431640625e-07,4.770756960511505e-10,exact_schedule_counts_main_anchor_proxy_payload
+stage165_adaptive,30,1999,358,0.1790895447723862,66,-178,0.12043131726560583,240.74220321394606,2610,327,0.00031185150146484375,1.5600375260872624e-07,exact_schedule_counts_main_anchor_proxy_payload
+uniform_gap4,30,1999,536,0.2681340670335168,244,0,0.18193822076791313,363.69450331505834,8,1,9.5367431640625e-07,4.770756960511505e-10,exact_schedule_counts_main_anchor_proxy_payload
