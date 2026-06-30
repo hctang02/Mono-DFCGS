@@ -1,20 +1,20 @@
 # Current Status And Next Plan
 
-Date: 2026-06-30
+Date: 2026-07-01
 
 ## Current Task
 
-Continue the Mono-DFCGS middle-frame recovery line from low-quality adapter/linear middle frames toward a StreamSplat-guided, Gaussian-domain, rate-counted recovery policy.
+Continue the Mono-DFCGS StreamSplat-guided, Gaussian-domain, rate-counted middle-frame recovery line with adaptive keyframe scheduling.
 
-The current focus is not FCGS/D-FCGS comparison and not residual value prediction. The current recovered middle-frame candidate is the Stage158 packaged StreamSplat-guided half-anchor entropy residual policy.
+The current focus is Stage188 lower-budget adaptive selector sensitivity after Stage185/186 showed the frozen Stage165 adaptive schedule is a measured middle RD point, not lower-rate than uniform gap8.
 
 ## Current Repo State
 
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage158: `4c80202 Validate selected half-anchor recovery`
-- Latest completed local stage before Stage159: `Stage158 recovered middle-frame policy package`
+- Latest pushed commit before Stage187: `899a262 Validate full-sequence quality`
+- Latest completed local stage: `Stage187 selector feature ablation validation`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -31,6 +31,20 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - User confirmed on 2026-06-28 that future stages should continue from this file and keep this filename.
 
 ## Recently Completed
+
+### Latest Adaptive Full-Sequence Validation
+
+- Stage183: packaged full-sequence payload measurement protocol with `5997` frame/schedule rows, `596` unique q12 keyframe payload rows, and `3472` unique Stage158 residual payload rows.
+- Stage184: measured full-sequence payloads: `596/596` unique q12 single-anchor keyframes, `3472/3472` Stage158 residual payloads, and `90/90` schedule-packed q12 keyframe bitstreams.
+- Stage185: aggregated measured full-sequence RD. Decision: `adaptive_measured_rate_not_lower_than_gap8`; measured MiB/frame is gap8 `0.2758661759621266`, adaptive `0.2907429328258184`, and gap4 `0.33076894444307725`.
+- Stage186: validated full-sequence quality. Decision: `adaptive_quality_rate_between_gap8_and_gap4`; full quality is gap8 PSNR/SSIM/MS-SSIM/LPIPS `29.373964871839835/0.867625699572828/0.9843430183660156/0.16869177970254404`, adaptive `29.4255826920606/0.8692941793565335/0.9846469353830415/0.16593745923142186`, and gap4 `29.535715839048734/0.8739438994697716/0.9855294218654929/0.15947172297849663`.
+- Stage187: completed selector feature ablation at the Stage163 label/protocol level. Full Stage165 five-feature gate remains highest recall with `70` selected rows, `358` keyframes, hard-quality recall `0.7333333333333333`, and payload recall `0.8194444444444444`. Conservative Stage188 candidate `drop_interp_rgb` selects `69` rows with hard recall unchanged and payload recall `0.8055555555555556`; aggressive shortlist includes `motion_proxy_edge_hist`, `edge_hist_only`, `drop_hist_motion`, and `drop_edge_motion`.
+
+### Immediate Next Plan
+
+- Stage188: run lower-budget selector threshold/feature sensitivity and package explicit schedule/RD candidates, reusing Stage184/186 measured payload/quality rows whenever coverage allows.
+- Stage189: analyze false positives and false negatives using Stage185/186 sequence/frame breakdowns.
+- Stage190: prepare paper-facing package with measured RD-quality table, decoder contract, method framing, and limitations.
 
 ### Residual Side-Info Codec / RD
 
@@ -268,6 +282,7 @@ Stage113 held-out diagnostic:
 - Stage184 executes the full-sequence payload measurement. It measures `596/596` unique q12 single-anchor keyframe bitstreams, `3472/3472` unique Stage158 residual payloads using the PSNR-based best-half selector, and `90/90` schedule/sequence-packed q12 keyframe bitstreams. Totals are unique keyframes `409.0400505065918` MiB, unique residuals `711.6095418930054` MiB, and schedule-packed keyframe bitstreams `813.8109636306763` MiB. Package path: `experiments/stage184_full_sequence_payload_measurement_execution/`.
 - Stage185 aggregates measured full-sequence RD. Decision: `adaptive_measured_rate_not_lower_than_gap8`. Measured total MiB/frame is uniform gap8 `0.2758661759621266`, Stage165 adaptive `0.2907429328258184`, and uniform gap4 `0.33076894444307725`; adaptive is `+0.014876756863691831` MiB/frame vs gap8 and `-0.04002601161725883` vs gap4. Stage180 sampled quality still favors adaptive: PSNR/LPIPS `29.770752551041166/0.1427798855635855` vs gap8 `29.206326430809128/0.1766524552471108` and gap4 `29.46421682151917/0.16245726098616917`. Package path: `experiments/stage185_measured_full_sequence_rd_aggregation/`.
 - Stage186 measures full-sequence multi-metric quality and joins it with Stage185 measured rates. Decision: `adaptive_quality_rate_between_gap8_and_gap4`. Full-sequence PSNR/SSIM/MS-SSIM/LPIPS are gap8 `29.373964871839835/0.867625699572828/0.9843430183660156/0.16869177970254404`, adaptive `29.4255826920606/0.8692941793565335/0.9846469353830415/0.16593745923142186`, and gap4 `29.535715839048734/0.8739438994697716/0.9855294218654929/0.15947172297849663`. Adaptive improves all full-sequence quality metrics over gap8 but is below gap4; rate is also between gap8 and gap4. Package path: `experiments/stage186_full_sequence_quality_validation/`.
+- Stage187 completes selector feature ablation validation. Decision: `feature_ablation_ready_for_budget_sensitivity`. This is a selector-label/protocol ablation, not measured full-sequence RD for ablation schedules. Full Stage165 gate selects `70` rows with hard-quality recall `0.7333333333333333` and high-payload recall `0.8194444444444444`; `drop_interp_rgb` selects `69` rows with hard recall unchanged and high-payload recall `0.8055555555555556`; `drop_hist_motion` is a more aggressive low-budget candidate with `61` selected rows, unchanged hard recall, and high-payload recall `0.7361111111111112`. Package path: `experiments/stage187_selector_feature_ablation_validation/`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -275,6 +290,8 @@ Stage113 held-out diagnostic:
 - Residual value prediction should wait until selector switching and index/value accounting are more stable.
 
 ## Next Plan
+
+Note: the chronological stage plans below are retained for archival context. The active continuation plan is the `Immediate Next Plan` near the top of this file: Stage188 lower-budget selector sensitivity, Stage189 failure-case analysis, and Stage190 paper-facing package.
 
 ### Stage153: Full Policy/RD Presentation Package
 

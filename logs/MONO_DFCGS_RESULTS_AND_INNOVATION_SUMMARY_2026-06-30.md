@@ -1,6 +1,6 @@
 # Mono-DFCGS Results And Innovation Summary
 
-Date: 2026-06-30
+Date: 2026-07-01
 
 Purpose: consolidate the current Mono-DFCGS evidence chain, module-level innovation points, decoder contracts, non-claims, and next validation plan into one handoff log.
 
@@ -8,7 +8,7 @@ Purpose: consolidate the current Mono-DFCGS evidence chain, module-level innovat
 
 The current strongest line is a StreamSplat-guided, Gaussian-domain, rate-counted middle-frame recovery method plus an encoder-side RGB/motion adaptive keyframe schedule.
 
-The method is not a final full-sequence RD claim yet. It is a sampled-validated candidate with explicit decoder contracts and side-info accounting.
+The current measured full-sequence result is a middle RD point: adaptive improves full-sequence quality over uniform gap8 but uses higher measured rate, and it uses lower measured rate than uniform gap4 but has lower quality than gap4. Stage188 should tune lower-budget adaptive variants before final paper-facing claims.
 
 ## Current Best Components
 
@@ -16,11 +16,12 @@ The method is not a final full-sequence RD claim yet. It is a sampled-validated 
 |---|---:|---|---|
 | middle-frame recovery | Stage158/161 | `streamsplat_guided_half_anchor_entropy_residual_v1` | current quality-first recovered middle-frame policy |
 | keyframe selector protocol | Stage162 | transmitted schedule with encoder-side RGB/motion features | feature-source and decoder contract audited |
-| adaptive keyframe schedule | Stage165/176 | `rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate` | sampled-validated candidate, not final full-sequence RD |
+| adaptive keyframe schedule | Stage165/176 | `rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate` | measured full-sequence middle RD point |
 | fixed-gap comparison | Stage177 | adaptive vs uniform gap8/gap4 | sampled-medium final target quality comparison completed |
 | broader sampled validation | Stage180 | adaptive vs uniform gap8/gap4 | 90-target sampled-broader final quality comparison completed |
-| rate accounting preflight | Stage181 | full-sequence keyframe/metadata plus Stage180 residual proxy | adaptive remains rate-promising under broader sampled proxy |
-| selector branch decision | Stage182 | freeze current Stage165 adaptive candidate | proceed to full-sequence payload measurement next |
+| measured payload/RD | Stage184/185 | full-sequence payload measurement and RD aggregation | adaptive rate is between gap8 and gap4, not below gap8 |
+| full-sequence quality | Stage186 | measured multi-metric quality for gap8/adaptive/gap4 | adaptive quality is between gap8 and gap4 |
+| selector ablation | Stage187 | Stage163 label/protocol feature ablation | shortlist lower-budget variants for Stage188 |
 
 ## Middle-Frame Recovery Evidence
 
@@ -224,12 +225,42 @@ Interpretation:
 - Remaining risks are final-RD measurement risks, not immediate selector-tuning blockers.
 - Selector threshold tuning becomes conditional on exact full-sequence payload measurement showing rate regression or unacceptable false-positive cost.
 
+## Stage183-187 Measured RD And Selector Ablation Update
+
+Stage183-186 replace the Stage181 sampled/proxy rate optimism with measured full-sequence payload and quality.
+
+Measured full-sequence RD-quality:
+
+| schedule | MiB/frame | PSNR | SSIM | MS-SSIM | LPIPS |
+|---|---:|---:|---:|---:|---:|
+| uniform_gap8 | `0.2758661759621266` | `29.373964871839835` | `0.867625699572828` | `0.9843430183660156` | `0.16869177970254404` |
+| Stage165 adaptive | `0.2907429328258184` | `29.4255826920606` | `0.8692941793565335` | `0.9846469353830415` | `0.16593745923142186` |
+| uniform_gap4 | `0.33076894444307725` | `29.535715839048734` | `0.8739438994697716` | `0.9855294218654929` | `0.15947172297849663` |
+
+Interpretation:
+
+- Adaptive improves all measured quality metrics over uniform gap8, but costs `+0.014876756863691831` MiB/frame.
+- Adaptive is lower-rate than uniform gap4 by `-0.04002601161725883` MiB/frame, but is lower quality than gap4.
+- The frozen Stage165 schedule should be described as an adaptive middle RD point, not as lower-rate than gap8.
+
+Stage187 feature ablation is label/protocol-only and does not claim measured RD for ablation schedules.
+
+| variant | selected rows | keyframes | hard recall | payload recall | note |
+|---|---:|---:|---:|---:|---|
+| full Stage165 features | `70` | `358` | `0.7333333333333333` | `0.8194444444444444` | highest recall among evaluated variants |
+| `drop_interp_rgb` | `69` | `357` | `0.7333333333333333` | `0.8055555555555556` | conservative low-budget Stage188 candidate |
+| `motion_proxy_edge_hist` | `68` | `357` | `0.7333333333333333` | `0.7916666666666666` | small budget reduction |
+| `edge_hist_only` | `67` | `356` | `0.7333333333333333` | `0.7777777777777778` | motion-only stress point |
+| `drop_hist_motion` | `61` | `349` | `0.7333333333333333` | `0.7361111111111112` | more aggressive low-budget candidate |
+
+Stage188 should evaluate these lower-budget variants and threshold/budget variants as explicit schedule/RD points, reusing Stage184/186 measured rows whenever schedule coverage allows.
+
 ## Non-Claims And Risks
 
 | item | status |
 |---|---|
-| final full-sequence RD | not claimed yet |
-| all-frame quality report | not completed yet |
+| final optimized adaptive RD | not claimed yet; Stage165 measured point is between gap8 and gap4 |
+| all-frame quality report | completed for Stage165/gap8/gap4 in Stage186 |
 | selector precision solved | not claimed; false-positive keyframes remain |
 | false negatives solved | not claimed; residual false negatives remain close to gap8 behavior |
 | online streaming selector | not claimed; current setting is offline video encoding unless lookahead is declared |
@@ -258,17 +289,19 @@ Interpretation:
 | 180 | broader sampled validation | adaptive beats gap8/gap4 on 90-target final quality with +0.5644 dB vs gap8 |
 | 181 | rate accounting preflight | adaptive combined proxy 0.1916 MiB/frame, below gap8/gap4 under Stage180 residual proxy |
 | 182 | freeze decision | freeze current adaptive selector and run full-sequence payload measurement next |
+| 183 | full-sequence payload protocol | enumerates 5997 schedule/frame rows and unique keyframe/residual payload work |
+| 184 | measured payload execution | measures all unique q12 keyframe and Stage158 residual payloads plus schedule-packed keyframe streams |
+| 185 | measured RD aggregation | adaptive measured rate is between gap8 and gap4, not below gap8 |
+| 186 | full-sequence quality validation | adaptive quality is between gap8 and gap4 across PSNR/SSIM/MS-SSIM/LPIPS |
+| 187 | selector feature ablation | identifies lower-budget candidate features for Stage188 sensitivity |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
-| 179 | broader sampled adaptive protocol | a larger target/schedule CSV with reuse/new-render/keyframe marker decisions |
-| 180 | execute broader sampled validation | completed; 90-target final-quality comparison packaged |
-| 181 | full-sequence RD accounting preflight | completed; exact keyframe/metadata plus sampled residual proxy packaged |
-| 182 | selector refinement or freeze decision | completed; freeze current candidate and measure payload next |
-| 183 | full-sequence payload measurement protocol | enumerate exact keyframe/residual payload work before final RD measurement |
-| 184 | paper-facing package | tables, figures, decoder contract, limitations, and subjective evidence paths |
+| 188 | lower-budget selector sensitivity | explicit lower-budget schedule/RD candidates using Stage187 shortlist and Stage184/186 reuse when valid |
+| 189 | failure-case analysis | false-positive/false-negative sequence and frame breakdowns from Stage185/186 |
+| 190 | paper-facing package | measured RD-quality tables, figures, decoder contract, limitations, and method framing |
 
 ## Canonical Paths
 
@@ -282,5 +315,10 @@ Interpretation:
 | Stage180 broader validation | `experiments/stage180_broader_sampled_adaptive_validation_execution/` |
 | Stage181 rate preflight | `experiments/stage181_full_sequence_rd_accounting_preflight/` |
 | Stage182 freeze decision | `experiments/stage182_selector_refinement_or_freeze_decision/` |
+| Stage183 payload protocol | `experiments/stage183_full_sequence_payload_measurement_protocol/` |
+| Stage184 payload measurement | `experiments/stage184_full_sequence_payload_measurement_execution/` |
+| Stage185 measured RD | `experiments/stage185_measured_full_sequence_rd_aggregation/` |
+| Stage186 full-sequence quality | `experiments/stage186_full_sequence_quality_validation/` |
+| Stage187 feature ablation | `experiments/stage187_selector_feature_ablation_validation/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |

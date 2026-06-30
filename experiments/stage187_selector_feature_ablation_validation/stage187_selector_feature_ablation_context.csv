@@ -1,0 +1,7 @@
+item,value,note
+stage165_policy,rank_gate_t0.65_votes1,Fixed gate used for ablations.
+stage165_selected_count,70,Original selected row count on Stage163 rows.
+stage186_adaptive_rate,0.2907429328258184,Measured full-sequence rate for current adaptive schedule.
+stage186_adaptive_psnr_delta_vs_gap8,0.05161782022076622,Full-sequence quality context; not recomputed for ablation schedules.
+stage186_gap8_rate,0.2758661759621266,Measured fixed gap8 rate.
+stage186_gap4_rate,0.33076894444307725,Measured fixed gap4 rate.
