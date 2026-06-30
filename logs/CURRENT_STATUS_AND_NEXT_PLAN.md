@@ -121,6 +121,7 @@ Key Stage96 direct total rates:
 - Stage163: built the first DAVIS RGB/motion selector data package on Stage157/158 sampled rows.
 - Stage164: completed the first RGB/motion heuristic hard-segment selector preflight.
 - Stage165: converted multi-feature RGB/motion hard-window signal into an adaptive keyframe schedule preflight with counted metadata.
+- Stage166: compared the Stage165 adaptive schedule against uniform gap4/gap8 using sampled label/RD proxy and selected a rendered-smoke set.
 
 ## Current Best Selector Policy
 
@@ -230,6 +231,7 @@ Stage113 held-out diagnostic:
 - Stage163 creates the first selector-data slice from the Stage157/158 120 sampled q12 gap4/gap8 rows. It computes deployable encoder-side RGB/motion proxy features from DAVIS/input RGB only at `448x256`, and attaches Stage158 metrics/payloads as offline labels only. Package path: `experiments/stage163_davis_rgb_motion_selector_data/`. Early signal: motion-heavy `motocross-jump`/`scooter-black` score high and have high payload/LPIPS flags, but low-PSNR flags also appear in `cows`, `breakdance`, `camel`, and `bike-packing`, so Stage164 should not use one scalar proxy alone.
 - Stage164 sweeps simple RGB/motion hard-segment heuristics. Best simple row-level heuristic is `edge_left_right` top-40%, with hard-quality precision/recall/F1 `0.333333/0.533333/0.410256` and high-payload recall `0.555556`. It selects higher-payload/lower-PSNR rows on average, so there is signal, but it misses important hard cases like `motocross-jump`; therefore it is a preflight only, not the final selector. Package path: `experiments/stage164_rgb_motion_heuristic_selector_preflight/`.
 - Stage165 improves selector signal with a multi-feature rank gate using Stage162-allowed RGB/motion features only. Selected gate: rank threshold `0.65`, minimum votes `1`; hard-quality precision/recall/F1 `0.314286/0.733333/0.44`, payload recall `0.819444`. It creates `rgb_motion_rank_gate_gap8_plus_extra_targets_v1`: start from uniform gap8 and insert selected target frames as extra keyframes. Across `30` sequences / `1999` frames, adaptive keyframes are `358` with metadata `2610` bits (`327` bytes), selecting `22/30` hard-quality rows and `59/72` high-payload rows. Package path: `experiments/stage165_multifeature_keyframe_schedule_preflight/`.
+- Stage166 runs a pre-render label/RD proxy for Stage165 schedules. Decision: `promising_for_small_rendered_smoke`. Adaptive keyframes are `358`, between uniform gap8 `292` and uniform gap4 `536`; metadata remains `2610` bits / `327` bytes. Sampled target promotions are `70/120`, hard-quality coverage `22/30`, high-payload coverage `59/72`, sampled residual payload avoided `16241740` bytes, and total proxy MiB/frame `0.19418151582689588`. Remaining hard false negatives are `8` sampled rows. Smoke candidates: `motocross-jump`, `cows`, `camel`, `breakdance`, `dance-twirl`, `scooter-black`, `india`, `shooting`, `car-roundabout`, `bike-packing`. Package path: `experiments/stage166_adaptive_schedule_label_rd_comparison/`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -505,7 +507,7 @@ Result:
 
 ### Stage166: Adaptive Schedule Label/RD Comparison
 
-Status: next immediate step.
+Status: completed as a pre-render label/RD proxy on 2026-06-30.
 
 Goal: compare Stage165 adaptive schedules against uniform gap4/gap8 using available Stage158 labels, schedule metadata, and approximate keyframe-rate accounting before running heavy rendering.
 
@@ -520,6 +522,47 @@ Actions:
 Success condition:
 
 - A report states whether the adaptive schedule is promising enough for rendered validation, and identifies a small smoke set.
+
+Result:
+
+- Package: `experiments/stage166_adaptive_schedule_label_rd_comparison/stage166_adaptive_schedule_label_rd_comparison_package.json`.
+- Report: `experiments/stage166_adaptive_schedule_label_rd_comparison/stage166_adaptive_schedule_label_rd_comparison_report.md`.
+- Decision: `promising_for_small_rendered_smoke`.
+- Adaptive schedule: `358` keyframes, `66` more than uniform gap8 and `178` fewer than uniform gap4.
+- Adaptive metadata: `2610` bits / `327` bytes.
+- Hard-quality sampled coverage: `22 / 30`; high-payload sampled coverage: `59 / 72`.
+- Remaining hard false negatives: `breakdance` (`4`), `bike-packing` (`2`), `dance-twirl` (`1`), `dogs-jump` (`1`).
+
+### Stage167: Adaptive Schedule Rendered Smoke
+
+Status: next immediate step.
+
+Goal: run a small rendered smoke on the Stage166-selected sequences to validate whether the adaptive schedule remains visually/RD plausible after inserted keyframes change interpolation intervals.
+
+Candidate sequences:
+
+- `motocross-jump`
+- `cows`
+- `camel`
+- `breakdance`
+- `dance-twirl`
+- `scooter-black`
+- `india`
+- `shooting`
+- `car-roundabout`
+- `bike-packing`
+
+Actions:
+
+- Keep Stage158 middle recovery policy fixed.
+- Use Stage165 adaptive keyframe indices.
+- Render a small subset first, not all DAVIS frames.
+- Compare adaptive smoke against uniform gap8 and, where feasible, uniform gap4 references.
+- Report PSNR/SSIM/MS-SSIM/LPIPS and subjective risk examples.
+
+Success condition:
+
+- A small rendered smoke package confirms whether Stage165/166 adaptive scheduling is worth scaling up.
 
 ### Stage109: Selector-Score Feature Preflight
 

@@ -1,0 +1,11 @@
+rank,sequence,reason,smoke_score,hard_quality_rows,stage165_adaptive_promoted_hard_rows,stage165_adaptive_false_negative_hard_rows,high_payload_rows,stage165_adaptive_promoted_high_payload_rows,extra_keyframes_vs_gap8,stage165_adaptive_avoided_payload_bytes,stage165_adaptive_residual_payload_bytes
+1,motocross-jump,hard_promoted;payload_heavy_promoted;many_extra_keyframes,27,4,4,0,4,4,3,1006234.0,0
+2,cows,hard_promoted;many_extra_keyframes,24,4,4,0,2,2,4,881313.0,0
+3,camel,hard_promoted;payload_heavy_promoted;many_extra_keyframes,24,3,3,0,4,4,4,931636.0,0
+4,breakdance,hard_false_negative,20,4,0,4,0,0,0,0,545762.0
+5,dance-twirl,hard_false_negative;hard_promoted;many_extra_keyframes,18,3,2,1,1,1,3,652400.0,197156.0
+6,scooter-black,hard_promoted;payload_heavy_promoted;many_extra_keyframes,18,2,2,0,3,3,4,934479.0,0
+7,india,hard_promoted;payload_heavy_promoted;many_extra_keyframes,17,2,2,0,3,3,3,685389.0,212824.0
+8,shooting,hard_promoted;payload_heavy_promoted;many_extra_keyframes,16,1,1,0,4,4,4,954419.0,0
+9,car-roundabout,hard_promoted;payload_heavy_promoted;many_extra_keyframes,16,1,1,0,4,4,4,889252.0,0
+10,bike-packing,hard_false_negative;hard_promoted,15,3,1,2,0,0,1,211478.0,474529.0
