@@ -1,0 +1,5 @@
+item,expected,actual,status
+unique_keyframe_quality_rows,596,596,ok
+unique_residual_quality_rows,3472,3472,ok
+final_frame_schedule_quality_rows,5997,5997,ok
+missing_final_measurements,0,0,ok

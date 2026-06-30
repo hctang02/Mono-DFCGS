@@ -267,6 +267,7 @@ Stage113 held-out diagnostic:
 - Stage183 packages the full-sequence payload measurement protocol. It enumerates `5997` frame/schedule rows across uniform gap8, Stage165 adaptive, and uniform gap4, and deduplicates the next measurement workload to `596` unique q12 keyframe payload rows plus `3472` unique Stage158 q6/keep1.0 residual payload rows. Per-schedule counts match Stage181 exactly: gap8 `292/1707`, adaptive `358/1641`, gap4 `536/1463` keyframe/residual rows. Package path: `experiments/stage183_full_sequence_payload_measurement_protocol/`.
 - Stage184 executes the full-sequence payload measurement. It measures `596/596` unique q12 single-anchor keyframe bitstreams, `3472/3472` unique Stage158 residual payloads using the PSNR-based best-half selector, and `90/90` schedule/sequence-packed q12 keyframe bitstreams. Totals are unique keyframes `409.0400505065918` MiB, unique residuals `711.6095418930054` MiB, and schedule-packed keyframe bitstreams `813.8109636306763` MiB. Package path: `experiments/stage184_full_sequence_payload_measurement_execution/`.
 - Stage185 aggregates measured full-sequence RD. Decision: `adaptive_measured_rate_not_lower_than_gap8`. Measured total MiB/frame is uniform gap8 `0.2758661759621266`, Stage165 adaptive `0.2907429328258184`, and uniform gap4 `0.33076894444307725`; adaptive is `+0.014876756863691831` MiB/frame vs gap8 and `-0.04002601161725883` vs gap4. Stage180 sampled quality still favors adaptive: PSNR/LPIPS `29.770752551041166/0.1427798855635855` vs gap8 `29.206326430809128/0.1766524552471108` and gap4 `29.46421682151917/0.16245726098616917`. Package path: `experiments/stage185_measured_full_sequence_rd_aggregation/`.
+- Stage186 measures full-sequence multi-metric quality and joins it with Stage185 measured rates. Decision: `adaptive_quality_rate_between_gap8_and_gap4`. Full-sequence PSNR/SSIM/MS-SSIM/LPIPS are gap8 `29.373964871839835/0.867625699572828/0.9843430183660156/0.16869177970254404`, adaptive `29.4255826920606/0.8692941793565335/0.9846469353830415/0.16593745923142186`, and gap4 `29.535715839048734/0.8739438994697716/0.9855294218654929/0.15947172297849663`. Adaptive improves all full-sequence quality metrics over gap8 but is below gap4; rate is also between gap8 and gap4. Package path: `experiments/stage186_full_sequence_quality_validation/`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -1105,6 +1106,30 @@ Result:
 - Uniform gap4 measured total: `0.33076894444307725` MiB/frame.
 - Adaptive measured delta: `+0.014876756863691831` MiB/frame vs gap8 and `-0.04002601161725883` MiB/frame vs gap4.
 - Interpretation: adaptive buys higher sampled quality than gap8/gap4 but does not currently beat gap8 measured rate; Stage188 should explore lower-budget selector variants.
+
+### Stage186: Full-Sequence Quality Validation
+
+Status: completed on 2026-07-01.
+
+Goal: measure full-sequence multi-metric reconstruction quality and merge it with Stage185 measured RD.
+
+Actions:
+
+- Render all `596` unique q12 keyframe reconstructions and compute PSNR/SSIM/MS-SSIM/LPIPS.
+- Re-render all `3472` unique Stage158 residual recoveries using Stage184 selected halves and compute PSNR/SSIM/MS-SSIM/LPIPS.
+- Map unique metrics back to all `5997` frame/schedule rows.
+- Merge full quality with Stage185 measured rates.
+
+Result:
+
+- Package: `experiments/stage186_full_sequence_quality_validation/stage186_full_sequence_quality_validation_package.json`.
+- Report: `experiments/stage186_full_sequence_quality_validation/stage186_full_sequence_quality_validation_report.md`.
+- Decision: `adaptive_quality_rate_between_gap8_and_gap4`.
+- Validation: keyframe quality `596/596`, residual quality `3472/3472`, final frame/schedule rows `5997/5997`.
+- Uniform gap8: rate `0.2758661759621266`, PSNR `29.373964871839835`, SSIM `0.867625699572828`, MS-SSIM `0.9843430183660156`, LPIPS `0.16869177970254404`.
+- Stage165 adaptive: rate `0.2907429328258184`, PSNR `29.4255826920606`, SSIM `0.8692941793565335`, MS-SSIM `0.9846469353830415`, LPIPS `0.16593745923142186`.
+- Uniform gap4: rate `0.33076894444307725`, PSNR `29.535715839048734`, SSIM `0.8739438994697716`, MS-SSIM `0.9855294218654929`, LPIPS `0.15947172297849663`.
+- Adaptive is a measured middle RD point: better than gap8 in all quality metrics at `+0.014876756863691831` MiB/frame, and lower-rate but lower-quality than gap4.
 
 ### Stage109: Selector-Score Feature Preflight
 
