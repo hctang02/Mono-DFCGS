@@ -1,0 +1,80 @@
+{
+  "policy_name": "rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate",
+  "status": "sampled_validated_candidate_not_final_full_sequence_rd",
+  "fixed_middle_recovery_policy": "streamsplat_guided_half_anchor_entropy_residual_v1",
+  "schedule_logic": "start uniform gap8, add selected target indices as extra keyframes",
+  "selector_candidate": "rank_gate_t0.65_votes1",
+  "rank_threshold": 0.65,
+  "min_votes": 1,
+  "feature_scope": "Stage163 RGB/motion feature ranks only",
+  "encoder_allowed_inputs": [
+    "input RGB frames",
+    "deterministic RGB/motion proxy features from input frames",
+    "optional fixed RGB-only pretrained motion/feature networks in a higher-compute tier"
+  ],
+  "decoder_allowed_inputs": [
+    "transmitted keyframe schedule or keyframe indices",
+    "normal keyframe anchors/payloads",
+    "Stage158 residual payloads for non-keyframe middle recovery rows",
+    "normal StreamSplat endpoint inputs and normalized time for recovered middle rows"
+  ],
+  "decoder_forbidden_inputs": [
+    "RGB/motion selector features",
+    "target dense anchors except through encoded Stage158 residual payload",
+    "target RGB",
+    "rendered quality metrics or oracle labels",
+    "unencoded target residual tensors"
+  ],
+  "rate_accounting_contract": [
+    {
+      "component": "keyframe_anchor_payload",
+      "counting_rule": "count q-bit Gaussian anchor payload/metadata for every transmitted keyframe",
+      "notes": "Use existing q12/qbit anchor accounting tables; if schedule changes keyframe count, anchor rate changes accordingly."
+    },
+    {
+      "component": "adaptive_keyframe_indices",
+      "counting_rule": "count schedule metadata for non-uniform selectors: keyframe count plus sorted indices or segment lengths packed with ceil(log2(total_frames)) bits/index",
+      "notes": "Uniform fixed-gap schedules can be signaled by mode id only; adaptive schedules must transmit their indices or equivalent segment lengths."
+    },
+    {
+      "component": "selector_mode_id",
+      "counting_rule": "count at least one small mode id when multiple schedule policies are available",
+      "notes": "Examples: uniform_gap4, uniform_gap8, rgb_motion_heuristic, learned_selector."
+    },
+    {
+      "component": "stage158_middle_residual_payload",
+      "counting_rule": "count q6/keep1.0 entropy residual payload plus one-byte half selector for every recovered middle/intermediate frame",
+      "notes": "Payload may vary by segment difficulty; Stage158 current policy is quality-first and not rate-minimized."
+    },
+    {
+      "component": "feature_computation",
+      "counting_rule": "not counted as bitrate if features are not transmitted, but compute/dependency tier must be reported",
+      "notes": "Pretrained optical flow or embeddings must be documented as higher-compute encoder tools."
+    }
+  ],
+  "schedule_summary": {
+    "schedule": "rgb_motion_rank_gate_gap8_plus_extra_targets_v1",
+    "sequence_count": 30,
+    "total_frame_count": 1999,
+    "total_keyframe_count": 358,
+    "mean_keyframe_ratio": 0.1790895447723862,
+    "metadata_bits": 2610,
+    "metadata_bytes": 327,
+    "metadata_mib": 0.00031113624572753906,
+    "selected_task_count": 70,
+    "hard_task_count": 30,
+    "selected_hard_count": 22,
+    "high_payload_task_count": 72,
+    "selected_high_payload_count": 59
+  },
+  "sampled_rate_proxy": {
+    "scope": "stage166_sampled_proxy",
+    "total_proxy_mib_per_frame": 0.19418151582689588,
+    "keyframe_count": 358,
+    "extra_keyframes_vs_gap8": 66,
+    "metadata_bytes": 327,
+    "sampled_residual_row_count": 50,
+    "sampled_promoted_row_count": 70
+  },
+  "stage175_decision": "package_sampled_validated_candidate_and_scale_broader_validation"
+}

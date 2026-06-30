@@ -1,0 +1,127 @@
+{
+  "stage": 176,
+  "status": "adaptive_schedule_candidate_packaged",
+  "candidate_status": "sampled_validated_candidate_not_final_full_sequence_rd",
+  "policy_name": "rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate",
+  "stage175_decision": "package_sampled_validated_candidate_and_scale_broader_validation",
+  "candidate_policy_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage176_adaptive_schedule_candidate_package/stage176_adaptive_keyframe_schedule_candidate_policy.json",
+  "evidence_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage176_adaptive_schedule_candidate_package/stage176_candidate_evidence.csv",
+  "limitations_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage176_adaptive_schedule_candidate_package/stage176_candidate_limitations.csv",
+  "next_validation_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage176_adaptive_schedule_candidate_package/stage176_next_validation_requirements.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage176_adaptive_schedule_candidate_package/stage176_adaptive_schedule_candidate_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage176_adaptive_schedule_candidate_package/stage176_adaptive_schedule_candidate_package_report.md",
+  "evidence": [
+    {
+      "area": "selector_policy",
+      "status": "selected_candidate",
+      "metric": "rank threshold / min votes / selected rows",
+      "value": "0.65 / 1 / 70",
+      "source": "Stage165"
+    },
+    {
+      "area": "selector_recall",
+      "status": "positive_signal",
+      "metric": "hard recall / payload recall",
+      "value": "0.733333333333 / 0.819444444444",
+      "source": "Stage165"
+    },
+    {
+      "area": "schedule_size",
+      "status": "bounded_between_uniforms",
+      "metric": "adaptive keyframes / frames / metadata bytes",
+      "value": "358 / 1999 / 327",
+      "source": "Stage165"
+    },
+    {
+      "area": "rate_proxy",
+      "status": "rate_promising_sampled_proxy",
+      "metric": "adaptive / gap8 / gap4 MiB/frame",
+      "value": "0.194181515827 / 0.300453182577 / 0.370523510564",
+      "source": "Stage172"
+    },
+    {
+      "area": "medium_validation",
+      "status": "complete",
+      "metric": "protocol rows / new renders",
+      "value": "150 / 54",
+      "source": "Stage174"
+    },
+    {
+      "area": "false_negatives",
+      "status": "risk_neutral_quality",
+      "metric": "adaptive delta vs gap8 PSNR / LPIPS",
+      "value": "-0.0109637522816 / 0.000909611582756",
+      "source": "Stage174"
+    },
+    {
+      "area": "positive_promotions",
+      "status": "supports_schedule",
+      "metric": "positive extension gap8 PSNR / LPIPS / payload",
+      "value": "26.9100212409 / 0.211998779327 / 227130.875",
+      "source": "Stage174"
+    },
+    {
+      "area": "false_positive_keyframes",
+      "status": "risk_precision",
+      "metric": "false-positive controls gap8 PSNR / LPIPS / payload",
+      "value": "30.0717550621 / 0.183046225458 / 157481.25",
+      "source": "Stage174/175"
+    },
+    {
+      "area": "decision",
+      "status": "candidate_package",
+      "metric": "Stage175 branch",
+      "value": "package_sampled_validated_candidate_and_scale_broader_validation",
+      "source": "Stage175"
+    }
+  ],
+  "limitations": [
+    {
+      "limitation": "not_final_full_sequence_rd",
+      "impact": "Current rate is sampled/proxy and rendered evidence is medium sampled validation.",
+      "required_followup": "Run broader or full-sequence RD with all keyframe, metadata, and residual payload counted."
+    },
+    {
+      "limitation": "selector_false_positive_keyframes",
+      "impact": "Some promoted targets are not hard/high-payload labels and may waste extra keyframes.",
+      "required_followup": "Broader validation should quantify false-positive keyframe overhead; selector refinement may add per-sequence budgets or stricter gates."
+    },
+    {
+      "limitation": "false_negatives_remain",
+      "impact": "Hard rows missed by the selector remain essentially uniform-gap8 residual cases.",
+      "required_followup": "Keep false-negative stress sets in broader validation and consider selector features that improve recall without large false-positive cost."
+    },
+    {
+      "limitation": "adaptive_keyframe_rows_have_no_middle_metrics",
+      "impact": "Promoted rows cannot be compared by middle-render PSNR/LPIPS; they are transmitted keyframes.",
+      "required_followup": "Judge promoted rows through keyframe rate, all-frame sequence metrics, and subjective keyframe continuity."
+    },
+    {
+      "limitation": "offline_feedforward_scope",
+      "impact": "DAVIS experiments use offline input RGB; online streaming variants need declared lookahead.",
+      "required_followup": "Document lookahead or restrict selector features for online settings."
+    }
+  ],
+  "next_steps": [
+    {
+      "step": "broader_sampled_validation",
+      "goal": "Scale beyond the 50-target medium protocol before final claims.",
+      "requirements": "Reuse existing rows where possible; include false negatives, false-positive keyframes, high-payload controls, normal controls, and weak subjective sequences."
+    },
+    {
+      "step": "full_sequence_rd_accounting",
+      "goal": "Convert sampled proxy rate into full sequence/frame accounting.",
+      "requirements": "Count all keyframe anchors, adaptive schedule metadata, Stage158 residual payloads for every non-keyframe recovery, and report MiB/frame."
+    },
+    {
+      "step": "all_frame_quality_report",
+      "goal": "Move beyond target-row summaries.",
+      "requirements": "Report all-frame, keyframe-only, middle-only, per-sequence, and per-category PSNR/SSIM/MS-SSIM/LPIPS."
+    },
+    {
+      "step": "selector_refinement_if_needed",
+      "goal": "Reduce false-positive keyframes or false negatives if broader validation shows rate/quality issues.",
+      "requirements": "Stay within Stage162-allowed encoder-side RGB/motion features; no rendered quality or target dense anchors as inference inputs."
+    }
+  ]
+}

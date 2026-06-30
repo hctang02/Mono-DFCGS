@@ -1,0 +1,5 @@
+step,goal,requirements
+broader_sampled_validation,Scale beyond the 50-target medium protocol before final claims.,"Reuse existing rows where possible; include false negatives, false-positive keyframes, high-payload controls, normal controls, and weak subjective sequences."
+full_sequence_rd_accounting,Convert sampled proxy rate into full sequence/frame accounting.,"Count all keyframe anchors, adaptive schedule metadata, Stage158 residual payloads for every non-keyframe recovery, and report MiB/frame."
+all_frame_quality_report,Move beyond target-row summaries.,"Report all-frame, keyframe-only, middle-only, per-sequence, and per-category PSNR/SSIM/MS-SSIM/LPIPS."
+selector_refinement_if_needed,Reduce false-positive keyframes or false negatives if broader validation shows rate/quality issues.,Stay within Stage162-allowed encoder-side RGB/motion features; no rendered quality or target dense anchors as inference inputs.

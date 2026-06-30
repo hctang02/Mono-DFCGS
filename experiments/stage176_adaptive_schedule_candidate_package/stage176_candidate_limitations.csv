@@ -1,0 +1,6 @@
+limitation,impact,required_followup
+not_final_full_sequence_rd,Current rate is sampled/proxy and rendered evidence is medium sampled validation.,"Run broader or full-sequence RD with all keyframe, metadata, and residual payload counted."
+selector_false_positive_keyframes,Some promoted targets are not hard/high-payload labels and may waste extra keyframes.,Broader validation should quantify false-positive keyframe overhead; selector refinement may add per-sequence budgets or stricter gates.
+false_negatives_remain,Hard rows missed by the selector remain essentially uniform-gap8 residual cases.,Keep false-negative stress sets in broader validation and consider selector features that improve recall without large false-positive cost.
+adaptive_keyframe_rows_have_no_middle_metrics,Promoted rows cannot be compared by middle-render PSNR/LPIPS; they are transmitted keyframes.,"Judge promoted rows through keyframe rate, all-frame sequence metrics, and subjective keyframe continuity."
+offline_feedforward_scope,DAVIS experiments use offline input RGB; online streaming variants need declared lookahead.,Document lookahead or restrict selector features for online settings.

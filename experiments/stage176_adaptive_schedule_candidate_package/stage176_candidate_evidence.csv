@@ -1,0 +1,10 @@
+area,status,metric,value,source
+selector_policy,selected_candidate,rank threshold / min votes / selected rows,0.65 / 1 / 70,Stage165
+selector_recall,positive_signal,hard recall / payload recall,0.733333333333 / 0.819444444444,Stage165
+schedule_size,bounded_between_uniforms,adaptive keyframes / frames / metadata bytes,358 / 1999 / 327,Stage165
+rate_proxy,rate_promising_sampled_proxy,adaptive / gap8 / gap4 MiB/frame,0.194181515827 / 0.300453182577 / 0.370523510564,Stage172
+medium_validation,complete,protocol rows / new renders,150 / 54,Stage174
+false_negatives,risk_neutral_quality,adaptive delta vs gap8 PSNR / LPIPS,-0.0109637522816 / 0.000909611582756,Stage174
+positive_promotions,supports_schedule,positive extension gap8 PSNR / LPIPS / payload,26.9100212409 / 0.211998779327 / 227130.875,Stage174
+false_positive_keyframes,risk_precision,false-positive controls gap8 PSNR / LPIPS / payload,30.0717550621 / 0.183046225458 / 157481.25,Stage174/175
+decision,candidate_package,Stage175 branch,package_sampled_validated_candidate_and_scale_broader_validation,Stage175

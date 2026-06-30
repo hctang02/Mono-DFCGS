@@ -131,6 +131,7 @@ Key Stage96 direct total rates:
 - Stage173: built the medium rendered validation protocol with `50` targets, `150` schedule rows, `84` reusable rows, `54` new Stage174 render rows, and `12` new keyframe markers.
 - Stage174: executed the medium rendered validation with `150/150` protocol rows covered, `54/54` new renders completed, `84` reused rows, and `32` total keyframe markers.
 - Stage175: decided to package Stage165 adaptive schedule as a sampled-validated candidate and scale broader validation, not as final full-sequence RD.
+- Stage176: packaged the current adaptive schedule candidate `rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate` with decoder contract, evidence, limitations, and next validation requirements.
 
 ## Current Best Selector Policy
 
@@ -250,6 +251,7 @@ Stage113 held-out diagnostic:
 - Stage173 packages a medium rendered validation protocol. It keeps all `26` Stage170 core targets and adds `24` controls/extensions, for `50` targets and `150` schedule rows. Reusable existing rows: `84`; Stage174 new render rows: `54`; new keyframe markers: `12`. Categories are false negatives (`8`), Stage170 high-payload controls (`4`), high-payload residual control extensions (`8`), normal residual controls (`4`), Stage170 positive promotions (`14`), positive-promotion extensions (`8`), and selector false-positive keyframe controls (`4`). Package path: `experiments/stage173_medium_rendered_validation_protocol/`.
 - Stage174 executes the Stage173 protocol. Decision: `medium_validation_ready_for_decision`. It covers `150/150` rows, completes `54/54` new renders, reuses `84` rows from Stage168/170, and records `32` keyframe markers. Source coverage: Stage168 `6` rows, Stage170 `78` rows, Stage174 keyframe markers `12`, Stage174 rendered `54`. False-negative adaptive vs uniform gap8 remains essentially unchanged: PSNR `26.192677144097143` vs `26.203640896378754`, LPIPS `0.2088309582322836` vs `0.20792134664952755`. High-payload residual-control extension adaptive equals uniform gap8 on the selected residual rows: PSNR `29.53971001977139`, LPIPS `0.17348034121096134`. Normal residual controls also match uniform gap8: PSNR `33.40646151515855`, LPIPS `0.07590389996767044`. Positive promoted and selector false-positive adaptive rows are keyframes/no-middle-render and must be judged by rate/schedule accounting, not middle metrics. Package path: `experiments/stage174_medium_rendered_validation_execution/`. Heavy contact sheet: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage174_medium_rendered_validation_execution/stage174_medium_rendered_validation_contact_sheet.jpg`.
 - Stage175 combines Stage172 and Stage174 into a branch decision. Decision: `package_sampled_validated_candidate_and_scale_broader_validation`. Supporting factors: adaptive/gap8/gap4 total proxy MiB/frame `0.194181515827/0.300453182577/0.370523510564`; Stage174 complete `150/150` rows and `54/54` new renders; false-negative adaptive delta vs gap8 is near-neutral PSNR `-0.0109637522816`, LPIPS `+0.000909611582756`; residual and normal controls match gap8 when adaptive does not promote. Risks: false negatives remain unresolved and selector false-positive keyframes show precision cost, so no final full-sequence RD claim yet. Package path: `experiments/stage175_adaptive_schedule_decision_branch/`.
+- Stage176 packages the adaptive keyframe schedule candidate `rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate`. Status: `sampled_validated_candidate_not_final_full_sequence_rd`. Decoder receives transmitted schedule/keyframe indices and normal keyframe/Stage158 residual payloads; decoder does not compute/receive RGB/motion selector features. Encoder-side inputs remain Stage162-allowed RGB/motion features. Key evidence: hard recall `0.733333333333`, payload recall `0.819444444444`; adaptive keyframes `358/1999`, metadata `327` bytes; sampled rate proxy adaptive/gap8/gap4 `0.194181515827/0.300453182577/0.370523510564` MiB/frame; medium validation `150` rows and `54` new renders; false-negative risk PSNR/LPIPS delta `-0.0109637522816/+0.000909611582756`; false-positive keyframe risk remains. Package path: `experiments/stage176_adaptive_schedule_candidate_package/`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -824,7 +826,7 @@ Result:
 
 ### Stage176: Adaptive Schedule Candidate Package
 
-Status: next immediate step.
+Status: completed on 2026-06-30.
 
 Goal: package the Stage165 adaptive schedule as the current sampled-validated candidate with decoder contract, evidence chain, limitations, and broader-validation path.
 
@@ -838,6 +840,32 @@ Actions:
 Success condition:
 
 - A method package is ready to hand off as the current adaptive keyframe schedule candidate, with limitations clear.
+
+Result:
+
+- Package: `experiments/stage176_adaptive_schedule_candidate_package/stage176_adaptive_schedule_candidate_package.json`.
+- Report: `experiments/stage176_adaptive_schedule_candidate_package/stage176_adaptive_schedule_candidate_package_report.md`.
+- Candidate policy: `experiments/stage176_adaptive_schedule_candidate_package/stage176_adaptive_keyframe_schedule_candidate_policy.json`.
+- Policy name: `rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate`.
+- Candidate status: `sampled_validated_candidate_not_final_full_sequence_rd`.
+- Stage175 decision: `package_sampled_validated_candidate_and_scale_broader_validation`.
+- Next required work before final claim: broader sampled validation, full-sequence RD accounting, all-frame quality report, and selector refinement if broader validation exposes false-positive or false-negative risk.
+
+### Stage177: Broader Adaptive Validation Planning
+
+Status: deferred / next possible stage.
+
+Goal: design broader sampled or full-sequence validation for the Stage176 candidate.
+
+Actions:
+
+- Decide validation scale and runtime budget.
+- Include false negatives, false-positive keyframe controls, high-payload controls, normal controls, and weak subjective sequences.
+- Convert sampled/proxy rate into full sequence/frame accounting if running full-sequence validation.
+
+Success condition:
+
+- A concrete broader-validation protocol exists, or selector refinement is selected instead.
 
 ### Stage109: Selector-Score Feature Preflight
 
