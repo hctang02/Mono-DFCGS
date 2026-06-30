@@ -1,0 +1,7 @@
+baseline,selector_inputs,transmitted_metadata,role,status
+uniform_gap4_plus_stage158,none beyond total frame count,mode id or fixed policy id only,high-quality reference,primary baseline
+uniform_gap8_plus_stage158,none beyond total frame count,mode id or fixed policy id only,lower-keyframe-rate reference,primary baseline
+stage16_segment_motion_or_rd_schedule,historical motion/segment-error features,adaptive keyframe indices or segment lengths,historical adaptive schedule reference,"reuse for comparison, not final without DAVIS+Stage158 validation"
+rgb_motion_heuristic_v1,"raw RGB frame differences, block motion proxy, edge-change statistics",adaptive keyframe indices or segment lengths,first deployable selector candidate,next implementation target
+learned_rgb_motion_selector_v1,RGB/motion features only; no target anchors or rendered metrics at inference,adaptive keyframe indices or segment lengths,later learned selector candidate,after heuristic/oracle data package
+oracle_rd_schedule,rendered RD/quality labels from candidate schedules,oracle schedule indices for accounting only,upper bound and training label source,not deployable inference selector

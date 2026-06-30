@@ -1,0 +1,6 @@
+component,counting_rule,notes
+keyframe_anchor_payload,count q-bit Gaussian anchor payload/metadata for every transmitted keyframe,"Use existing q12/qbit anchor accounting tables; if schedule changes keyframe count, anchor rate changes accordingly."
+adaptive_keyframe_indices,count schedule metadata for non-uniform selectors: keyframe count plus sorted indices or segment lengths packed with ceil(log2(total_frames)) bits/index,Uniform fixed-gap schedules can be signaled by mode id only; adaptive schedules must transmit their indices or equivalent segment lengths.
+selector_mode_id,count at least one small mode id when multiple schedule policies are available,"Examples: uniform_gap4, uniform_gap8, rgb_motion_heuristic, learned_selector."
+stage158_middle_residual_payload,count q6/keep1.0 entropy residual payload plus one-byte half selector for every recovered middle/intermediate frame,Payload may vary by segment difficulty; Stage158 current policy is quality-first and not rate-minimized.
+feature_computation,"not counted as bitrate if features are not transmitted, but compute/dependency tier must be reported",Pretrained optical flow or embeddings must be documented as higher-compute encoder tools.

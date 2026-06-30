@@ -1,0 +1,5 @@
+stage,artifact,relevance,use_in_stage162
+11,/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage11_keyframe_selection/stage11_keyframe_selection_summary.csv,early uniform/motion/gaussian/RD-aware keyframe index baselines,historical terminology and baseline family
+16,/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage16_segment_error_keyframe_selection/stage16_segment_error_keyframe_selection_summary.csv,segment-length-aware keyframe schedules,adaptive segment baseline reference
+17,/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage17_segment_error_rd_curve/stage17_segment_error_rd_curve_summary.csv,segment-error RD curve on earlier data/protocol,historical comparison only; must revalidate on DAVIS + Stage158
+161,/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage161_stage158_method_narrative_package/stage161_stage158_method_narrative_package.json,current Stage158 middle recovery method,fixed middle-recovery component for adaptive schedule evaluation

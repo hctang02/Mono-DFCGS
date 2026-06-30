@@ -117,6 +117,7 @@ Key Stage96 direct total rates:
 - Stage159: exported selected Stage158 gap4 subjective examples and recorded per-example size/rate.
 - Stage160: exported extended Stage158 gap4 subjective evidence over 12 representative DAVIS sequences.
 - Stage161: packaged Stage158 as the current quality-first middle-frame recovery method and narrative/evidence bundle.
+- Stage162: packaged keyframe selector protocol and RGB/motion feature-source/feed-forward audit.
 
 ## Current Best Selector Policy
 
@@ -222,6 +223,7 @@ Stage113 held-out diagnostic:
 - Stage159 exports a gap4 subjective example video for `car-shadow`, `goat`, and `soapbox`. The layout is `left keyframe | target middle | original StreamSplat middle | Stage158 recovered middle | right keyframe`. The heavy video is `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage159_stage158_subjective_examples/stage159_gap4_stage158_subjective_examples.mp4` (`518852` bytes), and the contact sheet is `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage159_stage158_subjective_examples/stage159_gap4_stage158_subjective_examples_contact_sheet.jpg` (`1091636` bytes). Per-example side-info payloads are `220697`, `251693`, and `246995` bytes for `car-shadow`, `goat`, and `soapbox` respectively.
 - Stage160 expands subjective evidence without changing Stage158. It exports `24` gap4 examples from `12` representative DAVIS sequences with layout `left q12 keyframe render | target middle RGB | original StreamSplat middle | Stage158 recovered middle | right q12 keyframe render`. Heavy video: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` (`4180215` bytes). Contact sheet: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` (`8739496` bytes). Weak sequences such as `cows`, `breakdance`, `camel`, and `bike-packing` remain lower PSNR but still improve over original StreamSplat and keep LPIPS lower.
 - Stage161 packages `streamsplat_guided_half_anchor_entropy_residual_v1` as the current quality-first middle-frame recovery method. It states the innovation claim, decoder contract, evidence chain, Stage160 subjective video paths, and rate stance: all payload is counted, but rate is not over-optimized at this stage because user accepts somewhat larger bitrate for quality/innovation. Package path: `experiments/stage161_stage158_method_narrative_package/`.
+- Stage162 starts the keyframe selector line. It allows encoder-side RGB/motion features if derived from input video frames and keyframe indices/segment lengths are transmitted and counted. Deterministic RGB/motion proxies are the primary cheap feed-forward tier; pretrained optical-flow/feature networks are optional high-compute feed-forward tier if fed only raw RGB; rendered quality/oracle metrics and target dense/residual tensors are forbidden as selector inference inputs and reserved for labels/diagnostics. Package path: `experiments/stage162_keyframe_selector_protocol_source_audit/`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -394,7 +396,7 @@ Result:
 
 ### Stage162: Keyframe Selector Protocol And Feature-Source Audit
 
-Status: next immediate step.
+Status: completed on 2026-06-30.
 
 Goal: start adaptive keyframe/GOP selection while explicitly auditing RGB/motion feature sources and feed-forward validity.
 
@@ -412,6 +414,30 @@ Actions:
 Success condition:
 
 - A protocol package states which features are allowed, how keyframe-index metadata is counted, and how adaptive schedules will be evaluated with Stage158 middle recovery.
+
+Result:
+
+- Package: `experiments/stage162_keyframe_selector_protocol_source_audit/stage162_keyframe_selector_protocol_source_audit_package.json`.
+- Report: `experiments/stage162_keyframe_selector_protocol_source_audit/stage162_keyframe_selector_protocol_source_audit_report.md`.
+- RGB/motion source audit, rate accounting rules, baselines, protocol decisions, and historical selector artifacts were written as CSVs.
+- Key decision: decoder receives only transmitted schedule and normal payloads; it does not reproduce selector RGB/motion features.
+
+### Stage163: DAVIS RGB/Motion Selector Data Package
+
+Status: next immediate step.
+
+Goal: build the first DAVIS selector data package for adaptive keyframe selection under the Stage162 protocol.
+
+Actions:
+
+- Compute cheap encoder-side RGB/motion segment features from DAVIS input frames, such as frame difference, block SAD/MSE, edge change, and histogram difference.
+- Generate candidate schedules around uniform gap4/gap8 and simple adaptive placements.
+- Attach labels/reference quantities from Stage158-compatible evaluation where available, while keeping rendered metrics/oracle schedules offline-only.
+- Count keyframe schedule metadata for non-uniform schedules.
+
+Success condition:
+
+- A lightweight selector data package exists with feature rows, candidate schedule metadata, and a clear separation between deployable inference features and offline labels.
 
 ### Stage109: Selector-Score Feature Preflight
 

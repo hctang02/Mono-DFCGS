@@ -1,0 +1,8 @@
+item,decision,details
+codec_setting,quality_first_stage158_middle_recovery,Use Stage158 policy as middle/intermediate recovery component; do not over-optimize its residual rate in this phase.
+selector_output,transmitted_keyframe_schedule,Selector outputs keyframe indices or segment lengths; decoder follows transmitted schedule and does not reproduce selector features.
+feature_scope,encoder_side_rgb_motion_allowed,RGB/motion features are allowed if derived from input video frames available to encoder; source and compute tier must be logged.
+feedforward_protocol,offline_video_feedforward_with_optional_lookahead,"Current DAVIS protocol is offline encoding, so full input RGB can be used encoder-side. Online/streaming variants must declare a lookahead window."
+forbidden_inference_inputs,no_target_dense_or_rendered_metric_leakage,"Target dense anchors, unencoded residuals, target RGB quality labels, rendered PSNR/LPIPS, and oracle labels are not selector inference inputs."
+evaluation_metrics,all_frame_keyframe_middle_and_sequence_level,"Report all-frame, keyframe-only, middle-only, per-gap, and per-sequence PSNR/SSIM/MS-SSIM/LPIPS plus rate."
+splitting,sequence_aware_validation,Learned selector validation should split by sequence; heuristic selector should report all selected DAVIS sequences and weak cases.

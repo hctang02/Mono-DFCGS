@@ -1,0 +1,223 @@
+{
+  "stage": 162,
+  "status": "keyframe_selector_protocol_and_source_audit_packaged",
+  "fixed_middle_recovery_policy": "streamsplat_guided_half_anchor_entropy_residual_v1",
+  "middle_recovery_rate_position": "explicitly_counted_but_not_over_optimized",
+  "selector_output": "transmitted keyframe indices or segment lengths",
+  "feature_source_audit": [
+    {
+      "feature_group": "raw_rgb_encoder_input",
+      "example_features": "frame RGB, grayscale, downsampled RGB, frame timestamp/index",
+      "source": "input video frames available to encoder; DAVIS RGB files in current experiments",
+      "encoder_available": "yes",
+      "decoder_required": "no",
+      "feedforward_status": "feed-forward for offline video encoding; for online streaming requires declared lookahead window",
+      "allowed_for_inference": "yes",
+      "allowed_for_training_label": "yes",
+      "metadata_transmitted": "only selected keyframe indices/schedule, not RGB features",
+      "cost_or_caveat": "dataset RGB is the source signal being compressed, not extra side information"
+    },
+    {
+      "feature_group": "deterministic_rgb_motion_proxy",
+      "example_features": "frame difference, block SAD/MSE, edge-change, histogram difference, local gradient magnitude",
+      "source": "deterministic functions of encoder input RGB frames",
+      "encoder_available": "yes",
+      "decoder_required": "no",
+      "feedforward_status": "feed-forward if computed only from input frames inside declared lookahead",
+      "allowed_for_inference": "yes_primary_cheap_tier",
+      "allowed_for_training_label": "yes",
+      "metadata_transmitted": "only keyframe schedule",
+      "cost_or_caveat": "preferred first heuristic selector feature family"
+    },
+    {
+      "feature_group": "pretrained_motion_or_feature_network",
+      "example_features": "RAFT/GMFlow optical flow, DINO/ResNet frame embeddings, learned motion confidence",
+      "source": "fixed pretrained network fed only encoder input RGB frames",
+      "encoder_available": "yes_if_weights_are_fixed_and_inputs_are_raw_rgb_only",
+      "decoder_required": "no",
+      "feedforward_status": "feed-forward with compute-cost caveat; no target dense anchors or rendered metrics may enter",
+      "allowed_for_inference": "yes_optional_higher_compute_tier",
+      "allowed_for_training_label": "yes",
+      "metadata_transmitted": "only keyframe schedule",
+      "cost_or_caveat": "network compute and dependency must be documented; no bitrate charge unless features are transmitted"
+    },
+    {
+      "feature_group": "encoder_rd_probe",
+      "example_features": "candidate Stage158 residual payload bytes, candidate original StreamSplat middle residual estimates",
+      "source": "encoder-side candidate encodes/renders using available input and target anchors during compression",
+      "encoder_available": "yes_but_expensive",
+      "decoder_required": "no",
+      "feedforward_status": "offline encoder-side RD probe, not a cheap single-pass feed-forward selector",
+      "allowed_for_inference": "allowed_as_expensive_encoder_optimization_tier_only_if_schedule_is_transmitted",
+      "allowed_for_training_label": "yes",
+      "metadata_transmitted": "keyframe schedule plus normal Stage158 payloads",
+      "cost_or_caveat": "must not be described as low-compute feed-forward; useful upper/teacher policy"
+    },
+    {
+      "feature_group": "rendered_quality_oracle",
+      "example_features": "rendered PSNR, SSIM, MS-SSIM, LPIPS, bad-case rank",
+      "source": "requires target RGB and rendered candidate output",
+      "encoder_available": "yes_for_offline_evaluation_or_oracle_search",
+      "decoder_required": "no",
+      "feedforward_status": "not feed-forward selector input for deployable inference",
+      "allowed_for_inference": "no",
+      "allowed_for_training_label": "yes_offline_label_only",
+      "metadata_transmitted": "none; labels are not sent",
+      "cost_or_caveat": "allowed only to create labels/evaluate oracle schedules"
+    },
+    {
+      "feature_group": "target_dense_anchor_or_residual",
+      "example_features": "target dense anchor, target Gaussian residual, unencoded residual tensor",
+      "source": "Stage61 dense anchors or residual against target anchor",
+      "encoder_available": "yes_for_training_or_stage158_residual_encoding",
+      "decoder_required": "forbidden",
+      "feedforward_status": "not allowed as selector inference feature except when it is encoded into transmitted Stage158 residual payload",
+      "allowed_for_inference": "no_for_selector_features",
+      "allowed_for_training_label": "yes_encoder_side_label_or_diagnostic_only",
+      "metadata_transmitted": "must be actual encoded residual payload if used by decoder",
+      "cost_or_caveat": "prevents oracle leakage into keyframe selector"
+    }
+  ],
+  "rate_accounting": [
+    {
+      "component": "keyframe_anchor_payload",
+      "counting_rule": "count q-bit Gaussian anchor payload/metadata for every transmitted keyframe",
+      "notes": "Use existing q12/qbit anchor accounting tables; if schedule changes keyframe count, anchor rate changes accordingly."
+    },
+    {
+      "component": "adaptive_keyframe_indices",
+      "counting_rule": "count schedule metadata for non-uniform selectors: keyframe count plus sorted indices or segment lengths packed with ceil(log2(total_frames)) bits/index",
+      "notes": "Uniform fixed-gap schedules can be signaled by mode id only; adaptive schedules must transmit their indices or equivalent segment lengths."
+    },
+    {
+      "component": "selector_mode_id",
+      "counting_rule": "count at least one small mode id when multiple schedule policies are available",
+      "notes": "Examples: uniform_gap4, uniform_gap8, rgb_motion_heuristic, learned_selector."
+    },
+    {
+      "component": "stage158_middle_residual_payload",
+      "counting_rule": "count q6/keep1.0 entropy residual payload plus one-byte half selector for every recovered middle/intermediate frame",
+      "notes": "Payload may vary by segment difficulty; Stage158 current policy is quality-first and not rate-minimized."
+    },
+    {
+      "component": "feature_computation",
+      "counting_rule": "not counted as bitrate if features are not transmitted, but compute/dependency tier must be reported",
+      "notes": "Pretrained optical flow or embeddings must be documented as higher-compute encoder tools."
+    }
+  ],
+  "baselines": [
+    {
+      "baseline": "uniform_gap4_plus_stage158",
+      "selector_inputs": "none beyond total frame count",
+      "transmitted_metadata": "mode id or fixed policy id only",
+      "role": "high-quality reference",
+      "status": "primary baseline"
+    },
+    {
+      "baseline": "uniform_gap8_plus_stage158",
+      "selector_inputs": "none beyond total frame count",
+      "transmitted_metadata": "mode id or fixed policy id only",
+      "role": "lower-keyframe-rate reference",
+      "status": "primary baseline"
+    },
+    {
+      "baseline": "stage16_segment_motion_or_rd_schedule",
+      "selector_inputs": "historical motion/segment-error features",
+      "transmitted_metadata": "adaptive keyframe indices or segment lengths",
+      "role": "historical adaptive schedule reference",
+      "status": "reuse for comparison, not final without DAVIS+Stage158 validation"
+    },
+    {
+      "baseline": "rgb_motion_heuristic_v1",
+      "selector_inputs": "raw RGB frame differences, block motion proxy, edge-change statistics",
+      "transmitted_metadata": "adaptive keyframe indices or segment lengths",
+      "role": "first deployable selector candidate",
+      "status": "next implementation target"
+    },
+    {
+      "baseline": "learned_rgb_motion_selector_v1",
+      "selector_inputs": "RGB/motion features only; no target anchors or rendered metrics at inference",
+      "transmitted_metadata": "adaptive keyframe indices or segment lengths",
+      "role": "later learned selector candidate",
+      "status": "after heuristic/oracle data package"
+    },
+    {
+      "baseline": "oracle_rd_schedule",
+      "selector_inputs": "rendered RD/quality labels from candidate schedules",
+      "transmitted_metadata": "oracle schedule indices for accounting only",
+      "role": "upper bound and training label source",
+      "status": "not deployable inference selector"
+    }
+  ],
+  "protocol_decisions": [
+    {
+      "item": "codec_setting",
+      "decision": "quality_first_stage158_middle_recovery",
+      "details": "Use Stage158 policy as middle/intermediate recovery component; do not over-optimize its residual rate in this phase."
+    },
+    {
+      "item": "selector_output",
+      "decision": "transmitted_keyframe_schedule",
+      "details": "Selector outputs keyframe indices or segment lengths; decoder follows transmitted schedule and does not reproduce selector features."
+    },
+    {
+      "item": "feature_scope",
+      "decision": "encoder_side_rgb_motion_allowed",
+      "details": "RGB/motion features are allowed if derived from input video frames available to encoder; source and compute tier must be logged."
+    },
+    {
+      "item": "feedforward_protocol",
+      "decision": "offline_video_feedforward_with_optional_lookahead",
+      "details": "Current DAVIS protocol is offline encoding, so full input RGB can be used encoder-side. Online/streaming variants must declare a lookahead window."
+    },
+    {
+      "item": "forbidden_inference_inputs",
+      "decision": "no_target_dense_or_rendered_metric_leakage",
+      "details": "Target dense anchors, unencoded residuals, target RGB quality labels, rendered PSNR/LPIPS, and oracle labels are not selector inference inputs."
+    },
+    {
+      "item": "evaluation_metrics",
+      "decision": "all_frame_keyframe_middle_and_sequence_level",
+      "details": "Report all-frame, keyframe-only, middle-only, per-gap, and per-sequence PSNR/SSIM/MS-SSIM/LPIPS plus rate."
+    },
+    {
+      "item": "splitting",
+      "decision": "sequence_aware_validation",
+      "details": "Learned selector validation should split by sequence; heuristic selector should report all selected DAVIS sequences and weak cases."
+    }
+  ],
+  "historical_selector_artifacts": [
+    {
+      "stage": 11,
+      "artifact": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage11_keyframe_selection/stage11_keyframe_selection_summary.csv",
+      "relevance": "early uniform/motion/gaussian/RD-aware keyframe index baselines",
+      "use_in_stage162": "historical terminology and baseline family"
+    },
+    {
+      "stage": 16,
+      "artifact": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage16_segment_error_keyframe_selection/stage16_segment_error_keyframe_selection_summary.csv",
+      "relevance": "segment-length-aware keyframe schedules",
+      "use_in_stage162": "adaptive segment baseline reference"
+    },
+    {
+      "stage": 17,
+      "artifact": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage17_segment_error_rd_curve/stage17_segment_error_rd_curve_summary.csv",
+      "relevance": "segment-error RD curve on earlier data/protocol",
+      "use_in_stage162": "historical comparison only; must revalidate on DAVIS + Stage158"
+    },
+    {
+      "stage": 161,
+      "artifact": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage161_stage158_method_narrative_package/stage161_stage158_method_narrative_package.json",
+      "relevance": "current Stage158 middle recovery method",
+      "use_in_stage162": "fixed middle-recovery component for adaptive schedule evaluation"
+    }
+  ],
+  "next_stage": "Stage163 build DAVIS RGB/motion selector data and oracle/reference labels",
+  "feature_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage162_keyframe_selector_protocol_source_audit/stage162_feature_source_audit.csv",
+  "rate_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage162_keyframe_selector_protocol_source_audit/stage162_rate_accounting_rules.csv",
+  "baseline_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage162_keyframe_selector_protocol_source_audit/stage162_selector_baselines.csv",
+  "protocol_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage162_keyframe_selector_protocol_source_audit/stage162_protocol_decisions.csv",
+  "historical_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage162_keyframe_selector_protocol_source_audit/stage162_historical_selector_artifacts.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage162_keyframe_selector_protocol_source_audit/stage162_keyframe_selector_protocol_source_audit_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage162_keyframe_selector_protocol_source_audit/stage162_keyframe_selector_protocol_source_audit_report.md"
+}
