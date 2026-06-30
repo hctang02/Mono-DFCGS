@@ -1,0 +1,20 @@
+{
+  "stage": 177,
+  "status": "selector_fixed_gap_psnr_comparison_packaged",
+  "comparison_scope": "stage174_medium_targets",
+  "target_count": 50,
+  "quality_row_count": 150,
+  "adaptive_keyframe_count": 26,
+  "mean_delta_psnr_vs_uniform_gap8": 0.4601686250283185,
+  "mean_delta_psnr_vs_uniform_gap4": 0.27128186202823,
+  "lpips_available": true,
+  "lpips_error": null,
+  "ms_ssim_available": true,
+  "ms_ssim_error": null,
+  "quality_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage177_selector_fixed_gap_psnr_comparison/stage177_final_quality_by_schedule.csv",
+  "target_delta_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage177_selector_fixed_gap_psnr_comparison/stage177_adaptive_vs_fixed_gap_target_deltas.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage177_selector_fixed_gap_psnr_comparison/stage177_final_quality_summary.csv",
+  "category_delta_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage177_selector_fixed_gap_psnr_comparison/stage177_category_delta_summary.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage177_selector_fixed_gap_psnr_comparison/stage177_selector_fixed_gap_psnr_comparison_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage177_selector_fixed_gap_psnr_comparison/stage177_selector_fixed_gap_psnr_comparison_report.md"
+}

@@ -132,6 +132,7 @@ Key Stage96 direct total rates:
 - Stage174: executed the medium rendered validation with `150/150` protocol rows covered, `54/54` new renders completed, `84` reused rows, and `32` total keyframe markers.
 - Stage175: decided to package Stage165 adaptive schedule as a sampled-validated candidate and scale broader validation, not as final full-sequence RD.
 - Stage176: packaged the current adaptive schedule candidate `rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate` with decoder contract, evidence, limitations, and next validation requirements.
+- Stage177: compared Stage165 adaptive final target quality against uniform gap8 and uniform gap4 on the Stage174 medium target set; adaptive beats gap8 by `+0.4601686250283185` dB PSNR and gap4 by `+0.27128186202823` dB PSNR under the sampled final-quality definition.
 
 ## Current Best Selector Policy
 
@@ -252,6 +253,7 @@ Stage113 held-out diagnostic:
 - Stage174 executes the Stage173 protocol. Decision: `medium_validation_ready_for_decision`. It covers `150/150` rows, completes `54/54` new renders, reuses `84` rows from Stage168/170, and records `32` keyframe markers. Source coverage: Stage168 `6` rows, Stage170 `78` rows, Stage174 keyframe markers `12`, Stage174 rendered `54`. False-negative adaptive vs uniform gap8 remains essentially unchanged: PSNR `26.192677144097143` vs `26.203640896378754`, LPIPS `0.2088309582322836` vs `0.20792134664952755`. High-payload residual-control extension adaptive equals uniform gap8 on the selected residual rows: PSNR `29.53971001977139`, LPIPS `0.17348034121096134`. Normal residual controls also match uniform gap8: PSNR `33.40646151515855`, LPIPS `0.07590389996767044`. Positive promoted and selector false-positive adaptive rows are keyframes/no-middle-render and must be judged by rate/schedule accounting, not middle metrics. Package path: `experiments/stage174_medium_rendered_validation_execution/`. Heavy contact sheet: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage174_medium_rendered_validation_execution/stage174_medium_rendered_validation_contact_sheet.jpg`.
 - Stage175 combines Stage172 and Stage174 into a branch decision. Decision: `package_sampled_validated_candidate_and_scale_broader_validation`. Supporting factors: adaptive/gap8/gap4 total proxy MiB/frame `0.194181515827/0.300453182577/0.370523510564`; Stage174 complete `150/150` rows and `54/54` new renders; false-negative adaptive delta vs gap8 is near-neutral PSNR `-0.0109637522816`, LPIPS `+0.000909611582756`; residual and normal controls match gap8 when adaptive does not promote. Risks: false negatives remain unresolved and selector false-positive keyframes show precision cost, so no final full-sequence RD claim yet. Package path: `experiments/stage175_adaptive_schedule_decision_branch/`.
 - Stage176 packages the adaptive keyframe schedule candidate `rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate`. Status: `sampled_validated_candidate_not_final_full_sequence_rd`. Decoder receives transmitted schedule/keyframe indices and normal keyframe/Stage158 residual payloads; decoder does not compute/receive RGB/motion selector features. Encoder-side inputs remain Stage162-allowed RGB/motion features. Key evidence: hard recall `0.733333333333`, payload recall `0.819444444444`; adaptive keyframes `358/1999`, metadata `327` bytes; sampled rate proxy adaptive/gap8/gap4 `0.194181515827/0.300453182577/0.370523510564` MiB/frame; medium validation `150` rows and `54` new renders; false-negative risk PSNR/LPIPS delta `-0.0109637522816/+0.000909611582756`; false-positive keyframe risk remains. Package path: `experiments/stage176_adaptive_schedule_candidate_package/`.
+- Stage177 answers the fixed-gap quality question on the Stage174 medium set. Overall final target PSNR is uniform gap8 `28.7569272347847`, Stage165 adaptive `29.21709585981302`, and uniform gap4 `28.94581399778479`; adaptive deltas are `+0.4601686250283185` dB vs gap8 and `+0.27128186202823` dB vs gap4. Mean LPIPS also improves to `0.15723393142223357` from gap8 `0.1894791081547737` and gap4 `0.17760952532291413`. Adaptive keyframe targets are `26/50`. Interpretation caveat: keyframe rows use q12 target-keyframe reconstruction quality, not Stage158 middle-recovery quality, and the result remains sampled-medium evidence, not final full-sequence RD. Package path: `experiments/stage177_selector_fixed_gap_psnr_comparison/`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -851,16 +853,42 @@ Result:
 - Stage175 decision: `package_sampled_validated_candidate_and_scale_broader_validation`.
 - Next required work before final claim: broader sampled validation, full-sequence RD accounting, all-frame quality report, and selector refinement if broader validation exposes false-positive or false-negative risk.
 
-### Stage177: Broader Adaptive Validation Planning
+### Stage177: Selector Fixed-Gap PSNR Comparison
 
-Status: deferred / next possible stage.
+Status: completed on 2026-06-30.
 
-Goal: design broader sampled or full-sequence validation for the Stage176 candidate.
+Goal: compare final target quality for Stage165 adaptive, uniform gap8, and uniform gap4 on the Stage174 medium target set.
+
+Actions:
+
+- Reuse Stage174 metrics for middle-recovery rows.
+- Render target q12 keyframe anchors for rows where a schedule transmits the target as a keyframe.
+- Report per-schedule final quality, paired target deltas, and category deltas.
+
+Success condition:
+
+- A sampled-medium PSNR/SSIM/MS-SSIM/LPIPS comparison exists for adaptive versus fixed gap8/gap4.
+
+Result:
+
+- Package: `experiments/stage177_selector_fixed_gap_psnr_comparison/stage177_selector_fixed_gap_psnr_comparison_package.json`.
+- Report: `experiments/stage177_selector_fixed_gap_psnr_comparison/stage177_selector_fixed_gap_psnr_comparison_report.md`.
+- Overall final PSNR: uniform gap8 `28.7569272347847`, Stage165 adaptive `29.21709585981302`, uniform gap4 `28.94581399778479`.
+- Adaptive PSNR delta: `+0.4601686250283185` dB vs gap8, `+0.27128186202823` dB vs gap4.
+- Overall final LPIPS: uniform gap8 `0.1894791081547737`, Stage165 adaptive `0.15723393142223357`, uniform gap4 `0.17760952532291413`.
+- Adaptive keyframe targets: `26 / 50`.
+- Caveat: adaptive keyframe quality is q12 keyframe reconstruction quality, not Stage158 middle-recovery quality; this remains sampled-medium evidence, not final full-sequence RD.
+
+### Stage178: Broader Adaptive Validation Planning
+
+Status: next possible stage.
+
+Goal: design broader sampled or full-sequence validation for the Stage176/177 candidate evidence chain.
 
 Actions:
 
 - Decide validation scale and runtime budget.
-- Include false negatives, false-positive keyframe controls, high-payload controls, normal controls, and weak subjective sequences.
+- Include false negatives, false-positive keyframe controls, high-payload controls, normal controls, weak subjective sequences, and all-frame schedule coverage.
 - Convert sampled/proxy rate into full sequence/frame accounting if running full-sequence validation.
 
 Success condition:
