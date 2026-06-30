@@ -119,6 +119,7 @@ Key Stage96 direct total rates:
 - Stage161: packaged Stage158 as the current quality-first middle-frame recovery method and narrative/evidence bundle.
 - Stage162: packaged keyframe selector protocol and RGB/motion feature-source/feed-forward audit.
 - Stage163: built the first DAVIS RGB/motion selector data package on Stage157/158 sampled rows.
+- Stage164: completed the first RGB/motion heuristic hard-segment selector preflight.
 
 ## Current Best Selector Policy
 
@@ -226,6 +227,7 @@ Stage113 held-out diagnostic:
 - Stage161 packages `streamsplat_guided_half_anchor_entropy_residual_v1` as the current quality-first middle-frame recovery method. It states the innovation claim, decoder contract, evidence chain, Stage160 subjective video paths, and rate stance: all payload is counted, but rate is not over-optimized at this stage because user accepts somewhat larger bitrate for quality/innovation. Package path: `experiments/stage161_stage158_method_narrative_package/`.
 - Stage162 starts the keyframe selector line. It allows encoder-side RGB/motion features if derived from input video frames and keyframe indices/segment lengths are transmitted and counted. Deterministic RGB/motion proxies are the primary cheap feed-forward tier; pretrained optical-flow/feature networks are optional high-compute feed-forward tier if fed only raw RGB; rendered quality/oracle metrics and target dense/residual tensors are forbidden as selector inference inputs and reserved for labels/diagnostics. Package path: `experiments/stage162_keyframe_selector_protocol_source_audit/`.
 - Stage163 creates the first selector-data slice from the Stage157/158 120 sampled q12 gap4/gap8 rows. It computes deployable encoder-side RGB/motion proxy features from DAVIS/input RGB only at `448x256`, and attaches Stage158 metrics/payloads as offline labels only. Package path: `experiments/stage163_davis_rgb_motion_selector_data/`. Early signal: motion-heavy `motocross-jump`/`scooter-black` score high and have high payload/LPIPS flags, but low-PSNR flags also appear in `cows`, `breakdance`, `camel`, and `bike-packing`, so Stage164 should not use one scalar proxy alone.
+- Stage164 sweeps simple RGB/motion hard-segment heuristics. Best simple row-level heuristic is `edge_left_right` top-40%, with hard-quality precision/recall/F1 `0.333333/0.533333/0.410256` and high-payload recall `0.555556`. It selects higher-payload/lower-PSNR rows on average, so there is signal, but it misses important hard cases like `motocross-jump`; therefore it is a preflight only, not the final selector. Package path: `experiments/stage164_rgb_motion_heuristic_selector_preflight/`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -451,7 +453,7 @@ Result:
 
 ### Stage164: First RGB/Motion Heuristic Keyframe Schedule
 
-Status: next immediate step.
+Status: completed as row-level hard-segment selector preflight on 2026-06-30.
 
 Goal: turn Stage163 row-level RGB/motion features into a first adaptive keyframe schedule heuristic and compare it against uniform gap4/gap8 at the metadata-accounting level.
 
@@ -466,6 +468,31 @@ Actions:
 Success condition:
 
 - A candidate `rgb_motion_heuristic_v1` schedule package exists with feature-only selection logic, counted schedule metadata, and offline comparison against uniform references.
+
+Result:
+
+- Package: `experiments/stage164_rgb_motion_heuristic_selector_preflight/stage164_rgb_motion_heuristic_selector_preflight_package.json`.
+- Report: `experiments/stage164_rgb_motion_heuristic_selector_preflight/stage164_rgb_motion_heuristic_selector_preflight_report.md`.
+- This stage did not instantiate full schedules; it evaluated row-level hard-segment selection signal.
+- Best simple heuristic has useful but insufficient signal; Stage165 should use multi-feature/gated selection and conservative fallback before full adaptive schedule RD.
+
+### Stage165: Multi-Feature Keyframe Schedule Candidate
+
+Status: next immediate step.
+
+Goal: convert Stage164 row-level hard-segment signal into an adaptive schedule candidate with counted keyframe metadata.
+
+Actions:
+
+- Combine multiple Stage163 features rather than one edge scalar.
+- Add conservative fallback for sequences/segments where RGB heuristic misses known hard labels.
+- Convert selected hard windows into candidate keyframe index/segment-length schedules.
+- Count schedule metadata according to Stage162.
+- Compare against uniform gap4/gap8 as a metadata and label-driven preflight before heavy rendering.
+
+Success condition:
+
+- A schedule candidate exists with deployable feature-only selection logic, counted metadata, and clear offline label diagnostics.
 
 ### Stage109: Selector-Score Feature Preflight
 
