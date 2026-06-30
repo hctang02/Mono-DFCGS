@@ -1,0 +1,2 @@
+schedule,sequence_count,total_frame_count,total_keyframe_count,mean_keyframe_ratio,metadata_bits,metadata_bytes,metadata_mib,selected_task_count,hard_task_count,selected_hard_count,high_payload_task_count,selected_high_payload_count
+rgb_motion_rank_gate_gap8_plus_extra_targets_v1,30,1999,358,0.1790895447723862,2610,327,0.00031113624572753906,70,30,22,72,59

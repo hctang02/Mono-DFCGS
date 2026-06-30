@@ -120,6 +120,7 @@ Key Stage96 direct total rates:
 - Stage162: packaged keyframe selector protocol and RGB/motion feature-source/feed-forward audit.
 - Stage163: built the first DAVIS RGB/motion selector data package on Stage157/158 sampled rows.
 - Stage164: completed the first RGB/motion heuristic hard-segment selector preflight.
+- Stage165: converted multi-feature RGB/motion hard-window signal into an adaptive keyframe schedule preflight with counted metadata.
 
 ## Current Best Selector Policy
 
@@ -228,6 +229,7 @@ Stage113 held-out diagnostic:
 - Stage162 starts the keyframe selector line. It allows encoder-side RGB/motion features if derived from input video frames and keyframe indices/segment lengths are transmitted and counted. Deterministic RGB/motion proxies are the primary cheap feed-forward tier; pretrained optical-flow/feature networks are optional high-compute feed-forward tier if fed only raw RGB; rendered quality/oracle metrics and target dense/residual tensors are forbidden as selector inference inputs and reserved for labels/diagnostics. Package path: `experiments/stage162_keyframe_selector_protocol_source_audit/`.
 - Stage163 creates the first selector-data slice from the Stage157/158 120 sampled q12 gap4/gap8 rows. It computes deployable encoder-side RGB/motion proxy features from DAVIS/input RGB only at `448x256`, and attaches Stage158 metrics/payloads as offline labels only. Package path: `experiments/stage163_davis_rgb_motion_selector_data/`. Early signal: motion-heavy `motocross-jump`/`scooter-black` score high and have high payload/LPIPS flags, but low-PSNR flags also appear in `cows`, `breakdance`, `camel`, and `bike-packing`, so Stage164 should not use one scalar proxy alone.
 - Stage164 sweeps simple RGB/motion hard-segment heuristics. Best simple row-level heuristic is `edge_left_right` top-40%, with hard-quality precision/recall/F1 `0.333333/0.533333/0.410256` and high-payload recall `0.555556`. It selects higher-payload/lower-PSNR rows on average, so there is signal, but it misses important hard cases like `motocross-jump`; therefore it is a preflight only, not the final selector. Package path: `experiments/stage164_rgb_motion_heuristic_selector_preflight/`.
+- Stage165 improves selector signal with a multi-feature rank gate using Stage162-allowed RGB/motion features only. Selected gate: rank threshold `0.65`, minimum votes `1`; hard-quality precision/recall/F1 `0.314286/0.733333/0.44`, payload recall `0.819444`. It creates `rgb_motion_rank_gate_gap8_plus_extra_targets_v1`: start from uniform gap8 and insert selected target frames as extra keyframes. Across `30` sequences / `1999` frames, adaptive keyframes are `358` with metadata `2610` bits (`327` bytes), selecting `22/30` hard-quality rows and `59/72` high-payload rows. Package path: `experiments/stage165_multifeature_keyframe_schedule_preflight/`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -478,7 +480,7 @@ Result:
 
 ### Stage165: Multi-Feature Keyframe Schedule Candidate
 
-Status: next immediate step.
+Status: completed as metadata/label schedule preflight on 2026-06-30.
 
 Goal: convert Stage164 row-level hard-segment signal into an adaptive schedule candidate with counted keyframe metadata.
 
@@ -493,6 +495,31 @@ Actions:
 Success condition:
 
 - A schedule candidate exists with deployable feature-only selection logic, counted metadata, and clear offline label diagnostics.
+
+Result:
+
+- Package: `experiments/stage165_multifeature_keyframe_schedule_preflight/stage165_multifeature_keyframe_schedule_preflight_package.json`.
+- Report: `experiments/stage165_multifeature_keyframe_schedule_preflight/stage165_multifeature_keyframe_schedule_preflight_report.md`.
+- Adaptive schedule candidate: `rgb_motion_rank_gate_gap8_plus_extra_targets_v1`.
+- Rendered RD is not run yet; Stage166 should compare label/RD implications and decide smoke-render scope.
+
+### Stage166: Adaptive Schedule Label/RD Comparison
+
+Status: next immediate step.
+
+Goal: compare Stage165 adaptive schedules against uniform gap4/gap8 using available Stage158 labels, schedule metadata, and approximate keyframe-rate accounting before running heavy rendering.
+
+Actions:
+
+- Use Stage165 schedules and selected rows.
+- Estimate keyframe count/rate versus uniform gap4/gap8.
+- Estimate how many Stage158 hard/payload-heavy middle rows would be promoted to keyframes.
+- Count schedule metadata.
+- Decide whether a rendered smoke is warranted and which sequences should be used.
+
+Success condition:
+
+- A report states whether the adaptive schedule is promising enough for rendered validation, and identifies a small smoke set.
 
 ### Stage109: Selector-Score Feature Preflight
 
