@@ -115,6 +115,7 @@ Key Stage96 direct total rates:
 - Stage157: completed 120-task broader validation of the selected half-anchor Gaussian residual policy.
 - Stage158: packaged the selected recovered middle-frame policy and decoder contract.
 - Stage159: exported selected Stage158 gap4 subjective examples and recorded per-example size/rate.
+- Stage160: exported extended Stage158 gap4 subjective evidence over 12 representative DAVIS sequences.
 
 ## Current Best Selector Policy
 
@@ -218,6 +219,7 @@ Stage113 held-out diagnostic:
 - Stage157 validates the selected Stage156 policy on the 120-task Stage153/154 sampled protocol. The policy `streamsplat_half_anchor_entropy_residual_best_half_keep1_q6` reaches gap4 PSNR `29.780485398070507`, SSIM `0.8779375642538071`, MS-SSIM `0.9850881884495417`, LPIPS `0.16601951060195763`, payload `209392.83333333334` bytes, reference direct rate `0.3816307879574477`; gap8 reaches PSNR `29.578682359235195`, SSIM `0.8696596751610438`, MS-SSIM `0.9838472485542298`, LPIPS `0.17853523269295693`, payload `215967.88333333333` bytes, reference direct rate `0.3035884102571357`. Both gaps exceed `26-27 dB` and improve SSIM/MS-SSIM/LPIPS over original StreamSplat. This is the current quality-safe Gaussian-domain recovered middle-frame candidate.
 - Stage158 freezes this candidate as `streamsplat_guided_half_anchor_entropy_residual_v1`. The package records allowed decoder inputs, forbidden target/oracle inputs, counted half-selector metadata, residual payload accounting, and the Stage153-157 evidence chain. Quality gate passes: minimum gap mean PSNR is `29.578682359235195`, minimum SSIM delta is `+0.2771290277441343`, minimum MS-SSIM delta is `+0.1837212438384692`, and maximum LPIPS delta is `-0.13547528696556885` vs original StreamSplat.
 - Stage159 exports a gap4 subjective example video for `car-shadow`, `goat`, and `soapbox`. The layout is `left keyframe | target middle | original StreamSplat middle | Stage158 recovered middle | right keyframe`. The heavy video is `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage159_stage158_subjective_examples/stage159_gap4_stage158_subjective_examples.mp4` (`518852` bytes), and the contact sheet is `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage159_stage158_subjective_examples/stage159_gap4_stage158_subjective_examples_contact_sheet.jpg` (`1091636` bytes). Per-example side-info payloads are `220697`, `251693`, and `246995` bytes for `car-shadow`, `goat`, and `soapbox` respectively.
+- Stage160 expands subjective evidence without changing Stage158. It exports `24` gap4 examples from `12` representative DAVIS sequences with layout `left q12 keyframe render | target middle RGB | original StreamSplat middle | Stage158 recovered middle | right q12 keyframe render`. Heavy video: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` (`4180215` bytes). Contact sheet: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` (`8739496` bytes). Weak sequences such as `cows`, `breakdance`, `camel`, and `bike-packing` remain lower PSNR but still improve over original StreamSplat and keep LPIPS lower.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -349,6 +351,58 @@ Result:
 - Heavy contact sheet: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage159_stage158_subjective_examples/stage159_gap4_stage158_subjective_examples_contact_sheet.jpg`.
 - Lightweight package: `experiments/stage159_stage158_subjective_examples/`.
 - The exported Stage158 recovered metrics match the Stage157 evidence rows.
+
+### Stage160: Extended Stage158 Subjective Evidence
+
+Status: completed on 2026-06-30.
+
+Goal: expand subjective evidence for Stage158 without over-optimizing bitrate.
+
+Result:
+
+- Exported `24` gap4 examples covering `cows`, `breakdance`, `camel`, `bike-packing`, `scooter-black`, `dance-twirl`, `motocross-jump`, `soapbox`, `car-shadow`, `goat`, `gold-fish`, and `kite-surf`.
+- Heavy video: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4`.
+- Heavy contact sheet: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg`.
+- Lightweight package: `experiments/stage160_stage158_extended_subjective_evidence/`.
+- Video layout uses q12 rendered keyframes on both sides, so keyframe and middle-frame quality are visible under the same rendering/evaluation path.
+
+### Stage161: Stage158 Method Narrative Package
+
+Status: next immediate step.
+
+Goal: package Stage158/160 as a quality-first middle-frame recovery method with a clear innovation claim and evidence chain.
+
+Actions:
+
+- Summarize method: original StreamSplat target-time half-anchor plus counted q6/keep1.0 Gaussian entropy residual and one-byte half selector.
+- Include evidence from Stage153-160, emphasizing why linear-base Stage151 is only historical and why Stage155 image residual is upper-bound only.
+- Include per-sequence metrics, size/rate accounting, and subjective video paths.
+- Keep decoder-allowed and decoder-forbidden inputs explicit.
+
+Success condition:
+
+- A concise package exists that can be cited as the current quality-oriented middle-frame recovery method before keyframe selector work begins.
+
+### Stage162: Keyframe Selector Protocol And Feature-Source Audit
+
+Status: planned after Stage161.
+
+Goal: start adaptive keyframe/GOP selection while explicitly auditing RGB/motion feature sources and feed-forward validity.
+
+Actions:
+
+- Define selector inputs, outputs, metadata cost, and evaluation protocol.
+- Allow encoder-side RGB/motion features for choosing keyframes, because selected keyframe indices are transmitted to the decoder.
+- Audit feature sources:
+  - dataset RGB frames are available encoder-side and are feed-forward for compression;
+  - simple RGB frame differences/gradients are deterministic encoder-side features;
+  - optical flow or learned motion is allowed only if computed from available input frames, with estimator cost/status documented;
+  - target dense anchors, target residuals, rendered PSNR, LPIPS labels, and oracle schedule labels are forbidden as decoder inputs and only allowed for offline labels/diagnostics.
+- Compare uniform gap4/gap8, previous segment-error schedules, heuristic selector, and oracle reference.
+
+Success condition:
+
+- A protocol package states which features are allowed, how keyframe-index metadata is counted, and how adaptive schedules will be evaluated with Stage158 middle recovery.
 
 ### Stage109: Selector-Score Feature Preflight
 
