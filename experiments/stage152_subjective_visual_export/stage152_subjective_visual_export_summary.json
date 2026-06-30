@@ -1,0 +1,34 @@
+{
+  "stage": 152,
+  "mode": "subjective visual export",
+  "policy": "middle_frame_recovery_linear_base_entropy_sideinfo_v1",
+  "summary_root": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage152_subjective_visual_export",
+  "heavy_root": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage152_subjective_visual_export",
+  "videos": [
+    {
+      "gap": 4,
+      "video_path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage152_subjective_visual_export/stage152_gap4_target_base_recovered.mp4",
+      "contact_sheet_path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage152_subjective_visual_export/stage152_gap4_contact_sheet.jpg",
+      "frame_count": 24,
+      "mean_base_psnr": 20.934637105918473,
+      "mean_recovered_psnr": 24.157467503772878,
+      "mean_delta_psnr": 3.2228303978544113,
+      "mean_payload_bytes": 29700.708333333332
+    },
+    {
+      "gap": 8,
+      "video_path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage152_subjective_visual_export/stage152_gap8_target_base_recovered.mp4",
+      "contact_sheet_path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage152_subjective_visual_export/stage152_gap8_contact_sheet.jpg",
+      "frame_count": 24,
+      "mean_base_psnr": 19.312465970173346,
+      "mean_recovered_psnr": 22.586569251235034,
+      "mean_delta_psnr": 3.2741032810616915,
+      "mean_payload_bytes": 29989.375
+    }
+  ],
+  "frames_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage152_subjective_visual_export/stage152_subjective_visual_frames.csv",
+  "summary_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage152_subjective_visual_export/stage152_subjective_visual_export_summary.json",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage152_subjective_visual_export/stage152_subjective_visual_export_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage152_subjective_visual_export/stage152_subjective_visual_export_report.md",
+  "notes": "Video outputs are intentionally stored outside git under the heavy root."
+}

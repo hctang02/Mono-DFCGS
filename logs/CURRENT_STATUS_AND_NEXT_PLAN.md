@@ -1,6 +1,6 @@
 # Current Status And Next Plan
 
-Date: 2026-06-29
+Date: 2026-06-30
 
 ## Current Task
 
@@ -13,7 +13,7 @@ The current focus is not FCGS/D-FCGS comparison and not residual value predictio
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage151: `8afc73d Validate linear side-info target recovery`
+- Latest pushed commit before Stage152: `0843ecd Package middle-frame recovery policy`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -106,6 +106,7 @@ Key Stage96 direct total rates:
 - Stage149: completed full q12 gap4/gap8 eval-row rendered validation of the rate-counted q6/top10 entropy side-info fallback.
 - Stage150: completed full q12 gap4/gap8 linear-base side-info validation; both gaps exceed corrected StreamSplat targets.
 - Stage151: completed final middle-frame recovery policy package from Stage150.
+- Stage152: completed subjective visual export for the recovered middle-frame policy.
 
 ## Current Best Selector Policy
 
@@ -201,6 +202,7 @@ Stage113 held-out diagnostic:
 - Stage149 full q12 gap4/gap8 eval-row validation passes using actual entropy payload encode/decode/render on all `3170` rows: gap4 side-info PSNR is `22.768595216050993` vs corrected target `23.004337221027775` (`-0.23574200497678177 dB`) at direct rate `0.21526316902466064 MiB/frame`; gap8 side-info PSNR is `21.857517703953395` vs target `21.56004909948801` (`+0.2974686044653865 dB`) at direct rate `0.13116832149974542 MiB/frame`; decode diff is `0.0`; positive deltas are `1463/1463` and `1707/1707`. Next step is full-video RD packaging and/or a small q/keep refinement to close the remaining gap4 `0.236 dB`.
 - Stage150 closes the remaining middle-frame gap using decoder-safe linear base plus rate-counted q6/top10 entropy index+value residual side-info on all `3170` q12 gap4/gap8 eval rows: gap4 side-info PSNR is `23.104893423851635` vs corrected target `23.004337221027775` (`+0.10055620282386002 dB`) at direct rate `0.21060840528077832 MiB/frame`; gap8 side-info PSNR is `22.020188948523128` vs target `21.56004909948801` (`+0.4601398490351194 dB`) at direct rate `0.12643008870779784 MiB/frame`; decode diff is `0.0`; positive deltas are `1463/1463` and `1707/1707`. Next stage should package final full-video RD policy around this Stage150 fallback.
 - Stage151 freezes the recovered policy `middle_frame_recovery_linear_base_entropy_sideinfo_v1`: q12 endpoints, decoder-safe linear base, q6/top10 entropy index+value side-info payload, all side-info bytes counted, decoder target dense/RGB/unencoded residual forbidden. Target recovery is true with minimum margin `+0.10055620282386002 dB` over corrected middle-frame targets.
+- Stage152 generated human-viewable comparison videos for the Stage151 recovered policy. Gap4 and gap8 each export `24` sampled eval frames with panels `target RGB | linear base render | recovered side-info render`; heavy videos are stored outside git at `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage152_subjective_visual_export/`. The sampled subjective export means are gap4 base/recovered PSNR `20.934637105918473` / `24.157467503772878` and gap8 base/recovered PSNR `19.312465970173346` / `22.586569251235034`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -208,6 +210,23 @@ Stage113 held-out diagnostic:
 - Residual value prediction should wait until selector switching and index/value accounting are more stable.
 
 ## Next Plan
+
+### Stage153: Full Policy/RD Presentation Package
+
+Status: optional next step.
+
+Goal: package paper-facing evidence around `middle_frame_recovery_linear_base_entropy_sideinfo_v1` after visual inspection.
+
+Actions:
+
+- Reuse Stage150 full q12 gap4/gap8 validation rows and Stage151 policy manifest.
+- Produce concise RD/PSNR tables and plots for corrected target, linear base, and recovered side-info.
+- Keep all side-info bytes counted and keep decoder-forbidden inputs explicit.
+- Do not include heavy mp4/contact-sheet files in git.
+
+Fallback:
+
+- If subjective video quality reveals visible artifacts, run a lower/higher keep-fraction or side-bit sweep before making the paper-facing package.
 
 ### Stage109: Selector-Score Feature Preflight
 
