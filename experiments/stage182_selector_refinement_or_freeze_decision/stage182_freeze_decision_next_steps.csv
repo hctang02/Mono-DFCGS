@@ -1,0 +1,5 @@
+step,goal,required_before_final_claim
+freeze_current_candidate,Treat Stage165 adaptive selector as the current frozen candidate for the next RD measurement.,No; this is the decision for the next stage.
+full_sequence_payload_measurement,Measure actual q12 keyframe bitstreams and all-frame Stage158 residual payloads under gap8/adaptive/gap4 schedules.,Yes.
+all_frame_quality_report,"Report all-frame, keyframe-only, middle-only, per-sequence and per-category quality.",Yes.
+selector_threshold_tuning,Only revisit threshold/min-votes if actual full payload measurement shows rate regression or unacceptable false-positive cost.,Conditional.

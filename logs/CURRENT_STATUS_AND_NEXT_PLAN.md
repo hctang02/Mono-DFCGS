@@ -137,6 +137,7 @@ Key Stage96 direct total rates:
 - Stage179: built a broader sampled adaptive validation protocol with `90` targets and `270` schedule rows, retaining all `50` Stage174 core targets and marking `88` Stage180 middle renders plus `32` Stage180 q12 keyframe metrics.
 - Stage180: executed the broader sampled adaptive validation with `270/270` rows covered, `88/88` new middle renders, `32/32` new q12 keyframe metrics, and adaptive final PSNR gains of `+0.5644261202320328` dB vs gap8 and `+0.306535729521994` dB vs gap4 on `90` targets.
 - Stage181: packaged a full-sequence RD accounting preflight that counts Stage165 keyframes/metadata exactly over `1999` frames and combines them with Stage180 broader sampled residual payload proxies; adaptive total proxy is `0.1916456087572328` MiB/frame, `-0.11567233082795791` vs gap8 and `-0.17722082115678273` vs gap4.
+- Stage182: froze the current Stage165 adaptive candidate for the next measurement; decision is `freeze_current_candidate_and_run_full_sequence_payload_measurement_next` rather than tuning selector threshold immediately.
 
 ## Current Best Selector Policy
 
@@ -262,6 +263,7 @@ Stage113 held-out diagnostic:
 - Stage179 expands the adaptive validation protocol from Stage174's `50` targets to `90` targets / `270` schedule rows. It retains all `50` Stage174 core targets, adds `40` new targets, reuses `118` Stage174 middle metric rows and `32` Stage177 keyframe metric rows, and marks `88` Stage180 middle renders plus `32` Stage180 q12 keyframe metrics. New categories include broader positive promotions, sequence coverage probes, weak-sequence probes, high-payload residual controls, false-negative residuals, and normal controls. Package path: `experiments/stage179_broader_sampled_adaptive_validation_protocol/`.
 - Stage180 executes the Stage179 protocol. Decision: `broader_validation_ready_for_review`. It covers `270/270` rows, completes `88/88` new Stage158 middle renders and `32/32` q12 target-keyframe metric renders, reuses `150` Stage174 rows, and writes `270` final-quality rows. Overall final target PSNR/LPIPS are Stage165 adaptive `29.770752551041166/0.1427798855635855`, uniform gap8 `29.206326430809128/0.1766524552471108`, and uniform gap4 `29.46421682151917/0.16245726098616917`. Adaptive deltas are `+0.5644261202320328` dB PSNR / `-0.0338725696835253` LPIPS vs gap8 and `+0.306535729521994` dB PSNR / `-0.019677375422583687` LPIPS vs gap4. Key caveat remains sampled broader validation, not final full-sequence RD. Package path: `experiments/stage180_broader_sampled_adaptive_validation_execution/`.
 - Stage181 separates exact full-sequence schedule accounting from sampled residual estimates. Exact counts over `30` sequences / `1999` frames: uniform gap8 `292` keyframes, Stage165 adaptive `358` keyframes plus `327` metadata bytes, uniform gap4 `536` keyframes. Combined proxy using Stage180 residual payload means gives total MiB/frame uniform gap8 `0.3073179395851907`, adaptive `0.1916456087572328`, uniform gap4 `0.3688664299140155`. Decision: `adaptive_rate_promising_under_broader_sampled_proxy`. Non-claim: final full-sequence RD still requires actual q12 keyframe bitstreams and all-frame residual payload encode. Package path: `experiments/stage181_full_sequence_rd_accounting_preflight/`.
+- Stage182 combines Stage180 quality and Stage181 rate proxy evidence into a branch decision. Decision: `freeze_current_candidate_and_run_full_sequence_payload_measurement_next`. Frozen policy: `rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate`. Rationale: broader sampled quality is positive (`+0.5644261202320328` dB vs gap8, `+0.306535729521994` dB vs gap4), rate proxy is positive (`-0.11567233082795791` MiB/frame vs gap8, `-0.17722082115678273` vs gap4), and remaining risks are final measurement risks rather than immediate selector-tuning blockers. Package path: `experiments/stage182_selector_refinement_or_freeze_decision/`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -1004,7 +1006,7 @@ Result:
 
 ### Stage182: Selector Refinement Or Freeze Decision
 
-Status: next possible stage.
+Status: completed on 2026-06-30.
 
 Goal: decide whether the Stage165 adaptive schedule should be frozen as the current candidate or refined before final RD work.
 
@@ -1019,6 +1021,32 @@ Actions:
 Success condition:
 
 - A branch decision exists with explicit evidence and next action.
+
+Result:
+
+- Package: `experiments/stage182_selector_refinement_or_freeze_decision/stage182_selector_refinement_or_freeze_decision_package.json`.
+- Report: `experiments/stage182_selector_refinement_or_freeze_decision/stage182_selector_refinement_or_freeze_decision_report.md`.
+- Decision: `freeze_current_candidate_and_run_full_sequence_payload_measurement_next`.
+- Frozen policy: `rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate`.
+- Rationale: Stage180 broader sampled quality and Stage181 rate proxy both support current candidate; remaining blockers are final bitstream/payload measurements.
+
+### Stage183: Full-Sequence Payload Measurement Protocol
+
+Status: next possible stage.
+
+Goal: define the exact execution protocol for measuring actual q12 keyframe bitstreams and Stage158 residual payloads under uniform gap8, Stage165 adaptive, and uniform gap4 schedules.
+
+Actions:
+
+- Enumerate all frames/schedule rows across `30` DAVIS sequences / `1999` frames.
+- Mark keyframe payload rows and non-keyframe Stage158 recovery rows for each schedule.
+- Specify which rows require q12 keyframe bitstream measurement and which require Stage158 residual payload encode.
+- Estimate runtime and output sizes before launching full measurement.
+- Keep quality rendering optional unless needed for all-frame quality report.
+
+Success condition:
+
+- A concrete full-sequence payload measurement protocol exists with row counts and executable inputs for the next stage.
 
 ### Stage109: Selector-Score Feature Preflight
 

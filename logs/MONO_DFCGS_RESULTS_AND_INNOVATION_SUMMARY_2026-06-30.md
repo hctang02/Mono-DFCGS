@@ -20,6 +20,7 @@ The method is not a final full-sequence RD claim yet. It is a sampled-validated 
 | fixed-gap comparison | Stage177 | adaptive vs uniform gap8/gap4 | sampled-medium final target quality comparison completed |
 | broader sampled validation | Stage180 | adaptive vs uniform gap8/gap4 | 90-target sampled-broader final quality comparison completed |
 | rate accounting preflight | Stage181 | full-sequence keyframe/metadata plus Stage180 residual proxy | adaptive remains rate-promising under broader sampled proxy |
+| selector branch decision | Stage182 | freeze current Stage165 adaptive candidate | proceed to full-sequence payload measurement next |
 
 ## Middle-Frame Recovery Evidence
 
@@ -194,6 +195,35 @@ Interpretation caveat:
 - Residual payload remains Stage180 broader sampled estimate, not all-frame/full-sequence measurement.
 - Final full-sequence RD still requires actual q12 keyframe bitstreams and all-frame Stage158 residual payload encodes.
 
+## Stage182 Freeze Decision
+
+Stage182 decides not to tune selector threshold/min-votes immediately. The current Stage165 adaptive policy is frozen for the next measurement.
+
+Decision:
+
+- `freeze_current_candidate_and_run_full_sequence_payload_measurement_next`
+
+Frozen policy:
+
+- `rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate`
+
+Evidence:
+
+| evidence | value |
+|---|---|
+| Stage180 PSNR delta vs gap8 / gap4 | `+0.5644261202320328 / +0.306535729521994` dB |
+| Stage180 LPIPS delta vs gap8 / gap4 | `-0.0338725696835253 / -0.019677375422583687` |
+| Stage181 adaptive/gap8/gap4 proxy rate | `0.1916456087572328 / 0.3073179395851907 / 0.3688664299140155` MiB/frame |
+| broader positive-promoted PSNR delta vs gap8 / gap4 | `+0.829806900266485 / +0.4439986578568402` dB |
+| false-negative residual PSNR delta vs gap8 / gap4 | `-0.010963752281610173 / -0.32629360438858646` dB |
+| false-positive keyframe control PSNR delta vs gap8 / gap4 | `+0.39611419615648114 / +0.2796445234109868` dB |
+
+Interpretation:
+
+- Current broader quality and rate proxy both support freezing the candidate.
+- Remaining risks are final-RD measurement risks, not immediate selector-tuning blockers.
+- Selector threshold tuning becomes conditional on exact full-sequence payload measurement showing rate regression or unacceptable false-positive cost.
+
 ## Non-Claims And Risks
 
 | item | status |
@@ -227,6 +257,7 @@ Interpretation caveat:
 | 177 | fixed-gap PSNR comparison | adaptive beats gap8/gap4 in sampled-medium final target PSNR |
 | 180 | broader sampled validation | adaptive beats gap8/gap4 on 90-target final quality with +0.5644 dB vs gap8 |
 | 181 | rate accounting preflight | adaptive combined proxy 0.1916 MiB/frame, below gap8/gap4 under Stage180 residual proxy |
+| 182 | freeze decision | freeze current adaptive selector and run full-sequence payload measurement next |
 
 ## Next Validation Plan
 
@@ -235,8 +266,9 @@ Interpretation caveat:
 | 179 | broader sampled adaptive protocol | a larger target/schedule CSV with reuse/new-render/keyframe marker decisions |
 | 180 | execute broader sampled validation | completed; 90-target final-quality comparison packaged |
 | 181 | full-sequence RD accounting preflight | completed; exact keyframe/metadata plus sampled residual proxy packaged |
-| 182 | selector refinement or freeze decision | stricter gate/per-sequence budget if false positives are costly, otherwise freeze |
-| 183 | paper-facing package | tables, figures, decoder contract, limitations, and subjective evidence paths |
+| 182 | selector refinement or freeze decision | completed; freeze current candidate and measure payload next |
+| 183 | full-sequence payload measurement protocol | enumerate exact keyframe/residual payload work before final RD measurement |
+| 184 | paper-facing package | tables, figures, decoder contract, limitations, and subjective evidence paths |
 
 ## Canonical Paths
 
@@ -249,5 +281,6 @@ Interpretation caveat:
 | Stage177 fixed-gap comparison | `experiments/stage177_selector_fixed_gap_psnr_comparison/` |
 | Stage180 broader validation | `experiments/stage180_broader_sampled_adaptive_validation_execution/` |
 | Stage181 rate preflight | `experiments/stage181_full_sequence_rd_accounting_preflight/` |
+| Stage182 freeze decision | `experiments/stage182_selector_refinement_or_freeze_decision/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |

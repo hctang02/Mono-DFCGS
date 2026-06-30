@@ -1,0 +1,155 @@
+{
+  "stage": 182,
+  "status": "selector_refinement_or_freeze_decision_packaged",
+  "decision": "freeze_current_candidate_and_run_full_sequence_payload_measurement_next",
+  "frozen_policy_name": "rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate",
+  "next_required_stage": "full_sequence_payload_measurement",
+  "stage180_decision": "broader_validation_ready_for_review",
+  "stage181_decision": "adaptive_rate_promising_under_broader_sampled_proxy",
+  "quality_delta_psnr_vs_gap8": 0.5644261202320328,
+  "quality_delta_psnr_vs_gap4": 0.306535729521994,
+  "rate_delta_proxy_vs_gap8": -0.11567233082795791,
+  "rate_delta_proxy_vs_gap4": -0.17722082115678273,
+  "not_final_full_sequence_rd": true,
+  "evidence": [
+    {
+      "area": "candidate_policy",
+      "status": "current_candidate",
+      "metric": "policy name",
+      "value": "rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate",
+      "source": "Stage176",
+      "decision_weight": "freeze_support"
+    },
+    {
+      "area": "broader_quality",
+      "status": "positive",
+      "metric": "adaptive PSNR delta vs gap8 / gap4",
+      "value": "0.5644261202320328 / 0.306535729521994",
+      "source": "Stage180 overall 90 targets",
+      "decision_weight": "strong_freeze_support"
+    },
+    {
+      "area": "broader_perceptual",
+      "status": "positive",
+      "metric": "adaptive LPIPS delta vs gap8 / gap4",
+      "value": "-0.0338725696835253 / -0.019677375422583687",
+      "source": "Stage180 overall 90 targets",
+      "decision_weight": "strong_freeze_support"
+    },
+    {
+      "area": "rate_proxy",
+      "status": "positive",
+      "metric": "adaptive/gap8/gap4 total proxy MiB/frame",
+      "value": "0.1916456087572328 / 0.3073179395851907 / 0.3688664299140155",
+      "source": "Stage181",
+      "decision_weight": "strong_freeze_support"
+    },
+    {
+      "area": "positive_promotions",
+      "status": "positive",
+      "metric": "broader_positive_promoted PSNR delta vs gap8 / gap4",
+      "value": "0.829806900266485 / 0.4439986578568402",
+      "source": "Stage180 category deltas",
+      "decision_weight": "freeze_support"
+    },
+    {
+      "area": "weak_sequences",
+      "status": "positive",
+      "metric": "broader_weak_sequence_probe PSNR delta vs gap8 / gap4",
+      "value": "1.028785745355083 / 0.5638605351918257",
+      "source": "Stage180 category deltas",
+      "decision_weight": "freeze_support"
+    },
+    {
+      "area": "false_negatives",
+      "status": "remaining_risk_but_bounded",
+      "metric": "false_negative_residual PSNR delta vs gap8 / gap4",
+      "value": "-0.010963752281610173 / -0.32629360438858646",
+      "source": "Stage180 category deltas",
+      "decision_weight": "risk_track_not_blocking_freeze"
+    },
+    {
+      "area": "false_positive_keyframes",
+      "status": "precision_risk_but_quality_positive",
+      "metric": "false-positive control PSNR delta vs gap8 / gap4",
+      "value": "0.39611419615648114 / 0.2796445234109868",
+      "source": "Stage180 category deltas",
+      "decision_weight": "risk_track_not_blocking_freeze"
+    },
+    {
+      "area": "rd_claim_scope",
+      "status": "not_final_full_sequence_rd",
+      "metric": "residual payload scope",
+      "value": "full_sequence_keyframe_metadata_plus_stage180_broader_sampled_residual_proxy",
+      "source": "Stage181",
+      "decision_weight": "requires_next_measurement"
+    },
+    {
+      "area": "decoder_contract",
+      "status": "unchanged_valid",
+      "metric": "decoder receives schedule not RGB/motion features",
+      "value": "schedule_metadata_transmitted_no_selector_feature_at_decoder",
+      "source": "Stage162/176/181",
+      "decision_weight": "freeze_support"
+    }
+  ],
+  "risks": [
+    {
+      "risk": "false_negatives_remain",
+      "status": "known_bounded_risk",
+      "evidence": "Stage180 false-negative residual delta vs gap8 is near neutral but remains below gap4.",
+      "mitigation_or_next_step": "Keep false-negative stress categories in final payload/full-sequence measurement; do not claim recall solved."
+    },
+    {
+      "risk": "false_positive_keyframes",
+      "status": "not_blocking_current_freeze",
+      "evidence": "Stage180 false-positive keyframe controls improve final quality but may still waste keyframes in final RD.",
+      "mitigation_or_next_step": "Track exact keyframe payload in full RD; only tune threshold if actual bitstreams show rate regression."
+    },
+    {
+      "risk": "sampled_residual_proxy",
+      "status": "blocks_final_rd_claim",
+      "evidence": "Stage181 residual payload is Stage180 broader sampled estimate, not all-frame measurement.",
+      "mitigation_or_next_step": "Run all-frame/full-sequence residual payload encode for non-keyframe recovered frames."
+    },
+    {
+      "risk": "main_anchor_proxy",
+      "status": "blocks_paper_level_rd_claim",
+      "evidence": "Stage181 main-anchor payload is inherited from Stage172 proxy/interpolation.",
+      "mitigation_or_next_step": "Measure actual q12 keyframe bitstreams for every transmitted keyframe."
+    },
+    {
+      "risk": "online_streaming_scope",
+      "status": "not_claimed",
+      "evidence": "Selector uses offline encoder-side RGB/motion features unless lookahead is specified.",
+      "mitigation_or_next_step": "State offline encoding scope or define lookahead for streaming experiments."
+    }
+  ],
+  "next_steps": [
+    {
+      "step": "freeze_current_candidate",
+      "goal": "Treat Stage165 adaptive selector as the current frozen candidate for the next RD measurement.",
+      "required_before_final_claim": "No; this is the decision for the next stage."
+    },
+    {
+      "step": "full_sequence_payload_measurement",
+      "goal": "Measure actual q12 keyframe bitstreams and all-frame Stage158 residual payloads under gap8/adaptive/gap4 schedules.",
+      "required_before_final_claim": "Yes."
+    },
+    {
+      "step": "all_frame_quality_report",
+      "goal": "Report all-frame, keyframe-only, middle-only, per-sequence and per-category quality.",
+      "required_before_final_claim": "Yes."
+    },
+    {
+      "step": "selector_threshold_tuning",
+      "goal": "Only revisit threshold/min-votes if actual full payload measurement shows rate regression or unacceptable false-positive cost.",
+      "required_before_final_claim": "Conditional."
+    }
+  ],
+  "evidence_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage182_selector_refinement_or_freeze_decision/stage182_freeze_decision_evidence.csv",
+  "risks_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage182_selector_refinement_or_freeze_decision/stage182_freeze_decision_risks.csv",
+  "next_steps_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage182_selector_refinement_or_freeze_decision/stage182_freeze_decision_next_steps.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage182_selector_refinement_or_freeze_decision/stage182_selector_refinement_or_freeze_decision_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage182_selector_refinement_or_freeze_decision/stage182_selector_refinement_or_freeze_decision_report.md"
+}

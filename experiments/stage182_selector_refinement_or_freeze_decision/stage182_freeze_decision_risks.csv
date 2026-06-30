@@ -1,0 +1,6 @@
+risk,status,evidence,mitigation_or_next_step
+false_negatives_remain,known_bounded_risk,Stage180 false-negative residual delta vs gap8 is near neutral but remains below gap4.,Keep false-negative stress categories in final payload/full-sequence measurement; do not claim recall solved.
+false_positive_keyframes,not_blocking_current_freeze,Stage180 false-positive keyframe controls improve final quality but may still waste keyframes in final RD.,Track exact keyframe payload in full RD; only tune threshold if actual bitstreams show rate regression.
+sampled_residual_proxy,blocks_final_rd_claim,"Stage181 residual payload is Stage180 broader sampled estimate, not all-frame measurement.",Run all-frame/full-sequence residual payload encode for non-keyframe recovered frames.
+main_anchor_proxy,blocks_paper_level_rd_claim,Stage181 main-anchor payload is inherited from Stage172 proxy/interpolation.,Measure actual q12 keyframe bitstreams for every transmitted keyframe.
+online_streaming_scope,not_claimed,Selector uses offline encoder-side RGB/motion features unless lookahead is specified.,State offline encoding scope or define lookahead for streaming experiments.
