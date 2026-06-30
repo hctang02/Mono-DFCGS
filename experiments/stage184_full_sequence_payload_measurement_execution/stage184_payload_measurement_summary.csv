@@ -1,0 +1,4 @@
+item,expected_count,measured_count,complete,total_bytes,total_mib,mean_bytes
+unique_keyframe_single_anchor_bitstreams,596,596,1,428909580.0,409.0400505065918,719646.9463087248
+unique_stage158_residual_payloads,3472,3472,1,746176687.0,711.6095418930054,214912.64026497694
+schedule_sequence_packed_keyframe_bitstreams,90,90,1,853342645.0,813.8109636306763,9481584.944444444

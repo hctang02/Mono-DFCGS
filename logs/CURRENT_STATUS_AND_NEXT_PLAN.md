@@ -265,6 +265,7 @@ Stage113 held-out diagnostic:
 - Stage181 separates exact full-sequence schedule accounting from sampled residual estimates. Exact counts over `30` sequences / `1999` frames: uniform gap8 `292` keyframes, Stage165 adaptive `358` keyframes plus `327` metadata bytes, uniform gap4 `536` keyframes. Combined proxy using Stage180 residual payload means gives total MiB/frame uniform gap8 `0.3073179395851907`, adaptive `0.1916456087572328`, uniform gap4 `0.3688664299140155`. Decision: `adaptive_rate_promising_under_broader_sampled_proxy`. Non-claim: final full-sequence RD still requires actual q12 keyframe bitstreams and all-frame residual payload encode. Package path: `experiments/stage181_full_sequence_rd_accounting_preflight/`.
 - Stage182 combines Stage180 quality and Stage181 rate proxy evidence into a branch decision. Decision: `freeze_current_candidate_and_run_full_sequence_payload_measurement_next`. Frozen policy: `rgb_motion_rank_gate_gap8_plus_extra_targets_v1_sampled_candidate`. Rationale: broader sampled quality is positive (`+0.5644261202320328` dB vs gap8, `+0.306535729521994` dB vs gap4), rate proxy is positive (`-0.11567233082795791` MiB/frame vs gap8, `-0.17722082115678273` vs gap4), and remaining risks are final measurement risks rather than immediate selector-tuning blockers. Package path: `experiments/stage182_selector_refinement_or_freeze_decision/`.
 - Stage183 packages the full-sequence payload measurement protocol. It enumerates `5997` frame/schedule rows across uniform gap8, Stage165 adaptive, and uniform gap4, and deduplicates the next measurement workload to `596` unique q12 keyframe payload rows plus `3472` unique Stage158 q6/keep1.0 residual payload rows. Per-schedule counts match Stage181 exactly: gap8 `292/1707`, adaptive `358/1641`, gap4 `536/1463` keyframe/residual rows. Package path: `experiments/stage183_full_sequence_payload_measurement_protocol/`.
+- Stage184 executes the full-sequence payload measurement. It measures `596/596` unique q12 single-anchor keyframe bitstreams, `3472/3472` unique Stage158 residual payloads using the PSNR-based best-half selector, and `90/90` schedule/sequence-packed q12 keyframe bitstreams. Totals are unique keyframes `409.0400505065918` MiB, unique residuals `711.6095418930054` MiB, and schedule-packed keyframe bitstreams `813.8109636306763` MiB. Package path: `experiments/stage184_full_sequence_payload_measurement_execution/`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -1056,7 +1057,29 @@ Result:
 - Frame/schedule rows: `5997`.
 - Unique q12 keyframe payload measurements: `596`.
 - Unique Stage158 residual payload measurements: `3472`.
-- Next stage: Stage184 actual payload measurement from the Stage183 unique measurement CSVs.
+- Stage184 actual payload measurement completed from the Stage183 unique measurement CSVs.
+
+### Stage184: Full-Sequence Payload Measurement Execution
+
+Status: completed on 2026-07-01.
+
+Goal: measure actual q12 keyframe bitstream bytes and Stage158 residual payload bytes under the frozen Stage165 adaptive schedule and fixed gap baselines.
+
+Actions:
+
+- Measure q12 single-anchor bitstream bytes for all unique keyframes.
+- Measure schedule/sequence-packed q12 keyframe bitstreams for final rate aggregation.
+- Measure Stage158 q6/keep1.0 entropy residual payloads for all unique non-keyframe recovery rows.
+- Use PSNR-based best-half selection to match the Stage158 policy.
+
+Result:
+
+- Package: `experiments/stage184_full_sequence_payload_measurement_execution/stage184_full_sequence_payload_measurement_execution_package.json`.
+- Report: `experiments/stage184_full_sequence_payload_measurement_execution/stage184_full_sequence_payload_measurement_execution_report.md`.
+- Unique q12 single-anchor keyframe bitstreams: `596 / 596`, total `409.0400505065918` MiB, mean `719646.9463087248` bytes.
+- Unique Stage158 residual payloads: `3472 / 3472`, total `711.6095418930054` MiB, mean `214912.64026497694` bytes.
+- Schedule/sequence-packed q12 keyframe bitstreams: `90 / 90`, total `813.8109636306763` MiB, mean `9481584.944444444` bytes.
+- Next stage: Stage185 measured full-sequence RD aggregation.
 
 ### Stage109: Selector-Score Feature Preflight
 

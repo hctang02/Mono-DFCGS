@@ -1,0 +1,48 @@
+{
+  "stage": 184,
+  "status": "full_sequence_payload_measurement_complete",
+  "complete": true,
+  "keyframe_bits": 12,
+  "keyframe_compression": "none",
+  "keyframe_payload_encoding": "bitpack",
+  "residual_policy": "stage158_psnr_best_half_q6_keep1_entropy_residual",
+  "keep_fraction": 1.0,
+  "side_bits": 6,
+  "selector_payload_bytes": 1,
+  "summary_rows": [
+    {
+      "item": "unique_keyframe_single_anchor_bitstreams",
+      "expected_count": 596,
+      "measured_count": 596,
+      "complete": 1,
+      "total_bytes": 428909580.0,
+      "total_mib": 409.0400505065918,
+      "mean_bytes": 719646.9463087248
+    },
+    {
+      "item": "unique_stage158_residual_payloads",
+      "expected_count": 3472,
+      "measured_count": 3472,
+      "complete": 1,
+      "total_bytes": 746176687.0,
+      "total_mib": 711.6095418930054,
+      "mean_bytes": 214912.64026497694
+    },
+    {
+      "item": "schedule_sequence_packed_keyframe_bitstreams",
+      "expected_count": 90,
+      "measured_count": 90,
+      "complete": 1,
+      "total_bytes": 853342645.0,
+      "total_mib": 813.8109636306763,
+      "mean_bytes": 9481584.944444444
+    }
+  ],
+  "keyframe_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage184_full_sequence_payload_measurement_execution/stage184_unique_keyframe_payload_measurements.csv",
+  "residual_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage184_full_sequence_payload_measurement_execution/stage184_unique_stage158_residual_payload_measurements.csv",
+  "schedule_keyframe_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage184_full_sequence_payload_measurement_execution/stage184_schedule_packed_keyframe_payload_measurements.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage184_full_sequence_payload_measurement_execution/stage184_payload_measurement_summary.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage184_full_sequence_payload_measurement_execution/stage184_full_sequence_payload_measurement_execution_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage184_full_sequence_payload_measurement_execution/stage184_full_sequence_payload_measurement_execution_report.md",
+  "heavy_root": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage184_full_sequence_payload_measurement_execution"
+}
