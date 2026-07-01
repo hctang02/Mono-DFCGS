@@ -1,0 +1,125 @@
+{
+  "stage": 206,
+  "name": "edge_rd_table",
+  "decision": "edge_rd_table_ready_for_stage207_dp",
+  "task_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage199_learned_gs_training_manifest/stage199_learned_gs_training_tasks.csv",
+  "stage205_package": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage205_fixed_gap_predictive_codec_validation/stage205_fixed_gap_predictive_codec_validation_package.json",
+  "task_split": "eval",
+  "gaps": [
+    4,
+    8,
+    12
+  ],
+  "keyframe_codec": "q12",
+  "keyframe_bits": 12,
+  "keyframe_compression": "none",
+  "keyframe_payload_encoding": "bitpack",
+  "edge_metadata_bytes": 2,
+  "edge_count": 6,
+  "target_count": 37,
+  "setting_count": 3,
+  "side_bits": 6,
+  "keep_fractions": [
+    0.05,
+    0.1,
+    0.2
+  ],
+  "selected_edges_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage206_edge_rd_table/stage206_selected_edges.csv",
+  "target_rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage206_edge_rd_table/stage206_target_metric_rows.csv",
+  "edge_rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage206_edge_rd_table/stage206_edge_rd_rows.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage206_edge_rd_table/stage206_edge_rd_summary.csv",
+  "best_by_gap_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage206_edge_rd_table/stage206_edge_rd_best_by_gap.csv",
+  "gates_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage206_edge_rd_table/stage206_edge_rd_gates.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage206_edge_rd_table/stage206_edge_rd_table_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage206_edge_rd_table/stage206_edge_rd_table_report.md",
+  "best_rows": [
+    {
+      "reference_gap": 4,
+      "best_setting_label": "topk_keep0p2_q6",
+      "best_keep_fraction": 0.2,
+      "best_mean_edge_total_bytes_once": 1604771.0,
+      "best_mean_dp_incremental_bytes": 885123.0,
+      "best_mean_residual_payload_bytes": 165471.0,
+      "best_mean_corrected_psnr": 26.59671835498372,
+      "best_mean_delta_psnr_vs_base": 5.301434075900853
+    },
+    {
+      "reference_gap": 8,
+      "best_setting_label": "topk_keep0p2_q6",
+      "best_keep_fraction": 0.2,
+      "best_mean_edge_total_bytes_once": 1701646.5,
+      "best_mean_dp_incremental_bytes": 981999.5,
+      "best_mean_residual_payload_bytes": 262346.5,
+      "best_mean_corrected_psnr": 22.501153480651734,
+      "best_mean_delta_psnr_vs_base": 4.267633006441421
+    },
+    {
+      "reference_gap": 12,
+      "best_setting_label": "topk_keep0p2_q6",
+      "best_keep_fraction": 0.2,
+      "best_mean_edge_total_bytes_once": 2052070.0,
+      "best_mean_dp_incremental_bytes": 1332423.5,
+      "best_mean_residual_payload_bytes": 612781.0,
+      "best_mean_corrected_psnr": 26.07283417481182,
+      "best_mean_delta_psnr_vs_base": 4.164336484774056
+    }
+  ],
+  "gate_rows": [
+    {
+      "gate": "stage205_prereq",
+      "status": "pass",
+      "value": "fixed_gap_predictive_codec_positive_headroom",
+      "threshold": "fixed_gap_predictive_codec_positive_headroom",
+      "detail": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage205_fixed_gap_predictive_codec_validation/stage205_fixed_gap_predictive_codec_validation_package.json"
+    },
+    {
+      "gate": "target_metric_rows_ok",
+      "status": "pass",
+      "value": 0,
+      "threshold": "0",
+      "detail": "shape-mismatched metrics are errors"
+    },
+    {
+      "gate": "edge_rows_ok",
+      "status": "pass",
+      "value": 0,
+      "threshold": "0",
+      "detail": ""
+    },
+    {
+      "gate": "gap_coverage",
+      "status": "pass",
+      "value": 0,
+      "threshold": "0 missing gaps",
+      "detail": ""
+    },
+    {
+      "gate": "payload_counted_nonzero",
+      "status": "pass",
+      "value": "residual=32320.0;right_keyframe=719639.0",
+      "threshold": ">0 residual and keyframe bytes",
+      "detail": "keyframe bytes use encode_anchor_bitstream; residual bytes use len(payload)"
+    },
+    {
+      "gate": "schedule_metadata_counted",
+      "status": "pass",
+      "value": "2",
+      "threshold": ">=0 bytes explicitly recorded per edge",
+      "detail": "Stage207 may replace provisional syntax but cannot hide metadata bytes"
+    },
+    {
+      "gate": "each_gap_positive_edge_headroom",
+      "status": "pass",
+      "value": 4.164336484774056,
+      "threshold": "> 0.5 dB for every gap",
+      "detail": ""
+    },
+    {
+      "gate": "stage197_decoder_contract",
+      "status": "pass",
+      "value": 0,
+      "threshold": "no target dense/RGB decoder input",
+      "detail": "decoder uses transmitted q-keyframes, normalized time, schedule metadata, and counted GS residual payload"
+    }
+  ]
+}

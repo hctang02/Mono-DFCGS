@@ -1,0 +1,7 @@
+edge_id,sequence,reference_gap,left_index,right_index,target_count,expected_intermediate_count,complete_intermediate_coverage
+dogs-jump:00056:00060:gap4,dogs-jump,4,56,60,3,3,1
+parkour:00056:00060:gap4,parkour,4,56,60,3,3,1
+bike-packing:00048:00056:gap8,bike-packing,8,48,56,7,7,1
+parkour:00096:00099:gap8,parkour,8,96,99,2,2,1
+dog:00036:00048:gap12,dog,12,36,48,11,11,1
+paragliding-launch:00060:00072:gap12,paragliding-launch,12,60,72,11,11,1

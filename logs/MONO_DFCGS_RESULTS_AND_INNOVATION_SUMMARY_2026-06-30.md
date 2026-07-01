@@ -40,6 +40,7 @@ The current measured full-sequence result is a middle RD point: adaptive improve
 | GS residual codec design | Stage203 | counted GS attribute top-k residual entropy codec | selected for Stage204 smoke |
 | residual codec smoke | Stage204 | real-task q6 top-k GS residual payload | positive rendered headroom with counted bytes |
 | fixed-gap predictive validation | Stage205 | sampled fixed-gap q12 + GS residual RD-quality | positive headroom for gaps 4/8/12 |
+| edge RD table | Stage206 | sampled edge-level q12 keyframe + counted GS residual costs | ready for Stage207 DP oracle |
 
 ## Middle-Frame Recovery Evidence
 
@@ -597,7 +598,8 @@ Stage gates:
 - Stage199: build learned GS training manifest.
 - Stage200: package new predictor/refiner architecture.
 - Stage201-205: validate predictor and GS-native residual before selector training.
-- Stage206-207: build edge RD table and DP oracle schedules.
+- Stage206: build edge RD table.
+- Stage207: compute DP oracle schedules.
 - Stage208-210: train selector and residual budget allocator.
 - Stage211-213: full measured RD, ablations, and subjective visuals.
 
@@ -849,6 +851,48 @@ Interpretation:
 
 - Fixed-gap sampled evidence supports building Stage206 edge RD tables with exact keyframe/residual costs.
 
+## Stage206 Edge RD Table
+
+Stage206 converts sampled fixed-gap target evidence into edge-level RD rows for Stage207 DP schedule optimization.
+
+Stage206 decision: `edge_rd_table_ready_for_stage207_dp`.
+
+Scope:
+
+- Eval edges: `6`, with `2` sampled edges each for gaps `4,8,12`.
+- Internal target rows: `37`, covering every manifest target inside selected edges.
+- Keyframe codec: q12 endpoint anchors measured with `encode_anchor_bitstream(..., bits=12, payload_encoding=bitpack)`.
+- Residual settings: q6 top-k keep fractions `0.05,0.10,0.20`.
+- Schedule metadata: provisionally counted as `2` bytes per edge.
+- Scope caveat: sampled edge RD preflight, not final full-sequence RD.
+
+Accounting:
+
+- `edge_total_bytes_once = left_keyframe_bytes + right_keyframe_bytes + residual_payload_bytes + schedule_metadata_bytes`.
+- `dp_incremental_bytes = right_keyframe_bytes + residual_payload_bytes + schedule_metadata_bytes`; Stage207 must add the initial left keyframe once per path.
+- Residual bytes are exact `len(payload)` from the transmitted GS-native residual payload.
+
+Best by gap:
+
+- Gap4 best: `topk_keep0p2_q6`, edge total `1604771.0` bytes, DP incremental `885123.0` bytes, residual `165471.0` bytes, corrected PSNR `26.59671835498372`, dPSNR `+5.301434075900853`.
+- Gap8 best: `topk_keep0p2_q6`, edge total `1701646.5` bytes, DP incremental `981999.5` bytes, residual `262346.5` bytes, corrected PSNR `22.501153480651734`, dPSNR `+4.267633006441421`.
+- Gap12 best: `topk_keep0p2_q6`, edge total `2052070.0` bytes, DP incremental `1332423.5` bytes, residual `612781.0` bytes, corrected PSNR `26.07283417481182`, dPSNR `+4.164336484774056`.
+
+Gates:
+
+- Stage205 prereq: pass.
+- Target metric rows ok: pass.
+- Edge rows ok: pass.
+- Gap coverage: pass.
+- Keyframe/residual payload counted and nonzero: pass.
+- Schedule metadata counted: pass.
+- Each-gap positive edge headroom: pass.
+- Stage197 decoder contract: pass.
+
+Interpretation:
+
+- Stage206 is sufficient to start Stage207 DP oracle schedule construction, but it is not full-sequence RD.
+
 ## Non-Claims And Risks
 
 | item | status |
@@ -868,6 +912,7 @@ Interpretation:
 | Stage203 residual codec quality on real frames | not claimed yet; Stage203 only designs and toy-tests the codec |
 | Stage204 full-sequence RD | not claimed yet; Stage204 is a 12-task smoke and must be followed by Stage205+ |
 | Stage205 full-sequence RD | not claimed; Stage205 is sampled fixed-gap validation only |
+| Stage206 full-sequence RD | not claimed; Stage206 is sampled edge-level RD preflight for DP |
 | selector precision solved | not claimed; Stage189 finds only `2/66` strong promoted rate-risk rows, but precision remains a tuning target |
 | false negatives solved | not claimed; Stage189 finds `1179` residual-risk rows and sequence hotspots |
 | online streaming selector | not claimed; current setting is offline video encoding unless lookahead is declared |
@@ -919,13 +964,14 @@ Interpretation:
 | 203 | GS residual codec design | selects counted top-k GS attribute residual entropy codec for real-frame smoke |
 | 204 | residual codec smoke | demonstrates positive rendered headroom from counted GS-native residual payload |
 | 205 | fixed-gap predictive validation | shows sampled positive headroom for q12 + counted GS residual over gaps 4/8/12 |
+| 206 | edge RD table | creates sampled edge-level keyframe/residual/metadata cost rows for Stage207 DP |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
-| 206 | edge RD table | compute edge-level quality/rate costs for fixed-gap and schedule optimization candidates |
-| 207+ | new GS-native predictive codec execution | proceed through Stage213 under the Stage197-205 gates |
+| 207 | DP oracle schedule | compute oracle schedules from Stage206 edge rows before selector training |
+| 208+ | new GS-native predictive codec execution | proceed through Stage213 under the Stage197-206 gates |
 
 ## Canonical Paths
 
@@ -962,5 +1008,6 @@ Interpretation:
 | Stage203 GS latent/residual codec design | `experiments/stage203_gs_latent_residual_codec_design/` |
 | Stage204 residual codec smoke | `experiments/stage204_residual_codec_smoke/` |
 | Stage205 fixed-gap predictive codec validation | `experiments/stage205_fixed_gap_predictive_codec_validation/` |
+| Stage206 edge RD table | `experiments/stage206_edge_rd_table/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |
