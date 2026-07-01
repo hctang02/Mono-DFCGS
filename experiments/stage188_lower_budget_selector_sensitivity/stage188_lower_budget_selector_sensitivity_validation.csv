@@ -1,0 +1,15 @@
+item,expected,actual,status
+uniform_gap8_coverage_missing_total,0,0,ok
+stage165_adaptive_full_coverage_missing_total,0,0,ok
+uniform_gap4_coverage_missing_total,0,0,ok
+interval_top90pct_cells_coverage_missing_total,0,0,ok
+interval_top75pct_cells_coverage_missing_total,0,0,ok
+interval_top60pct_cells_coverage_missing_total,0,0,ok
+interval_top50pct_cells_coverage_missing_total,0,0,ok
+interval_top40pct_cells_coverage_missing_total,0,0,ok
+interval_top30pct_cells_coverage_missing_total,0,0,ok
+interval_top20pct_cells_coverage_missing_total,0,0,ok
+interval_top10pct_cells_coverage_missing_total,0,0,ok
+interval_score_ge4p0_coverage_missing_total,0,0,ok
+interval_score_ge3p0_coverage_missing_total,0,0,ok
+interval_score_ge2p0_coverage_missing_total,0,0,ok

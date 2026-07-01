@@ -1,0 +1,11 @@
+candidate,candidate_family,selected_unique_target_count,keyframe_count,residual_count,missing_keyframe_payloads,missing_residual_payloads,missing_keyframe_quality,missing_residual_quality,coverage_status,note
+drop_edge_motion,row_level_feature_ablation,56,348,1651,0,0,0,0,complete_reused_stage184_stage186_rows,row-level ablation coverage audit after duplicate target collapse
+drop_endpoint_rgb,row_level_feature_ablation,66,358,1641,0,0,0,0,complete_reused_stage184_stage186_rows,row-level ablation coverage audit after duplicate target collapse
+drop_hist_motion,row_level_feature_ablation,57,349,1650,0,0,0,0,complete_reused_stage184_stage186_rows,row-level ablation coverage audit after duplicate target collapse
+drop_interp_rgb,row_level_feature_ablation,65,357,1642,0,0,0,0,complete_reused_stage184_stage186_rows,row-level ablation coverage audit after duplicate target collapse
+drop_rgb_motion_proxy,row_level_feature_ablation,66,358,1641,0,0,0,0,complete_reused_stage184_stage186_rows,row-level ablation coverage audit after duplicate target collapse
+edge_hist_only,row_level_feature_ablation,64,356,1643,0,0,0,0,complete_reused_stage184_stage186_rows,row-level ablation coverage audit after duplicate target collapse
+full_stage165_features,row_level_feature_ablation,66,358,1641,0,0,0,0,complete_reused_stage184_stage186_rows,row-level ablation coverage audit after duplicate target collapse
+motion_proxy_edge_hist,row_level_feature_ablation,65,357,1642,0,0,0,0,complete_reused_stage184_stage186_rows,row-level ablation coverage audit after duplicate target collapse
+proxy_only,row_level_feature_ablation,39,331,1668,0,0,0,0,complete_reused_stage184_stage186_rows,row-level ablation coverage audit after duplicate target collapse
+rgb_only,row_level_feature_ablation,44,336,1663,0,0,0,0,complete_reused_stage184_stage186_rows,row-level ablation coverage audit after duplicate target collapse

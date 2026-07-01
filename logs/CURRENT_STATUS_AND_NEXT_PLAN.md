@@ -6,15 +6,15 @@ Date: 2026-07-01
 
 Continue the Mono-DFCGS StreamSplat-guided, Gaussian-domain, rate-counted middle-frame recovery line with adaptive keyframe scheduling.
 
-The current focus is Stage188 lower-budget adaptive selector sensitivity after Stage185/186 showed the frozen Stage165 adaptive schedule is a measured middle RD point, not lower-rate than uniform gap8.
+The current focus is Stage189 failure-case analysis after Stage188 found lower-budget positive-quality sensitivity points that still do not reach uniform gap8 rate.
 
 ## Current Repo State
 
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage187: `899a262 Validate full-sequence quality`
-- Latest completed local stage: `Stage187 selector feature ablation validation`
+- Latest pushed commit before Stage188: `1ffbf4a Validate selector feature ablation`
+- Latest completed local stage: `Stage188 lower-budget selector sensitivity`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -39,12 +39,12 @@ The current focus is Stage188 lower-budget adaptive selector sensitivity after S
 - Stage185: aggregated measured full-sequence RD. Decision: `adaptive_measured_rate_not_lower_than_gap8`; measured MiB/frame is gap8 `0.2758661759621266`, adaptive `0.2907429328258184`, and gap4 `0.33076894444307725`.
 - Stage186: validated full-sequence quality. Decision: `adaptive_quality_rate_between_gap8_and_gap4`; full quality is gap8 PSNR/SSIM/MS-SSIM/LPIPS `29.373964871839835/0.867625699572828/0.9843430183660156/0.16869177970254404`, adaptive `29.4255826920606/0.8692941793565335/0.9846469353830415/0.16593745923142186`, and gap4 `29.535715839048734/0.8739438994697716/0.9855294218654929/0.15947172297849663`.
 - Stage187: completed selector feature ablation at the Stage163 label/protocol level. Full Stage165 five-feature gate remains highest recall with `70` selected rows, `358` keyframes, hard-quality recall `0.7333333333333333`, and payload recall `0.8194444444444444`. Conservative Stage188 candidate `drop_interp_rgb` selects `69` rows with hard recall unchanged and payload recall `0.8055555555555556`; aggressive shortlist includes `motion_proxy_edge_hist`, `edge_hist_only`, `drop_hist_motion`, and `drop_edge_motion`.
+- Stage188: completed lower-budget selector sensitivity using `measured_single_anchor_additive_keyframes_plus_measured_stage158_residuals_plus_exact_metadata`. Decision: `lower_budget_positive_quality_candidates_found_but_gap8_rate_not_reached`. Lowest-rate positive candidate `interval_top10pct_cells` uses `299` keyframes at `0.2773746177516859` MiB/frame additive, `+0.0014903267483045712` vs gap8 and `-0.01339097998630051` vs full adaptive, with PSNR/LPIPS `29.38112562842953/0.16832458856830065`. Balanced half-overhead candidate `interval_score_ge4p0` uses `324` keyframes at `0.2829920490602662` MiB/frame additive, PSNR `29.41013285788653`, LPIPS `0.16682702663534876`.
 
 ### Immediate Next Plan
 
-- Stage188: run lower-budget selector threshold/feature sensitivity and package explicit schedule/RD candidates, reusing Stage184/186 measured payload/quality rows whenever coverage allows.
-- Stage189: analyze false positives and false negatives using Stage185/186 sequence/frame breakdowns.
-- Stage190: prepare paper-facing package with measured RD-quality table, decoder contract, method framing, and limitations.
+- Stage189: analyze false positives/false negatives and candidate-specific failure cases using Stage185/186/188 sequence/frame breakdowns.
+- Stage190: prepare paper-facing package with measured RD-quality table, Stage188 sensitivity table, decoder contract, method framing, and limitations.
 
 ### Residual Side-Info Codec / RD
 
@@ -283,6 +283,7 @@ Stage113 held-out diagnostic:
 - Stage185 aggregates measured full-sequence RD. Decision: `adaptive_measured_rate_not_lower_than_gap8`. Measured total MiB/frame is uniform gap8 `0.2758661759621266`, Stage165 adaptive `0.2907429328258184`, and uniform gap4 `0.33076894444307725`; adaptive is `+0.014876756863691831` MiB/frame vs gap8 and `-0.04002601161725883` vs gap4. Stage180 sampled quality still favors adaptive: PSNR/LPIPS `29.770752551041166/0.1427798855635855` vs gap8 `29.206326430809128/0.1766524552471108` and gap4 `29.46421682151917/0.16245726098616917`. Package path: `experiments/stage185_measured_full_sequence_rd_aggregation/`.
 - Stage186 measures full-sequence multi-metric quality and joins it with Stage185 measured rates. Decision: `adaptive_quality_rate_between_gap8_and_gap4`. Full-sequence PSNR/SSIM/MS-SSIM/LPIPS are gap8 `29.373964871839835/0.867625699572828/0.9843430183660156/0.16869177970254404`, adaptive `29.4255826920606/0.8692941793565335/0.9846469353830415/0.16593745923142186`, and gap4 `29.535715839048734/0.8739438994697716/0.9855294218654929/0.15947172297849663`. Adaptive improves all full-sequence quality metrics over gap8 but is below gap4; rate is also between gap8 and gap4. Package path: `experiments/stage186_full_sequence_quality_validation/`.
 - Stage187 completes selector feature ablation validation. Decision: `feature_ablation_ready_for_budget_sensitivity`. This is a selector-label/protocol ablation, not measured full-sequence RD for ablation schedules. Full Stage165 gate selects `70` rows with hard-quality recall `0.7333333333333333` and high-payload recall `0.8194444444444444`; `drop_interp_rgb` selects `69` rows with hard recall unchanged and high-payload recall `0.8055555555555556`; `drop_hist_motion` is a more aggressive low-budget candidate with `61` selected rows, unchanged hard recall, and high-payload recall `0.7361111111111112`. Package path: `experiments/stage187_selector_feature_ablation_validation/`.
+- Stage188 completes lower-budget selector sensitivity. It uses an additive single-anchor measured scope for all baselines and candidates, not the Stage185 schedule-packed keyframe scope. It found `23` fully covered candidates and `10/10` fully covered row-level ablations. Decision: `lower_budget_positive_quality_candidates_found_but_gap8_rate_not_reached`. `interval_top10pct_cells` nearly eliminates the full adaptive overhead but remains above gap8 by `+0.0014903267483045712` MiB/frame; `interval_score_ge4p0` is the balanced half-overhead candidate with `324` keyframes, additive rate `0.2829920490602662`, PSNR `29.41013285788653`, and LPIPS `0.16682702663534876`. Package path: `experiments/stage188_lower_budget_selector_sensitivity/`.
 - Stage106 remains the previous packaged baseline and should remain in comparisons.
 - Stage110 group-best pattern has been frozen into Stage112 v2 for validation.
 - Stage111 learned switch is not safe enough to package because adapter gap4 still regresses.
@@ -291,7 +292,7 @@ Stage113 held-out diagnostic:
 
 ## Next Plan
 
-Note: the chronological stage plans below are retained for archival context. The active continuation plan is the `Immediate Next Plan` near the top of this file: Stage188 lower-budget selector sensitivity, Stage189 failure-case analysis, and Stage190 paper-facing package.
+Note: the chronological stage plans below are retained for archival context. The active continuation plan is the `Immediate Next Plan` near the top of this file: Stage189 failure-case analysis and Stage190 paper-facing package.
 
 ### Stage153: Full Policy/RD Presentation Package
 

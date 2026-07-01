@@ -8,7 +8,7 @@ Purpose: consolidate the current Mono-DFCGS evidence chain, module-level innovat
 
 The current strongest line is a StreamSplat-guided, Gaussian-domain, rate-counted middle-frame recovery method plus an encoder-side RGB/motion adaptive keyframe schedule.
 
-The current measured full-sequence result is a middle RD point: adaptive improves full-sequence quality over uniform gap8 but uses higher measured rate, and it uses lower measured rate than uniform gap4 but has lower quality than gap4. Stage188 should tune lower-budget adaptive variants before final paper-facing claims.
+The current measured full-sequence result is a middle RD point: adaptive improves full-sequence quality over uniform gap8 but uses higher measured rate, and it uses lower measured rate than uniform gap4 but has lower quality than gap4. Stage188 found lower-budget positive-quality sensitivity points, but the lowest positive point still remains above uniform gap8 rate under the additive sensitivity scope.
 
 ## Current Best Components
 
@@ -22,6 +22,7 @@ The current measured full-sequence result is a middle RD point: adaptive improve
 | measured payload/RD | Stage184/185 | full-sequence payload measurement and RD aggregation | adaptive rate is between gap8 and gap4, not below gap8 |
 | full-sequence quality | Stage186 | measured multi-metric quality for gap8/adaptive/gap4 | adaptive quality is between gap8 and gap4 |
 | selector ablation | Stage187 | Stage163 label/protocol feature ablation | shortlist lower-budget variants for Stage188 |
+| lower-budget sensitivity | Stage188 | interval/row-level additive measured reuse | positive lower-budget points found but gap8 rate not reached |
 
 ## Middle-Frame Recovery Evidence
 
@@ -225,7 +226,7 @@ Interpretation:
 - Remaining risks are final-RD measurement risks, not immediate selector-tuning blockers.
 - Selector threshold tuning becomes conditional on exact full-sequence payload measurement showing rate regression or unacceptable false-positive cost.
 
-## Stage183-187 Measured RD And Selector Ablation Update
+## Stage183-188 Measured RD And Selector Sensitivity Update
 
 Stage183-186 replace the Stage181 sampled/proxy rate optimism with measured full-sequence payload and quality.
 
@@ -253,7 +254,20 @@ Stage187 feature ablation is label/protocol-only and does not claim measured RD 
 | `edge_hist_only` | `67` | `356` | `0.7333333333333333` | `0.7777777777777778` | motion-only stress point |
 | `drop_hist_motion` | `61` | `349` | `0.7333333333333333` | `0.7361111111111112` | more aggressive low-budget candidate |
 
-Stage188 should evaluate these lower-budget variants and threshold/budget variants as explicit schedule/RD points, reusing Stage184/186 measured rows whenever schedule coverage allows.
+Stage187 motivated Stage188 lower-budget schedule/RD sensitivity using Stage184/186 measured rows wherever schedule coverage allowed.
+
+Stage188 evaluates lower-budget candidates using a separate additive sensitivity scope: `measured_single_anchor_additive_keyframes_plus_measured_stage158_residuals_plus_exact_metadata`. This scope is apples-to-apples across Stage188 candidates, but should not be mixed numerically with Stage185 schedule-packed keyframe rates.
+
+Stage188 additive sensitivity points:
+
+| candidate | keyframes | MiB/frame | delta rate vs gap8 | PSNR | delta PSNR vs gap8 | LPIPS | delta LPIPS vs gap8 | note |
+|---|---:|---:|---:|---:|---:|---:|---:|---|
+| uniform_gap8 | `292` | `0.27588429100338135` | `0.0` | `29.373964871839874` | `0.0` | `0.16869177970254404` | `0.0` | additive baseline |
+| `interval_top10pct_cells` | `299` | `0.2773746177516859` | `+0.0014903267483045712` | `29.38112562842953` | `+0.007160756589655648` | `0.16832458856830065` | `-0.0003671911342433831` | lowest-rate positive candidate |
+| `interval_score_ge4p0` | `324` | `0.2829920490602662` | `+0.00710775805688485` | `29.41013285788653` | `+0.03616798604665661` | `0.16682702663534876` | `-0.001864753067195274` | balanced half-overhead candidate |
+| Stage165 adaptive full | `358` | `0.29076559773798644` | `+0.014881306734605082` | `29.425582692060658` | `+0.05161782022078398` | `0.16593745923142186` | `-0.0027543204711221736` | full frozen selector under additive scope |
+
+Stage188 decision: `lower_budget_positive_quality_candidates_found_but_gap8_rate_not_reached`.
 
 ## Non-Claims And Risks
 
@@ -294,14 +308,14 @@ Stage188 should evaluate these lower-budget variants and threshold/budget varian
 | 185 | measured RD aggregation | adaptive measured rate is between gap8 and gap4, not below gap8 |
 | 186 | full-sequence quality validation | adaptive quality is between gap8 and gap4 across PSNR/SSIM/MS-SSIM/LPIPS |
 | 187 | selector feature ablation | identifies lower-budget candidate features for Stage188 sensitivity |
+| 188 | lower-budget selector sensitivity | positive lower-budget points found under additive scope, but gap8 rate not reached |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
-| 188 | lower-budget selector sensitivity | explicit lower-budget schedule/RD candidates using Stage187 shortlist and Stage184/186 reuse when valid |
-| 189 | failure-case analysis | false-positive/false-negative sequence and frame breakdowns from Stage185/186 |
-| 190 | paper-facing package | measured RD-quality tables, figures, decoder contract, limitations, and method framing |
+| 189 | failure-case analysis | false-positive/false-negative sequence and frame breakdowns from Stage185/186/188 |
+| 190 | paper-facing package | measured RD-quality tables, Stage188 sensitivity table, decoder contract, limitations, and method framing |
 
 ## Canonical Paths
 
@@ -320,5 +334,6 @@ Stage188 should evaluate these lower-budget variants and threshold/budget varian
 | Stage185 measured RD | `experiments/stage185_measured_full_sequence_rd_aggregation/` |
 | Stage186 full-sequence quality | `experiments/stage186_full_sequence_quality_validation/` |
 | Stage187 feature ablation | `experiments/stage187_selector_feature_ablation_validation/` |
+| Stage188 lower-budget sensitivity | `experiments/stage188_lower_budget_selector_sensitivity/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |
