@@ -8,7 +8,7 @@ Purpose: consolidate the current Mono-DFCGS evidence chain, module-level innovat
 
 The current strongest line is a StreamSplat-guided, Gaussian-domain, rate-counted middle-frame recovery method plus an encoder-side RGB/motion adaptive keyframe schedule.
 
-The current measured full-sequence result is a middle RD point: adaptive improves full-sequence quality over uniform gap8 but uses higher measured rate, and it uses lower measured rate than uniform gap4 but has lower quality than gap4. Stage188 found lower-budget positive-quality sensitivity points, but the lowest positive point still remains above uniform gap8 rate under the additive sensitivity scope.
+The current measured full-sequence result is a middle RD point: adaptive improves full-sequence quality over uniform gap8 but uses higher measured rate, and it uses lower measured rate than uniform gap4 but has lower quality than gap4. Stage188 found lower-budget positive-quality sensitivity points, but the lowest positive point still remains above uniform gap8 rate under the additive sensitivity scope. Stage189 identifies the main failure modes for paper limitations and the next selector refinement.
 
 ## Current Best Components
 
@@ -23,6 +23,7 @@ The current measured full-sequence result is a middle RD point: adaptive improve
 | full-sequence quality | Stage186 | measured multi-metric quality for gap8/adaptive/gap4 | adaptive quality is between gap8 and gap4 |
 | selector ablation | Stage187 | Stage163 label/protocol feature ablation | shortlist lower-budget variants for Stage188 |
 | lower-budget sensitivity | Stage188 | interval/row-level additive measured reuse | positive lower-budget points found but gap8 rate not reached |
+| failure-case analysis | Stage189 | promoted keyframe and residual-risk diagnostics | paper-facing failure cases and refinement targets identified |
 
 ## Middle-Frame Recovery Evidence
 
@@ -269,14 +270,52 @@ Stage188 additive sensitivity points:
 
 Stage188 decision: `lower_budget_positive_quality_candidates_found_but_gap8_rate_not_reached`.
 
+## Stage189 Failure-Case Analysis
+
+Stage189 analyzes why lower-budget adaptive variants remain above gap8 rate when they preserve positive quality and which frames/sequences define the remaining failure modes.
+
+Candidate failure summary:
+
+| candidate | keyframes | MiB/frame | delta rate vs gap8 | PSNR | delta PSNR vs gap8 | LPIPS | changed frames vs full | worst changed dPSNR vs full |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| `interval_top10pct_cells` | `299` | `0.2773746177516859` | `+0.0014903267483045712` | `29.38112562842953` | `+0.007160756589655648` | `0.16832458856830065` | `370` | `-5.309560997374348` |
+| `interval_score_ge4p0` | `324` | `0.2829920490602662` | `+0.00710775805688485` | `29.41013285788653` | `+0.03616798604665661` | `0.16682702663534876` | `223` | `-2.3890793771766035` |
+| `interval_top90pct_cells` | `353` | `0.289479501370253` | `+0.013595210366871668` | `29.424507356466457` | `+0.05054248462658251` | `0.16601754864188598` | `35` | `-1.2776672922430699` |
+
+Promoted-keyframe risks:
+
+- Promoted rows analyzed: `66`.
+- Strong promoted rate-risk rows: `2`, specifically `drift-chicane` frame `6` and `horsejump-high` frame `15`.
+- Interpretation: full adaptive overhead is not mostly explained by obvious bad promotions; only a small subset has small quality gain and large local payload delta.
+
+Residual-risk hotspots:
+
+| sequence | residual risks | low PSNR | high LPIPS | high payload | max residual risk | worst frame |
+|---|---:|---:|---:|---:|---:|---:|
+| `cows` | `86` | `86` | `1` | `62` | `1.904394667636713` | `92` |
+| `parkour` | `75` | `27` | `26` | `74` | `1.5603596044904195` | `68` |
+| `camel` | `73` | `61` | `0` | `67` | `1.3934650859013562` | `60` |
+| `goat` | `73` | `0` | `0` | `73` | `0.78914` | `5` |
+| `breakdance` | `72` | `72` | `2` | `0` | `1.7485984958204726` | `5` |
+| `soapbox` | `72` | `0` | `1` | `71` | `0.67308` | `67` |
+| `bmx-trees` | `67` | `3` | `6` | `67` | `0.70738` | `44` |
+
+Stage189 decision: `failure_cases_identified_for_paper_and_next_selector_refinement`.
+
+Interpretation:
+
+- Lowest-rate Stage188 variants drop many adaptive cells and therefore change many frames relative to full adaptive.
+- Remaining unpromoted residual risks are broader than promoted rate risks, especially low-PSNR `cows`/`breakdance`/`camel` frames and high-LPIPS/high-payload `motocross-jump`/`india` frames.
+- A next selector refinement should not only suppress rare bad promotions; it should also target residual-risk hotspots without losing too much rate.
+
 ## Non-Claims And Risks
 
 | item | status |
 |---|---|
 | final optimized adaptive RD | not claimed yet; Stage165 measured point is between gap8 and gap4 |
 | all-frame quality report | completed for Stage165/gap8/gap4 in Stage186 |
-| selector precision solved | not claimed; false-positive keyframes remain |
-| false negatives solved | not claimed; residual false negatives remain close to gap8 behavior |
+| selector precision solved | not claimed; Stage189 finds only `2/66` strong promoted rate-risk rows, but precision remains a tuning target |
+| false negatives solved | not claimed; Stage189 finds `1179` residual-risk rows and sequence hotspots |
 | online streaming selector | not claimed; current setting is offline video encoding unless lookahead is declared |
 | target dense/RGB as decoder input | forbidden |
 | rendered quality/oracle as inference selector input | forbidden |
@@ -309,13 +348,14 @@ Stage188 decision: `lower_budget_positive_quality_candidates_found_but_gap8_rate
 | 186 | full-sequence quality validation | adaptive quality is between gap8 and gap4 across PSNR/SSIM/MS-SSIM/LPIPS |
 | 187 | selector feature ablation | identifies lower-budget candidate features for Stage188 sensitivity |
 | 188 | lower-budget selector sensitivity | positive lower-budget points found under additive scope, but gap8 rate not reached |
+| 189 | failure-case analysis | identifies promoted rate-risk rows, residual-risk hotspots, and candidate-specific dropped-frame losses |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
-| 189 | failure-case analysis | false-positive/false-negative sequence and frame breakdowns from Stage185/186/188 |
-| 190 | paper-facing package | measured RD-quality tables, Stage188 sensitivity table, decoder contract, limitations, and method framing |
+| 190 | paper-facing package | measured RD-quality tables, Stage187 ablation, Stage188 sensitivity, Stage189 failure cases, decoder contract, limitations, and method framing |
+| optional refinement | schedule-packed Stage188 candidate measurement | same-scope RD for selected lower-budget candidates if needed for final claims |
 
 ## Canonical Paths
 
@@ -335,5 +375,6 @@ Stage188 decision: `lower_budget_positive_quality_candidates_found_but_gap8_rate
 | Stage186 full-sequence quality | `experiments/stage186_full_sequence_quality_validation/` |
 | Stage187 feature ablation | `experiments/stage187_selector_feature_ablation_validation/` |
 | Stage188 lower-budget sensitivity | `experiments/stage188_lower_budget_selector_sensitivity/` |
+| Stage189 failure-case analysis | `experiments/stage189_failure_case_analysis/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |

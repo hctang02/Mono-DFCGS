@@ -6,15 +6,15 @@ Date: 2026-07-01
 
 Continue the Mono-DFCGS StreamSplat-guided, Gaussian-domain, rate-counted middle-frame recovery line with adaptive keyframe scheduling.
 
-The current focus is Stage189 failure-case analysis after Stage188 found lower-budget positive-quality sensitivity points that still do not reach uniform gap8 rate.
+The current focus is Stage190 paper-facing packaging after Stage189 identified failure cases behind the Stage188 lower-budget sensitivity tradeoff.
 
 ## Current Repo State
 
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage188: `1ffbf4a Validate selector feature ablation`
-- Latest completed local stage: `Stage188 lower-budget selector sensitivity`
+- Latest pushed commit before Stage189: `2f11fc7 Evaluate lower-budget selector sensitivity`
+- Latest completed local stage: `Stage189 failure-case analysis`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -40,11 +40,12 @@ The current focus is Stage189 failure-case analysis after Stage188 found lower-b
 - Stage186: validated full-sequence quality. Decision: `adaptive_quality_rate_between_gap8_and_gap4`; full quality is gap8 PSNR/SSIM/MS-SSIM/LPIPS `29.373964871839835/0.867625699572828/0.9843430183660156/0.16869177970254404`, adaptive `29.4255826920606/0.8692941793565335/0.9846469353830415/0.16593745923142186`, and gap4 `29.535715839048734/0.8739438994697716/0.9855294218654929/0.15947172297849663`.
 - Stage187: completed selector feature ablation at the Stage163 label/protocol level. Full Stage165 five-feature gate remains highest recall with `70` selected rows, `358` keyframes, hard-quality recall `0.7333333333333333`, and payload recall `0.8194444444444444`. Conservative Stage188 candidate `drop_interp_rgb` selects `69` rows with hard recall unchanged and payload recall `0.8055555555555556`; aggressive shortlist includes `motion_proxy_edge_hist`, `edge_hist_only`, `drop_hist_motion`, and `drop_edge_motion`.
 - Stage188: completed lower-budget selector sensitivity using `measured_single_anchor_additive_keyframes_plus_measured_stage158_residuals_plus_exact_metadata`. Decision: `lower_budget_positive_quality_candidates_found_but_gap8_rate_not_reached`. Lowest-rate positive candidate `interval_top10pct_cells` uses `299` keyframes at `0.2773746177516859` MiB/frame additive, `+0.0014903267483045712` vs gap8 and `-0.01339097998630051` vs full adaptive, with PSNR/LPIPS `29.38112562842953/0.16832458856830065`. Balanced half-overhead candidate `interval_score_ge4p0` uses `324` keyframes at `0.2829920490602662` MiB/frame additive, PSNR `29.41013285788653`, LPIPS `0.16682702663534876`.
+- Stage189: completed failure-case analysis. Decision: `failure_cases_identified_for_paper_and_next_selector_refinement`. Strong promoted-keyframe rate risks are only `2/66` promoted rows (`drift-chicane` frame `6`, `horsejump-high` frame `15`), while residual risk rows are broader (`1179`) and concentrate in sequences such as `cows` (`86`), `parkour` (`75`), `camel` (`73`), `goat` (`73`), `breakdance` (`72`), `soapbox` (`72`), and `bmx-trees` (`67`). Stage188 candidate failure summaries show `interval_top10pct_cells` changes `370` frames vs full adaptive with worst changed dPSNR `-5.309560997374348`, `interval_score_ge4p0` changes `223` frames with worst `-2.3890793771766035`, and `interval_top90pct_cells` changes `35` frames with worst `-1.2776672922430699`.
 
 ### Immediate Next Plan
 
-- Stage189: analyze false positives/false negatives and candidate-specific failure cases using Stage185/186/188 sequence/frame breakdowns.
-- Stage190: prepare paper-facing package with measured RD-quality table, Stage188 sensitivity table, decoder contract, method framing, and limitations.
+- Stage190: prepare paper-facing package with measured RD-quality table, Stage187 ablation table, Stage188 sensitivity table, Stage189 failure-case tables, decoder contract, method framing, and limitations.
+- Optional next refinement: if final RD claims need same scope as Stage185, measure schedule-packed keyframe streams for selected Stage188 candidates.
 
 ### Residual Side-Info Codec / RD
 
