@@ -36,6 +36,7 @@ The current measured full-sequence result is a middle RD point: adaptive improve
 | learned GS training manifest | Stage199 | multi-gap train/eval task references | manifest ready for Stage200 architecture package |
 | GS predictor architecture | Stage200 | `TemporalBasisGSRefiner` contract and module | selected for Stage201 predictor-only smoke |
 | predictor-only smoke | Stage201 | q12 gap4/8 short training/rendered smoke | plumbing/no-regression passed; no learned gain yet |
+| predictor-only broader validation | Stage202 | q12 multi-gap multi-config training-headroom check | predictor-only headroom not observed |
 
 ## Middle-Frame Recovery Evidence
 
@@ -715,6 +716,41 @@ Gate interpretation:
 - Final checkpoint outside git: pass.
 - Important: Stage201 proves executable/stable plumbing and no-regression only. It does not prove learned predictor quality improvement because best step is `0`; Stage202 must test longer/broader training headroom.
 
+## Stage202 Predictor-Only Broader Validation
+
+Stage202 tests whether `TemporalBasisGSRefiner` has predictor-only rendered headroom beyond the Stage201 smoke.
+
+Stage202 decision: `predictor_only_broader_training_headroom_not_observed`.
+
+Run scope:
+
+- Gaps: `2,4,8,12`.
+- Keyframe codec: `q12`.
+- Train/eval tasks: `16` / `16`.
+- Configs: `3`.
+- Per-frame payload bytes: `0`.
+
+Config results:
+
+- Shared linear eval PSNR: `19.239936914617395`.
+- `anchor_render_lr2e4`: best delta `0.0` dB, final delta `-0.0014714499478820642` dB, best step `0`.
+- `anchor_only_lr1e3`: best delta `+0.0006680372369380905` dB, final delta `+0.0006680372369380905` dB, best step `32`.
+- `render_heavy_lr1e4`: best delta `0.0` dB, final delta `-0.0008068938220269217` dB, best step `0`.
+
+Gates:
+
+- Metric rows ok: pass.
+- Endpoint identity all configs: pass.
+- Predictor-only payload: pass.
+- Any-config no-regression: pass.
+- Predictor headroom positive: fail; best delta `+0.0006680372369380905` dB is far below the `>0.05` dB gate.
+
+Interpretation:
+
+- Predictor-only learned quality headroom is not observed.
+- Stage203 must prioritize GS-native residual/latent side-info.
+- Selector training remains deferred until residual/edge RD oracle headroom exists.
+
 ## Non-Claims And Risks
 
 | item | status |
@@ -730,6 +766,7 @@ Gate interpretation:
 | Stage199 manifest as model improvement | not claimed; it is a data/contract package for Stage200+ |
 | Stage200 architecture as quality result | not claimed; quality gate begins at Stage201 predictor-only smoke |
 | Stage201 predictor learned improvement | not claimed; best checkpoint is step `0` linear fallback |
+| Stage202 predictor-only headroom | not observed; best delta is only `+0.0006680372369380905` dB |
 | selector precision solved | not claimed; Stage189 finds only `2/66` strong promoted rate-risk rows, but precision remains a tuning target |
 | false negatives solved | not claimed; Stage189 finds `1179` residual-risk rows and sequence hotspots |
 | online streaming selector | not claimed; current setting is offline video encoding unless lookahead is declared |
@@ -777,13 +814,14 @@ Gate interpretation:
 | 199 | learned GS training manifest | builds multi-gap lightweight train/eval references and passes contract audit |
 | 200 | GS predictor architecture package | selects `TemporalBasisGSRefiner` and Stage201 predictor-only protocol |
 | 201 | predictor-only smoke | validates executable no-payload predictor plumbing but shows no short-run learned gain |
+| 202 | predictor-only broader validation | shows predictor-only training headroom is not observed and residual codec is mandatory |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
-| 202 | predictor-only broader validation | test whether longer/broader `TemporalBasisGSRefiner` training creates actual headroom |
-| 203+ | new GS-native predictive codec execution | proceed through Stage213 under the Stage197/198/199/200/201 gates |
+| 203 | GS latent/residual codec design | define counted GS-native residual/latent payload now that predictor-only headroom is insufficient |
+| 204+ | new GS-native predictive codec execution | proceed through Stage213 under the Stage197-202 gates |
 
 ## Canonical Paths
 
@@ -816,5 +854,6 @@ Gate interpretation:
 | Stage199 learned GS training manifest | `experiments/stage199_learned_gs_training_manifest/` |
 | Stage200 GS predictor architecture package | `experiments/stage200_gs_predictor_architecture_package/` |
 | Stage201 predictor-only smoke | `experiments/stage201_predictor_only_smoke/` |
+| Stage202 predictor-only broader validation | `experiments/stage202_predictor_only_broader_validation/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |

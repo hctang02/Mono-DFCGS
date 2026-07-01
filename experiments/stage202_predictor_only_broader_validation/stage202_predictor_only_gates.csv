@@ -1,0 +1,6 @@
+gate,status,value,threshold,detail
+metric_rows_ok,pass,0,0,all rendered metrics must use explicit target-shape alignment
+endpoint_identity_all_configs,pass,0.0,<=1e-6,t=0/t=1 output equals decoded endpoints
+predictor_only_payload,pass,0,0 per-frame payload bytes,Stage202 still sends no residual or latent payload
+any_config_no_regression,pass,0.0006680372369380905,>= -0.05 dB,best checkpoint can fall back to zero-init linear
+predictor_headroom_positive,fail,0.0006680372369380905,> 0.05 dB vs linear,best_config=anchor_only_lr1e3; best_step=32

@@ -1,0 +1,129 @@
+{
+  "stage": 202,
+  "name": "predictor_only_broader_validation",
+  "decision": "predictor_only_broader_training_headroom_not_observed",
+  "task_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage199_learned_gs_training_manifest/stage199_learned_gs_training_tasks.csv",
+  "gaps": [
+    2,
+    4,
+    8,
+    12
+  ],
+  "keyframe_codec": "q12",
+  "train_task_count": 16,
+  "eval_task_count": 16,
+  "config_count": 3,
+  "best_config_label": "anchor_only_lr1e3",
+  "best_delta_psnr_vs_linear": 0.0006680372369380905,
+  "per_frame_payload_bytes": 0,
+  "selected_tasks_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage202_predictor_only_broader_validation/stage202_selected_tasks.csv",
+  "config_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage202_predictor_only_broader_validation/stage202_predictor_only_config_results.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage202_predictor_only_broader_validation/stage202_predictor_only_summary.csv",
+  "metrics_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage202_predictor_only_broader_validation/stage202_predictor_only_metrics.csv",
+  "train_log_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage202_predictor_only_broader_validation/stage202_predictor_only_train_log.csv",
+  "gates_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage202_predictor_only_broader_validation/stage202_predictor_only_gates.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage202_predictor_only_broader_validation/stage202_predictor_only_broader_validation_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage202_predictor_only_broader_validation/stage202_predictor_only_broader_validation_report.md",
+  "config_rows": [
+    {
+      "config_label": "anchor_render_lr2e4",
+      "hidden_dim": 192,
+      "global_dim": 64,
+      "train_steps": 32,
+      "eval_every": 16,
+      "lr": 0.0002,
+      "render_loss_weight": 0.02,
+      "train_task_count": 16,
+      "eval_task_count": 16,
+      "linear_eval_psnr": 19.239936914617395,
+      "initial_eval_psnr": 19.239936914617395,
+      "best_eval_psnr": 19.239936914617395,
+      "final_eval_psnr": 19.238465464669513,
+      "best_delta_psnr_vs_linear": 0.0,
+      "final_delta_psnr_vs_linear": -0.0014714499478820642,
+      "best_step": 0,
+      "endpoint_error": 0.0,
+      "best_checkpoint_path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage202_predictor_only_broader_validation/anchor_render_lr2e4/temporal_basis_gs_refiner_best.safetensors",
+      "final_checkpoint_path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage202_predictor_only_broader_validation/anchor_render_lr2e4/temporal_basis_gs_refiner_final.safetensors"
+    },
+    {
+      "config_label": "anchor_only_lr1e3",
+      "hidden_dim": 192,
+      "global_dim": 64,
+      "train_steps": 32,
+      "eval_every": 16,
+      "lr": 0.001,
+      "render_loss_weight": 0.0,
+      "train_task_count": 16,
+      "eval_task_count": 16,
+      "linear_eval_psnr": 19.239936914617395,
+      "initial_eval_psnr": 19.239936914617395,
+      "best_eval_psnr": 19.240604951854333,
+      "final_eval_psnr": 19.240604951854333,
+      "best_delta_psnr_vs_linear": 0.0006680372369380905,
+      "final_delta_psnr_vs_linear": 0.0006680372369380905,
+      "best_step": 32,
+      "endpoint_error": 0.0,
+      "best_checkpoint_path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage202_predictor_only_broader_validation/anchor_only_lr1e3/temporal_basis_gs_refiner_best.safetensors",
+      "final_checkpoint_path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage202_predictor_only_broader_validation/anchor_only_lr1e3/temporal_basis_gs_refiner_final.safetensors"
+    },
+    {
+      "config_label": "render_heavy_lr1e4",
+      "hidden_dim": 192,
+      "global_dim": 64,
+      "train_steps": 24,
+      "eval_every": 12,
+      "lr": 0.0001,
+      "render_loss_weight": 0.1,
+      "train_task_count": 16,
+      "eval_task_count": 16,
+      "linear_eval_psnr": 19.239936914617395,
+      "initial_eval_psnr": 19.239936914617395,
+      "best_eval_psnr": 19.239936914617395,
+      "final_eval_psnr": 19.23913002079537,
+      "best_delta_psnr_vs_linear": 0.0,
+      "final_delta_psnr_vs_linear": -0.0008068938220269217,
+      "best_step": 0,
+      "endpoint_error": 0.0,
+      "best_checkpoint_path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage202_predictor_only_broader_validation/render_heavy_lr1e4/temporal_basis_gs_refiner_best.safetensors",
+      "final_checkpoint_path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage202_predictor_only_broader_validation/render_heavy_lr1e4/temporal_basis_gs_refiner_final.safetensors"
+    }
+  ],
+  "gate_rows": [
+    {
+      "gate": "metric_rows_ok",
+      "status": "pass",
+      "value": 0,
+      "threshold": "0",
+      "detail": "all rendered metrics must use explicit target-shape alignment"
+    },
+    {
+      "gate": "endpoint_identity_all_configs",
+      "status": "pass",
+      "value": 0.0,
+      "threshold": "<=1e-6",
+      "detail": "t=0/t=1 output equals decoded endpoints"
+    },
+    {
+      "gate": "predictor_only_payload",
+      "status": "pass",
+      "value": 0,
+      "threshold": "0 per-frame payload bytes",
+      "detail": "Stage202 still sends no residual or latent payload"
+    },
+    {
+      "gate": "any_config_no_regression",
+      "status": "pass",
+      "value": 0.0006680372369380905,
+      "threshold": ">= -0.05 dB",
+      "detail": "best checkpoint can fall back to zero-init linear"
+    },
+    {
+      "gate": "predictor_headroom_positive",
+      "status": "fail",
+      "value": 0.0006680372369380905,
+      "threshold": "> 0.05 dB vs linear",
+      "detail": "best_config=anchor_only_lr1e3; best_step=32"
+    }
+  ]
+}
