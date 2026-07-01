@@ -1,0 +1,6 @@
+audit,status,value,requirement,detail
+stage198_requirements_loaded,pass,4,Stage200 uses Stage198 gates,edge_rd_headroom_before_selector_training;full_sequence_metrics_only_for_strong_claim;gs_native_residual_payload;predictor_only_gate_before_selector
+stage199_manifest_ready,pass,29204,Stage199 task manifest is ready,"missing_count=0; gaps=[2, 4, 6, 8, 12, 16]"
+endpoint_identity,pass,0.0,t=0/t=1 decode exactly to transmitted endpoints before output constraints,t0=0.0; t1=0.0
+zero_init_linear_fallback,pass,0.0,new model starts as linear interpolation before training,zero-initialized final residual layer with endpoint-gated residual
+stage197_decoder_contract,pass,0,"decoder excludes target dense anchors, RGB/image residuals, and oracle labels",target dense anchors and RGB are training/encoder-side only; payloads after Stage203 must be GS-native and counted

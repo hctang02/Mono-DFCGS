@@ -34,6 +34,7 @@ The current measured full-sequence result is a middle RD point: adaptive improve
 | learned GS compression protocol | Stage197 | GS-native predictive codec contract and Stage198-213 gates | new route rejects RGB/image residual final method |
 | prior predictor audit | Stage198 | old adapter training and quality evidence | old adapter route rejected; new predictor required |
 | learned GS training manifest | Stage199 | multi-gap train/eval task references | manifest ready for Stage200 architecture package |
+| GS predictor architecture | Stage200 | `TemporalBasisGSRefiner` contract and module | selected for Stage201 predictor-only smoke |
 
 ## Middle-Frame Recovery Evidence
 
@@ -648,6 +649,37 @@ Decoder notes:
 - Target dense anchors and target RGB are training/encoder-side labels only.
 - Target dense anchors, target RGB/image residuals, and oracle schedule/quality labels remain forbidden decoder inputs.
 
+## Stage200 GS Predictor Architecture Package
+
+Stage200 defines the new predictor/refiner candidate for the learned GS route.
+
+Stage200 decision: `primary_temporal_basis_refiner_v1_selected_for_stage201_smoke`.
+
+Primary architecture: `temporal_basis_gs_refiner_v1`, implemented as `mono_dfcgs.learned_gs_predictor.TemporalBasisGSRefiner`.
+
+Core design:
+
+- Linear q-keyframe interpolation base.
+- Endpoint-gated residual factor `t*(1-t)`.
+- Local per-Gaussian features: left, right, base, diff, absdiff, and time basis.
+- Global decoded-endpoint GS statistics.
+- Zero-initialized residual head for linear fallback before training.
+
+CPU architecture smoke:
+
+- Diagnostic parameter count for hidden96/global32 instance: `43501`.
+- Endpoint identity t0 max abs delta: `0.0`.
+- Endpoint identity t1 max abs delta: `0.0`.
+- Zero-init midpoint linear fallback max abs delta: `0.0`.
+
+Stage201 protocol:
+
+- Input manifest: `experiments/stage199_learned_gs_training_manifest/stage199_learned_gs_training_tasks.csv`.
+- Gaps: `4 8`.
+- Keyframe codec: `q12`.
+- Payload: none; predictor-only; zero per-frame side-info.
+- Heavy outputs: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage201_predictor_only_smoke`.
+
 ## Non-Claims And Risks
 
 | item | status |
@@ -661,6 +693,7 @@ Decoder notes:
 | RGB/image residual post-processing final method | rejected by user and Stage197 protocol |
 | continuing old `GaussianAnchorDynamicPredictor` unchanged | rejected by Stage198 audit |
 | Stage199 manifest as model improvement | not claimed; it is a data/contract package for Stage200+ |
+| Stage200 architecture as quality result | not claimed; quality gate begins at Stage201 predictor-only smoke |
 | selector precision solved | not claimed; Stage189 finds only `2/66` strong promoted rate-risk rows, but precision remains a tuning target |
 | false negatives solved | not claimed; Stage189 finds `1179` residual-risk rows and sequence hotspots |
 | online streaming selector | not claimed; current setting is offline video encoding unless lookahead is declared |
@@ -706,13 +739,14 @@ Decoder notes:
 | 197 | learned GS compression protocol | defines GS-native predictive codec route and decoder contract for Stage198-213 |
 | 198 | prior predictor training audit | rejects continuing old adapter unchanged and sets gates for the new route |
 | 199 | learned GS training manifest | builds multi-gap lightweight train/eval references and passes contract audit |
+| 200 | GS predictor architecture package | selects `TemporalBasisGSRefiner` and Stage201 predictor-only protocol |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
-| 200 | predictor/refiner architecture package | define the new GS-native architecture and training gates |
-| 201+ | new GS-native predictive codec execution | proceed through Stage213 under the Stage197/198/199 gates |
+| 201 | predictor-only smoke | train/evaluate `TemporalBasisGSRefiner` on a small q12 gap4/gap8 subset with zero per-frame payload |
+| 202+ | new GS-native predictive codec execution | proceed through Stage213 under the Stage197/198/199/200 gates |
 
 ## Canonical Paths
 
@@ -743,5 +777,6 @@ Decoder notes:
 | Stage197 learned GS compression protocol | `experiments/stage197_learned_gs_compression_protocol/` |
 | Stage198 prior predictor training audit | `experiments/stage198_prior_predictor_training_audit/` |
 | Stage199 learned GS training manifest | `experiments/stage199_learned_gs_training_manifest/` |
+| Stage200 GS predictor architecture package | `experiments/stage200_gs_predictor_architecture_package/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |

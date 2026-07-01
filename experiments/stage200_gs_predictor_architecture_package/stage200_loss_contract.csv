@@ -1,0 +1,6 @@
+loss,stage,source,weight,decoder_input_required,reason
+anchor_attr_huber,Stage201+,predicted GS anchor vs target dense anchor,1.0,no,Supervises GS-native geometry/appearance attributes without using target at decode time.
+render_rgb_mse_or_l1,Stage201+,rendered predicted GS vs target RGB,0.1 smoke default,no,Render-aware training aligns attribute loss with visual metrics; target RGB remains training-only.
+endpoint_identity,Stage201+,t=0 equals left keyframe and t=1 equals right keyframe,architecture hard gate plus optional penalty,no,Prevents corrupting transmitted keyframes and stabilizes schedule boundaries.
+residual_energy_for_codec_labels,Stage203+,target dense anchor minus predictor anchor,diagnostic only before codec design,no,Guides GS-native residual payload selection; payload bytes must be counted.
+rate_proxy,Stage203+,estimated latent/residual entropy or selected attribute count,lambda sweep after smoke,counted_payload_only,Prepares RD-aware residual and selector stages without image residuals.

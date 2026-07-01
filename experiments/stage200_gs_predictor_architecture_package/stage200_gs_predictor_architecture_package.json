@@ -1,0 +1,58 @@
+{
+  "stage": 200,
+  "name": "gs_predictor_architecture_package",
+  "decision": "primary_temporal_basis_refiner_v1_selected_for_stage201_smoke",
+  "primary_architecture": "temporal_basis_gs_refiner_v1",
+  "stage198_requirements": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage198_prior_predictor_training_audit/stage198_new_route_requirements.csv",
+  "stage199_package": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage199_learned_gs_training_manifest/stage199_learned_gs_training_manifest_package.json",
+  "candidates_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage200_gs_predictor_architecture_package/stage200_architecture_candidates.csv",
+  "loss_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage200_gs_predictor_architecture_package/stage200_loss_contract.csv",
+  "audit_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage200_gs_predictor_architecture_package/stage200_decoder_contract_audit.csv",
+  "protocol_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage200_gs_predictor_architecture_package/stage200_stage201_smoke_protocol.csv",
+  "architecture_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage200_gs_predictor_architecture_package/stage200_primary_architecture_contract.json",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage200_gs_predictor_architecture_package/stage200_gs_predictor_architecture_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage200_gs_predictor_architecture_package/stage200_gs_predictor_architecture_report.md",
+  "smoke": {
+    "parameter_count_hidden96_global32": 43501,
+    "endpoint_t0_max_abs_delta": 0.0,
+    "endpoint_t1_max_abs_delta": 0.0,
+    "zero_init_midpoint_linear_max_abs_delta": 0.0
+  },
+  "audit_rows": [
+    {
+      "audit": "stage198_requirements_loaded",
+      "status": "pass",
+      "value": 4,
+      "requirement": "Stage200 uses Stage198 gates",
+      "detail": "edge_rd_headroom_before_selector_training;full_sequence_metrics_only_for_strong_claim;gs_native_residual_payload;predictor_only_gate_before_selector"
+    },
+    {
+      "audit": "stage199_manifest_ready",
+      "status": "pass",
+      "value": 29204,
+      "requirement": "Stage199 task manifest is ready",
+      "detail": "missing_count=0; gaps=[2, 4, 6, 8, 12, 16]"
+    },
+    {
+      "audit": "endpoint_identity",
+      "status": "pass",
+      "value": 0.0,
+      "requirement": "t=0/t=1 decode exactly to transmitted endpoints before output constraints",
+      "detail": "t0=0.0; t1=0.0"
+    },
+    {
+      "audit": "zero_init_linear_fallback",
+      "status": "pass",
+      "value": 0.0,
+      "requirement": "new model starts as linear interpolation before training",
+      "detail": "zero-initialized final residual layer with endpoint-gated residual"
+    },
+    {
+      "audit": "stage197_decoder_contract",
+      "status": "pass",
+      "value": 0,
+      "requirement": "decoder excludes target dense anchors, RGB/image residuals, and oracle labels",
+      "detail": "target dense anchors and RGB are training/encoder-side only; payloads after Stage203 must be GS-native and counted"
+    }
+  ]
+}

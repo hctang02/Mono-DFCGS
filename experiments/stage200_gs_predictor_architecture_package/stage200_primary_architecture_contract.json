@@ -1,0 +1,35 @@
+{
+  "architecture": "temporal_basis_gs_refiner_v1",
+  "module": "mono_dfcgs.learned_gs_predictor.TemporalBasisGSRefiner",
+  "primary_stage": 201,
+  "inputs_decoder": [
+    "decoded_left_keyframe_gs",
+    "decoded_right_keyframe_gs",
+    "normalized_time",
+    "shared_refiner_weights",
+    "optional_counted_gs_latent_after_stage203"
+  ],
+  "training_only_sources": [
+    "target_dense_anchor",
+    "target_rgb_render_loss"
+  ],
+  "forbidden_decoder_inputs": [
+    "target_dense_anchor",
+    "target_rgb_or_image_residual",
+    "oracle_schedule_or_quality_labels"
+  ],
+  "core_design": [
+    "linear q-keyframe interpolation base",
+    "endpoint-gated residual factor t*(1-t)",
+    "local per-Gaussian features left/right/base/diff/absdiff/time",
+    "global GS statistics pooled from decoded endpoints",
+    "zero-initialized residual head for linear fallback"
+  ],
+  "rate_accounting": "predictor-only uses zero per-frame payload; later GS latent/residual payloads must be transmitted and counted",
+  "smoke": {
+    "parameter_count_hidden96_global32": 43501,
+    "endpoint_t0_max_abs_delta": 0.0,
+    "endpoint_t1_max_abs_delta": 0.0,
+    "zero_init_midpoint_linear_max_abs_delta": 0.0
+  }
+}

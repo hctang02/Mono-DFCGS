@@ -1,0 +1,11 @@
+item,value
+stage201_input_manifest,/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage199_learned_gs_training_manifest/stage199_learned_gs_training_tasks.csv
+stage201_train_split,train
+stage201_eval_split,eval
+stage201_smoke_gaps,4 8
+stage201_keyframe_codec,q12
+stage201_predictor,"TemporalBasisGSRefiner(hidden_dim=192, global_dim=64, zero_init_residual=True)"
+stage201_payload,none; predictor-only; zero per-frame side-info
+stage201_heavy_root,/data/hctang/tmp/opencode/mono_dfcgs_runs/stage201_predictor_only_smoke
+stage201_acceptance_gate,stable rendered metrics; no broadcast warnings; endpoint identity preserved; final eval not worse than linear by more than 0.05 dB; reject architecture if no broader headroom in Stage202
+stage200_parameter_count_hidden96_global32,43501
