@@ -1,0 +1,113 @@
+{
+  "stage": 195,
+  "status": "higher_fidelity_keyframe_upper_bound_complete",
+  "complete": true,
+  "decision": "higher_fidelity_keyframes_improve_gap2_but_below_target_margin",
+  "reference_best_fixed": "uniform_gap2",
+  "reference_best_fixed_psnr": 29.654815328772308,
+  "summary_rows": [
+    {
+      "representation": "q16_keyframe",
+      "bits": 16,
+      "frame_count": 1999,
+      "mean_psnr": 29.884665362865746,
+      "p10_psnr": 25.697016068182272,
+      "mean_ssim": 0.8868697442192623,
+      "p10_ssim": 0.8127606272697449,
+      "mean_ms_ssim": 0.9886300584386145,
+      "mean_lpips": 0.13601533181894535,
+      "p90_lpips": 0.19265438616275787,
+      "q16_schedule_keyframe_bytes": 1917291581,
+      "metadata_bytes": 1,
+      "total_payload_bytes": 1917291582,
+      "total_mib_per_frame": 0.9146932160156617,
+      "rate_scope": "measured_schedule_packed_q16_keyframes_plus_fixed_gap_metadata",
+      "best_fixed_reference": "uniform_gap2",
+      "best_fixed_psnr": 29.654815328772308,
+      "best_fixed_ssim": 0.878375951948018,
+      "best_fixed_ms_ssim": 0.9866168332910943,
+      "best_fixed_lpips": 0.15168131759139583,
+      "delta_rate_vs_best_fixed": 0.4651463338289934,
+      "delta_psnr_vs_best_fixed": 0.22985003409343818,
+      "delta_ssim_vs_best_fixed": 0.00849379227124436,
+      "delta_ms_ssim_vs_best_fixed": 0.0020132251475202256,
+      "delta_lpips_vs_best_fixed": -0.015665985772450486,
+      "beats_best_fixed_by_1db_no_metric_regression": 0
+    },
+    {
+      "representation": "float_dense_anchor",
+      "bits": "float",
+      "frame_count": 1999,
+      "mean_psnr": 29.88493146578025,
+      "p10_psnr": 25.697293398906208,
+      "mean_ssim": 0.8868824350291219,
+      "p10_ssim": 0.812761127948761,
+      "mean_ms_ssim": 0.9886313845897806,
+      "mean_lpips": 0.13598978392716465,
+      "p90_lpips": 0.19263392984867095,
+      "q16_schedule_keyframe_bytes": "",
+      "metadata_bytes": "",
+      "total_payload_bytes": "",
+      "total_mib_per_frame": "",
+      "rate_scope": "quality_upper_bound_no_payload_rate",
+      "best_fixed_reference": "uniform_gap2",
+      "best_fixed_psnr": 29.654815328772308,
+      "best_fixed_ssim": 0.878375951948018,
+      "best_fixed_ms_ssim": 0.9866168332910943,
+      "best_fixed_lpips": 0.15168131759139583,
+      "delta_rate_vs_best_fixed": "",
+      "delta_psnr_vs_best_fixed": 0.23011613700794342,
+      "delta_ssim_vs_best_fixed": 0.00850648308110391,
+      "delta_ms_ssim_vs_best_fixed": 0.002014551298686329,
+      "delta_lpips_vs_best_fixed": -0.015691533664231178,
+      "beats_best_fixed_by_1db_no_metric_regression": 0
+    }
+  ],
+  "validation_rows": [
+    {
+      "item": "protocol_frame_count",
+      "expected": 1999,
+      "actual": 1999,
+      "status": "ok"
+    },
+    {
+      "item": "q16_schedule_keyframe_groups",
+      "expected": 30,
+      "actual": 30,
+      "status": "ok"
+    },
+    {
+      "item": "q16_keyframe_quality_rows",
+      "expected": 1999,
+      "actual": 1999,
+      "status": "ok"
+    },
+    {
+      "item": "q16_keyframe_missing_quality_rows",
+      "expected": 0,
+      "actual": 0,
+      "status": "ok"
+    },
+    {
+      "item": "float_dense_anchor_quality_rows",
+      "expected": 1999,
+      "actual": 1999,
+      "status": "ok"
+    },
+    {
+      "item": "float_dense_anchor_missing_quality_rows",
+      "expected": 0,
+      "actual": 0,
+      "status": "ok"
+    }
+  ],
+  "lpips_error": null,
+  "ms_ssim_error": null,
+  "q16_schedule_payload_csv": "experiments/stage195_higher_fidelity_keyframe_upper_bound/stage195_q16_schedule_packed_keyframe_payload_measurements.csv",
+  "quality_csv": "experiments/stage195_higher_fidelity_keyframe_upper_bound/stage195_higher_fidelity_keyframe_quality_metrics.csv",
+  "summary_csv": "experiments/stage195_higher_fidelity_keyframe_upper_bound/stage195_higher_fidelity_keyframe_summary.csv",
+  "validation_csv": "experiments/stage195_higher_fidelity_keyframe_upper_bound/stage195_higher_fidelity_keyframe_validation.csv",
+  "package_json": "experiments/stage195_higher_fidelity_keyframe_upper_bound/stage195_higher_fidelity_keyframe_upper_bound_package.json",
+  "report_md": "experiments/stage195_higher_fidelity_keyframe_upper_bound/stage195_higher_fidelity_keyframe_upper_bound_report.md",
+  "heavy_root": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage195_higher_fidelity_keyframe_upper_bound"
+}

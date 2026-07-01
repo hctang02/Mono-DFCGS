@@ -13,8 +13,8 @@ The current focus is expanded fixed-gap full-sequence benchmarking and stronger 
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage194: `021d72b Analyze selector oracle headroom`
-- Latest completed local stage: `Stage194 all-keyframe q12 upper-bound`
+- Latest pushed commit before Stage195: `af767b9 Measure all-keyframe q12 upper bound`
+- Latest completed local stage: `Stage195 higher-fidelity keyframe upper-bound`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -47,11 +47,12 @@ The current focus is expanded fixed-gap full-sequence benchmarking and stronger 
 - Stage192: completed expanded fixed-gap measurement. Decision: `current_adaptive_not_strong_against_expanded_fixed_gaps`. Best fixed gap by PSNR is `uniform_gap2` at rate/PSNR/SSIM/MS-SSIM/LPIPS `0.4495468821866683/29.654815328772308/0.878375951948018/0.9866168332910943/0.15168131759139583`. Current `stage165_adaptive` is `0.2907429328258184/29.4255826920606/0.8692941793565335/0.9846469353830415/0.16593745923142186`, which is `-0.22923263671170702` dB PSNR and `+0.014256141640026032` LPIPS vs best fixed gap. Gap6 is a useful near-rate fixed baseline: `0.29344506237493745` MiB/frame, PSNR `29.448737801531657`, LPIPS `0.16457491443157493`, slightly better than current adaptive at similar rate.
 - Stage193: completed oracle upper-bound analysis over the Stage192 measured candidate space. Decision: `framewise_oracle_upper_bound_below_target_margin`. The non-schedule-consistent framewise PSNR oracle reaches PSNR/SSIM/MS-SSIM/LPIPS `29.749038180432017/0.8816605037662493/0.9870865034603846/0.14641779118318626`, only `+0.09422285165970834` dB over best fixed `uniform_gap2`; the schedule-consistent path oracle reaches `29.670134277041633/0.8788577944949724/0.9867078401912386/0.1508482470754357`, only `+0.015318948269325006` dB. Therefore selector tuning over the current measured Stage158/fixed-gap candidate space cannot plausibly satisfy the requested `+1 dB` full-sequence target.
 - Stage194: completed all-keyframe q12 upper-bound measurement. Decision: `all_keyframe_q12_improves_gap2_but_below_target_margin`. `uniform_gap1` has `1999/1999` keyframes and `30/30` schedule-packed keyframe groups complete, with rate/PSNR/SSIM/MS-SSIM/LPIPS `0.686173294471943/29.85646819580043/0.8857439302277005/0.9884901848240099/0.13756442577459324`. It beats Stage192 best fixed `uniform_gap2` by only `+0.20165286702812324` dB PSNR and `-0.01411689181680259` LPIPS, failing the `+1 dB` target.
+- Stage195: completed higher-fidelity keyframe upper-bound measurement. Decision: `higher_fidelity_keyframes_improve_gap2_but_below_target_margin`. Full q16 keyframes reach rate/PSNR/SSIM/MS-SSIM/LPIPS `0.9146932160156617/29.884665362865746/0.8868697442192623/0.9886300584386145/0.13601533181894535`, only `+0.22985003409343818` dB over gap2. Float dense-anchor keyframes reach PSNR/SSIM/MS-SSIM/LPIPS `29.88493146578025/0.8868824350291219/0.9886313845897806/0.13598978392716465`, only `+0.23011613700794342` dB over gap2. Thus q16/float keyframes still fail the requested `+1 dB` target.
 
 ### Immediate Next Plan
 
-- Stage195: test higher-fidelity all-keyframe representation upper bounds, starting with q16 and/or float dense-anchor quality, to determine whether the missing `+1 dB` headroom exists outside q12.
-- Stage196+: if higher-fidelity all-keyframe representation has headroom, design a representation/payload policy and then an adaptive schedule; if it still lacks headroom, the target requires a different reconstruction objective/model rather than selector-only work.
+- Stage196: branch away from selector/keyframe quantization; identify a counted correction or reconstruction-model change with actual quality headroom above `30.654815328772308` dB full-sequence PSNR (`uniform_gap2 + 1 dB`).
+- Stage197+: only after a new representation/payload policy demonstrates enough full-sequence headroom should adaptive scheduling be redesigned.
 
 ### Residual Side-Info Codec / RD
 

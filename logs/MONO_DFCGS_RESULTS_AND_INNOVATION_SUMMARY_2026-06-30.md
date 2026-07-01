@@ -29,6 +29,7 @@ The current measured full-sequence result is a middle RD point: adaptive improve
 | expanded fixed-gap measurement | Stage192 | measured RD-quality for gap2/gap4/gap6/gap8/gap16/adaptive | current adaptive does not beat best fixed gap |
 | oracle upper bound | Stage193 | framewise and schedule-consistent oracles over Stage192 rows | current measured candidate space lacks `+1 dB` headroom |
 | all-keyframe q12 upper bound | Stage194 | `uniform_gap1` q12 keyframes on all frames | q12 representation itself lacks `+1 dB` headroom |
+| higher-fidelity keyframe upper bound | Stage195 | q16 and float dense-anchor keyframes on all frames | current dense-anchor/rendering representation lacks `+1 dB` headroom |
 
 ## Middle-Frame Recovery Evidence
 
@@ -513,6 +514,32 @@ Interpretation:
 - Even replacing every frame with a q12 keyframe improves best fixed gap2 by only about `+0.202 dB`, far below the requested `+1 dB`.
 - The next useful diagnostic is higher-fidelity representation headroom, e.g. all-keyframe q16 and/or float dense-anchor quality, before designing another adaptive schedule.
 
+## Stage195 Higher-Fidelity Keyframe Upper-Bound
+
+Stage195 tests whether the missing headroom is only q12 quantization. It renders all `1999` frames as q16 dense-anchor keyframes and as float dense-anchor keyframes. q16 includes measured schedule-packed keyframe rate; float is quality-only with no deployable payload claim.
+
+Validation:
+
+- q16 schedule-packed keyframe groups: `30/30`.
+- q16 quality rows: `1999/1999`.
+- float dense-anchor quality rows: `1999/1999`.
+
+Higher-fidelity upper bounds:
+
+| representation | MiB/frame | PSNR | SSIM | MS-SSIM | LPIPS | dPSNR vs `uniform_gap2` | dLPIPS vs `uniform_gap2` | +1dB/no-regression pass |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| `q16_keyframe` | `0.9146932160156617` | `29.884665362865746` | `0.8868697442192623` | `0.9886300584386145` | `0.13601533181894535` | `+0.22985003409343818` | `-0.015665985772450486` | `0` |
+| `float_dense_anchor` | `NA` | `29.88493146578025` | `0.8868824350291219` | `0.9886313845897806` | `0.13598978392716465` | `+0.23011613700794342` | `-0.015691533664231178` | `0` |
+
+Stage195 decision: `higher_fidelity_keyframes_improve_gap2_but_below_target_margin`.
+
+Interpretation:
+
+- The requested target is best fixed gap2 plus `+1 dB`, i.e. PSNR `30.654815328772308` without metric regression.
+- q16 and float dense-anchor all-keyframe quality plateau at about `29.885` dB, so quantization is not the blocker.
+- The current dense-anchor/rendering representation itself lacks enough full-sequence quality ceiling for the requested claim.
+- Next work must change the reconstruction objective/model or introduce a different counted correction payload; selector-only or keyframe-quantization-only work should stop.
+
 ## Non-Claims And Risks
 
 | item | status |
@@ -521,6 +548,7 @@ Interpretation:
 | all-frame quality report | completed for Stage165/gap8/gap4 in Stage186 |
 | `+1 dB` full-sequence selector headroom in current candidate space | rejected by Stage193 oracle analysis |
 | `+1 dB` full-sequence headroom from all q12 keyframes | rejected by Stage194 all-keyframe q12 upper bound |
+| `+1 dB` full-sequence headroom from q16/float keyframes | rejected by Stage195 higher-fidelity upper bound |
 | selector precision solved | not claimed; Stage189 finds only `2/66` strong promoted rate-risk rows, but precision remains a tuning target |
 | false negatives solved | not claimed; Stage189 finds `1179` residual-risk rows and sequence hotspots |
 | online streaming selector | not claimed; current setting is offline video encoding unless lookahead is declared |
@@ -561,13 +589,14 @@ Interpretation:
 | 192 | expanded fixed-gap measurement | measures expanded fixed-gap RD-quality and shows current adaptive is not strong enough |
 | 193 | oracle upper-bound analysis | shows current measured candidate space cannot reach the requested `+1 dB` full-sequence target |
 | 194 | all-keyframe q12 upper bound | shows q12 keyframes on every frame still do not reach the requested `+1 dB` target |
+| 195 | higher-fidelity keyframe upper bound | shows q16/float dense-anchor keyframes still do not reach the requested `+1 dB` target |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
-| 195 | higher-fidelity all-keyframe upper-bound diagnostic | test q16 and/or float dense-anchor quality headroom over best fixed gap2 |
-| 196+ | representation/policy or selector branch | improve representation/payload policy if higher-fidelity keyframes have headroom; otherwise change reconstruction objective/model |
+| 196 | representation/payload branch diagnosis | identify a counted correction or reconstruction-model change that can exceed `30.654815328772308` dB full-sequence PSNR |
+| 197+ | adaptive scheduling after new headroom | redesign adaptive scheduling only after a new representation/payload policy has enough quality ceiling |
 
 ## Canonical Paths
 
@@ -593,5 +622,6 @@ Interpretation:
 | Stage192 expanded fixed-gap measurement | `experiments/stage192_expanded_fixed_gap_measurement/` |
 | Stage193 oracle upper-bound analysis | `experiments/stage193_oracle_upper_bound_analysis/` |
 | Stage194 all-keyframe q12 upper bound | `experiments/stage194_all_keyframe_q12_upper_bound/` |
+| Stage195 higher-fidelity keyframe upper bound | `experiments/stage195_higher_fidelity_keyframe_upper_bound/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |
