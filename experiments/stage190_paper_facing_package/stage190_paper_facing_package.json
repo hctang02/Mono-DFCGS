@@ -1,0 +1,47 @@
+{
+  "stage": 190,
+  "status": "paper_facing_package_created",
+  "decision": "paper_facing_tables_and_claim_boundaries_packaged",
+  "recommended_title": "Mono-DFCGS: Recovery-Aware Adaptive Keyframe Scheduling for Monocular Dynamic Gaussian Splatting Compression",
+  "abstract_draft": "We present Mono-DFCGS, a monocular dynamic Gaussian splatting compression pipeline that combines StreamSplat-guided Gaussian-domain middle-frame recovery with a recovery-aware adaptive keyframe schedule. The recovery module preserves the original dynamic prediction as the motion/geometry base and transmits a counted entropy-coded residual for one selected half-anchor, avoiding decoder-side target anchors, target RGB, or unencoded oracle residuals. The adaptive scheduler uses encoder-side RGB/motion cues to promote difficult or high-payload frames while transmitting only the resulting schedule. On full DAVIS sequence accounting, the current adaptive schedule is a measured middle rate-distortion point: it improves PSNR, SSIM, MS-SSIM, and LPIPS over uniform gap8, and remains below uniform gap4 rate, but it is not yet lower-rate than gap8. We further analyze feature ablations, lower-budget sensitivity, and failure cases to identify the next selector refinement targets.",
+  "primary_claim": "Mono-DFCGS adaptive is a measured middle RD point: quality above gap8 at higher rate and rate below gap4 at lower quality.",
+  "non_claims": [
+    "Do not claim the frozen adaptive schedule is lower-rate than uniform gap8.",
+    "Do not mix Stage188 additive rates with Stage185 schedule-packed rates.",
+    "Do not present teacher/oracle side-info as final decoder input."
+  ],
+  "decoder_allowed_inputs": [
+    "original StreamSplat endpoint/base inputs",
+    "normalized time",
+    "encoded q6/keep1.0 entropy residual payload",
+    "counted one-byte half selector",
+    "transmitted schedule/keyframe metadata"
+  ],
+  "decoder_forbidden_inputs": [
+    "target dense anchor",
+    "target RGB",
+    "unencoded target residual",
+    "rendered quality or oracle labels",
+    "selector features not represented by transmitted schedule metadata"
+  ],
+  "table_counts": {
+    "measured_rd_quality": 3,
+    "selector_ablation": 8,
+    "lower_budget_sensitivity": 6,
+    "candidate_failures": 3,
+    "promoted_rate_risks": 2,
+    "residual_hotspots": 10,
+    "claims_and_limitations": 9
+  },
+  "outputs": {
+    "report": "experiments/stage190_paper_facing_package/stage190_paper_facing_report.md",
+    "measured_rd_quality": "experiments/stage190_paper_facing_package/stage190_paper_table_measured_rd_quality.csv",
+    "selector_ablation": "experiments/stage190_paper_facing_package/stage190_paper_table_selector_ablation.csv",
+    "lower_budget_sensitivity": "experiments/stage190_paper_facing_package/stage190_paper_table_lower_budget_sensitivity.csv",
+    "candidate_failures": "experiments/stage190_paper_facing_package/stage190_paper_table_candidate_failures.csv",
+    "promoted_rate_risks": "experiments/stage190_paper_facing_package/stage190_paper_table_promoted_rate_risks.csv",
+    "residual_hotspots": "experiments/stage190_paper_facing_package/stage190_paper_table_residual_hotspots.csv",
+    "claims_and_limitations": "experiments/stage190_paper_facing_package/stage190_claims_and_limitations.csv"
+  },
+  "next": "Use the package for paper writing; optionally measure schedule-packed Stage188 candidates for same-scope final RD claims."
+}

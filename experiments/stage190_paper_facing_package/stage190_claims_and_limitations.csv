@@ -1,0 +1,10 @@
+category,item,status,paper_wording
+claim,measured adaptive RD position,supported,The current adaptive schedule is a middle rate-distortion point between uniform gap8 and uniform gap4.
+claim,quality over gap8,supported,"Adaptive improves PSNR, SSIM, MS-SSIM, and LPIPS over uniform gap8 on full-sequence evaluation."
+non-claim,lower rate than gap8,not supported,Do not claim the frozen adaptive schedule is lower-rate than uniform gap8.
+scope caveat,Stage188 additive rates,separate scope,Stage188 additive rates compare lower-budget candidates internally and must not be numerically mixed with Stage185 schedule-packed rates.
+decoder contract,allowed inputs,fixed,"The decoder receives original StreamSplat endpoint/base inputs, normalized time, encoded q6 keep1.0 entropy residual payload, counted half selector, and transmitted schedule/keyframe metadata."
+decoder contract,forbidden inputs,fixed,"The decoder does not receive target dense anchors, target RGB, unencoded target residuals, or oracle labels."
+selector contract,encoder-side features,fixed,RGB/motion selector features are encoder-side only; the transmitted schedule is counted and sufficient for decoding.
+limitation,unoptimized selector,open,Stage189 shows broad residual-risk hotspots and rare high-cost promotions; further selector refinement is needed for an optimized RD frontier.
+next measurement,schedule-packed lower-budget candidates,optional,"If final claims require same-scope candidate RD, selected Stage188 candidates should be measured with schedule-packed keyframe streams."

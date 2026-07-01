@@ -1,0 +1,9 @@
+variant,feature_count,selected_rows,keyframes,hard_recall,payload_recall,selected_delta_vs_full,payload_recall_delta_vs_full,paper_note
+full_stage165_features,5,70,358,0.7333333333333333,0.8194444444444444,0,0.0,full selector reference; highest payload recall
+drop_interp_rgb,4,69,357,0.7333333333333333,0.8055555555555556,-1,-0.01388888888888884,conservative lower-budget candidate
+motion_proxy_edge_hist,3,68,357,0.7333333333333333,0.7916666666666666,-2,-0.02777777777777779,small reduction with same hard recall
+edge_hist_only,2,67,356,0.7333333333333333,0.7777777777777778,-3,-0.04166666666666663,motion/edge stress point
+drop_hist_motion,4,61,349,0.7333333333333333,0.7361111111111112,-9,-0.08333333333333326,aggressive lower-budget candidate
+drop_edge_motion,4,60,348,0.43333333333333335,0.75,-10,-0.06944444444444442,aggressive but lower hard recall
+proxy_only,1,42,331,0.4,0.5416666666666666,-28,-0.2777777777777778,minimal one-feature proxy
+rgb_only,2,48,336,0.4,0.6388888888888888,-22,-0.18055555555555558,direct RGB-only stress point

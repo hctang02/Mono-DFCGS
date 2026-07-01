@@ -1,0 +1,3 @@
+sequence,frame_index,dpsnr_adaptive_vs_gap8,dlpips_adaptive_vs_gap8,local_payload_delta_bytes,reason
+horsejump-high,15,0.17717135324723188,-0.020871520042419434,506463,small_unlabeled_gain large_local_payload_delta
+drift-chicane,6,0.1660510007588556,-0.024551600217819214,594793,small_unlabeled_gain large_local_payload_delta

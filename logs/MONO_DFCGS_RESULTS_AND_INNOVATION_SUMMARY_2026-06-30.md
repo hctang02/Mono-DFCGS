@@ -8,7 +8,7 @@ Purpose: consolidate the current Mono-DFCGS evidence chain, module-level innovat
 
 The current strongest line is a StreamSplat-guided, Gaussian-domain, rate-counted middle-frame recovery method plus an encoder-side RGB/motion adaptive keyframe schedule.
 
-The current measured full-sequence result is a middle RD point: adaptive improves full-sequence quality over uniform gap8 but uses higher measured rate, and it uses lower measured rate than uniform gap4 but has lower quality than gap4. Stage188 found lower-budget positive-quality sensitivity points, but the lowest positive point still remains above uniform gap8 rate under the additive sensitivity scope. Stage189 identifies the main failure modes for paper limitations and the next selector refinement.
+The current measured full-sequence result is a middle RD point: adaptive improves full-sequence quality over uniform gap8 but uses higher measured rate, and it uses lower measured rate than uniform gap4 but has lower quality than gap4. Stage188 found lower-budget positive-quality sensitivity points, but the lowest positive point still remains above uniform gap8 rate under the additive sensitivity scope. Stage189 identifies the main failure modes for paper limitations and the next selector refinement. Stage190 packages the current paper-facing tables, decoder contract, claim boundaries, title, and abstract draft.
 
 ## Current Best Components
 
@@ -24,6 +24,7 @@ The current measured full-sequence result is a middle RD point: adaptive improve
 | selector ablation | Stage187 | Stage163 label/protocol feature ablation | shortlist lower-budget variants for Stage188 |
 | lower-budget sensitivity | Stage188 | interval/row-level additive measured reuse | positive lower-budget points found but gap8 rate not reached |
 | failure-case analysis | Stage189 | promoted keyframe and residual-risk diagnostics | paper-facing failure cases and refinement targets identified |
+| paper-facing package | Stage190 | tables, claims, decoder contract, title/abstract draft | current writing/slides handoff package |
 
 ## Middle-Frame Recovery Evidence
 
@@ -308,6 +309,40 @@ Interpretation:
 - Remaining unpromoted residual risks are broader than promoted rate risks, especially low-PSNR `cows`/`breakdance`/`camel` frames and high-LPIPS/high-payload `motocross-jump`/`india` frames.
 - A next selector refinement should not only suppress rare bad promotions; it should also target residual-risk hotspots without losing too much rate.
 
+## Stage190 Paper-Facing Package
+
+Stage190 packages the current evidence into a paper/slides handoff under `experiments/stage190_paper_facing_package/`.
+
+Recommended title:
+
+- `Mono-DFCGS: Recovery-Aware Adaptive Keyframe Scheduling for Monocular Dynamic Gaussian Splatting Compression`
+
+Primary output:
+
+- Report: `experiments/stage190_paper_facing_package/stage190_paper_facing_report.md`
+- Package JSON: `experiments/stage190_paper_facing_package/stage190_paper_facing_package.json`
+
+Table counts:
+
+| table | rows |
+|---|---:|
+| measured RD-quality | `3` |
+| selector ablation | `8` |
+| lower-budget sensitivity | `6` |
+| candidate failures | `3` |
+| promoted rate risks | `2` |
+| residual hotspots | `10` |
+| claims and limitations | `9` |
+
+Stage190 decision: `paper_facing_tables_and_claim_boundaries_packaged`.
+
+Writing stance:
+
+- Use Stage190 as the current paper-facing source of truth.
+- Frame the adaptive result as a measured middle RD point, not a gap8-rate improvement.
+- Keep Stage188 additive sensitivity separate from Stage185 schedule-packed RD.
+- Keep decoder allowed/forbidden inputs explicit in the method section.
+
 ## Non-Claims And Risks
 
 | item | status |
@@ -349,12 +384,13 @@ Interpretation:
 | 187 | selector feature ablation | identifies lower-budget candidate features for Stage188 sensitivity |
 | 188 | lower-budget selector sensitivity | positive lower-budget points found under additive scope, but gap8 rate not reached |
 | 189 | failure-case analysis | identifies promoted rate-risk rows, residual-risk hotspots, and candidate-specific dropped-frame losses |
+| 190 | paper-facing package | packages tables, claim boundaries, decoder contract, recommended title, and abstract draft |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
-| 190 | paper-facing package | measured RD-quality tables, Stage187 ablation, Stage188 sensitivity, Stage189 failure cases, decoder contract, limitations, and method framing |
+| paper writing | use Stage190 package | draft method/results/limitations from `stage190_paper_facing_report.md` |
 | optional refinement | schedule-packed Stage188 candidate measurement | same-scope RD for selected lower-budget candidates if needed for final claims |
 
 ## Canonical Paths
@@ -376,5 +412,6 @@ Interpretation:
 | Stage187 feature ablation | `experiments/stage187_selector_feature_ablation_validation/` |
 | Stage188 lower-budget sensitivity | `experiments/stage188_lower_budget_selector_sensitivity/` |
 | Stage189 failure-case analysis | `experiments/stage189_failure_case_analysis/` |
+| Stage190 paper-facing package | `experiments/stage190_paper_facing_package/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |
