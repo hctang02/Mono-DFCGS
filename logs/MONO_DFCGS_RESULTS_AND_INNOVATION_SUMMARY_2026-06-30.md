@@ -246,6 +246,63 @@ Interpretation:
 - Adaptive is lower-rate than uniform gap4 by `-0.04002601161725883` MiB/frame, but is lower quality than gap4.
 - The frozen Stage165 schedule should be described as an adaptive middle RD point, not as lower-rate than gap8.
 
+## Selector Gain Interpretation: Sampled vs Full-Sequence
+
+This note records the direct answer to the selector-module gain question. The earlier large selector gains came from Stage177/180 sampled validation on selector-relevant target frames, while the later Stage185/186 result is the full-sequence measured RD-quality table. These two views are complementary rather than contradictory.
+
+Stage177 medium sampled validation:
+
+| schedule | targets | adaptive/keyframe targets | PSNR | LPIPS | payload bytes/target |
+|---|---:|---:|---:|---:|---:|
+| uniform gap8 | `50` | `0` | `28.756927` | `0.189479` | `211348.720` |
+| Stage165 adaptive | `50` | `26` | `29.217096` | `0.157234` | `95704.400` |
+| uniform gap4 | `50` | `6` | `28.945814` | `0.177610` | `181242.240` |
+
+Stage177 adaptive gains:
+
+| comparison | PSNR gain | LPIPS gain |
+|---|---:|---:|
+| adaptive vs gap8 | `+0.4601686250283185` dB | `-0.03224517673254013` |
+| adaptive vs gap4 | `+0.27128186202823` dB | `-0.02037559390068054` |
+
+Stage180 broader sampled validation:
+
+| schedule | targets | adaptive/keyframe targets | PSNR | LPIPS | payload bytes/target |
+|---|---:|---:|---:|---:|---:|
+| uniform gap8 | `90` | `0` | `29.206326` | `0.176652` | `219878.578` |
+| Stage165 adaptive | `90` | `56` | `29.770753` | `0.142780` | `74673.433` |
+| uniform gap4 | `90` | `8` | `29.464217` | `0.162457` | `196008.433` |
+
+Stage180 adaptive gains:
+
+| comparison | PSNR gain | LPIPS gain | payload reduction |
+|---|---:|---:|---:|
+| adaptive vs gap8 | `+0.5644261202320328` dB | `-0.0338725696835253` | about `-145205` bytes/target |
+| adaptive vs gap4 | `+0.306535729521994` dB | `-0.019677375422583687` | about `-121335` bytes/target |
+
+Stage186 full-sequence measured validation:
+
+| schedule | MiB/frame | PSNR | SSIM | MS-SSIM | LPIPS |
+|---|---:|---:|---:|---:|---:|
+| uniform gap8 | `0.2758661759621266` | `29.373964871839835` | `0.867625699572828` | `0.9843430183660156` | `0.16869177970254404` |
+| Stage165 adaptive | `0.2907429328258184` | `29.4255826920606` | `0.8692941793565335` | `0.9846469353830415` | `0.16593745923142186` |
+| uniform gap4 | `0.33076894444307725` | `29.535715839048734` | `0.8739438994697716` | `0.9855294218654929` | `0.15947172297849663` |
+
+Stage186 adaptive gains/losses:
+
+| comparison | rate delta | PSNR delta | SSIM delta | MS-SSIM delta | LPIPS delta |
+|---|---:|---:|---:|---:|---:|
+| adaptive vs gap8 | `+0.014876756863691831` MiB/frame | `+0.05161782022076622` dB | `+0.0016684797837055454` | `+0.0003039170170259231` | `-0.0027543204711221736` |
+| adaptive vs gap4 | `-0.04002601161725883` MiB/frame | `-0.11013314698813303` dB | `-0.004649720113238054` | `-0.0008824864824513723` | `+0.006465736252925236` |
+
+Writing interpretation:
+
+- Use Stage177/180 when discussing how much the selector helps on targeted difficult/high-value frames.
+- Use Stage185/186 as the final full-sequence RD-quality table.
+- Do not claim Stage180 sampled gains as the full-sequence average.
+- Do not claim the current selector beats gap8 in both rate and quality; full-sequence measured rate is higher than gap8.
+- The honest claim is that the selector gives strong sampled-target gains and a measured full-sequence middle RD point between gap8 and gap4.
+
 Stage187 feature ablation is label/protocol-only and does not claim measured RD for ablation schedules.
 
 | variant | selected rows | keyframes | hard recall | payload recall | note |
