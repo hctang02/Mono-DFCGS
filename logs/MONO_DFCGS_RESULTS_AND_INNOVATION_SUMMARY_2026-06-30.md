@@ -42,6 +42,8 @@ The current measured full-sequence result is a middle RD point: adaptive improve
 | fixed-gap predictive validation | Stage205 | sampled fixed-gap q12 + GS residual RD-quality | positive headroom for gaps 4/8/12 |
 | edge RD table | Stage206 | sampled edge-level q12 keyframe + counted GS residual costs | ready for Stage207 DP oracle |
 | DP oracle schedule | Stage207 | residual-budget DP plus schedule connectivity audit | schedule graph insufficient; selector labels deferred |
+| connected edge RD expansion | Stage206b | one connected bike-packing window | local DP graph ready |
+| connected-window DP oracle | Stage207b | schedule DP over Stage206b graph | local selector-label feasibility passed |
 
 ## Middle-Frame Recovery Evidence
 
@@ -601,6 +603,7 @@ Stage gates:
 - Stage201-205: validate predictor and GS-native residual before selector training.
 - Stage206: build edge RD table.
 - Stage207: compute DP oracle schedules; current sampled graph is insufficient.
+- Stage206b/207b: connected-window expansion and local DP oracle pass.
 - Stage208-210: train selector and residual budget allocator.
 - Stage211-213: full measured RD, ablations, and subjective visuals.
 
@@ -925,6 +928,44 @@ Required next work:
 - Build an expanded connected edge RD table over at least one sequence/window with contiguous candidate edges.
 - Rerun Stage207 DP oracle after connected edge coverage exists.
 
+## Stage206b/207b Connected-Window DP Rerun
+
+Stage206b builds the first small connected edge table after Stage207 found isolated-edge coverage insufficient.
+
+Stage206b decision: `edge_rd_table_ready_for_stage207_dp`.
+
+Stage206b scope:
+
+- Window: `bike-packing:00000:00024`.
+- Edges: `11`.
+- Internal target rows: `61`.
+- Gap4 chain edges: `6`.
+- Connected edge transitions: `14`.
+- Settings: q6 top-k residual keep fractions `0.05,0.10,0.20` with q12 endpoint keyframes and counted `2` metadata bytes per edge.
+
+Stage206b best by gap:
+
+- Gap4 best: `topk_keep0p2_q6`, corrected PSNR `26.031263851493254`, dPSNR `+4.986391989862658`.
+- Gap8 best: `topk_keep0p2_q6`, corrected PSNR `25.821074970091768`, dPSNR `+5.676789260065095`.
+- Gap12 best: `topk_keep0p2_q6`, corrected PSNR `25.40221496330657`, dPSNR `+5.768186956092006`.
+
+Stage207b decision: `dp_oracle_schedule_ready_for_selector_labels`.
+
+Stage207b results:
+
+- Edge option coverage: `33/33` pass.
+- Schedule graph connectivity: pass with `14` connected transitions, `1` component, `11` edges, `7` nodes.
+- Fixed baselines over `61` internal targets:
+  - `topk_keep0p05_q6`: cost `8893010` bytes, mean PSNR `23.104662593777928`, mean dPSNR `+2.8786575187184025`.
+  - `topk_keep0p1_q6`: cost `9764534` bytes, mean PSNR `24.43813548907444`, mean dPSNR `+4.212130414014913`.
+  - `topk_keep0p2_q6`: cost `11344328` bytes, mean PSNR `25.73203365395984`, mean dPSNR `+5.5060285789003105`.
+- Same-budget residual allocation gain: `+0.016174288512960544` dB at the `topk_keep0p1_q6` budget.
+
+Interpretation:
+
+- Local connected-window DP plumbing is validated.
+- This is not yet robust selector-training evidence; next step should expand to multi-sequence connected windows before full Stage208/209 promotion.
+
 ## Non-Claims And Risks
 
 | item | status |
@@ -946,6 +987,7 @@ Required next work:
 | Stage205 full-sequence RD | not claimed; Stage205 is sampled fixed-gap validation only |
 | Stage206 full-sequence RD | not claimed; Stage206 is sampled edge-level RD preflight for DP |
 | Stage207 selector-label readiness | not claimed; schedule graph connectivity failed, so selector labels are deferred |
+| Stage207b full selector-training readiness | not claimed; local connected-window DP passed but scope is one window only |
 | selector precision solved | not claimed; Stage189 finds only `2/66` strong promoted rate-risk rows, but precision remains a tuning target |
 | false negatives solved | not claimed; Stage189 finds `1179` residual-risk rows and sequence hotspots |
 | online streaming selector | not claimed; current setting is offline video encoding unless lookahead is declared |
@@ -999,14 +1041,16 @@ Required next work:
 | 205 | fixed-gap predictive validation | shows sampled positive headroom for q12 + counted GS residual over gaps 4/8/12 |
 | 206 | edge RD table | creates sampled edge-level keyframe/residual/metadata cost rows for Stage207 DP |
 | 207 | DP oracle schedule | finds sampled Stage206 graph insufficient for nontrivial schedule oracle |
+| 206b | connected edge RD expansion | creates one connected bike-packing window with 11 edges and 61 targets |
+| 207b | connected-window DP oracle | validates local schedule DP connectivity and selector-label feasibility |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
-| 206b | connected edge RD expansion | build contiguous sequence/window edge rows for real schedule DP |
-| 207 rerun | DP oracle schedule | rerun oracle after connected edge coverage exists |
-| 208+ | new GS-native predictive codec execution | proceed only after Stage207 schedule-level oracle gate passes |
+| 206c | multi-sequence connected edge RD | expand connected windows beyond one sequence before selector training |
+| 207c | multi-sequence DP oracle | rerun oracle at larger connected scope |
+| 208+ | new GS-native predictive codec execution | proceed after multi-sequence Stage207 gate passes |
 
 ## Canonical Paths
 
@@ -1045,5 +1089,7 @@ Required next work:
 | Stage205 fixed-gap predictive codec validation | `experiments/stage205_fixed_gap_predictive_codec_validation/` |
 | Stage206 edge RD table | `experiments/stage206_edge_rd_table/` |
 | Stage207 DP oracle schedule | `experiments/stage207_dp_oracle_schedule/` |
+| Stage206b connected edge RD expansion | `experiments/stage206b_connected_edge_rd_expansion/` |
+| Stage207b DP oracle connected window | `experiments/stage207b_dp_oracle_connected_window/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |

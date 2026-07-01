@@ -1,0 +1,2 @@
+sequence,edge_count,node_count,component_count,max_component_edges,connected_path_count,status
+bike-packing,11,7,1,11,14,pass

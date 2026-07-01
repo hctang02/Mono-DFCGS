@@ -266,7 +266,7 @@ def graph_connectivity(edge_rows):
     return out
 
 
-def gate_rows(stage206, options, baselines, budget_rows, graph_rows):
+def gate_rows(stage206, options, baselines, budget_rows, graph_rows, stage206_package):
     max_budget_gain = max((float(row["delta_psnr_vs_fixed"]) for row in budget_rows), default=0.0)
     connected_paths = sum(int(row["connected_path_count"]) for row in graph_rows)
     expected_options = len({row["edge_id"] for row in options}) * len({row["setting_label"] for row in options})
@@ -276,7 +276,7 @@ def gate_rows(stage206, options, baselines, budget_rows, graph_rows):
             "status": "pass" if stage206.get("decision") == "edge_rd_table_ready_for_stage207_dp" else "fail",
             "value": stage206.get("decision", ""),
             "threshold": "edge_rd_table_ready_for_stage207_dp",
-            "detail": str(DEFAULT_STAGE206_PACKAGE),
+            "detail": str(stage206_package),
         },
         {
             "gate": "edge_option_coverage",
@@ -408,7 +408,7 @@ def main():
     frontier_out = frontier_rows(frontier, target_count)
     budget_rows = budget_oracle_rows(frontier, baselines, target_count)
     graph_rows = graph_connectivity(edge_rows)
-    gates = gate_rows(stage206, options, baselines, budget_rows, graph_rows)
+    gates = gate_rows(stage206, options, baselines, budget_rows, graph_rows, args.stage206_package)
     decision_value = decision(gates)
 
     options_csv = args.output_root / "stage207_edge_option_rows.csv"

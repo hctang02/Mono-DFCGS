@@ -1,0 +1,9 @@
+gate,status,value,threshold,detail
+stage205_prereq,pass,fixed_gap_predictive_codec_positive_headroom,fixed_gap_predictive_codec_positive_headroom,/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage205_fixed_gap_predictive_codec_validation/stage205_fixed_gap_predictive_codec_validation_package.json
+target_metric_rows_ok,pass,0,0,shape-mismatched metrics are errors
+edge_rows_ok,pass,0,0,
+gap_coverage,pass,0,0 missing gaps,
+payload_counted_nonzero,pass,residual=46862.0;right_keyframe=719646.0,>0 residual and keyframe bytes,keyframe bytes use encode_anchor_bitstream; residual bytes use len(payload)
+schedule_metadata_counted,pass,2,>=0 bytes explicitly recorded per edge,Stage207 may replace provisional syntax but cannot hide metadata bytes
+each_gap_positive_edge_headroom,pass,4.986391989862658,> 0.5 dB for every gap,
+stage197_decoder_contract,pass,0,no target dense/RGB decoder input,"decoder uses transmitted q-keyframes, normalized time, schedule metadata, and counted GS residual payload"
