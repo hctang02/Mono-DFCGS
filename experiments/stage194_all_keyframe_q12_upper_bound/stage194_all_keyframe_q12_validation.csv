@@ -1,0 +1,9 @@
+item,expected,actual,status
+protocol_frame_count,1999,1999,ok
+unique_keyframe_payload_rows,1999,1999,ok
+unique_keyframe_quality_rows,1999,1999,ok
+schedule_keyframe_groups,30,30,ok
+missing_payload_rows,0,0,ok
+missing_quality_rows,0,0,ok
+missing_schedule_groups,0,0,ok
+final_quality_rows,1999,1999,ok

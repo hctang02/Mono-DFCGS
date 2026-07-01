@@ -1,0 +1,101 @@
+{
+  "stage": 194,
+  "status": "all_keyframe_q12_upper_bound_complete",
+  "complete": true,
+  "decision": "all_keyframe_q12_improves_gap2_but_below_target_margin",
+  "reference_best_fixed": "uniform_gap2",
+  "reference_best_fixed_psnr": 29.654815328772308,
+  "summary_rows": [
+    {
+      "schedule": "uniform_gap1",
+      "schedule_family": "fixed_gap",
+      "gap": 1,
+      "frame_count": 1999,
+      "keyframe_count": 1999,
+      "mean_psnr": 29.85646819580043,
+      "p10_psnr": 25.680509284774754,
+      "mean_ssim": 0.8857439302277005,
+      "p10_ssim": 0.8118016719818115,
+      "mean_ms_ssim": 0.9884901848240099,
+      "mean_lpips": 0.13756442577459324,
+      "p90_lpips": 0.19251126348972322,
+      "keyframe_bitstream_bytes": 1438290191,
+      "metadata_bytes": 1,
+      "total_payload_bytes": 1438290192,
+      "total_mib_per_frame": 0.686173294471943,
+      "best_fixed_reference": "uniform_gap2",
+      "best_fixed_psnr": 29.654815328772308,
+      "best_fixed_ssim": 0.878375951948018,
+      "best_fixed_ms_ssim": 0.9866168332910943,
+      "best_fixed_lpips": 0.15168131759139583,
+      "delta_rate_vs_best_fixed": 0.2366264122852747,
+      "delta_psnr_vs_best_fixed": 0.20165286702812324,
+      "delta_ssim_vs_best_fixed": 0.007367978279682497,
+      "delta_ms_ssim_vs_best_fixed": 0.001873351532915568,
+      "delta_lpips_vs_best_fixed": -0.01411689181680259,
+      "beats_best_fixed_by_1db_no_metric_regression": 0
+    }
+  ],
+  "validation_rows": [
+    {
+      "item": "protocol_frame_count",
+      "expected": 1999,
+      "actual": 1999,
+      "status": "ok"
+    },
+    {
+      "item": "unique_keyframe_payload_rows",
+      "expected": 1999,
+      "actual": 1999,
+      "status": "ok"
+    },
+    {
+      "item": "unique_keyframe_quality_rows",
+      "expected": 1999,
+      "actual": 1999,
+      "status": "ok"
+    },
+    {
+      "item": "schedule_keyframe_groups",
+      "expected": 30,
+      "actual": 30,
+      "status": "ok"
+    },
+    {
+      "item": "missing_payload_rows",
+      "expected": 0,
+      "actual": 0,
+      "status": "ok"
+    },
+    {
+      "item": "missing_quality_rows",
+      "expected": 0,
+      "actual": 0,
+      "status": "ok"
+    },
+    {
+      "item": "missing_schedule_groups",
+      "expected": 0,
+      "actual": 0,
+      "status": "ok"
+    },
+    {
+      "item": "final_quality_rows",
+      "expected": 1999,
+      "actual": 1999,
+      "status": "ok"
+    }
+  ],
+  "lpips_error": null,
+  "ms_ssim_error": null,
+  "protocol_csv": "experiments/stage194_all_keyframe_q12_upper_bound/stage194_all_keyframe_protocol_rows.csv",
+  "keyframe_payload_csv": "experiments/stage194_all_keyframe_q12_upper_bound/stage194_unique_keyframe_payload_measurements.csv",
+  "schedule_keyframe_payload_csv": "experiments/stage194_all_keyframe_q12_upper_bound/stage194_schedule_packed_keyframe_payload_measurements.csv",
+  "keyframe_quality_csv": "experiments/stage194_all_keyframe_q12_upper_bound/stage194_unique_keyframe_quality_metrics.csv",
+  "final_quality_csv": "experiments/stage194_all_keyframe_q12_upper_bound/stage194_all_keyframe_quality_rows.csv",
+  "summary_csv": "experiments/stage194_all_keyframe_q12_upper_bound/stage194_all_keyframe_q12_summary.csv",
+  "validation_csv": "experiments/stage194_all_keyframe_q12_upper_bound/stage194_all_keyframe_q12_validation.csv",
+  "package_json": "experiments/stage194_all_keyframe_q12_upper_bound/stage194_all_keyframe_q12_upper_bound_package.json",
+  "report_md": "experiments/stage194_all_keyframe_q12_upper_bound/stage194_all_keyframe_q12_upper_bound_report.md",
+  "heavy_root": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage194_all_keyframe_q12_upper_bound"
+}
