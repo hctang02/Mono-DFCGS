@@ -1,0 +1,124 @@
+{
+  "stage": 196,
+  "status": "target_feasibility_branch_complete",
+  "decision": "selector_keyframe_representation_cannot_meet_target",
+  "best_fixed_reference": "uniform_gap2",
+  "best_fixed_psnr": 29.654815328772308,
+  "target_psnr_gap2_plus_1db": 30.654815328772308,
+  "summary_rows": [
+    {
+      "source_stage": 193,
+      "ceiling": "framewise_psnr_oracle",
+      "schedule_consistent": "0",
+      "rate_scope": "optimistic per-frame best measured schedule output; not schedule-consistent or rate-valid",
+      "mib_per_frame": "0.0",
+      "psnr": 29.749038180432017,
+      "ssim": "0.8816605037662493",
+      "ms_ssim": "0.9870865034603846",
+      "lpips": "0.14641779118318626",
+      "delta_psnr_vs_best_fixed_gap2": 0.09422285165970834,
+      "target_psnr_gap2_plus_1db": 30.654815328772308,
+      "delta_psnr_vs_target": -0.9057771483402917,
+      "passes_target_no_metric_regression": "0",
+      "interpretation": "current measured selector/fixed-gap candidate-space ceiling"
+    },
+    {
+      "source_stage": 193,
+      "ceiling": "schedule_path_psnr_oracle",
+      "schedule_consistent": "1",
+      "rate_scope": "dynamic-programming path over measured keyframe nodes and measured residual edges; additive payload proxy only",
+      "mib_per_frame": "0.4549855560943924",
+      "psnr": 29.670134277041633,
+      "ssim": "0.8788577944949724",
+      "ms_ssim": "0.9867078401912386",
+      "lpips": "0.1508482470754357",
+      "delta_psnr_vs_best_fixed_gap2": 0.015318948269325006,
+      "target_psnr_gap2_plus_1db": 30.654815328772308,
+      "delta_psnr_vs_target": -0.984681051730675,
+      "passes_target_no_metric_regression": "0",
+      "interpretation": "current measured selector/fixed-gap candidate-space ceiling"
+    },
+    {
+      "source_stage": 194,
+      "ceiling": "all_q12_keyframes",
+      "schedule_consistent": 1,
+      "rate_scope": "measured_schedule_packed_q12_keyframes_plus_fixed_gap_metadata",
+      "mib_per_frame": "0.686173294471943",
+      "psnr": 29.85646819580043,
+      "ssim": "0.8857439302277005",
+      "ms_ssim": "0.9884901848240099",
+      "lpips": "0.13756442577459324",
+      "delta_psnr_vs_best_fixed_gap2": 0.20165286702812324,
+      "target_psnr_gap2_plus_1db": 30.654815328772308,
+      "delta_psnr_vs_target": -0.7983471329718768,
+      "passes_target_no_metric_regression": "0",
+      "interpretation": "q12 keyframe representation ceiling"
+    },
+    {
+      "source_stage": 195,
+      "ceiling": "q16_keyframe",
+      "schedule_consistent": 1,
+      "rate_scope": "measured_schedule_packed_q16_keyframes_plus_fixed_gap_metadata",
+      "mib_per_frame": "0.9146932160156617",
+      "psnr": 29.884665362865746,
+      "ssim": "0.8868697442192623",
+      "ms_ssim": "0.9886300584386145",
+      "lpips": "0.13601533181894535",
+      "delta_psnr_vs_best_fixed_gap2": 0.22985003409343818,
+      "target_psnr_gap2_plus_1db": 30.654815328772308,
+      "delta_psnr_vs_target": -0.7701499659065618,
+      "passes_target_no_metric_regression": "0",
+      "interpretation": "higher-fidelity dense-anchor/rendering representation ceiling"
+    },
+    {
+      "source_stage": 195,
+      "ceiling": "float_dense_anchor",
+      "schedule_consistent": 1,
+      "rate_scope": "quality_upper_bound_no_payload_rate",
+      "mib_per_frame": "",
+      "psnr": 29.88493146578025,
+      "ssim": "0.8868824350291219",
+      "ms_ssim": "0.9886313845897806",
+      "lpips": "0.13598978392716465",
+      "delta_psnr_vs_best_fixed_gap2": 0.23011613700794342,
+      "target_psnr_gap2_plus_1db": 30.654815328772308,
+      "delta_psnr_vs_target": -0.7698838629920566,
+      "passes_target_no_metric_regression": "0",
+      "interpretation": "higher-fidelity dense-anchor/rendering representation ceiling"
+    }
+  ],
+  "branch_rows": [
+    {
+      "branch": "selector_or_keyframe_quantization_tuning",
+      "status": "stop",
+      "rationale": "Stage193-195 ceilings remain at least 0.7698838629920566 dB below gap2+1dB target.",
+      "next_stage": "none",
+      "claim_risk": "Cannot honestly claim a large full-sequence selector gain over best fixed gap."
+    },
+    {
+      "branch": "counted_rgb_or_image_residual_correction",
+      "status": "viable_next_diagnostic",
+      "rationale": "Prior Stage155 sampled image-residual upper bound exceeded 31 dB, so this is the most likely source of +1 dB headroom if all bytes are counted.",
+      "next_stage": "full_sequence_counted_rgb_residual_upper_bound",
+      "claim_risk": "Less Gaussian-native; must be framed as a counted correction payload, not a pure GS keyframe selector."
+    },
+    {
+      "branch": "new_dense_anchor_reconstruction_objective_or_model",
+      "status": "viable_but_heavy",
+      "rationale": "Float dense-anchor target quality is only 29.884931 dB, so the renderer/anchor representation must improve to reach 30.654815 dB without image residuals.",
+      "next_stage": "training_or_representation_redesign",
+      "claim_risk": "Requires new training and may not finish quickly."
+    },
+    {
+      "branch": "paper_claim_scope_adjustment",
+      "status": "viable_writing_fallback",
+      "rationale": "Existing evidence supports sampled-target selector gains and measured middle RD points, but not +1 dB over best full-sequence fixed gap.",
+      "next_stage": "revise_claims_and_tables",
+      "claim_risk": "Does not satisfy user's requested stronger full-sequence result."
+    }
+  ],
+  "summary_csv": "experiments/stage196_target_feasibility_branch/stage196_target_feasibility_summary.csv",
+  "branch_csv": "experiments/stage196_target_feasibility_branch/stage196_branch_options.csv",
+  "package_json": "experiments/stage196_target_feasibility_branch/stage196_target_feasibility_branch_package.json",
+  "report_md": "experiments/stage196_target_feasibility_branch/stage196_target_feasibility_branch_report.md"
+}

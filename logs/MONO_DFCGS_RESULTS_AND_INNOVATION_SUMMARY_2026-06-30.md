@@ -30,6 +30,7 @@ The current measured full-sequence result is a middle RD point: adaptive improve
 | oracle upper bound | Stage193 | framewise and schedule-consistent oracles over Stage192 rows | current measured candidate space lacks `+1 dB` headroom |
 | all-keyframe q12 upper bound | Stage194 | `uniform_gap1` q12 keyframes on all frames | q12 representation itself lacks `+1 dB` headroom |
 | higher-fidelity keyframe upper bound | Stage195 | q16 and float dense-anchor keyframes on all frames | current dense-anchor/rendering representation lacks `+1 dB` headroom |
+| target feasibility branch | Stage196 | Stage193-195 ceiling synthesis | selector/keyframe branch cannot meet requested target |
 
 ## Middle-Frame Recovery Evidence
 
@@ -540,6 +541,34 @@ Interpretation:
 - The current dense-anchor/rendering representation itself lacks enough full-sequence quality ceiling for the requested claim.
 - Next work must change the reconstruction objective/model or introduce a different counted correction payload; selector-only or keyframe-quantization-only work should stop.
 
+## Stage196 Target Feasibility Branch
+
+Stage196 converts the Stage193-195 upper bounds into a branch decision.
+
+Requested target:
+
+- Best fixed reference: `uniform_gap2`.
+- Target PSNR: `30.654815328772308` (`uniform_gap2 + 1 dB`).
+
+Ceilings:
+
+| source | ceiling | PSNR | dPSNR vs gap2 | dPSNR vs target | pass |
+|---:|---|---:|---:|---:|---:|
+| 193 | `framewise_psnr_oracle` | `29.749038180432017` | `+0.09422285165970834` | `-0.9057771483402917` | `0` |
+| 193 | `schedule_path_psnr_oracle` | `29.670134277041633` | `+0.015318948269325006` | `-0.984681051730675` | `0` |
+| 194 | `all_q12_keyframes` | `29.85646819580043` | `+0.20165286702812324` | `-0.7983471329718768` | `0` |
+| 195 | `q16_keyframe` | `29.884665362865746` | `+0.22985003409343818` | `-0.7701499659065618` | `0` |
+| 195 | `float_dense_anchor` | `29.88493146578025` | `+0.23011613700794342` | `-0.7698838629920566` | `0` |
+
+Stage196 decision: `selector_keyframe_representation_cannot_meet_target`.
+
+Branch options:
+
+- `selector_or_keyframe_quantization_tuning`: stop; cannot honestly claim large full-sequence selector gain over best fixed gap.
+- `counted_rgb_or_image_residual_correction`: viable next diagnostic; likely source of headroom based on Stage155 sampled image-residual upper bound, but less Gaussian-native.
+- `new_dense_anchor_reconstruction_objective_or_model`: viable but heavy; needed if the final method must remain GS-native without RGB residual payload.
+- `paper_claim_scope_adjustment`: viable writing fallback; supports sampled-target selector gains and measured middle RD point, but not the requested stronger result.
+
 ## Non-Claims And Risks
 
 | item | status |
@@ -549,6 +578,7 @@ Interpretation:
 | `+1 dB` full-sequence selector headroom in current candidate space | rejected by Stage193 oracle analysis |
 | `+1 dB` full-sequence headroom from all q12 keyframes | rejected by Stage194 all-keyframe q12 upper bound |
 | `+1 dB` full-sequence headroom from q16/float keyframes | rejected by Stage195 higher-fidelity upper bound |
+| continuing selector/keyframe quantization branch for requested strong claim | rejected by Stage196 target feasibility branch |
 | selector precision solved | not claimed; Stage189 finds only `2/66` strong promoted rate-risk rows, but precision remains a tuning target |
 | false negatives solved | not claimed; Stage189 finds `1179` residual-risk rows and sequence hotspots |
 | online streaming selector | not claimed; current setting is offline video encoding unless lookahead is declared |
@@ -590,13 +620,14 @@ Interpretation:
 | 193 | oracle upper-bound analysis | shows current measured candidate space cannot reach the requested `+1 dB` full-sequence target |
 | 194 | all-keyframe q12 upper bound | shows q12 keyframes on every frame still do not reach the requested `+1 dB` target |
 | 195 | higher-fidelity keyframe upper bound | shows q16/float dense-anchor keyframes still do not reach the requested `+1 dB` target |
+| 196 | target feasibility branch | concludes selector/keyframe representation branch cannot meet the requested target |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
-| 196 | representation/payload branch diagnosis | identify a counted correction or reconstruction-model change that can exceed `30.654815328772308` dB full-sequence PSNR |
-| 197+ | adaptive scheduling after new headroom | redesign adaptive scheduling only after a new representation/payload policy has enough quality ceiling |
+| 197 | research-direction choice | choose counted RGB/image residual correction, new reconstruction model/objective, or claim-scope adjustment |
+| 198+ | new branch execution | proceed only after the Stage197 direction is chosen |
 
 ## Canonical Paths
 
@@ -623,5 +654,6 @@ Interpretation:
 | Stage193 oracle upper-bound analysis | `experiments/stage193_oracle_upper_bound_analysis/` |
 | Stage194 all-keyframe q12 upper bound | `experiments/stage194_all_keyframe_q12_upper_bound/` |
 | Stage195 higher-fidelity keyframe upper bound | `experiments/stage195_higher_fidelity_keyframe_upper_bound/` |
+| Stage196 target feasibility branch | `experiments/stage196_target_feasibility_branch/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |
