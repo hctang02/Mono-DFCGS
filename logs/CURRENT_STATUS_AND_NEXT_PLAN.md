@@ -13,8 +13,8 @@ The current focus is the new predictor/refiner, GS-native residual/latent codec,
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage200: `48f0263 Build learned GS training manifest`
-- Latest completed local stage: `Stage200 GS predictor architecture package`
+- Latest pushed commit before Stage201: `3e8e4dd Package GS predictor architecture`
+- Latest completed local stage: `Stage201 predictor-only smoke`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -53,11 +53,12 @@ The current focus is the new predictor/refiner, GS-native residual/latent codec,
 - Stage198: completed prior predictor training audit. Decision: `old_adapter_route_rejected_new_predictor_required`. Old q12 adapter middle PSNR was only gap4 `18.256196169477683` and gap8 `17.06969395261803`; q12-to-float32 old-adapter change was effectively zero (`+0.00004890061461537698` / `-0.000016654591867393265` dB); Stage145 training improved only `+0.011427207695934527` dB and Stage146 continuation regressed. Stage157/158 quality came from counted GS-domain residual side-info, not the old adapter alone. New route requirements are predictor-only gate, GS-native residual payload, edge-RD oracle headroom before selector training, and full-sequence metrics for strong claims.
 - Stage199: completed learned GS training manifest. Decision: `manifest_ready_for_stage200_architecture_package`. The manifest contains `29204` lightweight q12 tasks over gaps `2,4,6,8,12,16`, with `0` missing references, train coverage `60` sequences / `4209` frames, and eval coverage `30` sequences / `1999` frames. Contract audit passed for dense-anchor coverage, RGB-label coverage, split separation, gap coverage, Stage197 decoder contract, and lightweight-reference-only checks. Target dense anchors and RGB are training/encoder-side label sources only.
 - Stage200: completed GS predictor architecture package. Decision: `primary_temporal_basis_refiner_v1_selected_for_stage201_smoke`. Added `mono_dfcgs.learned_gs_predictor.TemporalBasisGSRefiner`, a decoder-side temporal-basis GS refiner with linear q-keyframe interpolation base, endpoint-gated residual `t*(1-t)`, local left/right/base/diff/absdiff/time features, global endpoint GS statistics, and zero-initialized residual head. CPU smoke passed endpoint identity with t0/t1 max abs delta `0.0` and zero-init midpoint linear fallback `0.0`. Stage201 protocol is q12 predictor-only over gaps `4 8`, no per-frame payload, heavy outputs under `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage201_predictor_only_smoke`.
+- Stage201: completed predictor-only smoke. Decision: `predictor_only_smoke_passed_no_regression_gate`. Ran `TemporalBasisGSRefiner` q12 gap4/8 smoke with `8` train tasks, `8` eval tasks, `16` steps, `0` per-frame payload bytes, and checkpoints outside git under `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage201_predictor_only_smoke/`. Best eval PSNR was `20.52573876541323` at step `0`, exactly equal to linear; final eval PSNR was `20.509261273864784` (`-0.016477491548446466` dB vs linear). All stability/contract gates passed, but this is only executable plumbing/no-regression evidence, not learned quality improvement. Stage202 must test longer/broader training headroom before any selector/residual promotion.
 
 ### Immediate Next Plan
 
 - Continue the user-approved GS-native learned predictive compression route through Stage213 before asking for another decision.
-- Immediate next stages: Stage201 predictor-only smoke, Stage202 predictor-only broader validation, Stage203 GS latent/residual codec design.
+- Immediate next stages: Stage202 predictor-only broader validation/training-headroom check, Stage203 GS latent/residual codec design, Stage204 residual codec smoke.
 
 ### Residual Side-Info Codec / RD
 

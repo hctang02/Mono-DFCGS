@@ -1,0 +1,17 @@
+selection_split,task_id,sequence,reference_gap,left_index,right_index,target_index,normalized_time
+train,stage199_00006813,elephant,8,56,64,61,0.625
+train,stage199_00000434,bmx-bumps,4,4,8,6,0.5
+train,stage199_00018031,tractor-sand,8,40,48,42,0.25
+train,stage199_00015750,snowboard,4,60,64,63,0.75
+train,stage199_00010819,mallard-fly,4,32,36,34,0.5
+train,stage199_00009709,lady-running,8,40,48,46,0.75
+train,stage199_00006644,elephant,4,8,12,11,0.75
+train,stage199_00001776,breakdance-flare,8,64,70,65,0.16666666666666666
+eval,stage199_00024701,gold-fish,8,24,32,30,0.75
+eval,stage199_00024913,horsejump-high,4,4,8,7,0.75
+eval,stage199_00025693,kite-surf,4,20,24,21,0.25
+eval,stage199_00026614,mbike-trick,4,8,12,11,0.75
+eval,stage199_00022007,car-shadow,8,0,8,4,0.5
+eval,stage199_00024584,gold-fish,4,40,44,41,0.25
+eval,stage199_00028389,scooter-black,4,20,24,23,0.75
+eval,stage199_00021948,car-shadow,4,4,8,7,0.75

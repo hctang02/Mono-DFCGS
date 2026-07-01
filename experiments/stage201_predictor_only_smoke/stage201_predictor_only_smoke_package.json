@@ -1,0 +1,76 @@
+{
+  "stage": 201,
+  "name": "predictor_only_smoke",
+  "decision": "predictor_only_smoke_passed_no_regression_gate",
+  "task_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage199_learned_gs_training_manifest/stage199_learned_gs_training_tasks.csv",
+  "gaps": [
+    4,
+    8
+  ],
+  "keyframe_codec": "q12",
+  "train_task_count": 8,
+  "eval_task_count": 8,
+  "train_steps": 16,
+  "hidden_dim": 192,
+  "global_dim": 64,
+  "render_loss_weight": 0.02,
+  "best_step": 0,
+  "best_eval_psnr": 20.52573876541323,
+  "endpoint_error": 0.0,
+  "endpoint_t0_error": 0.0,
+  "endpoint_t1_error": 0.0,
+  "per_frame_payload_bytes": 0,
+  "selected_tasks_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage201_predictor_only_smoke/stage201_selected_tasks.csv",
+  "metrics_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage201_predictor_only_smoke/stage201_predictor_only_smoke_metrics.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage201_predictor_only_smoke/stage201_predictor_only_smoke_summary.csv",
+  "train_log_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage201_predictor_only_smoke/stage201_predictor_only_train_log.csv",
+  "gates_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage201_predictor_only_smoke/stage201_predictor_only_gates.csv",
+  "best_checkpoint_path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage201_predictor_only_smoke/temporal_basis_gs_refiner_best.safetensors",
+  "final_checkpoint_path": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage201_predictor_only_smoke/temporal_basis_gs_refiner_final.safetensors",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage201_predictor_only_smoke/stage201_predictor_only_smoke_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage201_predictor_only_smoke/stage201_predictor_only_smoke_report.md",
+  "gate_rows": [
+    {
+      "gate": "metric_rows_ok",
+      "status": "pass",
+      "value": 0,
+      "threshold": "0",
+      "detail": "render/target shapes are explicitly aligned; errors indicate discarded metrics"
+    },
+    {
+      "gate": "endpoint_identity",
+      "status": "pass",
+      "value": 0.0,
+      "threshold": "<=1e-6",
+      "detail": "t=0/t=1 predictor output must match transmitted endpoints"
+    },
+    {
+      "gate": "predictor_only_payload",
+      "status": "pass",
+      "value": 0,
+      "threshold": "0 per-frame payload bytes",
+      "detail": "no residual or latent payload is transmitted in Stage201"
+    },
+    {
+      "gate": "best_eval_no_regression_vs_linear",
+      "status": "pass",
+      "value": 0.0,
+      "threshold": ">= -0.05 dB",
+      "detail": "best=20.52573876541323; linear=20.52573876541323; best_checkpoint=/data/hctang/tmp/opencode/mono_dfcgs_runs/stage201_predictor_only_smoke/temporal_basis_gs_refiner_best.safetensors"
+    },
+    {
+      "gate": "best_eval_vs_stage78_old_adapter_reference",
+      "status": "pass",
+      "value": 2.862793704365373,
+      "threshold": ">0 dB vs Stage78 q12 old adapter mean for smoke gaps",
+      "detail": "reference is historical and protocol-different; used only as sanity floor"
+    },
+    {
+      "gate": "final_checkpoint_written",
+      "status": "pass",
+      "value": "/data/hctang/tmp/opencode/mono_dfcgs_runs/stage201_predictor_only_smoke/temporal_basis_gs_refiner_final.safetensors",
+      "threshold": "exists outside git",
+      "detail": "checkpoint is intentionally saved under heavy_root, not committed"
+    }
+  ]
+}

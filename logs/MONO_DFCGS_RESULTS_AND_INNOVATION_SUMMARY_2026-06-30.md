@@ -35,6 +35,7 @@ The current measured full-sequence result is a middle RD point: adaptive improve
 | prior predictor audit | Stage198 | old adapter training and quality evidence | old adapter route rejected; new predictor required |
 | learned GS training manifest | Stage199 | multi-gap train/eval task references | manifest ready for Stage200 architecture package |
 | GS predictor architecture | Stage200 | `TemporalBasisGSRefiner` contract and module | selected for Stage201 predictor-only smoke |
+| predictor-only smoke | Stage201 | q12 gap4/8 short training/rendered smoke | plumbing/no-regression passed; no learned gain yet |
 
 ## Middle-Frame Recovery Evidence
 
@@ -680,6 +681,40 @@ Stage201 protocol:
 - Payload: none; predictor-only; zero per-frame side-info.
 - Heavy outputs: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage201_predictor_only_smoke`.
 
+## Stage201 Predictor-Only Smoke
+
+Stage201 runs a small q12 gap4/gap8 predictor-only smoke for `TemporalBasisGSRefiner`.
+
+Stage201 decision: `predictor_only_smoke_passed_no_regression_gate`.
+
+Run scope:
+
+- Train tasks: `8`.
+- Eval tasks: `8`.
+- Train steps: `16`.
+- Hidden/global dims: `192/64`.
+- Render loss weight: `0.02`.
+- Per-frame payload bytes: `0`.
+- Best/final checkpoints are outside git under `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage201_predictor_only_smoke/`.
+
+Rendered PSNR summary:
+
+- Linear eval PSNR: `20.52573876541323`.
+- Predictor-best eval PSNR: `20.52573876541323` at step `0`.
+- Predictor-final eval PSNR: `20.509261273864784`.
+- Predictor-best eval delta vs linear: `0.0` dB.
+- Predictor-final eval delta vs linear: `-0.016477491548446466` dB.
+- Predictor-best eval sanity delta vs historical Stage78 q12 old adapter reference over gap4/8: `+2.862793704365373` dB, but this is protocol-different and only a sanity floor.
+
+Gate interpretation:
+
+- Metric rows ok: pass.
+- Endpoint identity: pass.
+- Predictor-only payload: pass, `0` bytes per frame.
+- Best eval no-regression vs linear: pass.
+- Final checkpoint outside git: pass.
+- Important: Stage201 proves executable/stable plumbing and no-regression only. It does not prove learned predictor quality improvement because best step is `0`; Stage202 must test longer/broader training headroom.
+
 ## Non-Claims And Risks
 
 | item | status |
@@ -694,6 +729,7 @@ Stage201 protocol:
 | continuing old `GaussianAnchorDynamicPredictor` unchanged | rejected by Stage198 audit |
 | Stage199 manifest as model improvement | not claimed; it is a data/contract package for Stage200+ |
 | Stage200 architecture as quality result | not claimed; quality gate begins at Stage201 predictor-only smoke |
+| Stage201 predictor learned improvement | not claimed; best checkpoint is step `0` linear fallback |
 | selector precision solved | not claimed; Stage189 finds only `2/66` strong promoted rate-risk rows, but precision remains a tuning target |
 | false negatives solved | not claimed; Stage189 finds `1179` residual-risk rows and sequence hotspots |
 | online streaming selector | not claimed; current setting is offline video encoding unless lookahead is declared |
@@ -740,13 +776,14 @@ Stage201 protocol:
 | 198 | prior predictor training audit | rejects continuing old adapter unchanged and sets gates for the new route |
 | 199 | learned GS training manifest | builds multi-gap lightweight train/eval references and passes contract audit |
 | 200 | GS predictor architecture package | selects `TemporalBasisGSRefiner` and Stage201 predictor-only protocol |
+| 201 | predictor-only smoke | validates executable no-payload predictor plumbing but shows no short-run learned gain |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
-| 201 | predictor-only smoke | train/evaluate `TemporalBasisGSRefiner` on a small q12 gap4/gap8 subset with zero per-frame payload |
-| 202+ | new GS-native predictive codec execution | proceed through Stage213 under the Stage197/198/199/200 gates |
+| 202 | predictor-only broader validation | test whether longer/broader `TemporalBasisGSRefiner` training creates actual headroom |
+| 203+ | new GS-native predictive codec execution | proceed through Stage213 under the Stage197/198/199/200/201 gates |
 
 ## Canonical Paths
 
@@ -778,5 +815,6 @@ Stage201 protocol:
 | Stage198 prior predictor training audit | `experiments/stage198_prior_predictor_training_audit/` |
 | Stage199 learned GS training manifest | `experiments/stage199_learned_gs_training_manifest/` |
 | Stage200 GS predictor architecture package | `experiments/stage200_gs_predictor_architecture_package/` |
+| Stage201 predictor-only smoke | `experiments/stage201_predictor_only_smoke/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |
