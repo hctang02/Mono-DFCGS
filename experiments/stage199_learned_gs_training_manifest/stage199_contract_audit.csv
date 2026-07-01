@@ -1,0 +1,7 @@
+audit,status,value,requirement,detail
+dense_anchor_coverage,pass,0,all referenced frames have dense gap1 anchor sources,missing_sources=0; missing_pair_items=0; non_contiguous_sequences=0
+rgb_label_coverage,pass,0,target RGB paths exist for render-aware training labels,"target RGB is training/encoder-side only, never decoder-side image residual"
+split_separation,pass,0,no train/eval sequence overlap,
+gap_coverage,pass,0,"train/eval rows exist for gaps [2, 4, 6, 8, 12, 16]",
+stage197_decoder_contract,pass,0,"runtime decoder excludes target dense anchors, target RGB/image residuals, and oracle labels",manifest fields mark those sources as training/encoder-side labels only; payloads must be GS-native and counted
+lightweight_reference_only,pass,0,"do not copy heavy anchors, checkpoints, or tensors into git artifacts",CSV rows contain existing file paths and metadata only

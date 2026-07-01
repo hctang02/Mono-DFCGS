@@ -4,17 +4,17 @@ Date: 2026-07-01
 
 ## Current Task
 
-Continue the Mono-DFCGS StreamSplat-guided, Gaussian-domain, rate-counted middle-frame recovery line with adaptive keyframe scheduling.
+Continue the user-approved GS-native learned predictive compression route after Stage196 showed the old selector/keyframe representation cannot meet the requested target and Stage197 rejected RGB/image residual post-processing as the final method.
 
-The current focus is expanded fixed-gap full-sequence benchmarking and stronger selector design after the user requested that the selector beat multiple fixed-gap baselines clearly on full-sequence metrics.
+The current focus is the new predictor/refiner, GS-native residual/latent codec, and encoder-side selector/budget allocator sequence through Stage213.
 
 ## Current Repo State
 
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage198: `8db19aa Define learned GS compression protocol`
-- Latest completed local stage: `Stage198 prior predictor training audit`
+- Latest pushed commit before Stage199: `42bb179 Audit prior predictor training`
+- Latest completed local stage: `Stage199 learned GS training manifest`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -51,11 +51,12 @@ The current focus is expanded fixed-gap full-sequence benchmarking and stronger 
 - Stage196: completed target feasibility branch. Decision: `selector_keyframe_representation_cannot_meet_target`. The requested target is PSNR `30.654815328772308` (`uniform_gap2 + 1 dB`). The best current ceiling is float dense-anchor all-keyframes at `29.88493146578025`, still `-0.7698838629920566` dB below target. Branch options are: stop selector/keyframe quantization tuning, run counted RGB/image residual correction full-sequence upper bound, train/change dense-anchor reconstruction model, or adjust paper claim scope.
 - Stage197: completed learned GS compression protocol. Decision: `primary_gs_native_predictive_codec_protocol_defined`. The final method rejects RGB/image residual post-processing; primary runtime decoder uses transmitted GS keyframes, schedule, normalized time, shared GS codec weights, and counted GS-native latent/residual payloads only. StreamSplat checkpoint may be used as initialization/teacher or optional diagnostic base, but raw RGB-dependent StreamSplat runtime is not the primary final codec claim. Stage198-213 gates are packaged in `experiments/stage197_learned_gs_compression_protocol/stage197_stage_plan.csv`.
 - Stage198: completed prior predictor training audit. Decision: `old_adapter_route_rejected_new_predictor_required`. Old q12 adapter middle PSNR was only gap4 `18.256196169477683` and gap8 `17.06969395261803`; q12-to-float32 old-adapter change was effectively zero (`+0.00004890061461537698` / `-0.000016654591867393265` dB); Stage145 training improved only `+0.011427207695934527` dB and Stage146 continuation regressed. Stage157/158 quality came from counted GS-domain residual side-info, not the old adapter alone. New route requirements are predictor-only gate, GS-native residual payload, edge-RD oracle headroom before selector training, and full-sequence metrics for strong claims.
+- Stage199: completed learned GS training manifest. Decision: `manifest_ready_for_stage200_architecture_package`. The manifest contains `29204` lightweight q12 tasks over gaps `2,4,6,8,12,16`, with `0` missing references, train coverage `60` sequences / `4209` frames, and eval coverage `30` sequences / `1999` frames. Contract audit passed for dense-anchor coverage, RGB-label coverage, split separation, gap coverage, Stage197 decoder contract, and lightweight-reference-only checks. Target dense anchors and RGB are training/encoder-side label sources only.
 
 ### Immediate Next Plan
 
 - Continue the user-approved GS-native learned predictive compression route through Stage213 before asking for another decision.
-- Immediate next stages: Stage199 learned GS training manifest, Stage200 predictor/refiner architecture package, Stage201 predictor-only smoke.
+- Immediate next stages: Stage200 predictor/refiner architecture package, Stage201 predictor-only smoke, Stage202 predictor-only broader validation.
 
 ### Residual Side-Info Codec / RD
 

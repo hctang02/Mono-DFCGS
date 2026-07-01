@@ -1,0 +1,227 @@
+{
+  "stage": 199,
+  "name": "learned_gs_training_manifest",
+  "decision": "manifest_ready_for_stage200_architecture_package",
+  "dense_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage61_davis_anchor_export_data_full/stage61_davis_anchor_export_manifest.csv",
+  "davis_root": "/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS",
+  "splits": [
+    "train",
+    "val"
+  ],
+  "gaps": [
+    2,
+    4,
+    6,
+    8,
+    12,
+    16
+  ],
+  "keyframe_codecs": [
+    "q12"
+  ],
+  "sequence_count": 90,
+  "task_count": 29204,
+  "missing_count": 0,
+  "tasks_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage199_learned_gs_training_manifest/stage199_learned_gs_training_tasks.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage199_learned_gs_training_manifest/stage199_learned_gs_training_summary.csv",
+  "sequence_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage199_learned_gs_training_manifest/stage199_sequence_coverage.csv",
+  "audit_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage199_learned_gs_training_manifest/stage199_contract_audit.csv",
+  "missing_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage199_learned_gs_training_manifest/stage199_missing_references.csv",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage199_learned_gs_training_manifest/stage199_learned_gs_training_manifest_report.md",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage199_learned_gs_training_manifest/stage199_learned_gs_training_manifest_package.json",
+  "audit_rows": [
+    {
+      "audit": "dense_anchor_coverage",
+      "status": "pass",
+      "value": 0,
+      "requirement": "all referenced frames have dense gap1 anchor sources",
+      "detail": "missing_sources=0; missing_pair_items=0; non_contiguous_sequences=0"
+    },
+    {
+      "audit": "rgb_label_coverage",
+      "status": "pass",
+      "value": 0,
+      "requirement": "target RGB paths exist for render-aware training labels",
+      "detail": "target RGB is training/encoder-side only, never decoder-side image residual"
+    },
+    {
+      "audit": "split_separation",
+      "status": "pass",
+      "value": 0,
+      "requirement": "no train/eval sequence overlap",
+      "detail": ""
+    },
+    {
+      "audit": "gap_coverage",
+      "status": "pass",
+      "value": 0,
+      "requirement": "train/eval rows exist for gaps [2, 4, 6, 8, 12, 16]",
+      "detail": ""
+    },
+    {
+      "audit": "stage197_decoder_contract",
+      "status": "pass",
+      "value": 0,
+      "requirement": "runtime decoder excludes target dense anchors, target RGB/image residuals, and oracle labels",
+      "detail": "manifest fields mark those sources as training/encoder-side labels only; payloads must be GS-native and counted"
+    },
+    {
+      "audit": "lightweight_reference_only",
+      "status": "pass",
+      "value": 0,
+      "requirement": "do not copy heavy anchors, checkpoints, or tensors into git artifacts",
+      "detail": "CSV rows contain existing file paths and metadata only"
+    }
+  ],
+  "summary_rows": [
+    {
+      "task_split": "eval",
+      "keyframe_codec": "q12",
+      "reference_gap": 2,
+      "sequence_count": 30,
+      "segment_count": 974,
+      "task_count": 974,
+      "target_label_count": 974,
+      "mean_tasks_per_sequence": 32.46666666666667,
+      "min_normalized_time": 0.5,
+      "max_normalized_time": 0.5
+    },
+    {
+      "task_split": "eval",
+      "keyframe_codec": "q12",
+      "reference_gap": 4,
+      "sequence_count": 30,
+      "segment_count": 495,
+      "task_count": 1463,
+      "target_label_count": 1463,
+      "mean_tasks_per_sequence": 48.766666666666666,
+      "min_normalized_time": 0.25,
+      "max_normalized_time": 0.75
+    },
+    {
+      "task_split": "eval",
+      "keyframe_codec": "q12",
+      "reference_gap": 6,
+      "sequence_count": 30,
+      "segment_count": 334,
+      "task_count": 1627,
+      "target_label_count": 1627,
+      "mean_tasks_per_sequence": 54.233333333333334,
+      "min_normalized_time": 0.16666666666666666,
+      "max_normalized_time": 0.8333333333333334
+    },
+    {
+      "task_split": "eval",
+      "keyframe_codec": "q12",
+      "reference_gap": 8,
+      "sequence_count": 30,
+      "segment_count": 252,
+      "task_count": 1707,
+      "target_label_count": 1707,
+      "mean_tasks_per_sequence": 56.9,
+      "min_normalized_time": 0.125,
+      "max_normalized_time": 0.875
+    },
+    {
+      "task_split": "eval",
+      "keyframe_codec": "q12",
+      "reference_gap": 12,
+      "sequence_count": 30,
+      "segment_count": 176,
+      "task_count": 1788,
+      "target_label_count": 1788,
+      "mean_tasks_per_sequence": 59.6,
+      "min_normalized_time": 0.08333333333333333,
+      "max_normalized_time": 0.9166666666666666
+    },
+    {
+      "task_split": "eval",
+      "keyframe_codec": "q12",
+      "reference_gap": 16,
+      "sequence_count": 30,
+      "segment_count": 132,
+      "task_count": 1830,
+      "target_label_count": 1830,
+      "mean_tasks_per_sequence": 61.0,
+      "min_normalized_time": 0.0625,
+      "max_normalized_time": 0.9375
+    },
+    {
+      "task_split": "train",
+      "keyframe_codec": "q12",
+      "reference_gap": 2,
+      "sequence_count": 60,
+      "segment_count": 2055,
+      "task_count": 2055,
+      "target_label_count": 2055,
+      "mean_tasks_per_sequence": 34.25,
+      "min_normalized_time": 0.5,
+      "max_normalized_time": 0.5
+    },
+    {
+      "task_split": "train",
+      "keyframe_codec": "q12",
+      "reference_gap": 4,
+      "sequence_count": 60,
+      "segment_count": 1048,
+      "task_count": 3087,
+      "target_label_count": 3087,
+      "mean_tasks_per_sequence": 51.45,
+      "min_normalized_time": 0.25,
+      "max_normalized_time": 0.75
+    },
+    {
+      "task_split": "train",
+      "keyframe_codec": "q12",
+      "reference_gap": 6,
+      "sequence_count": 60,
+      "segment_count": 703,
+      "task_count": 3430,
+      "target_label_count": 3430,
+      "mean_tasks_per_sequence": 57.166666666666664,
+      "min_normalized_time": 0.16666666666666666,
+      "max_normalized_time": 0.8333333333333334
+    },
+    {
+      "task_split": "train",
+      "keyframe_codec": "q12",
+      "reference_gap": 8,
+      "sequence_count": 60,
+      "segment_count": 540,
+      "task_count": 3604,
+      "target_label_count": 3604,
+      "mean_tasks_per_sequence": 60.06666666666667,
+      "min_normalized_time": 0.125,
+      "max_normalized_time": 0.875
+    },
+    {
+      "task_split": "train",
+      "keyframe_codec": "q12",
+      "reference_gap": 12,
+      "sequence_count": 60,
+      "segment_count": 369,
+      "task_count": 3776,
+      "target_label_count": 3776,
+      "mean_tasks_per_sequence": 62.93333333333333,
+      "min_normalized_time": 0.08333333333333333,
+      "max_normalized_time": 0.9166666666666666
+    },
+    {
+      "task_split": "train",
+      "keyframe_codec": "q12",
+      "reference_gap": 16,
+      "sequence_count": 60,
+      "segment_count": 283,
+      "task_count": 3863,
+      "target_label_count": 3863,
+      "mean_tasks_per_sequence": 64.38333333333334,
+      "min_normalized_time": 0.0625,
+      "max_normalized_time": 0.9375
+    }
+  ],
+  "contract_notes": [
+    "Target dense anchors and RGB are training/encoder-side label sources only.",
+    "Decoder-side payloads for later stages must be GS-native and counted in total rate.",
+    "No heavy anchors, tensors, or checkpoints are copied into this manifest package."
+  ]
+}

@@ -33,6 +33,7 @@ The current measured full-sequence result is a middle RD point: adaptive improve
 | target feasibility branch | Stage196 | Stage193-195 ceiling synthesis | selector/keyframe branch cannot meet requested target |
 | learned GS compression protocol | Stage197 | GS-native predictive codec contract and Stage198-213 gates | new route rejects RGB/image residual final method |
 | prior predictor audit | Stage198 | old adapter training and quality evidence | old adapter route rejected; new predictor required |
+| learned GS training manifest | Stage199 | multi-gap train/eval task references | manifest ready for Stage200 architecture package |
 
 ## Middle-Frame Recovery Evidence
 
@@ -616,6 +617,37 @@ New route requirements:
 - Edge-RD oracle headroom before learned selector training.
 - Full-sequence measured PSNR/SSIM/MS-SSIM/LPIPS and bytes for any strong claim.
 
+## Stage199 Learned GS Training Manifest
+
+Stage199 packages the lightweight data references for the GS-native predictive codec route without copying anchors or tensors.
+
+Stage199 decision: `manifest_ready_for_stage200_architecture_package`.
+
+Coverage:
+
+- Total q12 task rows: `29204`.
+- Missing references: `0`.
+- Train split: `60` sequences, `4209` frames.
+- Eval split: `30` sequences, `1999` frames.
+- Gaps covered in both splits: `2,4,6,8,12,16`.
+- Eval tasks by gap: gap2 `974`, gap4 `1463`, gap6 `1627`, gap8 `1707`, gap12 `1788`, gap16 `1830`.
+- Train tasks by gap: gap2 `2055`, gap4 `3087`, gap6 `3430`, gap8 `3604`, gap12 `3776`, gap16 `3863`.
+
+Contract audit:
+
+- Dense-anchor coverage: pass.
+- RGB-label coverage: pass.
+- Split separation: pass.
+- Gap coverage: pass.
+- Stage197 decoder contract: pass.
+- Lightweight-reference-only: pass.
+
+Decoder notes:
+
+- Runtime decoder inputs remain transmitted GS keyframes, schedule metadata, normalized time, shared weights, and counted GS-native latent/residual payloads.
+- Target dense anchors and target RGB are training/encoder-side labels only.
+- Target dense anchors, target RGB/image residuals, and oracle schedule/quality labels remain forbidden decoder inputs.
+
 ## Non-Claims And Risks
 
 | item | status |
@@ -628,6 +660,7 @@ New route requirements:
 | continuing selector/keyframe quantization branch for requested strong claim | rejected by Stage196 target feasibility branch |
 | RGB/image residual post-processing final method | rejected by user and Stage197 protocol |
 | continuing old `GaussianAnchorDynamicPredictor` unchanged | rejected by Stage198 audit |
+| Stage199 manifest as model improvement | not claimed; it is a data/contract package for Stage200+ |
 | selector precision solved | not claimed; Stage189 finds only `2/66` strong promoted rate-risk rows, but precision remains a tuning target |
 | false negatives solved | not claimed; Stage189 finds `1179` residual-risk rows and sequence hotspots |
 | online streaming selector | not claimed; current setting is offline video encoding unless lookahead is declared |
@@ -672,14 +705,14 @@ New route requirements:
 | 196 | target feasibility branch | concludes selector/keyframe representation branch cannot meet the requested target |
 | 197 | learned GS compression protocol | defines GS-native predictive codec route and decoder contract for Stage198-213 |
 | 198 | prior predictor training audit | rejects continuing old adapter unchanged and sets gates for the new route |
+| 199 | learned GS training manifest | builds multi-gap lightweight train/eval references and passes contract audit |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
-| 199 | learned GS training manifest | build multi-gap train/eval task manifest for new predictor/residual/selector route |
 | 200 | predictor/refiner architecture package | define the new GS-native architecture and training gates |
-| 201+ | new GS-native predictive codec execution | proceed through Stage213 under the Stage197/198 gates |
+| 201+ | new GS-native predictive codec execution | proceed through Stage213 under the Stage197/198/199 gates |
 
 ## Canonical Paths
 
@@ -709,5 +742,6 @@ New route requirements:
 | Stage196 target feasibility branch | `experiments/stage196_target_feasibility_branch/` |
 | Stage197 learned GS compression protocol | `experiments/stage197_learned_gs_compression_protocol/` |
 | Stage198 prior predictor training audit | `experiments/stage198_prior_predictor_training_audit/` |
+| Stage199 learned GS training manifest | `experiments/stage199_learned_gs_training_manifest/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |
