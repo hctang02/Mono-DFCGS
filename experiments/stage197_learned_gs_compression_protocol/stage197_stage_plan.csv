@@ -1,0 +1,17 @@
+stage,name,goal,gate,commit_required
+198,prior_predictor_training_audit,document why old adapter training failed,old adapter route rejected,1
+199,learned_gs_training_manifest,build multi-gap train/eval task manifest,complete lightweight references and split audit,1
+200,gs_predictor_architecture_package,define new predictor/refiner candidates,architecture and loss contract ready,1
+201,predictor_only_smoke,test new predictor without residual/selector,> old adapter and stable render metrics,1
+202,predictor_only_broader_validation,validate predictor over multiple gaps,broad improvement or architecture rejection,1
+203,gs_latent_residual_codec_design,define GS-native residual/latent codec,codec payload is decodable and counted,1
+204,residual_codec_smoke,test predictor plus GS residual on small set,quality headroom near target,1
+205,fixed_gap_predictive_codec_validation,validate predictor+residual without selector,fixed-gap quality/rate headroom,1
+206,edge_rd_table,measure segment-level costs for schedule optimization,edge coverage complete for selected gaps,1
+207,dp_oracle_schedule,compute oracle keyframe schedules,oracle beats fixed baselines,1
+208,selector_training_data,convert oracle schedules to encoder labels/features,feature-source audit passes,1
+209,encoder_selector_training,train deployable schedule predictor,learned selector approaches oracle,1
+210,selector_residual_budget_joint_training,jointly tune schedule and residual allocation,joint RD improves selector-only,1
+211,full_sequence_measured_rd,compare final adaptive against fixed gaps,full-sequence RD-quality complete,1
+212,ablation_package,prove predictor/residual/selector contributions,paper-facing ablations complete,1
+213,subjective_visual_export,export videos/contact sheets outside git,visual evidence paths recorded,1

@@ -1,0 +1,14 @@
+{
+  "stage": 197,
+  "status": "learned_gs_compression_protocol_complete",
+  "decision": "primary_gs_native_predictive_codec_protocol_defined",
+  "final_method_rejects_rgb_image_residual": true,
+  "primary_decoder_runtime_contract": "decoded_gs_keyframes_plus_schedule_time_shared_weights_and_counted_gs_latent_residual_payloads",
+  "streamsplat_usage": "allowed_as_initialization_teacher_or_optional_diagnostic_base_not_primary_raw_rgb_runtime_claim",
+  "contract_csv": "experiments/stage197_learned_gs_compression_protocol/stage197_decoder_contract.csv",
+  "module_csv": "experiments/stage197_learned_gs_compression_protocol/stage197_module_contract.csv",
+  "stage_plan_csv": "experiments/stage197_learned_gs_compression_protocol/stage197_stage_plan.csv",
+  "package_json": "experiments/stage197_learned_gs_compression_protocol/stage197_learned_gs_compression_protocol_package.json",
+  "report_md": "experiments/stage197_learned_gs_compression_protocol/stage197_learned_gs_compression_protocol_report.md",
+  "next": "Stage198 audit prior decoder predictor training before building new manifest."
+}

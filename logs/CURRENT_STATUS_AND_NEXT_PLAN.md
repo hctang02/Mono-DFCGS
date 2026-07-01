@@ -13,8 +13,8 @@ The current focus is expanded fixed-gap full-sequence benchmarking and stronger 
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage196: `56d90ed Measure higher-fidelity keyframe upper bound`
-- Latest completed local stage: `Stage196 target feasibility branch`
+- Latest pushed commit before Stage197: `ae507e1 Package target feasibility branch`
+- Latest completed local stage: `Stage197 learned GS compression protocol`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -49,11 +49,12 @@ The current focus is expanded fixed-gap full-sequence benchmarking and stronger 
 - Stage194: completed all-keyframe q12 upper-bound measurement. Decision: `all_keyframe_q12_improves_gap2_but_below_target_margin`. `uniform_gap1` has `1999/1999` keyframes and `30/30` schedule-packed keyframe groups complete, with rate/PSNR/SSIM/MS-SSIM/LPIPS `0.686173294471943/29.85646819580043/0.8857439302277005/0.9884901848240099/0.13756442577459324`. It beats Stage192 best fixed `uniform_gap2` by only `+0.20165286702812324` dB PSNR and `-0.01411689181680259` LPIPS, failing the `+1 dB` target.
 - Stage195: completed higher-fidelity keyframe upper-bound measurement. Decision: `higher_fidelity_keyframes_improve_gap2_but_below_target_margin`. Full q16 keyframes reach rate/PSNR/SSIM/MS-SSIM/LPIPS `0.9146932160156617/29.884665362865746/0.8868697442192623/0.9886300584386145/0.13601533181894535`, only `+0.22985003409343818` dB over gap2. Float dense-anchor keyframes reach PSNR/SSIM/MS-SSIM/LPIPS `29.88493146578025/0.8868824350291219/0.9886313845897806/0.13598978392716465`, only `+0.23011613700794342` dB over gap2. Thus q16/float keyframes still fail the requested `+1 dB` target.
 - Stage196: completed target feasibility branch. Decision: `selector_keyframe_representation_cannot_meet_target`. The requested target is PSNR `30.654815328772308` (`uniform_gap2 + 1 dB`). The best current ceiling is float dense-anchor all-keyframes at `29.88493146578025`, still `-0.7698838629920566` dB below target. Branch options are: stop selector/keyframe quantization tuning, run counted RGB/image residual correction full-sequence upper bound, train/change dense-anchor reconstruction model, or adjust paper claim scope.
+- Stage197: completed learned GS compression protocol. Decision: `primary_gs_native_predictive_codec_protocol_defined`. The final method rejects RGB/image residual post-processing; primary runtime decoder uses transmitted GS keyframes, schedule, normalized time, shared GS codec weights, and counted GS-native latent/residual payloads only. StreamSplat checkpoint may be used as initialization/teacher or optional diagnostic base, but raw RGB-dependent StreamSplat runtime is not the primary final codec claim. Stage198-213 gates are packaged in `experiments/stage197_learned_gs_compression_protocol/stage197_stage_plan.csv`.
 
 ### Immediate Next Plan
 
-- Stop point for current branch: selector/keyframe representation work cannot meet the user's requested `+1 dB` full-sequence target.
-- Need user/research-direction choice before Stage197: counted RGB/image residual correction, new reconstruction model/objective, or paper claim-scope adjustment.
+- Continue the user-approved GS-native learned predictive compression route through Stage213 before asking for another decision.
+- Immediate next stages: Stage198 prior predictor training audit, Stage199 learned GS training manifest, Stage200 predictor/refiner architecture package.
 
 ### Residual Side-Info Codec / RD
 

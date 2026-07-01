@@ -31,6 +31,7 @@ The current measured full-sequence result is a middle RD point: adaptive improve
 | all-keyframe q12 upper bound | Stage194 | `uniform_gap1` q12 keyframes on all frames | q12 representation itself lacks `+1 dB` headroom |
 | higher-fidelity keyframe upper bound | Stage195 | q16 and float dense-anchor keyframes on all frames | current dense-anchor/rendering representation lacks `+1 dB` headroom |
 | target feasibility branch | Stage196 | Stage193-195 ceiling synthesis | selector/keyframe branch cannot meet requested target |
+| learned GS compression protocol | Stage197 | GS-native predictive codec contract and Stage198-213 gates | new route rejects RGB/image residual final method |
 
 ## Middle-Frame Recovery Evidence
 
@@ -569,6 +570,29 @@ Branch options:
 - `new_dense_anchor_reconstruction_objective_or_model`: viable but heavy; needed if the final method must remain GS-native without RGB residual payload.
 - `paper_claim_scope_adjustment`: viable writing fallback; supports sampled-target selector gains and measured middle RD point, but not the requested stronger result.
 
+## Stage197 Learned GS Compression Protocol
+
+The user rejected RGB/image residual post-processing as a final method and approved the GS-native learned predictive compression route through Stage213.
+
+Stage197 decision: `primary_gs_native_predictive_codec_protocol_defined`.
+
+Primary runtime decoder contract:
+
+- Allowed: transmitted q-keyframe GS bitstreams, transmitted schedule metadata, normalized time, shared GS predictor/refiner weights, and transmitted counted GS latent/residual bitstreams.
+- Forbidden: target dense anchor, target RGB/image residual, oracle schedule/quality labels.
+- Training/encoder only: target dense anchor and RGB may supervise predictors, residual payload generation, and selector labels.
+- StreamSplat checkpoint: allowed as initialization/teacher or optional diagnostic base, but raw RGB-dependent StreamSplat runtime is not the primary final codec claim.
+
+Stage gates:
+
+- Stage198: audit old predictor training failures.
+- Stage199: build learned GS training manifest.
+- Stage200: package new predictor/refiner architecture.
+- Stage201-205: validate predictor and GS-native residual before selector training.
+- Stage206-207: build edge RD table and DP oracle schedules.
+- Stage208-210: train selector and residual budget allocator.
+- Stage211-213: full measured RD, ablations, and subjective visuals.
+
 ## Non-Claims And Risks
 
 | item | status |
@@ -579,6 +603,7 @@ Branch options:
 | `+1 dB` full-sequence headroom from all q12 keyframes | rejected by Stage194 all-keyframe q12 upper bound |
 | `+1 dB` full-sequence headroom from q16/float keyframes | rejected by Stage195 higher-fidelity upper bound |
 | continuing selector/keyframe quantization branch for requested strong claim | rejected by Stage196 target feasibility branch |
+| RGB/image residual post-processing final method | rejected by user and Stage197 protocol |
 | selector precision solved | not claimed; Stage189 finds only `2/66` strong promoted rate-risk rows, but precision remains a tuning target |
 | false negatives solved | not claimed; Stage189 finds `1179` residual-risk rows and sequence hotspots |
 | online streaming selector | not claimed; current setting is offline video encoding unless lookahead is declared |
@@ -621,13 +646,15 @@ Branch options:
 | 194 | all-keyframe q12 upper bound | shows q12 keyframes on every frame still do not reach the requested `+1 dB` target |
 | 195 | higher-fidelity keyframe upper bound | shows q16/float dense-anchor keyframes still do not reach the requested `+1 dB` target |
 | 196 | target feasibility branch | concludes selector/keyframe representation branch cannot meet the requested target |
+| 197 | learned GS compression protocol | defines GS-native predictive codec route and decoder contract for Stage198-213 |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
-| 197 | research-direction choice | choose counted RGB/image residual correction, new reconstruction model/objective, or claim-scope adjustment |
-| 198+ | new branch execution | proceed only after the Stage197 direction is chosen |
+| 198 | prior predictor training audit | document why old adapter/decoder predictor route failed and freeze non-goals |
+| 199 | learned GS training manifest | build multi-gap train/eval task manifest for new predictor/residual/selector route |
+| 200+ | new GS-native predictive codec execution | proceed through Stage213 under the Stage197 contract |
 
 ## Canonical Paths
 
@@ -655,5 +682,6 @@ Branch options:
 | Stage194 all-keyframe q12 upper bound | `experiments/stage194_all_keyframe_q12_upper_bound/` |
 | Stage195 higher-fidelity keyframe upper bound | `experiments/stage195_higher_fidelity_keyframe_upper_bound/` |
 | Stage196 target feasibility branch | `experiments/stage196_target_feasibility_branch/` |
+| Stage197 learned GS compression protocol | `experiments/stage197_learned_gs_compression_protocol/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |

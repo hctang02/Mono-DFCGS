@@ -1,0 +1,12 @@
+scope,item,status,rationale
+primary_runtime_decoder,transmitted_q_keyframe_gs_bitstreams,allowed,Keyframes are the compressed GS stream anchors and every keyframe byte is counted.
+primary_runtime_decoder,transmitted_schedule_metadata,allowed,Decoder receives keyframe indices/segment metadata; selector features are not needed at decode time.
+primary_runtime_decoder,normalized_time,allowed,Time within a keyframe segment is deterministic from transmitted schedule.
+primary_runtime_decoder,shared_gs_predictor_refiner_weights,allowed,"Codec model weights are shared once as method parameters, not per-video hidden side information."
+primary_runtime_decoder,transmitted_gs_latent_or_residual_bitstreams,allowed_counted,Residual/latent payloads are GS-native and must be included in total rate.
+primary_runtime_decoder,target_dense_anchor,forbidden,"Target anchors may supervise training or produce encoder-side residual payloads, but cannot be a decoder input."
+primary_runtime_decoder,target_rgb_or_image_residual,forbidden,User rejected image-domain post-processing; final method must remain GS compression.
+primary_runtime_decoder,oracle_schedule_or_quality_labels,forbidden,Oracle labels can train/evaluate but must be represented by transmitted schedule or learned encoder decisions at inference.
+encoder_training,target_dense_anchor_and_rgb,allowed_training_only,"Encoder/training can use targets to learn predictors, residual payloads, and selector labels."
+streamsplat_checkpoint,frozen_streamsplat_as_initialization_or_teacher,allowed_optional,"The checkpoint can initialize or supervise GS-native modules, but primary runtime decoder should not require raw target RGB."
+streamsplat_checkpoint,full_runtime_streamsplat_raw_rgb_dependency,not_primary_final_claim,Using raw video/image inputs at decoder would undermine a GS-compression claim unless those inputs are explicitly transmitted and counted.
