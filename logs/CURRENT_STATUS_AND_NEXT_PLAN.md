@@ -13,8 +13,8 @@ The current focus is expanded fixed-gap full-sequence benchmarking and stronger 
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage192: `cb92e2b Prepare expanded fixed-gap protocol`
-- Latest completed local stage: `Stage192 expanded fixed-gap measurement`
+- Latest pushed commit before Stage193: `3fba643 Measure expanded fixed-gap baselines`
+- Latest completed local stage: `Stage193 oracle upper-bound analysis`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -45,11 +45,12 @@ The current focus is expanded fixed-gap full-sequence benchmarking and stronger 
 - Selector-gain interpretation to preserve for writing: Stage177/180 sampled validations showed large gains on selector-relevant targets, especially Stage180 with adaptive PSNR/LPIPS `29.770753/0.142780` vs gap8 `29.206326/0.176652` and gap4 `29.464217/0.162457`, giving `+0.564426` dB PSNR and `-0.033873` LPIPS vs gap8 plus `+0.306536` dB and `-0.019677` LPIPS vs gap4. Stage185/186 full-sequence measured validation averages over all frames and is more conservative: adaptive PSNR/SSIM/MS-SSIM/LPIPS `29.425583/0.869294/0.984647/0.165937` vs gap8 `29.373965/0.867626/0.984343/0.168692`, giving `+0.051618` dB PSNR, `+0.001668` SSIM, `+0.000304` MS-SSIM, and `-0.002754` LPIPS at `+0.014877` MiB/frame. These are not contradictory; Stage180 is a targeted sampled selector-benefit result, while Stage186 is the final full-sequence RD-quality table.
 - Stage191: completed expanded fixed-gap protocol for `gap2/gap4/gap6/gap8/gap16` plus current `stage165_adaptive`. Decision: `measure_expanded_fixed_gap_baselines_next`. Schedule keyframes/residual rows are gap2 `1025/974`, gap4 `536/1463`, gap6 `372/1627`, gap8 `292/1707`, gap16 `169/1830`, adaptive `358/1641`. Stage192 missing measurements are `469` single keyframes, `4319` residuals, and `90` schedule-packed keyframe groups for payload plus the same `469/4319` quality gaps; existing Stage184/186 rows cover `596` keyframes and `3472` residuals.
 - Stage192: completed expanded fixed-gap measurement. Decision: `current_adaptive_not_strong_against_expanded_fixed_gaps`. Best fixed gap by PSNR is `uniform_gap2` at rate/PSNR/SSIM/MS-SSIM/LPIPS `0.4495468821866683/29.654815328772308/0.878375951948018/0.9866168332910943/0.15168131759139583`. Current `stage165_adaptive` is `0.2907429328258184/29.4255826920606/0.8692941793565335/0.9846469353830415/0.16593745923142186`, which is `-0.22923263671170702` dB PSNR and `+0.014256141640026032` LPIPS vs best fixed gap. Gap6 is a useful near-rate fixed baseline: `0.29344506237493745` MiB/frame, PSNR `29.448737801531657`, LPIPS `0.16457491443157493`, slightly better than current adaptive at similar rate.
+- Stage193: completed oracle upper-bound analysis over the Stage192 measured candidate space. Decision: `framewise_oracle_upper_bound_below_target_margin`. The non-schedule-consistent framewise PSNR oracle reaches PSNR/SSIM/MS-SSIM/LPIPS `29.749038180432017/0.8816605037662493/0.9870865034603846/0.14641779118318626`, only `+0.09422285165970834` dB over best fixed `uniform_gap2`; the schedule-consistent path oracle reaches `29.670134277041633/0.8788577944949724/0.9867078401912386/0.1508482470754357`, only `+0.015318948269325006` dB. Therefore selector tuning over the current measured Stage158/fixed-gap candidate space cannot plausibly satisfy the requested `+1 dB` full-sequence target.
 
 ### Immediate Next Plan
 
-- Stage193: compute oracle upper bounds before designing the next selector; if oracle cannot beat the best fixed gap by about `+1 dB`, the bottleneck is representation/policy capacity rather than selector learning.
-- Stage194+: design a multi-gap rate-aware adaptive selector only after Stage193 establishes enough headroom.
+- Stage194: test a stronger representation upper bound with all-frame q12 keyframes (`gap1`) before further selector design.
+- Stage195+: if all-keyframe q12 still lacks about `+1 dB` over best fixed gap2, stop selector-only work and move to representation/payload-policy improvement; if it has headroom, design a rate-aware adaptive schedule around that stronger representation.
 
 ### Residual Side-Info Codec / RD
 

@@ -27,6 +27,7 @@ The current measured full-sequence result is a middle RD point: adaptive improve
 | paper-facing package | Stage190 | tables, claims, decoder contract, title/abstract draft | current writing/slides handoff package |
 | expanded fixed-gap protocol | Stage191 | gap2/gap4/gap6/gap8/gap16 plus adaptive protocol | missing measurement manifest for stronger baseline comparison |
 | expanded fixed-gap measurement | Stage192 | measured RD-quality for gap2/gap4/gap6/gap8/gap16/adaptive | current adaptive does not beat best fixed gap |
+| oracle upper bound | Stage193 | framewise and schedule-consistent oracles over Stage192 rows | current measured candidate space lacks `+1 dB` headroom |
 
 ## Middle-Frame Recovery Evidence
 
@@ -467,12 +468,32 @@ Interpretation:
 - `uniform_gap6` is a near-rate baseline: rate `0.29344506237493745` MiB/frame vs adaptive `0.2907429328258184`, but gap6 has higher PSNR (`29.448737801531657` vs `29.4255826920606`) and lower LPIPS (`0.16457491443157493` vs `0.16593745923142186`).
 - Therefore the old Stage165 selector cannot support a strong selector-module claim. Stage193 must compute oracle headroom before new selector design.
 
+## Stage193 Oracle Upper-Bound Analysis
+
+Stage193 tests whether a perfect selector over the current measured Stage158/fixed-gap candidate space could reach the user's requested full-sequence target: roughly `+1 dB` PSNR over the best tested fixed gap without SSIM/MS-SSIM/LPIPS regression.
+
+Oracle summary:
+
+| oracle | schedule-consistent | PSNR | SSIM | MS-SSIM | LPIPS | dPSNR vs `uniform_gap2` | dLPIPS vs `uniform_gap2` | +1dB/no-regression pass |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| `framewise_psnr_oracle` | `0` | `29.749038180432017` | `0.8816605037662493` | `0.9870865034603846` | `0.14641779118318626` | `+0.09422285165970834` | `-0.005263526408209568` | `0` |
+| `schedule_path_psnr_oracle` | `1` | `29.670134277041633` | `0.8788577944949724` | `0.9867078401912386` | `0.1508482470754357` | `+0.015318948269325006` | `-0.000833070515960127` | `0` |
+
+Stage193 decision: `framewise_oracle_upper_bound_below_target_margin`.
+
+Interpretation:
+
+- Even the optimistic non-schedule-consistent framewise oracle is far below the requested `+1 dB` margin over best fixed `uniform_gap2`.
+- Tuning the current selector over the current measured candidate space cannot plausibly produce a strong full-sequence selector claim.
+- The next diagnostic should test a stronger representation upper bound, such as all-frame q12 keyframes (`gap1`), before continuing selector-only optimization.
+
 ## Non-Claims And Risks
 
 | item | status |
 |---|---|
 | final optimized adaptive RD | not claimed yet; Stage165 measured point is between gap8 and gap4 |
 | all-frame quality report | completed for Stage165/gap8/gap4 in Stage186 |
+| `+1 dB` full-sequence selector headroom in current candidate space | rejected by Stage193 oracle analysis |
 | selector precision solved | not claimed; Stage189 finds only `2/66` strong promoted rate-risk rows, but precision remains a tuning target |
 | false negatives solved | not claimed; Stage189 finds `1179` residual-risk rows and sequence hotspots |
 | online streaming selector | not claimed; current setting is offline video encoding unless lookahead is declared |
@@ -511,13 +532,14 @@ Interpretation:
 | 190 | paper-facing package | packages tables, claim boundaries, decoder contract, recommended title, and abstract draft |
 | 191 | expanded fixed-gap protocol | prepares gap2/gap4/gap6/gap8/gap16/adaptive full-sequence measurement and missing-row manifest |
 | 192 | expanded fixed-gap measurement | measures expanded fixed-gap RD-quality and shows current adaptive is not strong enough |
+| 193 | oracle upper-bound analysis | shows current measured candidate space cannot reach the requested `+1 dB` full-sequence target |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
-| 193 | oracle upper-bound analysis | determine whether a `+1 dB` full-sequence selector gain over best fixed gap is achievable with current recovery/keyframe representation |
-| 194+ | multi-gap selector design | rate-aware adaptive schedule candidates only if Stage193 shows enough headroom |
+| 194 | all-keyframe q12 upper-bound diagnostic | test whether a stronger all-keyframe representation has enough `+1 dB` headroom over best fixed gap2 |
+| 195+ | representation/policy or selector branch | improve representation/payload policy if Stage194 lacks headroom; otherwise design rate-aware adaptive schedules around the stronger representation |
 
 ## Canonical Paths
 
@@ -541,5 +563,6 @@ Interpretation:
 | Stage190 paper-facing package | `experiments/stage190_paper_facing_package/` |
 | Stage191 fixed-gap expansion protocol | `experiments/stage191_fixed_gap_expansion_protocol/` |
 | Stage192 expanded fixed-gap measurement | `experiments/stage192_expanded_fixed_gap_measurement/` |
+| Stage193 oracle upper-bound analysis | `experiments/stage193_oracle_upper_bound_analysis/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |
