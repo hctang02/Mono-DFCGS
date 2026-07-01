@@ -39,6 +39,7 @@ The current measured full-sequence result is a middle RD point: adaptive improve
 | predictor-only broader validation | Stage202 | q12 multi-gap multi-config training-headroom check | predictor-only headroom not observed |
 | GS residual codec design | Stage203 | counted GS attribute top-k residual entropy codec | selected for Stage204 smoke |
 | residual codec smoke | Stage204 | real-task q6 top-k GS residual payload | positive rendered headroom with counted bytes |
+| fixed-gap predictive validation | Stage205 | sampled fixed-gap q12 + GS residual RD-quality | positive headroom for gaps 4/8/12 |
 
 ## Middle-Frame Recovery Evidence
 
@@ -817,6 +818,37 @@ Interpretation:
 - GS-native residual payload has real rendered quality headroom.
 - Stage205 should validate fixed-gap predictive codec RD with exact payload bytes included in total rate.
 
+## Stage205 Fixed-Gap Predictive Codec Validation
+
+Stage205 validates fixed-gap predictor-plus-GS-residual behavior on sampled real tasks before Stage206 edge RD tables.
+
+Stage205 decision: `fixed_gap_predictive_codec_positive_headroom`.
+
+Scope:
+
+- Eval tasks: `24`, with `8` each for gaps `4,8,12`.
+- Keyframe codec: `q12`.
+- Residual settings: q6 top-k keep fractions `0.05,0.10,0.20`.
+- Scope caveat: sampled fixed-gap validation, not full-sequence RD.
+
+Best by gap:
+
+- Gap4 best: `topk_keep0p2_q6`, payload `56283.0` bytes (`0.05367565155029297` MiB/intermediate), base/corrected PSNR `20.599420543944056/25.301132561904456`, dPSNR `+4.701712017960398`.
+- Gap8 best: `topk_keep0p2_q6`, payload `58359.875` bytes (`0.0556563138961792` MiB/intermediate), base/corrected PSNR `17.667283985227805/23.694548271579496`, dPSNR `+6.027264286351697`.
+- Gap12 best: `topk_keep0p2_q6`, payload `57028.5` bytes (`0.05438661575317383` MiB/intermediate), base/corrected PSNR `19.19559473773822/24.991767735164355`, dPSNR `+5.796172997426137`.
+
+Gates:
+
+- Metric rows ok: pass.
+- Payload counted and nonzero: pass.
+- Gap coverage: pass.
+- Each-gap positive headroom: pass.
+- Stage197 decoder contract: pass.
+
+Interpretation:
+
+- Fixed-gap sampled evidence supports building Stage206 edge RD tables with exact keyframe/residual costs.
+
 ## Non-Claims And Risks
 
 | item | status |
@@ -835,6 +867,7 @@ Interpretation:
 | Stage202 predictor-only headroom | not observed; best delta is only `+0.0006680372369380905` dB |
 | Stage203 residual codec quality on real frames | not claimed yet; Stage203 only designs and toy-tests the codec |
 | Stage204 full-sequence RD | not claimed yet; Stage204 is a 12-task smoke and must be followed by Stage205+ |
+| Stage205 full-sequence RD | not claimed; Stage205 is sampled fixed-gap validation only |
 | selector precision solved | not claimed; Stage189 finds only `2/66` strong promoted rate-risk rows, but precision remains a tuning target |
 | false negatives solved | not claimed; Stage189 finds `1179` residual-risk rows and sequence hotspots |
 | online streaming selector | not claimed; current setting is offline video encoding unless lookahead is declared |
@@ -885,13 +918,14 @@ Interpretation:
 | 202 | predictor-only broader validation | shows predictor-only training headroom is not observed and residual codec is mandatory |
 | 203 | GS residual codec design | selects counted top-k GS attribute residual entropy codec for real-frame smoke |
 | 204 | residual codec smoke | demonstrates positive rendered headroom from counted GS-native residual payload |
+| 205 | fixed-gap predictive validation | shows sampled positive headroom for q12 + counted GS residual over gaps 4/8/12 |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
-| 205 | fixed-gap predictive codec validation | validate q12 + GS residual payload RD on fixed gaps using exact payload bytes |
-| 206+ | new GS-native predictive codec execution | proceed through Stage213 under the Stage197-204 gates |
+| 206 | edge RD table | compute edge-level quality/rate costs for fixed-gap and schedule optimization candidates |
+| 207+ | new GS-native predictive codec execution | proceed through Stage213 under the Stage197-205 gates |
 
 ## Canonical Paths
 
@@ -927,5 +961,6 @@ Interpretation:
 | Stage202 predictor-only broader validation | `experiments/stage202_predictor_only_broader_validation/` |
 | Stage203 GS latent/residual codec design | `experiments/stage203_gs_latent_residual_codec_design/` |
 | Stage204 residual codec smoke | `experiments/stage204_residual_codec_smoke/` |
+| Stage205 fixed-gap predictive codec validation | `experiments/stage205_fixed_gap_predictive_codec_validation/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |

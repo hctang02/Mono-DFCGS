@@ -1,0 +1,6 @@
+gate,status,value,threshold,detail
+metric_rows_ok,pass,0,0,shape-mismatched metrics are errors
+payload_counted_nonzero,pass,15353.0,>0 bytes,payload_bytes are exact len(payload)
+gap_coverage,pass,0,0 missing gaps,
+each_gap_positive_headroom,pass,4.701712017960398,> 0.5 dB for every gap,
+stage197_decoder_contract,pass,0,no target dense/RGB decoder input,decoder uses base GS plus transmitted counted GS residual payload

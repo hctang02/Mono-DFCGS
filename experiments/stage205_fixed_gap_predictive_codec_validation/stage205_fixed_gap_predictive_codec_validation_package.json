@@ -1,0 +1,98 @@
+{
+  "stage": 205,
+  "name": "fixed_gap_predictive_codec_validation",
+  "decision": "fixed_gap_predictive_codec_positive_headroom",
+  "task_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage199_learned_gs_training_manifest/stage199_learned_gs_training_tasks.csv",
+  "stage204_package": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage204_residual_codec_smoke/stage204_residual_codec_smoke_package.json",
+  "task_split": "eval",
+  "gaps": [
+    4,
+    8,
+    12
+  ],
+  "keyframe_codec": "q12",
+  "task_count": 24,
+  "setting_count": 3,
+  "side_bits": 6,
+  "keep_fractions": [
+    0.05,
+    0.1,
+    0.2
+  ],
+  "selected_tasks_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage205_fixed_gap_predictive_codec_validation/stage205_selected_tasks.csv",
+  "rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage205_fixed_gap_predictive_codec_validation/stage205_fixed_gap_predictive_rows.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage205_fixed_gap_predictive_codec_validation/stage205_fixed_gap_predictive_summary.csv",
+  "best_by_gap_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage205_fixed_gap_predictive_codec_validation/stage205_fixed_gap_predictive_best_by_gap.csv",
+  "gates_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage205_fixed_gap_predictive_codec_validation/stage205_fixed_gap_predictive_gates.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage205_fixed_gap_predictive_codec_validation/stage205_fixed_gap_predictive_codec_validation_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage205_fixed_gap_predictive_codec_validation/stage205_fixed_gap_predictive_codec_validation_report.md",
+  "best_rows": [
+    {
+      "reference_gap": 4,
+      "best_setting_label": "topk_keep0p2_q6",
+      "best_keep_fraction": 0.2,
+      "best_mean_payload_bytes": 56283.0,
+      "best_mean_residual_mib_per_intermediate": 0.05367565155029297,
+      "best_mean_base_psnr": 20.599420543944056,
+      "best_mean_corrected_psnr": 25.301132561904456,
+      "best_mean_delta_psnr_vs_base": 4.701712017960398
+    },
+    {
+      "reference_gap": 8,
+      "best_setting_label": "topk_keep0p2_q6",
+      "best_keep_fraction": 0.2,
+      "best_mean_payload_bytes": 58359.875,
+      "best_mean_residual_mib_per_intermediate": 0.0556563138961792,
+      "best_mean_base_psnr": 17.667283985227805,
+      "best_mean_corrected_psnr": 23.694548271579496,
+      "best_mean_delta_psnr_vs_base": 6.027264286351697
+    },
+    {
+      "reference_gap": 12,
+      "best_setting_label": "topk_keep0p2_q6",
+      "best_keep_fraction": 0.2,
+      "best_mean_payload_bytes": 57028.5,
+      "best_mean_residual_mib_per_intermediate": 0.05438661575317383,
+      "best_mean_base_psnr": 19.19559473773822,
+      "best_mean_corrected_psnr": 24.991767735164355,
+      "best_mean_delta_psnr_vs_base": 5.796172997426137
+    }
+  ],
+  "gate_rows": [
+    {
+      "gate": "metric_rows_ok",
+      "status": "pass",
+      "value": 0,
+      "threshold": "0",
+      "detail": "shape-mismatched metrics are errors"
+    },
+    {
+      "gate": "payload_counted_nonzero",
+      "status": "pass",
+      "value": 15353.0,
+      "threshold": ">0 bytes",
+      "detail": "payload_bytes are exact len(payload)"
+    },
+    {
+      "gate": "gap_coverage",
+      "status": "pass",
+      "value": 0,
+      "threshold": "0 missing gaps",
+      "detail": ""
+    },
+    {
+      "gate": "each_gap_positive_headroom",
+      "status": "pass",
+      "value": 4.701712017960398,
+      "threshold": "> 0.5 dB for every gap",
+      "detail": ""
+    },
+    {
+      "gate": "stage197_decoder_contract",
+      "status": "pass",
+      "value": 0,
+      "threshold": "no target dense/RGB decoder input",
+      "detail": "decoder uses base GS plus transmitted counted GS residual payload"
+    }
+  ]
+}
