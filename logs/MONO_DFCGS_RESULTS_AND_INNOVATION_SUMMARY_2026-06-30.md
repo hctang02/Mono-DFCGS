@@ -44,6 +44,8 @@ The current measured full-sequence result is a middle RD point: adaptive improve
 | DP oracle schedule | Stage207 | residual-budget DP plus schedule connectivity audit | schedule graph insufficient; selector labels deferred |
 | connected edge RD expansion | Stage206b | one connected bike-packing window | local DP graph ready |
 | connected-window DP oracle | Stage207b | schedule DP over Stage206b graph | local selector-label feasibility passed |
+| multi-sequence connected edge RD | Stage206c | bike-packing + parkour connected windows | larger DP graph ready |
+| multi-sequence DP oracle | Stage207c | schedule DP over Stage206c graph | ready for Stage208 selector labels |
 
 ## Middle-Frame Recovery Evidence
 
@@ -604,6 +606,7 @@ Stage gates:
 - Stage206: build edge RD table.
 - Stage207: compute DP oracle schedules; current sampled graph is insufficient.
 - Stage206b/207b: connected-window expansion and local DP oracle pass.
+- Stage206c/207c: two-sequence connected expansion and DP oracle pass.
 - Stage208-210: train selector and residual budget allocator.
 - Stage211-213: full measured RD, ablations, and subjective visuals.
 
@@ -966,6 +969,43 @@ Interpretation:
 - Local connected-window DP plumbing is validated.
 - This is not yet robust selector-training evidence; next step should expand to multi-sequence connected windows before full Stage208/209 promotion.
 
+## Stage206c/207c Multi-Sequence Connected DP
+
+Stage206c expands the connected graph from one local window to two sequence windows.
+
+Stage206c decision: `edge_rd_table_ready_for_stage207_dp`.
+
+Stage206c scope:
+
+- Windows: `bike-packing:00000:00024`, `parkour:00000:00024`.
+- Edges: `22`.
+- Internal target rows: `122`.
+- Gap4 chain edges: `12`.
+- Connected transitions: `28`.
+
+Stage206c best by gap:
+
+- Gap4 best: `topk_keep0p2_q6`, corrected PSNR `25.43046561068816`, dPSNR `+5.249391228248168`.
+- Gap8 best: `topk_keep0p2_q6`, corrected PSNR `24.86196786390912`, dPSNR `+5.709504375364108`.
+- Gap12 best: `topk_keep0p2_q6`, corrected PSNR `24.312590705743677`, dPSNR `+5.727019866033535`.
+
+Stage207c decision: `dp_oracle_schedule_ready_for_selector_labels`.
+
+Stage207c results:
+
+- Edge option coverage: `66/66` pass.
+- Schedule graph connectivity: pass with `28` connected transitions total; `bike-packing` and `parkour` each have `11` edges, `7` nodes, `1` component, and `14` connected transitions.
+- Fixed baselines over `122` internal targets:
+  - `topk_keep0p05_q6`: cost `17777952` bytes, mean PSNR `21.63221901330533`, mean dPSNR `+2.3806840851579874`.
+  - `topk_keep0p1_q6`: cost `19538702` bytes, mean PSNR `22.999679901928367`, mean dPSNR `+3.748144973781018`.
+  - `topk_keep0p2_q6`: cost `22782640` bytes, mean PSNR `24.831585273128514`, mean dPSNR `+5.580050344981165`.
+- Same-budget residual allocation gain: `+0.06898291414485058` dB at the `topk_keep0p1_q6` budget.
+
+Interpretation:
+
+- The multi-sequence connected DP gate is sufficient to package Stage208 selector labels for this connected scope.
+- It is still not final full-sequence RD or final selector training evidence.
+
 ## Non-Claims And Risks
 
 | item | status |
@@ -988,6 +1028,7 @@ Interpretation:
 | Stage206 full-sequence RD | not claimed; Stage206 is sampled edge-level RD preflight for DP |
 | Stage207 selector-label readiness | not claimed; schedule graph connectivity failed, so selector labels are deferred |
 | Stage207b full selector-training readiness | not claimed; local connected-window DP passed but scope is one window only |
+| Stage207c final selector-training readiness | not claimed; two-window scope supports Stage208 label packaging, not final training claims |
 | selector precision solved | not claimed; Stage189 finds only `2/66` strong promoted rate-risk rows, but precision remains a tuning target |
 | false negatives solved | not claimed; Stage189 finds `1179` residual-risk rows and sequence hotspots |
 | online streaming selector | not claimed; current setting is offline video encoding unless lookahead is declared |
@@ -1043,14 +1084,15 @@ Interpretation:
 | 207 | DP oracle schedule | finds sampled Stage206 graph insufficient for nontrivial schedule oracle |
 | 206b | connected edge RD expansion | creates one connected bike-packing window with 11 edges and 61 targets |
 | 207b | connected-window DP oracle | validates local schedule DP connectivity and selector-label feasibility |
+| 206c | multi-sequence connected edge RD | expands connected graph to bike-packing and parkour windows |
+| 207c | multi-sequence DP oracle | passes connected DP gate and enables Stage208 label packaging |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
-| 206c | multi-sequence connected edge RD | expand connected windows beyond one sequence before selector training |
-| 207c | multi-sequence DP oracle | rerun oracle at larger connected scope |
-| 208+ | new GS-native predictive codec execution | proceed after multi-sequence Stage207 gate passes |
+| 208 | selector-label data package | convert Stage207c oracle choices into label rows and feature-source audit |
+| 209+ | new GS-native predictive codec execution | continue selector training after Stage208 gates pass |
 
 ## Canonical Paths
 
@@ -1091,5 +1133,7 @@ Interpretation:
 | Stage207 DP oracle schedule | `experiments/stage207_dp_oracle_schedule/` |
 | Stage206b connected edge RD expansion | `experiments/stage206b_connected_edge_rd_expansion/` |
 | Stage207b DP oracle connected window | `experiments/stage207b_dp_oracle_connected_window/` |
+| Stage206c multi-sequence connected edge RD | `experiments/stage206c_multisequence_connected_edge_rd/` |
+| Stage207c DP oracle multi-sequence connected | `experiments/stage207c_dp_oracle_multisequence_connected/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |

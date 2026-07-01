@@ -1,0 +1,4 @@
+reference_gap,best_setting_label,best_keep_fraction,best_mean_edge_total_bytes_once,best_mean_dp_incremental_bytes,best_mean_residual_payload_bytes,best_mean_corrected_psnr,best_mean_delta_psnr_vs_base
+4,topk_keep0p2_q6,0.2,1608215.0,888568.5833333334,168918.75,25.43046561068816,5.249391228248168
+8,topk_keep0p2_q6,0.2,1838711.0,1119065.5,399415.1666666667,24.86196786390912,5.709504375364108
+12,topk_keep0p2_q6,0.2,2070998.5,1351356.0,631707.25,24.312590705743677,5.727019866033535

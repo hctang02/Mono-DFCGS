@@ -1,0 +1,3 @@
+window_id,sequence,start_index,end_index,window_frames,edge_count,target_count,gap4_chain_edges,connected_transition_count
+bike-packing:00000:00024,bike-packing,0,24,24,11,61,6,14
+parkour:00000:00024,parkour,0,24,24,11,61,6,14

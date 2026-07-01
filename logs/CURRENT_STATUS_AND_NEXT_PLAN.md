@@ -13,8 +13,8 @@ The current focus is the new predictor/refiner, GS-native residual/latent codec,
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage206b/207b: `e3c89ba Run DP oracle schedule preflight`
-- Latest completed local stage: `Stage207b DP oracle connected window`
+- Latest pushed commit before Stage206c/207c: `fa2667d Validate connected edge DP oracle`
+- Latest completed local stage: `Stage207c DP oracle multi-sequence connected`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -62,11 +62,13 @@ The current focus is the new predictor/refiner, GS-native residual/latent codec,
 - Stage207: completed DP oracle schedule preflight. Decision: `dp_oracle_schedule_graph_insufficient`. Stage206 prerequisite and edge option coverage passed (`18/18` options from `6` edges and `3` settings), and residual-budget DP found a same-budget gain of `+0.017853956775965685` dB at the `topk_keep0p1_q6` budget. However schedule graph connectivity failed with `0` connected edge transitions; all sampled Stage206 edges are isolated, so this is not a valid schedule-level oracle and cannot produce Stage208 selector labels. Stage208/209 are deferred until an expanded connected edge RD table is built.
 - Stage206b: completed small connected edge RD expansion. Decision: `edge_rd_table_ready_for_stage207_dp`. Selected one connected eval window `bike-packing:00000:00024` with `11` edges, `61` internal target rows, `6` gap4 chain edges, and `14` connected transitions. Best settings remained `topk_keep0p2_q6`: gap4 corrected PSNR/dPSNR `26.031263851493254/+4.986391989862658`; gap8 `25.821074970091768/+5.676789260065095`; gap12 `25.40221496330657/+5.768186956092006`. Gates passed for complete metrics/edges, counted payloads/metadata, positive headroom, and decoder contract.
 - Stage207b: completed DP oracle rerun on Stage206b. Decision: `dp_oracle_schedule_ready_for_selector_labels`. Edge option coverage `33/33` passed, graph connectivity passed with `14` connected transitions, and residual-budget oracle found `+0.016174288512960544` dB same-budget gain at the `topk_keep0p1_q6` budget. This validates local DP plumbing and small-window selector-label feasibility, but is still too small for robust Stage208/209 promotion.
+- Stage206c: completed multi-sequence connected edge RD. Decision: `edge_rd_table_ready_for_stage207_dp`. Selected two connected eval windows, `bike-packing:00000:00024` and `parkour:00000:00024`, with `22` edges, `122` internal target rows, `12` gap4 chain edges, and `28` connected transitions. Best setting was again `topk_keep0p2_q6`: gap4 PSNR/dPSNR `25.43046561068816/+5.249391228248168`; gap8 `24.86196786390912/+5.709504375364108`; gap12 `24.312590705743677/+5.727019866033535`. All gates passed.
+- Stage207c: completed DP oracle rerun on Stage206c. Decision: `dp_oracle_schedule_ready_for_selector_labels`. Edge option coverage `66/66` passed, graph connectivity passed for both sequences with `28` total connected transitions, and same-budget residual allocation gain increased to `+0.06898291414485058` dB at the `topk_keep0p1_q6` budget. This is sufficient to package Stage208 selector-label data for the connected multi-sequence scope.
 
 ### Immediate Next Plan
 
 - Continue the user-approved GS-native learned predictive compression route through Stage213 before asking for another decision.
-- Immediate next stages: expand to multi-sequence connected edge RD, rerun Stage207 DP oracle at larger scope, then proceed to Stage208 selector labels if the schedule-level oracle gate remains positive.
+- Immediate next stages: Stage208 selector-label data package for Stage206c/207c connected scope, then Stage209 encoder selector training smoke if label package gates pass.
 
 ### Residual Side-Info Codec / RD
 

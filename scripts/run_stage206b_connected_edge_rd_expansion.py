@@ -66,6 +66,7 @@ def connected_transitions(edge_items):
 def select_windows(edge_map, args):
     selected_windows = []
     selected_edge_keys = set()
+    windows_by_sequence = {}
     sequences = list(args.sequences)
     if not sequences:
         sequences = sorted({key[0] for key in edge_map})
@@ -74,8 +75,11 @@ def select_windows(edge_map, args):
         rng.shuffle(sequences)
     min_gap = min(args.gaps)
     for sequence in sequences:
+        windows_by_sequence.setdefault(sequence, 0)
         starts = sorted({left for seq, left, _right, gap in edge_map if seq == sequence and gap == min_gap})
         for start in starts:
+            if args.max_windows_per_sequence > 0 and windows_by_sequence[sequence] >= args.max_windows_per_sequence:
+                break
             end = start + int(args.window_frames)
             chain = [(sequence, idx, idx + min_gap, min_gap) for idx in range(start, end, min_gap)]
             if any(key not in edge_map for key in chain):
@@ -110,6 +114,7 @@ def select_windows(edge_map, args):
                 }
             )
             selected_edge_keys.update(window_keys)
+            windows_by_sequence[sequence] += 1
             if len(selected_windows) >= args.max_windows:
                 return selected_windows, selected_edge_keys
     return selected_windows, selected_edge_keys
@@ -134,7 +139,7 @@ def window_rows(windows):
 
 def write_report(package, windows, best_rows, gates, path):
     lines = [
-        "# Stage206b Connected Edge RD Expansion",
+        f"# Stage{package['stage']} Connected Edge RD Expansion",
         "",
         "## Decision",
         "",
@@ -204,7 +209,10 @@ def parse_args():
     parser.add_argument("--keyframe_payload_encoding", default="bitpack")
     parser.add_argument("--window_frames", type=int, default=24)
     parser.add_argument("--max_windows", type=int, default=1)
+    parser.add_argument("--max_windows_per_sequence", type=int, default=1)
     parser.add_argument("--sequences", nargs="*", default=["bike-packing", "parkour"])
+    parser.add_argument("--stage_label", default="206b")
+    parser.add_argument("--stage_name", default="connected_edge_rd_expansion")
     parser.add_argument("--shuffle_sequences", action="store_true")
     parser.add_argument("--keep_fractions", nargs="+", type=float, default=[0.05, 0.10, 0.20])
     parser.add_argument("--side_bits", type=int, default=6)
@@ -253,15 +261,16 @@ def main():
     gates = stage206.gate_rows(stage205, target_rows, edge_rows, best_rows, args)
     decision_value = stage206.decision(gates)
 
-    windows_csv = args.output_root / "stage206b_connected_windows.csv"
-    selected_edges_csv = args.output_root / "stage206b_selected_edges.csv"
-    target_rows_csv = args.output_root / "stage206b_target_metric_rows.csv"
-    edge_rows_csv = args.output_root / "stage206b_edge_rd_rows.csv"
-    summary_csv = args.output_root / "stage206b_edge_rd_summary.csv"
-    best_by_gap_csv = args.output_root / "stage206b_edge_rd_best_by_gap.csv"
-    gates_csv = args.output_root / "stage206b_edge_rd_gates.csv"
-    package_json = args.output_root / "stage206b_connected_edge_rd_expansion_package.json"
-    report_md = args.output_root / "stage206b_connected_edge_rd_expansion_report.md"
+    prefix = f"stage{args.stage_label}"
+    windows_csv = args.output_root / f"{prefix}_connected_windows.csv"
+    selected_edges_csv = args.output_root / f"{prefix}_selected_edges.csv"
+    target_rows_csv = args.output_root / f"{prefix}_target_metric_rows.csv"
+    edge_rows_csv = args.output_root / f"{prefix}_edge_rd_rows.csv"
+    summary_csv = args.output_root / f"{prefix}_edge_rd_summary.csv"
+    best_by_gap_csv = args.output_root / f"{prefix}_edge_rd_best_by_gap.csv"
+    gates_csv = args.output_root / f"{prefix}_edge_rd_gates.csv"
+    package_json = args.output_root / f"{prefix}_{args.stage_name}_package.json"
+    report_md = args.output_root / f"{prefix}_{args.stage_name}_report.md"
     write_csv(window_rows(windows), windows_csv, WINDOW_FIELDS)
     write_csv(stage206.selected_edge_rows(selected_rows), selected_edges_csv, stage206.SELECTED_EDGE_FIELDS)
     write_csv(target_rows, target_rows_csv, stage206.TARGET_FIELDS)
@@ -270,8 +279,8 @@ def main():
     write_csv(best_rows, best_by_gap_csv, stage206.BEST_FIELDS)
     write_csv(gates, gates_csv, stage206.GATE_FIELDS)
     package = {
-        "stage": "206b",
-        "name": "connected_edge_rd_expansion",
+        "stage": args.stage_label,
+        "name": args.stage_name,
         "decision": decision_value,
         "task_manifest": str(args.task_manifest),
         "stage205_package": str(args.stage205_package),
