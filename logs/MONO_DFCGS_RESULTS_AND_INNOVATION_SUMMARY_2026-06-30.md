@@ -32,6 +32,7 @@ The current measured full-sequence result is a middle RD point: adaptive improve
 | higher-fidelity keyframe upper bound | Stage195 | q16 and float dense-anchor keyframes on all frames | current dense-anchor/rendering representation lacks `+1 dB` headroom |
 | target feasibility branch | Stage196 | Stage193-195 ceiling synthesis | selector/keyframe branch cannot meet requested target |
 | learned GS compression protocol | Stage197 | GS-native predictive codec contract and Stage198-213 gates | new route rejects RGB/image residual final method |
+| prior predictor audit | Stage198 | old adapter training and quality evidence | old adapter route rejected; new predictor required |
 
 ## Middle-Frame Recovery Evidence
 
@@ -593,6 +594,28 @@ Stage gates:
 - Stage208-210: train selector and residual budget allocator.
 - Stage211-213: full measured RD, ablations, and subjective visuals.
 
+## Stage198 Prior Predictor Training Audit
+
+Stage198 audits whether the old decoder-side adapter should be continued.
+
+Stage198 decision: `old_adapter_route_rejected_new_predictor_required`.
+
+Key evidence:
+
+- Old q12 adapter middle PSNR was gap4 `18.256196169477683` and gap8 `17.06969395261803`.
+- q12-to-float32 old-adapter middle PSNR changed by only gap4 `+0.00004890061461537698` dB and gap8 `-0.000016654591867393265` dB.
+- Float32 dense-direct minus adapter remained huge: gap4 `+11.49432172291868` dB and gap8 `+12.677631798990458` dB.
+- Stage145 continued training over `6691` train rows improved only `+0.011427207695934527` dB.
+- Stage146 continuation had best step `0` and final change `-0.019897326878577533` dB.
+- Stage157/158 success came from counted GS-domain residual side-info over StreamSplat base, not from the old adapter predictor alone.
+
+New route requirements:
+
+- Predictor-only gate before selector training.
+- GS-native residual payload, not image residual.
+- Edge-RD oracle headroom before learned selector training.
+- Full-sequence measured PSNR/SSIM/MS-SSIM/LPIPS and bytes for any strong claim.
+
 ## Non-Claims And Risks
 
 | item | status |
@@ -604,6 +627,7 @@ Stage gates:
 | `+1 dB` full-sequence headroom from q16/float keyframes | rejected by Stage195 higher-fidelity upper bound |
 | continuing selector/keyframe quantization branch for requested strong claim | rejected by Stage196 target feasibility branch |
 | RGB/image residual post-processing final method | rejected by user and Stage197 protocol |
+| continuing old `GaussianAnchorDynamicPredictor` unchanged | rejected by Stage198 audit |
 | selector precision solved | not claimed; Stage189 finds only `2/66` strong promoted rate-risk rows, but precision remains a tuning target |
 | false negatives solved | not claimed; Stage189 finds `1179` residual-risk rows and sequence hotspots |
 | online streaming selector | not claimed; current setting is offline video encoding unless lookahead is declared |
@@ -647,14 +671,15 @@ Stage gates:
 | 195 | higher-fidelity keyframe upper bound | shows q16/float dense-anchor keyframes still do not reach the requested `+1 dB` target |
 | 196 | target feasibility branch | concludes selector/keyframe representation branch cannot meet the requested target |
 | 197 | learned GS compression protocol | defines GS-native predictive codec route and decoder contract for Stage198-213 |
+| 198 | prior predictor training audit | rejects continuing old adapter unchanged and sets gates for the new route |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
-| 198 | prior predictor training audit | document why old adapter/decoder predictor route failed and freeze non-goals |
 | 199 | learned GS training manifest | build multi-gap train/eval task manifest for new predictor/residual/selector route |
-| 200+ | new GS-native predictive codec execution | proceed through Stage213 under the Stage197 contract |
+| 200 | predictor/refiner architecture package | define the new GS-native architecture and training gates |
+| 201+ | new GS-native predictive codec execution | proceed through Stage213 under the Stage197/198 gates |
 
 ## Canonical Paths
 
@@ -683,5 +708,6 @@ Stage gates:
 | Stage195 higher-fidelity keyframe upper bound | `experiments/stage195_higher_fidelity_keyframe_upper_bound/` |
 | Stage196 target feasibility branch | `experiments/stage196_target_feasibility_branch/` |
 | Stage197 learned GS compression protocol | `experiments/stage197_learned_gs_compression_protocol/` |
+| Stage198 prior predictor training audit | `experiments/stage198_prior_predictor_training_audit/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |

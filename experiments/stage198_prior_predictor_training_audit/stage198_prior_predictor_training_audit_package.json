@@ -1,0 +1,196 @@
+{
+  "stage": 198,
+  "status": "prior_predictor_training_audit_complete",
+  "decision": "old_adapter_route_rejected_new_predictor_required",
+  "evidence_rows": [
+    {
+      "source_stage": 78,
+      "evidence": "old_adapter_middle_psnr",
+      "gap": 4,
+      "metric": "mean_middle_psnr",
+      "value": 18.256196169477683,
+      "comparison": "linear=17.660375119349375",
+      "interpretation": "Old adapter gives only small gain over linear and remains far below recovery targets."
+    },
+    {
+      "source_stage": 78,
+      "evidence": "old_adapter_middle_psnr",
+      "gap": 8,
+      "metric": "mean_middle_psnr",
+      "value": 17.06969395261803,
+      "comparison": "linear=16.542993366151862",
+      "interpretation": "Old adapter gives only small gain over linear and remains far below recovery targets."
+    },
+    {
+      "source_stage": 143,
+      "evidence": "qbit_sensitivity_adapter",
+      "gap": 4,
+      "metric": "float32_minus_q12_middle_psnr",
+      "value": 4.890061461537698e-05,
+      "comparison": "q12=18.25528373980314, float32=18.255332640417755",
+      "interpretation": "Raising anchor q-bit does not repair the old adapter."
+    },
+    {
+      "source_stage": 143,
+      "evidence": "dense_direct_vs_adapter_ceiling",
+      "gap": 4,
+      "metric": "dense_direct_minus_adapter_middle_psnr",
+      "value": 11.49432172291868,
+      "comparison": "dense_direct=29.749654363336436, adapter=18.255332640417755",
+      "interpretation": "The old adapter is the bottleneck, not renderer/data loading."
+    },
+    {
+      "source_stage": 143,
+      "evidence": "qbit_sensitivity_adapter",
+      "gap": 8,
+      "metric": "float32_minus_q12_middle_psnr",
+      "value": -1.6654591867393265e-05,
+      "comparison": "q12=17.06788939572344, float32=17.067872741131573",
+      "interpretation": "Raising anchor q-bit does not repair the old adapter."
+    },
+    {
+      "source_stage": 143,
+      "evidence": "dense_direct_vs_adapter_ceiling",
+      "gap": 8,
+      "metric": "dense_direct_minus_adapter_middle_psnr",
+      "value": 12.677631798990458,
+      "comparison": "dense_direct=29.74550454012203, adapter=17.067872741131573",
+      "interpretation": "The old adapter is the bottleneck, not renderer/data loading."
+    },
+    {
+      "source_stage": 145,
+      "evidence": "training_best_gain",
+      "gap": "4,8",
+      "metric": "best_mean_psnr_minus_initial",
+      "value": 0.011427207695934527,
+      "comparison": "steps=80, selected_train=6691, selected_eval=32",
+      "interpretation": "Training gain is tiny or absent under the old architecture/objective."
+    },
+    {
+      "source_stage": 145,
+      "evidence": "training_final_change",
+      "gap": "4,8",
+      "metric": "final_mean_psnr_minus_initial",
+      "value": 0.011427207695934527,
+      "comparison": "best_step=80",
+      "interpretation": "Longer continuation did not provide reliable improvement."
+    },
+    {
+      "source_stage": 146,
+      "evidence": "training_best_gain",
+      "gap": "4,8",
+      "metric": "best_mean_psnr_minus_initial",
+      "value": 0.0,
+      "comparison": "steps=240, selected_train=6691, selected_eval=64",
+      "interpretation": "Training gain is tiny or absent under the old architecture/objective."
+    },
+    {
+      "source_stage": 146,
+      "evidence": "training_final_change",
+      "gap": "4,8",
+      "metric": "final_mean_psnr_minus_initial",
+      "value": -0.019897326878577815,
+      "comparison": "best_step=0",
+      "interpretation": "Longer continuation did not provide reliable improvement."
+    },
+    {
+      "source_stage": 154,
+      "evidence": "original_streamsplat_base",
+      "gap": "4",
+      "metric": "mean_psnr",
+      "value": 22.06421822428011,
+      "comparison": "lpips=0.3014947975675265",
+      "interpretation": "StreamSplat base is more plausible than old adapter but still not enough without GS residual side-info."
+    },
+    {
+      "source_stage": 154,
+      "evidence": "original_streamsplat_base",
+      "gap": "8",
+      "metric": "mean_psnr",
+      "value": 20.33727549162514,
+      "comparison": "lpips=0.3593370050191879",
+      "interpretation": "StreamSplat base is more plausible than old adapter but still not enough without GS residual side-info."
+    },
+    {
+      "source_stage": 157,
+      "evidence": "stage158_residual_sideinfo_success",
+      "gap": "4",
+      "metric": "mean_psnr",
+      "value": 29.780485398070507,
+      "comparison": "payload_bytes=209392.83333333334, lpips=0.16601951060195763",
+      "interpretation": "Quality gain came from counted GS-domain residual side-info, not from the old adapter predictor alone."
+    },
+    {
+      "source_stage": 157,
+      "evidence": "stage158_residual_sideinfo_success",
+      "gap": "8",
+      "metric": "mean_psnr",
+      "value": 29.578682359235195,
+      "comparison": "payload_bytes=215967.88333333333, lpips=0.17853523269295693",
+      "interpretation": "Quality gain came from counted GS-domain residual side-info, not from the old adapter predictor alone."
+    },
+    {
+      "source_stage": 196,
+      "evidence": "target_gap_remaining",
+      "gap": "full_sequence",
+      "metric": "best_ceiling_delta_psnr_vs_target",
+      "value": -0.7698838629920566,
+      "comparison": "best_ceiling=float_dense_anchor, target=30.654815328772308",
+      "interpretation": "Even best current keyframe/selector ceiling remains below the requested target."
+    }
+  ],
+  "decision_rows": [
+    {
+      "item": "continue_old_adapter_training",
+      "decision": "reject",
+      "evidence": "Stage145 best gain 0.011427207695934527 dB; Stage146 best gain 0.0 dB with best step 0.",
+      "action_for_new_route": "Do not spend Stage201+ on continuing GaussianAnchorDynamicPredictor unchanged."
+    },
+    {
+      "item": "raise_keyframe_qbits_for_old_adapter",
+      "decision": "reject",
+      "evidence": "Stage143 q12-to-float32 old adapter middle PSNR changes are about 0.000 dB.",
+      "action_for_new_route": "Use qbit as rate/ablation variable only, not the primary quality fix."
+    },
+    {
+      "item": "use_stage158_as_evidence_predictor_is_solved",
+      "decision": "reject",
+      "evidence": "Stage157/158 quality is achieved by counted GS residual side-info over StreamSplat base, not by the old adapter alone.",
+      "action_for_new_route": "Design predictor and residual codec jointly; measure predictor-only before selector training."
+    },
+    {
+      "item": "new_predictor_requirement",
+      "decision": "require_new_architecture_and_loss",
+      "evidence": "Old per-Gaussian MLP residual over linear interpolation underfits motion/occlusion and saturates.",
+      "action_for_new_route": "Stage200 must propose a stronger temporal refiner/motion-field architecture with render-aware and RD-aware gates."
+    }
+  ],
+  "requirement_rows": [
+    {
+      "requirement": "predictor_only_gate_before_selector",
+      "reason": "Selector cannot help if non-keyframe reconstruction is weak.",
+      "stage_gate": "Stage201 must beat old adapter and show stable render metrics before Stage206+."
+    },
+    {
+      "requirement": "gs_native_residual_payload",
+      "reason": "Stage158 showed residual side-info is the practical quality lever, but the final method must remain GS-domain.",
+      "stage_gate": "Stage203/204 must define counted GS latent/residual bitstreams, not image residuals."
+    },
+    {
+      "requirement": "edge_rd_headroom_before_selector_training",
+      "reason": "Stage193 showed selector training is wasted without candidate-space headroom.",
+      "stage_gate": "Stage207 DP oracle must beat fixed baselines before Stage209 selector training is promoted."
+    },
+    {
+      "requirement": "full_sequence_metrics_only_for_strong_claim",
+      "reason": "Stage177/180 sampled gains overstated full-sequence effect.",
+      "stage_gate": "Stage211 must include full-sequence PSNR/SSIM/MS-SSIM/LPIPS and measured bytes."
+    }
+  ],
+  "evidence_csv": "experiments/stage198_prior_predictor_training_audit/stage198_prior_predictor_evidence.csv",
+  "decision_csv": "experiments/stage198_prior_predictor_training_audit/stage198_prior_predictor_decisions.csv",
+  "requirement_csv": "experiments/stage198_prior_predictor_training_audit/stage198_new_route_requirements.csv",
+  "package_json": "experiments/stage198_prior_predictor_training_audit/stage198_prior_predictor_training_audit_package.json",
+  "report_md": "experiments/stage198_prior_predictor_training_audit/stage198_prior_predictor_training_audit_report.md",
+  "next": "Build Stage199 learned GS training manifest under Stage197 decoder contract."
+}

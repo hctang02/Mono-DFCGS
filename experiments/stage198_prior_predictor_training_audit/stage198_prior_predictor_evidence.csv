@@ -1,0 +1,16 @@
+source_stage,evidence,gap,metric,value,comparison,interpretation
+78,old_adapter_middle_psnr,4,mean_middle_psnr,18.256196169477683,linear=17.660375119349375,Old adapter gives only small gain over linear and remains far below recovery targets.
+78,old_adapter_middle_psnr,8,mean_middle_psnr,17.06969395261803,linear=16.542993366151862,Old adapter gives only small gain over linear and remains far below recovery targets.
+143,qbit_sensitivity_adapter,4,float32_minus_q12_middle_psnr,4.890061461537698e-05,"q12=18.25528373980314, float32=18.255332640417755",Raising anchor q-bit does not repair the old adapter.
+143,dense_direct_vs_adapter_ceiling,4,dense_direct_minus_adapter_middle_psnr,11.49432172291868,"dense_direct=29.749654363336436, adapter=18.255332640417755","The old adapter is the bottleneck, not renderer/data loading."
+143,qbit_sensitivity_adapter,8,float32_minus_q12_middle_psnr,-1.6654591867393265e-05,"q12=17.06788939572344, float32=17.067872741131573",Raising anchor q-bit does not repair the old adapter.
+143,dense_direct_vs_adapter_ceiling,8,dense_direct_minus_adapter_middle_psnr,12.677631798990458,"dense_direct=29.74550454012203, adapter=17.067872741131573","The old adapter is the bottleneck, not renderer/data loading."
+145,training_best_gain,"4,8",best_mean_psnr_minus_initial,0.011427207695934527,"steps=80, selected_train=6691, selected_eval=32",Training gain is tiny or absent under the old architecture/objective.
+145,training_final_change,"4,8",final_mean_psnr_minus_initial,0.011427207695934527,best_step=80,Longer continuation did not provide reliable improvement.
+146,training_best_gain,"4,8",best_mean_psnr_minus_initial,0.0,"steps=240, selected_train=6691, selected_eval=64",Training gain is tiny or absent under the old architecture/objective.
+146,training_final_change,"4,8",final_mean_psnr_minus_initial,-0.019897326878577815,best_step=0,Longer continuation did not provide reliable improvement.
+154,original_streamsplat_base,4,mean_psnr,22.06421822428011,lpips=0.3014947975675265,StreamSplat base is more plausible than old adapter but still not enough without GS residual side-info.
+154,original_streamsplat_base,8,mean_psnr,20.33727549162514,lpips=0.3593370050191879,StreamSplat base is more plausible than old adapter but still not enough without GS residual side-info.
+157,stage158_residual_sideinfo_success,4,mean_psnr,29.780485398070507,"payload_bytes=209392.83333333334, lpips=0.16601951060195763","Quality gain came from counted GS-domain residual side-info, not from the old adapter predictor alone."
+157,stage158_residual_sideinfo_success,8,mean_psnr,29.578682359235195,"payload_bytes=215967.88333333333, lpips=0.17853523269295693","Quality gain came from counted GS-domain residual side-info, not from the old adapter predictor alone."
+196,target_gap_remaining,full_sequence,best_ceiling_delta_psnr_vs_target,-0.7698838629920566,"best_ceiling=float_dense_anchor, target=30.654815328772308",Even best current keyframe/selector ceiling remains below the requested target.

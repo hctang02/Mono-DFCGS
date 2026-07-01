@@ -1,0 +1,5 @@
+requirement,reason,stage_gate
+predictor_only_gate_before_selector,Selector cannot help if non-keyframe reconstruction is weak.,Stage201 must beat old adapter and show stable render metrics before Stage206+.
+gs_native_residual_payload,"Stage158 showed residual side-info is the practical quality lever, but the final method must remain GS-domain.","Stage203/204 must define counted GS latent/residual bitstreams, not image residuals."
+edge_rd_headroom_before_selector_training,Stage193 showed selector training is wasted without candidate-space headroom.,Stage207 DP oracle must beat fixed baselines before Stage209 selector training is promoted.
+full_sequence_metrics_only_for_strong_claim,Stage177/180 sampled gains overstated full-sequence effect.,Stage211 must include full-sequence PSNR/SSIM/MS-SSIM/LPIPS and measured bytes.

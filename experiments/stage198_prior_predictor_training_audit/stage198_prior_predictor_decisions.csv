@@ -1,0 +1,5 @@
+item,decision,evidence,action_for_new_route
+continue_old_adapter_training,reject,Stage145 best gain 0.011427207695934527 dB; Stage146 best gain 0.0 dB with best step 0.,Do not spend Stage201+ on continuing GaussianAnchorDynamicPredictor unchanged.
+raise_keyframe_qbits_for_old_adapter,reject,Stage143 q12-to-float32 old adapter middle PSNR changes are about 0.000 dB.,"Use qbit as rate/ablation variable only, not the primary quality fix."
+use_stage158_as_evidence_predictor_is_solved,reject,"Stage157/158 quality is achieved by counted GS residual side-info over StreamSplat base, not by the old adapter alone.",Design predictor and residual codec jointly; measure predictor-only before selector training.
+new_predictor_requirement,require_new_architecture_and_loss,Old per-Gaussian MLP residual over linear interpolation underfits motion/occlusion and saturates.,Stage200 must propose a stronger temporal refiner/motion-field architecture with render-aware and RD-aware gates.
