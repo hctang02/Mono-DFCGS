@@ -13,8 +13,8 @@ The current focus is expanded fixed-gap full-sequence benchmarking and stronger 
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage191: `f573df9 Record selector sampled and full-sequence interpretation`
-- Latest completed local stage: `Stage191 fixed-gap expansion protocol`
+- Latest pushed commit before Stage192: `cb92e2b Prepare expanded fixed-gap protocol`
+- Latest completed local stage: `Stage192 expanded fixed-gap measurement`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -44,12 +44,12 @@ The current focus is expanded fixed-gap full-sequence benchmarking and stronger 
 - Stage190: completed paper-facing package. Decision: `paper_facing_tables_and_claim_boundaries_packaged`. Output package: `experiments/stage190_paper_facing_package/`. Recommended title: `Mono-DFCGS: Recovery-Aware Adaptive Keyframe Scheduling for Monocular Dynamic Gaussian Splatting Compression`. The package includes measured RD-quality (`3` rows), selector ablation (`8`), lower-budget sensitivity (`6`), candidate failures (`3`), promoted rate risks (`2`), residual hotspots (`10`), and claims/limitations (`9`).
 - Selector-gain interpretation to preserve for writing: Stage177/180 sampled validations showed large gains on selector-relevant targets, especially Stage180 with adaptive PSNR/LPIPS `29.770753/0.142780` vs gap8 `29.206326/0.176652` and gap4 `29.464217/0.162457`, giving `+0.564426` dB PSNR and `-0.033873` LPIPS vs gap8 plus `+0.306536` dB and `-0.019677` LPIPS vs gap4. Stage185/186 full-sequence measured validation averages over all frames and is more conservative: adaptive PSNR/SSIM/MS-SSIM/LPIPS `29.425583/0.869294/0.984647/0.165937` vs gap8 `29.373965/0.867626/0.984343/0.168692`, giving `+0.051618` dB PSNR, `+0.001668` SSIM, `+0.000304` MS-SSIM, and `-0.002754` LPIPS at `+0.014877` MiB/frame. These are not contradictory; Stage180 is a targeted sampled selector-benefit result, while Stage186 is the final full-sequence RD-quality table.
 - Stage191: completed expanded fixed-gap protocol for `gap2/gap4/gap6/gap8/gap16` plus current `stage165_adaptive`. Decision: `measure_expanded_fixed_gap_baselines_next`. Schedule keyframes/residual rows are gap2 `1025/974`, gap4 `536/1463`, gap6 `372/1627`, gap8 `292/1707`, gap16 `169/1830`, adaptive `358/1641`. Stage192 missing measurements are `469` single keyframes, `4319` residuals, and `90` schedule-packed keyframe groups for payload plus the same `469/4319` quality gaps; existing Stage184/186 rows cover `596` keyframes and `3472` residuals.
+- Stage192: completed expanded fixed-gap measurement. Decision: `current_adaptive_not_strong_against_expanded_fixed_gaps`. Best fixed gap by PSNR is `uniform_gap2` at rate/PSNR/SSIM/MS-SSIM/LPIPS `0.4495468821866683/29.654815328772308/0.878375951948018/0.9866168332910943/0.15168131759139583`. Current `stage165_adaptive` is `0.2907429328258184/29.4255826920606/0.8692941793565335/0.9846469353830415/0.16593745923142186`, which is `-0.22923263671170702` dB PSNR and `+0.014256141640026032` LPIPS vs best fixed gap. Gap6 is a useful near-rate fixed baseline: `0.29344506237493745` MiB/frame, PSNR `29.448737801531657`, LPIPS `0.16457491443157493`, slightly better than current adaptive at similar rate.
 
 ### Immediate Next Plan
 
-- Stage192: measure missing `gap2/gap6/gap16` payload and quality rows, aggregate expanded fixed-gap RD-quality, and identify the strongest fixed-gap baseline.
 - Stage193: compute oracle upper bounds before designing the next selector; if oracle cannot beat the best fixed gap by about `+1 dB`, the bottleneck is representation/policy capacity rather than selector learning.
-- Stage194+: design a multi-gap rate-aware adaptive selector only after Stage192/193 establish the target is achievable.
+- Stage194+: design a multi-gap rate-aware adaptive selector only after Stage193 establishes enough headroom.
 
 ### Residual Side-Info Codec / RD
 

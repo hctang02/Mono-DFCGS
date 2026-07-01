@@ -26,6 +26,7 @@ The current measured full-sequence result is a middle RD point: adaptive improve
 | failure-case analysis | Stage189 | promoted keyframe and residual-risk diagnostics | paper-facing failure cases and refinement targets identified |
 | paper-facing package | Stage190 | tables, claims, decoder contract, title/abstract draft | current writing/slides handoff package |
 | expanded fixed-gap protocol | Stage191 | gap2/gap4/gap6/gap8/gap16 plus adaptive protocol | missing measurement manifest for stronger baseline comparison |
+| expanded fixed-gap measurement | Stage192 | measured RD-quality for gap2/gap4/gap6/gap8/gap16/adaptive | current adaptive does not beat best fixed gap |
 
 ## Middle-Frame Recovery Evidence
 
@@ -436,6 +437,36 @@ Next stance:
 - Stage193 should compute oracle upper bounds before training/tuning a new selector.
 - The target is no longer just a middle RD point; the next selector should aim to beat the best tested fixed-gap schedule on full-sequence PSNR by a large margin, ideally around `+1 dB`, without SSIM/MS-SSIM/LPIPS regressions.
 
+## Stage192 Expanded Fixed-Gap Measurement
+
+Stage192 completes the expanded full-sequence measurement requested by the user. It measures missing gap2/gap6/gap16 payload and quality rows, reuses Stage184/186 where possible, and aggregates all schedules under the same measured scope.
+
+Validation:
+
+- All schedules have `1999/1999` final quality rows.
+- Unique keyframe payload/quality rows: `1065/1065`.
+- Unique residual payload/quality rows: `7791/7791`.
+- Schedule-packed keyframe payload groups are complete for all expanded schedules.
+
+Expanded measured RD-quality:
+
+| schedule | MiB/frame | keyframes | PSNR | SSIM | MS-SSIM | LPIPS | dPSNR vs best fixed | dLPIPS vs best fixed |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| `uniform_gap2` | `0.4495468821866683` | `1025` | `29.654815328772308` | `0.878375951948018` | `0.9866168332910943` | `0.15168131759139583` | `0.0` | `0.0` |
+| `uniform_gap4` | `0.33076894444307725` | `536` | `29.535715839048734` | `0.8739438994697716` | `0.9855294218654929` | `0.15947172297849663` | `-0.11909948972357398` | `0.007790405387100796` |
+| `uniform_gap6` | `0.29344506237493745` | `372` | `29.448737801531657` | `0.8706193330169857` | `0.9848943316024086` | `0.16457491443157493` | `-0.20607752724065165` | `0.0128935968401791` |
+| `uniform_gap8` | `0.2758661759621266` | `292` | `29.373964871839835` | `0.867625699572828` | `0.9843430183660156` | `0.16869177970254404` | `-0.28085045693247324` | `0.017010462111148206` |
+| `uniform_gap16` | `0.2514788301781811` | `169` | `29.199328663742687` | `0.8603573565843285` | `0.9830296424521751` | `0.1773263292425331` | `-0.4554866650296212` | `0.02564501165113728` |
+| `stage165_adaptive` | `0.2907429328258184` | `358` | `29.4255826920606` | `0.8692941793565335` | `0.9846469353830415` | `0.16593745923142186` | `-0.22923263671170702` | `0.014256141640026032` |
+
+Stage192 decision: `current_adaptive_not_strong_against_expanded_fixed_gaps`.
+
+Interpretation:
+
+- The best fixed gap by PSNR is `uniform_gap2`, and current adaptive is below it by `-0.22923263671170702` dB PSNR with worse LPIPS by `+0.014256141640026032`.
+- `uniform_gap6` is a near-rate baseline: rate `0.29344506237493745` MiB/frame vs adaptive `0.2907429328258184`, but gap6 has higher PSNR (`29.448737801531657` vs `29.4255826920606`) and lower LPIPS (`0.16457491443157493` vs `0.16593745923142186`).
+- Therefore the old Stage165 selector cannot support a strong selector-module claim. Stage193 must compute oracle headroom before new selector design.
+
 ## Non-Claims And Risks
 
 | item | status |
@@ -479,12 +510,12 @@ Next stance:
 | 189 | failure-case analysis | identifies promoted rate-risk rows, residual-risk hotspots, and candidate-specific dropped-frame losses |
 | 190 | paper-facing package | packages tables, claim boundaries, decoder contract, recommended title, and abstract draft |
 | 191 | expanded fixed-gap protocol | prepares gap2/gap4/gap6/gap8/gap16/adaptive full-sequence measurement and missing-row manifest |
+| 192 | expanded fixed-gap measurement | measures expanded fixed-gap RD-quality and shows current adaptive is not strong enough |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
-| 192 | expanded fixed-gap measurement | measured RD-quality for gap2/gap4/gap6/gap8/gap16/adaptive and best fixed-gap baseline identification |
 | 193 | oracle upper-bound analysis | determine whether a `+1 dB` full-sequence selector gain over best fixed gap is achievable with current recovery/keyframe representation |
 | 194+ | multi-gap selector design | rate-aware adaptive schedule candidates only if Stage193 shows enough headroom |
 
@@ -509,5 +540,6 @@ Next stance:
 | Stage189 failure-case analysis | `experiments/stage189_failure_case_analysis/` |
 | Stage190 paper-facing package | `experiments/stage190_paper_facing_package/` |
 | Stage191 fixed-gap expansion protocol | `experiments/stage191_fixed_gap_expansion_protocol/` |
+| Stage192 expanded fixed-gap measurement | `experiments/stage192_expanded_fixed_gap_measurement/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |
