@@ -1,0 +1,6 @@
+sequence,edge_count,node_count,component_count,max_component_edges,connected_path_count,status
+bike-packing,1,2,1,1,0,fail
+dog,1,2,1,1,0,fail
+dogs-jump,1,2,1,1,0,fail
+paragliding-launch,1,2,1,1,0,fail
+parkour,2,4,2,1,0,fail

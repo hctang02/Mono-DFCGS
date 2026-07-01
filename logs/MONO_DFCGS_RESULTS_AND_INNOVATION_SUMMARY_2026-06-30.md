@@ -41,6 +41,7 @@ The current measured full-sequence result is a middle RD point: adaptive improve
 | residual codec smoke | Stage204 | real-task q6 top-k GS residual payload | positive rendered headroom with counted bytes |
 | fixed-gap predictive validation | Stage205 | sampled fixed-gap q12 + GS residual RD-quality | positive headroom for gaps 4/8/12 |
 | edge RD table | Stage206 | sampled edge-level q12 keyframe + counted GS residual costs | ready for Stage207 DP oracle |
+| DP oracle schedule | Stage207 | residual-budget DP plus schedule connectivity audit | schedule graph insufficient; selector labels deferred |
 
 ## Middle-Frame Recovery Evidence
 
@@ -599,7 +600,7 @@ Stage gates:
 - Stage200: package new predictor/refiner architecture.
 - Stage201-205: validate predictor and GS-native residual before selector training.
 - Stage206: build edge RD table.
-- Stage207: compute DP oracle schedules.
+- Stage207: compute DP oracle schedules; current sampled graph is insufficient.
 - Stage208-210: train selector and residual budget allocator.
 - Stage211-213: full measured RD, ablations, and subjective visuals.
 
@@ -893,6 +894,37 @@ Interpretation:
 
 - Stage206 is sufficient to start Stage207 DP oracle schedule construction, but it is not full-sequence RD.
 
+## Stage207 DP Oracle Schedule
+
+Stage207 tests whether the Stage206 sampled edge table can support oracle schedule construction before selector-label generation.
+
+Stage207 decision: `dp_oracle_schedule_graph_insufficient`.
+
+What passed:
+
+- Stage206 prerequisite: pass (`edge_rd_table_ready_for_stage207_dp`).
+- Edge option coverage: pass (`18/18` options from `6` edges and `3` residual settings).
+- Fixed baselines present: pass (`topk_keep0p05_q6`, `topk_keep0p1_q6`, `topk_keep0p2_q6`).
+- Residual-budget oracle: pass as a budget allocator preflight; best same-budget gain was `+0.017853956775965685` dB at the `topk_keep0p1_q6` budget.
+- Decoder contract: pass.
+
+Fixed setting baselines over `37` sampled internal targets:
+
+- `topk_keep0p05_q6`: cost `4905660` bytes, mean PSNR `22.519469828354364`, mean dPSNR `+1.627647700365514`.
+- `topk_keep0p1_q6`: cost `5430475` bytes, mean PSNR `23.633188273126244`, mean dPSNR `+2.7413661451373974`.
+- `topk_keep0p2_q6`: cost `6399092` bytes, mean PSNR `25.382111703299287`, mean dPSNR `+4.490289575310435`.
+
+Blocker:
+
+- Schedule graph connectivity failed: `0` connected edge transitions.
+- Current Stage206 sampled edges are isolated (`bike-packing`, `dog`, `dogs-jump`, `paragliding-launch`, `parkour`) and cannot form nontrivial schedule paths.
+- Therefore Stage207 cannot honestly claim an oracle schedule that beats fixed baselines, and Stage208/209 selector training must remain deferred.
+
+Required next work:
+
+- Build an expanded connected edge RD table over at least one sequence/window with contiguous candidate edges.
+- Rerun Stage207 DP oracle after connected edge coverage exists.
+
 ## Non-Claims And Risks
 
 | item | status |
@@ -913,6 +945,7 @@ Interpretation:
 | Stage204 full-sequence RD | not claimed yet; Stage204 is a 12-task smoke and must be followed by Stage205+ |
 | Stage205 full-sequence RD | not claimed; Stage205 is sampled fixed-gap validation only |
 | Stage206 full-sequence RD | not claimed; Stage206 is sampled edge-level RD preflight for DP |
+| Stage207 selector-label readiness | not claimed; schedule graph connectivity failed, so selector labels are deferred |
 | selector precision solved | not claimed; Stage189 finds only `2/66` strong promoted rate-risk rows, but precision remains a tuning target |
 | false negatives solved | not claimed; Stage189 finds `1179` residual-risk rows and sequence hotspots |
 | online streaming selector | not claimed; current setting is offline video encoding unless lookahead is declared |
@@ -965,13 +998,15 @@ Interpretation:
 | 204 | residual codec smoke | demonstrates positive rendered headroom from counted GS-native residual payload |
 | 205 | fixed-gap predictive validation | shows sampled positive headroom for q12 + counted GS residual over gaps 4/8/12 |
 | 206 | edge RD table | creates sampled edge-level keyframe/residual/metadata cost rows for Stage207 DP |
+| 207 | DP oracle schedule | finds sampled Stage206 graph insufficient for nontrivial schedule oracle |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
-| 207 | DP oracle schedule | compute oracle schedules from Stage206 edge rows before selector training |
-| 208+ | new GS-native predictive codec execution | proceed through Stage213 under the Stage197-206 gates |
+| 206b | connected edge RD expansion | build contiguous sequence/window edge rows for real schedule DP |
+| 207 rerun | DP oracle schedule | rerun oracle after connected edge coverage exists |
+| 208+ | new GS-native predictive codec execution | proceed only after Stage207 schedule-level oracle gate passes |
 
 ## Canonical Paths
 
@@ -1009,5 +1044,6 @@ Interpretation:
 | Stage204 residual codec smoke | `experiments/stage204_residual_codec_smoke/` |
 | Stage205 fixed-gap predictive codec validation | `experiments/stage205_fixed_gap_predictive_codec_validation/` |
 | Stage206 edge RD table | `experiments/stage206_edge_rd_table/` |
+| Stage207 DP oracle schedule | `experiments/stage207_dp_oracle_schedule/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |

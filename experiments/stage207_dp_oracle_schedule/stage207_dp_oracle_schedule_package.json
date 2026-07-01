@@ -1,0 +1,62 @@
+{
+  "stage": 207,
+  "name": "dp_oracle_schedule",
+  "decision": "dp_oracle_schedule_graph_insufficient",
+  "stage206_package": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage206_edge_rd_table/stage206_edge_rd_table_package.json",
+  "edge_count": 6,
+  "option_count": 18,
+  "target_count": 37,
+  "frontier_point_count": 89,
+  "options_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage207_dp_oracle_schedule/stage207_edge_option_rows.csv",
+  "fixed_baselines_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage207_dp_oracle_schedule/stage207_fixed_setting_baselines.csv",
+  "frontier_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage207_dp_oracle_schedule/stage207_budget_frontier.csv",
+  "budget_oracle_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage207_dp_oracle_schedule/stage207_budget_oracle_rows.csv",
+  "graph_connectivity_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage207_dp_oracle_schedule/stage207_graph_connectivity.csv",
+  "gates_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage207_dp_oracle_schedule/stage207_dp_oracle_gates.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage207_dp_oracle_schedule/stage207_dp_oracle_schedule_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage207_dp_oracle_schedule/stage207_dp_oracle_schedule_report.md",
+  "gate_rows": [
+    {
+      "gate": "stage206_prereq",
+      "status": "pass",
+      "value": "edge_rd_table_ready_for_stage207_dp",
+      "threshold": "edge_rd_table_ready_for_stage207_dp",
+      "detail": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage206_edge_rd_table/stage206_edge_rd_table_package.json"
+    },
+    {
+      "gate": "edge_option_coverage",
+      "status": "pass",
+      "value": 18,
+      "threshold": 18,
+      "detail": "one option per edge/setting from Stage206 edge rows"
+    },
+    {
+      "gate": "fixed_baselines_present",
+      "status": "pass",
+      "value": 3,
+      "threshold": ">=2 settings",
+      "detail": "topk_keep0p05_q6;topk_keep0p1_q6;topk_keep0p2_q6"
+    },
+    {
+      "gate": "budget_oracle_nonnegative_gain",
+      "status": "pass",
+      "value": 0.017853956775965685,
+      "threshold": ">=0 dB vs same-budget fixed settings",
+      "detail": "residual-budget oracle only; not a schedule oracle"
+    },
+    {
+      "gate": "schedule_graph_connected",
+      "status": "fail",
+      "value": 0,
+      "threshold": ">0 connected edge transitions",
+      "detail": "Stage206 sampled edges are not enough for nontrivial schedule DP if this fails"
+    },
+    {
+      "gate": "stage197_decoder_contract",
+      "status": "pass",
+      "value": 0,
+      "threshold": "no target dense/RGB decoder input",
+      "detail": "Stage207 reads measured edge costs only; decoder contract inherited from Stage206"
+    }
+  ]
+}

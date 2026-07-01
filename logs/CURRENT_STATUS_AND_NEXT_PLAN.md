@@ -13,8 +13,8 @@ The current focus is the new predictor/refiner, GS-native residual/latent codec,
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage206: `ae340e7 Validate fixed-gap predictive codec`
-- Latest completed local stage: `Stage206 edge RD table`
+- Latest pushed commit before Stage207: `fa64bac Build edge RD table`
+- Latest completed local stage: `Stage207 DP oracle schedule preflight`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -59,11 +59,12 @@ The current focus is the new predictor/refiner, GS-native residual/latent codec,
 - Stage204: completed residual codec smoke. Decision: `residual_codec_smoke_positive_headroom`. Ran `12` eval tasks over q12 gaps `4,8` with linear/zero-init predictor base, side bits `6`, zlib level `9`, and keep fractions `0.05,0.10,0.20`. Base mean PSNR was `19.999033822428466`. `topk_keep0p05_q6` reached PSNR `22.39462808214667` at mean payload `15679.583333333334` bytes (`+2.3955942597182047` dB); `topk_keep0p1_q6` reached `23.804629721924517` at `29836.75` bytes (`+3.8055958994960553` dB); `topk_keep0p2_q6` reached `25.552135029430517` at `55761.833333333336` bytes (`+5.553101207002054` dB). All gates passed, including explicit metric shapes, counted nonzero payload, and Stage197 decoder contract. GS-native residual payload has real rendered headroom.
 - Stage205: completed fixed-gap predictive codec validation. Decision: `fixed_gap_predictive_codec_positive_headroom`. This is sampled validation, not full-sequence RD. Tested `24` eval tasks (`8` each for gaps `4,8,12`) with q12 keyframes and q6 top-k residual keep fractions `0.05,0.10,0.20`. Best setting for every gap was `topk_keep0p2_q6`: gap4 payload/PSNR/dPSNR `56283.0` bytes / `25.301132561904456` / `+4.701712017960398`; gap8 `58359.875` bytes / `23.694548271579496` / `+6.027264286351697`; gap12 `57028.5` bytes / `24.991767735164355` / `+5.796172997426137`. Gates passed for metric rows, counted payload, gap coverage, each-gap positive headroom, and Stage197 decoder contract.
 - Stage206: completed edge RD table. Decision: `edge_rd_table_ready_for_stage207_dp`. This is sampled edge-level RD preflight, not final full-sequence RD. Selected `6` eval edges and `37` internal target rows over gaps `4,8,12`; tested q6 top-k residual keep fractions `0.05,0.10,0.20`; measured exact endpoint q12 keyframe bytes with `encode_anchor_bitstream`; counted residual payload bytes from `len(payload)`; counted provisional schedule metadata as `2` bytes/edge. Best setting for every gap was `topk_keep0p2_q6`: gap4 edge total/DP incremental/residual/PSNR/dPSNR `1604771.0` / `885123.0` / `165471.0` bytes / `26.59671835498372` / `+5.301434075900853`; gap8 `1701646.5` / `981999.5` / `262346.5` bytes / `22.501153480651734` / `+4.267633006441421`; gap12 `2052070.0` / `1332423.5` / `612781.0` bytes / `26.07283417481182` / `+4.164336484774056`. Gates passed for Stage205 prereq, metric rows, edge rows, gap coverage, counted keyframe/residual bytes, counted schedule metadata, positive edge headroom, and Stage197 decoder contract.
+- Stage207: completed DP oracle schedule preflight. Decision: `dp_oracle_schedule_graph_insufficient`. Stage206 prerequisite and edge option coverage passed (`18/18` options from `6` edges and `3` settings), and residual-budget DP found a same-budget gain of `+0.017853956775965685` dB at the `topk_keep0p1_q6` budget. However schedule graph connectivity failed with `0` connected edge transitions; all sampled Stage206 edges are isolated, so this is not a valid schedule-level oracle and cannot produce Stage208 selector labels. Stage208/209 are deferred until an expanded connected edge RD table is built.
 
 ### Immediate Next Plan
 
 - Continue the user-approved GS-native learned predictive compression route through Stage213 before asking for another decision.
-- Immediate next stages: Stage207 DP oracle schedule, Stage208 selector training data, Stage209 encoder selector training.
+- Immediate next stages: expand connected edge RD table, rerun Stage207 DP oracle schedule, then only proceed to Stage208 selector labels if schedule-level oracle gate passes.
 
 ### Residual Side-Info Codec / RD
 

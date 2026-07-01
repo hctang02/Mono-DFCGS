@@ -1,0 +1,7 @@
+gate,status,value,threshold,detail
+stage206_prereq,pass,edge_rd_table_ready_for_stage207_dp,edge_rd_table_ready_for_stage207_dp,/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage206_edge_rd_table/stage206_edge_rd_table_package.json
+edge_option_coverage,pass,18,18,one option per edge/setting from Stage206 edge rows
+fixed_baselines_present,pass,3,>=2 settings,topk_keep0p05_q6;topk_keep0p1_q6;topk_keep0p2_q6
+budget_oracle_nonnegative_gain,pass,0.017853956775965685,>=0 dB vs same-budget fixed settings,residual-budget oracle only; not a schedule oracle
+schedule_graph_connected,fail,0,>0 connected edge transitions,Stage206 sampled edges are not enough for nontrivial schedule DP if this fails
+stage197_decoder_contract,pass,0,no target dense/RGB decoder input,Stage207 reads measured edge costs only; decoder contract inherited from Stage206
