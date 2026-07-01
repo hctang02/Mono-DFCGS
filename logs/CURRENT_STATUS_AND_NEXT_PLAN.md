@@ -6,15 +6,15 @@ Date: 2026-07-01
 
 Continue the Mono-DFCGS StreamSplat-guided, Gaussian-domain, rate-counted middle-frame recovery line with adaptive keyframe scheduling.
 
-The current focus is paper writing and/or optional same-scope lower-budget candidate measurement after Stage190 packaged the paper-facing Mono-DFCGS evidence and claim boundaries.
+The current focus is expanded fixed-gap full-sequence benchmarking and stronger selector design after the user requested that the selector beat multiple fixed-gap baselines clearly on full-sequence metrics.
 
 ## Current Repo State
 
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage190: `efd1fea Analyze adaptive failure cases`
-- Latest completed local stage: `Stage190 paper-facing package`
+- Latest pushed commit before Stage191: `f573df9 Record selector sampled and full-sequence interpretation`
+- Latest completed local stage: `Stage191 fixed-gap expansion protocol`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -43,11 +43,13 @@ The current focus is paper writing and/or optional same-scope lower-budget candi
 - Stage189: completed failure-case analysis. Decision: `failure_cases_identified_for_paper_and_next_selector_refinement`. Strong promoted-keyframe rate risks are only `2/66` promoted rows (`drift-chicane` frame `6`, `horsejump-high` frame `15`), while residual risk rows are broader (`1179`) and concentrate in sequences such as `cows` (`86`), `parkour` (`75`), `camel` (`73`), `goat` (`73`), `breakdance` (`72`), `soapbox` (`72`), and `bmx-trees` (`67`). Stage188 candidate failure summaries show `interval_top10pct_cells` changes `370` frames vs full adaptive with worst changed dPSNR `-5.309560997374348`, `interval_score_ge4p0` changes `223` frames with worst `-2.3890793771766035`, and `interval_top90pct_cells` changes `35` frames with worst `-1.2776672922430699`.
 - Stage190: completed paper-facing package. Decision: `paper_facing_tables_and_claim_boundaries_packaged`. Output package: `experiments/stage190_paper_facing_package/`. Recommended title: `Mono-DFCGS: Recovery-Aware Adaptive Keyframe Scheduling for Monocular Dynamic Gaussian Splatting Compression`. The package includes measured RD-quality (`3` rows), selector ablation (`8`), lower-budget sensitivity (`6`), candidate failures (`3`), promoted rate risks (`2`), residual hotspots (`10`), and claims/limitations (`9`).
 - Selector-gain interpretation to preserve for writing: Stage177/180 sampled validations showed large gains on selector-relevant targets, especially Stage180 with adaptive PSNR/LPIPS `29.770753/0.142780` vs gap8 `29.206326/0.176652` and gap4 `29.464217/0.162457`, giving `+0.564426` dB PSNR and `-0.033873` LPIPS vs gap8 plus `+0.306536` dB and `-0.019677` LPIPS vs gap4. Stage185/186 full-sequence measured validation averages over all frames and is more conservative: adaptive PSNR/SSIM/MS-SSIM/LPIPS `29.425583/0.869294/0.984647/0.165937` vs gap8 `29.373965/0.867626/0.984343/0.168692`, giving `+0.051618` dB PSNR, `+0.001668` SSIM, `+0.000304` MS-SSIM, and `-0.002754` LPIPS at `+0.014877` MiB/frame. These are not contradictory; Stage180 is a targeted sampled selector-benefit result, while Stage186 is the final full-sequence RD-quality table.
+- Stage191: completed expanded fixed-gap protocol for `gap2/gap4/gap6/gap8/gap16` plus current `stage165_adaptive`. Decision: `measure_expanded_fixed_gap_baselines_next`. Schedule keyframes/residual rows are gap2 `1025/974`, gap4 `536/1463`, gap6 `372/1627`, gap8 `292/1707`, gap16 `169/1830`, adaptive `358/1641`. Stage192 missing measurements are `469` single keyframes, `4319` residuals, and `90` schedule-packed keyframe groups for payload plus the same `469/4319` quality gaps; existing Stage184/186 rows cover `596` keyframes and `3472` residuals.
 
 ### Immediate Next Plan
 
-- Paper writing: use `experiments/stage190_paper_facing_package/stage190_paper_facing_report.md` as the current paper/slides handoff.
-- Optional next refinement: if final RD claims need same scope as Stage185, measure schedule-packed keyframe streams for selected Stage188 candidates.
+- Stage192: measure missing `gap2/gap6/gap16` payload and quality rows, aggregate expanded fixed-gap RD-quality, and identify the strongest fixed-gap baseline.
+- Stage193: compute oracle upper bounds before designing the next selector; if oracle cannot beat the best fixed gap by about `+1 dB`, the bottleneck is representation/policy capacity rather than selector learning.
+- Stage194+: design a multi-gap rate-aware adaptive selector only after Stage192/193 establish the target is achievable.
 
 ### Residual Side-Info Codec / RD
 

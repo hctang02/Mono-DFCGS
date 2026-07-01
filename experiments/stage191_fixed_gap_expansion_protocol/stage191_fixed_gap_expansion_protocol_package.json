@@ -1,0 +1,155 @@
+{
+  "stage": 191,
+  "status": "fixed_gap_expansion_protocol_packaged",
+  "decision": "measure_expanded_fixed_gap_baselines_next",
+  "schedules": [
+    "uniform_gap2",
+    "uniform_gap4",
+    "uniform_gap6",
+    "uniform_gap8",
+    "uniform_gap16",
+    "stage165_adaptive"
+  ],
+  "fixed_gaps": [
+    2,
+    4,
+    6,
+    8,
+    16
+  ],
+  "sequence_count": 30,
+  "frame_schedule_row_count": 11994,
+  "unique_keyframe_measurement_count": 1065,
+  "unique_residual_measurement_count": 7791,
+  "summary_rows": [
+    {
+      "schedule": "uniform_gap2",
+      "schedule_family": "fixed_gap",
+      "gap": 2,
+      "sequence_count": 30,
+      "total_frames": 1999,
+      "keyframe_rows": 1025,
+      "residual_rows": 974,
+      "keyframe_ratio": 0.5127563781890946,
+      "unique_keyframe_measurements": 1025,
+      "unique_residual_measurements": 974,
+      "metadata_bytes": 1
+    },
+    {
+      "schedule": "uniform_gap4",
+      "schedule_family": "fixed_gap",
+      "gap": 4,
+      "sequence_count": 30,
+      "total_frames": 1999,
+      "keyframe_rows": 536,
+      "residual_rows": 1463,
+      "keyframe_ratio": 0.2681340670335168,
+      "unique_keyframe_measurements": 536,
+      "unique_residual_measurements": 1463,
+      "metadata_bytes": 1
+    },
+    {
+      "schedule": "uniform_gap6",
+      "schedule_family": "fixed_gap",
+      "gap": 6,
+      "sequence_count": 30,
+      "total_frames": 1999,
+      "keyframe_rows": 372,
+      "residual_rows": 1627,
+      "keyframe_ratio": 0.18609304652326164,
+      "unique_keyframe_measurements": 372,
+      "unique_residual_measurements": 1627,
+      "metadata_bytes": 1
+    },
+    {
+      "schedule": "uniform_gap8",
+      "schedule_family": "fixed_gap",
+      "gap": 8,
+      "sequence_count": 30,
+      "total_frames": 1999,
+      "keyframe_rows": 292,
+      "residual_rows": 1707,
+      "keyframe_ratio": 0.14607303651825912,
+      "unique_keyframe_measurements": 292,
+      "unique_residual_measurements": 1707,
+      "metadata_bytes": 1
+    },
+    {
+      "schedule": "uniform_gap16",
+      "schedule_family": "fixed_gap",
+      "gap": 16,
+      "sequence_count": 30,
+      "total_frames": 1999,
+      "keyframe_rows": 169,
+      "residual_rows": 1830,
+      "keyframe_ratio": 0.08454227113556778,
+      "unique_keyframe_measurements": 169,
+      "unique_residual_measurements": 1830,
+      "metadata_bytes": 1
+    },
+    {
+      "schedule": "stage165_adaptive",
+      "schedule_family": "adaptive",
+      "gap": "",
+      "sequence_count": 30,
+      "total_frames": 1999,
+      "keyframe_rows": 358,
+      "residual_rows": 1641,
+      "keyframe_ratio": 0.1790895447723862,
+      "unique_keyframe_measurements": 358,
+      "unique_residual_measurements": 1641,
+      "metadata_bytes": 327
+    }
+  ],
+  "reuse_coverage_rows": [
+    {
+      "measurement_scope": "payload_single_keyframe",
+      "expected_count": 1065,
+      "existing_ok_count": 596,
+      "missing_count": 469,
+      "reuse_fraction": 0.5596244131455399,
+      "existing_source": "stage184_unique_keyframe_payload_measurements.csv"
+    },
+    {
+      "measurement_scope": "payload_residual",
+      "expected_count": 7791,
+      "existing_ok_count": 3472,
+      "missing_count": 4319,
+      "reuse_fraction": 0.44564240790655885,
+      "existing_source": "stage184_unique_stage158_residual_payload_measurements.csv"
+    },
+    {
+      "measurement_scope": "payload_schedule_packed_keyframe_group",
+      "expected_count": 180,
+      "existing_ok_count": 90,
+      "missing_count": 90,
+      "reuse_fraction": 0.5,
+      "existing_source": "stage184_schedule_packed_keyframe_payload_measurements.csv"
+    },
+    {
+      "measurement_scope": "quality_single_keyframe",
+      "expected_count": 1065,
+      "existing_ok_count": 596,
+      "missing_count": 469,
+      "reuse_fraction": 0.5596244131455399,
+      "existing_source": "stage186_unique_keyframe_quality_metrics.csv"
+    },
+    {
+      "measurement_scope": "quality_residual",
+      "expected_count": 7791,
+      "existing_ok_count": 3472,
+      "missing_count": 4319,
+      "reuse_fraction": 0.44564240790655885,
+      "existing_source": "stage186_unique_stage158_residual_quality_metrics.csv"
+    }
+  ],
+  "frame_schedule_csv": "experiments/stage191_fixed_gap_expansion_protocol/stage191_expanded_fixed_gap_frame_schedule_rows.csv",
+  "unique_keyframe_csv": "experiments/stage191_fixed_gap_expansion_protocol/stage191_unique_keyframe_measurement_rows.csv",
+  "unique_residual_csv": "experiments/stage191_fixed_gap_expansion_protocol/stage191_unique_stage158_residual_measurement_rows.csv",
+  "summary_csv": "experiments/stage191_fixed_gap_expansion_protocol/stage191_expanded_fixed_gap_schedule_summary.csv",
+  "reuse_coverage_csv": "experiments/stage191_fixed_gap_expansion_protocol/stage191_existing_measurement_reuse_coverage.csv",
+  "missing_measurements_csv": "experiments/stage191_fixed_gap_expansion_protocol/stage191_missing_measurements_for_stage192.csv",
+  "package_json": "experiments/stage191_fixed_gap_expansion_protocol/stage191_fixed_gap_expansion_protocol_package.json",
+  "report_md": "experiments/stage191_fixed_gap_expansion_protocol/stage191_fixed_gap_expansion_protocol_report.md",
+  "next": "Run Stage192 to measure missing payload/quality rows and aggregate expanded fixed-gap RD-quality."
+}

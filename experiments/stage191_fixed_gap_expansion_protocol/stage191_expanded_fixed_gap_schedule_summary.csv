@@ -1,0 +1,7 @@
+schedule,schedule_family,gap,sequence_count,total_frames,keyframe_rows,residual_rows,keyframe_ratio,unique_keyframe_measurements,unique_residual_measurements,metadata_bytes
+uniform_gap2,fixed_gap,2,30,1999,1025,974,0.5127563781890946,1025,974,1
+uniform_gap4,fixed_gap,4,30,1999,536,1463,0.2681340670335168,536,1463,1
+uniform_gap6,fixed_gap,6,30,1999,372,1627,0.18609304652326164,372,1627,1
+uniform_gap8,fixed_gap,8,30,1999,292,1707,0.14607303651825912,292,1707,1
+uniform_gap16,fixed_gap,16,30,1999,169,1830,0.08454227113556778,169,1830,1
+stage165_adaptive,adaptive,,30,1999,358,1641,0.1790895447723862,358,1641,327

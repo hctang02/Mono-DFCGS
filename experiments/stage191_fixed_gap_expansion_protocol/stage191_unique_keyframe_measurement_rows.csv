@@ -1,0 +1,1066 @@
+measurement_key,sequence,frame_index,used_by_schedules,schedule_count
+keyframe::bike-packing:00000,bike-packing,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::bike-packing:00002,bike-packing,2,uniform_gap2,1
+keyframe::bike-packing:00004,bike-packing,4,uniform_gap2 uniform_gap4,2
+keyframe::bike-packing:00006,bike-packing,6,uniform_gap2 uniform_gap6,2
+keyframe::bike-packing:00008,bike-packing,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::bike-packing:00010,bike-packing,10,uniform_gap2,1
+keyframe::bike-packing:00012,bike-packing,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::bike-packing:00014,bike-packing,14,uniform_gap2,1
+keyframe::bike-packing:00016,bike-packing,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::bike-packing:00018,bike-packing,18,uniform_gap2 uniform_gap6,2
+keyframe::bike-packing:00020,bike-packing,20,uniform_gap2 uniform_gap4,2
+keyframe::bike-packing:00022,bike-packing,22,uniform_gap2,1
+keyframe::bike-packing:00024,bike-packing,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::bike-packing:00026,bike-packing,26,uniform_gap2,1
+keyframe::bike-packing:00028,bike-packing,28,uniform_gap2 uniform_gap4,2
+keyframe::bike-packing:00030,bike-packing,30,uniform_gap2 uniform_gap6,2
+keyframe::bike-packing:00032,bike-packing,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::bike-packing:00034,bike-packing,34,uniform_gap2,1
+keyframe::bike-packing:00036,bike-packing,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::bike-packing:00038,bike-packing,38,uniform_gap2,1
+keyframe::bike-packing:00040,bike-packing,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::bike-packing:00042,bike-packing,42,uniform_gap2 uniform_gap6,2
+keyframe::bike-packing:00044,bike-packing,44,uniform_gap2 uniform_gap4,2
+keyframe::bike-packing:00046,bike-packing,46,stage165_adaptive uniform_gap2,2
+keyframe::bike-packing:00048,bike-packing,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::bike-packing:00050,bike-packing,50,uniform_gap2,1
+keyframe::bike-packing:00052,bike-packing,52,uniform_gap2 uniform_gap4,2
+keyframe::bike-packing:00054,bike-packing,54,uniform_gap2 uniform_gap6,2
+keyframe::bike-packing:00056,bike-packing,56,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::bike-packing:00058,bike-packing,58,uniform_gap2,1
+keyframe::bike-packing:00060,bike-packing,60,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::bike-packing:00062,bike-packing,62,uniform_gap2,1
+keyframe::bike-packing:00064,bike-packing,64,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::bike-packing:00066,bike-packing,66,uniform_gap2 uniform_gap6,2
+keyframe::bike-packing:00068,bike-packing,68,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::blackswan:00000,blackswan,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::blackswan:00002,blackswan,2,uniform_gap2,1
+keyframe::blackswan:00004,blackswan,4,uniform_gap2 uniform_gap4,2
+keyframe::blackswan:00006,blackswan,6,uniform_gap2 uniform_gap6,2
+keyframe::blackswan:00008,blackswan,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::blackswan:00010,blackswan,10,uniform_gap2,1
+keyframe::blackswan:00012,blackswan,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::blackswan:00014,blackswan,14,uniform_gap2,1
+keyframe::blackswan:00016,blackswan,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::blackswan:00018,blackswan,18,uniform_gap2 uniform_gap6,2
+keyframe::blackswan:00020,blackswan,20,uniform_gap2 uniform_gap4,2
+keyframe::blackswan:00022,blackswan,22,uniform_gap2,1
+keyframe::blackswan:00024,blackswan,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::blackswan:00026,blackswan,26,uniform_gap2,1
+keyframe::blackswan:00028,blackswan,28,uniform_gap2 uniform_gap4,2
+keyframe::blackswan:00030,blackswan,30,uniform_gap2 uniform_gap6,2
+keyframe::blackswan:00032,blackswan,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::blackswan:00034,blackswan,34,uniform_gap2,1
+keyframe::blackswan:00036,blackswan,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::blackswan:00038,blackswan,38,uniform_gap2,1
+keyframe::blackswan:00040,blackswan,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::blackswan:00042,blackswan,42,uniform_gap2 uniform_gap6,2
+keyframe::blackswan:00044,blackswan,44,uniform_gap2 uniform_gap4,2
+keyframe::blackswan:00046,blackswan,46,uniform_gap2,1
+keyframe::blackswan:00048,blackswan,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::blackswan:00049,blackswan,49,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::bmx-trees:00000,bmx-trees,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::bmx-trees:00002,bmx-trees,2,uniform_gap2,1
+keyframe::bmx-trees:00004,bmx-trees,4,uniform_gap2 uniform_gap4,2
+keyframe::bmx-trees:00006,bmx-trees,6,uniform_gap2 uniform_gap6,2
+keyframe::bmx-trees:00008,bmx-trees,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::bmx-trees:00010,bmx-trees,10,uniform_gap2,1
+keyframe::bmx-trees:00012,bmx-trees,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::bmx-trees:00014,bmx-trees,14,uniform_gap2,1
+keyframe::bmx-trees:00016,bmx-trees,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::bmx-trees:00018,bmx-trees,18,uniform_gap2 uniform_gap6,2
+keyframe::bmx-trees:00020,bmx-trees,20,uniform_gap2 uniform_gap4,2
+keyframe::bmx-trees:00022,bmx-trees,22,uniform_gap2,1
+keyframe::bmx-trees:00024,bmx-trees,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::bmx-trees:00026,bmx-trees,26,uniform_gap2,1
+keyframe::bmx-trees:00028,bmx-trees,28,uniform_gap2 uniform_gap4,2
+keyframe::bmx-trees:00030,bmx-trees,30,uniform_gap2 uniform_gap6,2
+keyframe::bmx-trees:00031,bmx-trees,31,stage165_adaptive,1
+keyframe::bmx-trees:00032,bmx-trees,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::bmx-trees:00034,bmx-trees,34,uniform_gap2,1
+keyframe::bmx-trees:00035,bmx-trees,35,stage165_adaptive,1
+keyframe::bmx-trees:00036,bmx-trees,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::bmx-trees:00038,bmx-trees,38,uniform_gap2,1
+keyframe::bmx-trees:00040,bmx-trees,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::bmx-trees:00042,bmx-trees,42,uniform_gap2 uniform_gap6,2
+keyframe::bmx-trees:00044,bmx-trees,44,uniform_gap2 uniform_gap4,2
+keyframe::bmx-trees:00046,bmx-trees,46,uniform_gap2,1
+keyframe::bmx-trees:00048,bmx-trees,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::bmx-trees:00050,bmx-trees,50,uniform_gap2,1
+keyframe::bmx-trees:00052,bmx-trees,52,uniform_gap2 uniform_gap4,2
+keyframe::bmx-trees:00054,bmx-trees,54,uniform_gap2 uniform_gap6,2
+keyframe::bmx-trees:00056,bmx-trees,56,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::bmx-trees:00058,bmx-trees,58,uniform_gap2,1
+keyframe::bmx-trees:00060,bmx-trees,60,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::bmx-trees:00062,bmx-trees,62,uniform_gap2,1
+keyframe::bmx-trees:00064,bmx-trees,64,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::bmx-trees:00066,bmx-trees,66,uniform_gap2 uniform_gap6,2
+keyframe::bmx-trees:00068,bmx-trees,68,uniform_gap2 uniform_gap4,2
+keyframe::bmx-trees:00070,bmx-trees,70,uniform_gap2,1
+keyframe::bmx-trees:00072,bmx-trees,72,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::bmx-trees:00074,bmx-trees,74,uniform_gap2,1
+keyframe::bmx-trees:00076,bmx-trees,76,uniform_gap2 uniform_gap4,2
+keyframe::bmx-trees:00078,bmx-trees,78,uniform_gap2 uniform_gap6,2
+keyframe::bmx-trees:00079,bmx-trees,79,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::breakdance:00000,breakdance,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::breakdance:00002,breakdance,2,uniform_gap2,1
+keyframe::breakdance:00004,breakdance,4,uniform_gap2 uniform_gap4,2
+keyframe::breakdance:00006,breakdance,6,uniform_gap2 uniform_gap6,2
+keyframe::breakdance:00008,breakdance,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::breakdance:00010,breakdance,10,uniform_gap2,1
+keyframe::breakdance:00012,breakdance,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::breakdance:00014,breakdance,14,uniform_gap2,1
+keyframe::breakdance:00016,breakdance,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::breakdance:00018,breakdance,18,uniform_gap2 uniform_gap6,2
+keyframe::breakdance:00020,breakdance,20,uniform_gap2 uniform_gap4,2
+keyframe::breakdance:00022,breakdance,22,uniform_gap2,1
+keyframe::breakdance:00024,breakdance,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::breakdance:00026,breakdance,26,uniform_gap2,1
+keyframe::breakdance:00028,breakdance,28,uniform_gap2 uniform_gap4,2
+keyframe::breakdance:00030,breakdance,30,uniform_gap2 uniform_gap6,2
+keyframe::breakdance:00032,breakdance,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::breakdance:00034,breakdance,34,uniform_gap2,1
+keyframe::breakdance:00036,breakdance,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::breakdance:00038,breakdance,38,uniform_gap2,1
+keyframe::breakdance:00040,breakdance,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::breakdance:00042,breakdance,42,uniform_gap2 uniform_gap6,2
+keyframe::breakdance:00044,breakdance,44,uniform_gap2 uniform_gap4,2
+keyframe::breakdance:00046,breakdance,46,uniform_gap2,1
+keyframe::breakdance:00048,breakdance,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::breakdance:00050,breakdance,50,uniform_gap2,1
+keyframe::breakdance:00052,breakdance,52,uniform_gap2 uniform_gap4,2
+keyframe::breakdance:00054,breakdance,54,uniform_gap2 uniform_gap6,2
+keyframe::breakdance:00056,breakdance,56,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::breakdance:00058,breakdance,58,uniform_gap2,1
+keyframe::breakdance:00060,breakdance,60,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::breakdance:00062,breakdance,62,uniform_gap2,1
+keyframe::breakdance:00064,breakdance,64,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::breakdance:00066,breakdance,66,uniform_gap2 uniform_gap6,2
+keyframe::breakdance:00068,breakdance,68,uniform_gap2 uniform_gap4,2
+keyframe::breakdance:00070,breakdance,70,uniform_gap2,1
+keyframe::breakdance:00072,breakdance,72,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::breakdance:00074,breakdance,74,uniform_gap2,1
+keyframe::breakdance:00076,breakdance,76,uniform_gap2 uniform_gap4,2
+keyframe::breakdance:00078,breakdance,78,uniform_gap2 uniform_gap6,2
+keyframe::breakdance:00080,breakdance,80,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::breakdance:00082,breakdance,82,uniform_gap2,1
+keyframe::breakdance:00083,breakdance,83,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::camel:00000,camel,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::camel:00002,camel,2,uniform_gap2,1
+keyframe::camel:00004,camel,4,uniform_gap2 uniform_gap4,2
+keyframe::camel:00006,camel,6,uniform_gap2 uniform_gap6,2
+keyframe::camel:00008,camel,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::camel:00010,camel,10,uniform_gap2,1
+keyframe::camel:00012,camel,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::camel:00014,camel,14,uniform_gap2,1
+keyframe::camel:00016,camel,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::camel:00018,camel,18,uniform_gap2 uniform_gap6,2
+keyframe::camel:00020,camel,20,uniform_gap2 uniform_gap4,2
+keyframe::camel:00022,camel,22,uniform_gap2,1
+keyframe::camel:00023,camel,23,stage165_adaptive,1
+keyframe::camel:00024,camel,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::camel:00026,camel,26,uniform_gap2,1
+keyframe::camel:00028,camel,28,uniform_gap2 uniform_gap4,2
+keyframe::camel:00030,camel,30,uniform_gap2 uniform_gap6,2
+keyframe::camel:00032,camel,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::camel:00034,camel,34,uniform_gap2,1
+keyframe::camel:00036,camel,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::camel:00038,camel,38,uniform_gap2,1
+keyframe::camel:00040,camel,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::camel:00042,camel,42,uniform_gap2 uniform_gap6,2
+keyframe::camel:00044,camel,44,uniform_gap2 uniform_gap4,2
+keyframe::camel:00046,camel,46,uniform_gap2,1
+keyframe::camel:00047,camel,47,stage165_adaptive,1
+keyframe::camel:00048,camel,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::camel:00050,camel,50,uniform_gap2,1
+keyframe::camel:00051,camel,51,stage165_adaptive,1
+keyframe::camel:00052,camel,52,uniform_gap2 uniform_gap4,2
+keyframe::camel:00054,camel,54,uniform_gap2 uniform_gap6,2
+keyframe::camel:00056,camel,56,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::camel:00058,camel,58,uniform_gap2,1
+keyframe::camel:00060,camel,60,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::camel:00062,camel,62,uniform_gap2,1
+keyframe::camel:00064,camel,64,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::camel:00066,camel,66,uniform_gap2 uniform_gap6,2
+keyframe::camel:00068,camel,68,uniform_gap2 uniform_gap4,2
+keyframe::camel:00070,camel,70,uniform_gap2,1
+keyframe::camel:00072,camel,72,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::camel:00074,camel,74,uniform_gap2,1
+keyframe::camel:00075,camel,75,stage165_adaptive,1
+keyframe::camel:00076,camel,76,uniform_gap2 uniform_gap4,2
+keyframe::camel:00078,camel,78,uniform_gap2 uniform_gap6,2
+keyframe::camel:00080,camel,80,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::camel:00082,camel,82,uniform_gap2,1
+keyframe::camel:00084,camel,84,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::camel:00086,camel,86,uniform_gap2,1
+keyframe::camel:00088,camel,88,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::camel:00089,camel,89,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::car-roundabout:00000,car-roundabout,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::car-roundabout:00001,car-roundabout,1,stage165_adaptive,1
+keyframe::car-roundabout:00002,car-roundabout,2,uniform_gap2,1
+keyframe::car-roundabout:00004,car-roundabout,4,uniform_gap2 uniform_gap4,2
+keyframe::car-roundabout:00006,car-roundabout,6,uniform_gap2 uniform_gap6,2
+keyframe::car-roundabout:00008,car-roundabout,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::car-roundabout:00010,car-roundabout,10,uniform_gap2,1
+keyframe::car-roundabout:00012,car-roundabout,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::car-roundabout:00014,car-roundabout,14,uniform_gap2,1
+keyframe::car-roundabout:00015,car-roundabout,15,stage165_adaptive,1
+keyframe::car-roundabout:00016,car-roundabout,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::car-roundabout:00018,car-roundabout,18,uniform_gap2 uniform_gap6,2
+keyframe::car-roundabout:00020,car-roundabout,20,uniform_gap2 uniform_gap4,2
+keyframe::car-roundabout:00022,car-roundabout,22,uniform_gap2,1
+keyframe::car-roundabout:00024,car-roundabout,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::car-roundabout:00026,car-roundabout,26,uniform_gap2,1
+keyframe::car-roundabout:00028,car-roundabout,28,uniform_gap2 uniform_gap4,2
+keyframe::car-roundabout:00029,car-roundabout,29,stage165_adaptive,1
+keyframe::car-roundabout:00030,car-roundabout,30,uniform_gap2 uniform_gap6,2
+keyframe::car-roundabout:00032,car-roundabout,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::car-roundabout:00034,car-roundabout,34,uniform_gap2,1
+keyframe::car-roundabout:00036,car-roundabout,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::car-roundabout:00038,car-roundabout,38,uniform_gap2,1
+keyframe::car-roundabout:00040,car-roundabout,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::car-roundabout:00042,car-roundabout,42,uniform_gap2 uniform_gap6,2
+keyframe::car-roundabout:00044,car-roundabout,44,uniform_gap2 uniform_gap4,2
+keyframe::car-roundabout:00046,car-roundabout,46,uniform_gap2,1
+keyframe::car-roundabout:00048,car-roundabout,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::car-roundabout:00050,car-roundabout,50,uniform_gap2,1
+keyframe::car-roundabout:00052,car-roundabout,52,uniform_gap2 uniform_gap4,2
+keyframe::car-roundabout:00054,car-roundabout,54,uniform_gap2 uniform_gap6,2
+keyframe::car-roundabout:00056,car-roundabout,56,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::car-roundabout:00058,car-roundabout,58,uniform_gap2,1
+keyframe::car-roundabout:00059,car-roundabout,59,stage165_adaptive,1
+keyframe::car-roundabout:00060,car-roundabout,60,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::car-roundabout:00062,car-roundabout,62,uniform_gap2,1
+keyframe::car-roundabout:00064,car-roundabout,64,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::car-roundabout:00066,car-roundabout,66,uniform_gap2 uniform_gap6,2
+keyframe::car-roundabout:00068,car-roundabout,68,uniform_gap2 uniform_gap4,2
+keyframe::car-roundabout:00070,car-roundabout,70,uniform_gap2,1
+keyframe::car-roundabout:00072,car-roundabout,72,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::car-roundabout:00074,car-roundabout,74,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::car-shadow:00000,car-shadow,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::car-shadow:00002,car-shadow,2,uniform_gap2,1
+keyframe::car-shadow:00004,car-shadow,4,uniform_gap2 uniform_gap4,2
+keyframe::car-shadow:00006,car-shadow,6,uniform_gap2 uniform_gap6,2
+keyframe::car-shadow:00008,car-shadow,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::car-shadow:00010,car-shadow,10,stage165_adaptive uniform_gap2,2
+keyframe::car-shadow:00012,car-shadow,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::car-shadow:00014,car-shadow,14,uniform_gap2,1
+keyframe::car-shadow:00016,car-shadow,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::car-shadow:00018,car-shadow,18,uniform_gap2 uniform_gap6,2
+keyframe::car-shadow:00019,car-shadow,19,stage165_adaptive,1
+keyframe::car-shadow:00020,car-shadow,20,uniform_gap2 uniform_gap4,2
+keyframe::car-shadow:00022,car-shadow,22,uniform_gap2,1
+keyframe::car-shadow:00024,car-shadow,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::car-shadow:00026,car-shadow,26,uniform_gap2,1
+keyframe::car-shadow:00028,car-shadow,28,uniform_gap2 uniform_gap4,2
+keyframe::car-shadow:00030,car-shadow,30,uniform_gap2 uniform_gap6,2
+keyframe::car-shadow:00032,car-shadow,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::car-shadow:00034,car-shadow,34,uniform_gap2,1
+keyframe::car-shadow:00035,car-shadow,35,stage165_adaptive,1
+keyframe::car-shadow:00036,car-shadow,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::car-shadow:00038,car-shadow,38,uniform_gap2,1
+keyframe::car-shadow:00039,car-shadow,39,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::cows:00000,cows,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::cows:00002,cows,2,uniform_gap2,1
+keyframe::cows:00004,cows,4,uniform_gap2 uniform_gap4,2
+keyframe::cows:00006,cows,6,uniform_gap2 uniform_gap6,2
+keyframe::cows:00008,cows,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::cows:00010,cows,10,uniform_gap2,1
+keyframe::cows:00012,cows,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::cows:00014,cows,14,uniform_gap2,1
+keyframe::cows:00015,cows,15,stage165_adaptive,1
+keyframe::cows:00016,cows,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::cows:00018,cows,18,uniform_gap2 uniform_gap6,2
+keyframe::cows:00019,cows,19,stage165_adaptive,1
+keyframe::cows:00020,cows,20,uniform_gap2 uniform_gap4,2
+keyframe::cows:00022,cows,22,uniform_gap2,1
+keyframe::cows:00024,cows,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::cows:00026,cows,26,uniform_gap2,1
+keyframe::cows:00028,cows,28,uniform_gap2 uniform_gap4,2
+keyframe::cows:00030,cows,30,uniform_gap2 uniform_gap6,2
+keyframe::cows:00032,cows,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::cows:00034,cows,34,uniform_gap2,1
+keyframe::cows:00036,cows,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::cows:00038,cows,38,uniform_gap2,1
+keyframe::cows:00040,cows,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::cows:00042,cows,42,stage165_adaptive uniform_gap2 uniform_gap6,3
+keyframe::cows:00044,cows,44,uniform_gap2 uniform_gap4,2
+keyframe::cows:00046,cows,46,uniform_gap2,1
+keyframe::cows:00048,cows,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::cows:00050,cows,50,uniform_gap2,1
+keyframe::cows:00052,cows,52,uniform_gap2 uniform_gap4,2
+keyframe::cows:00054,cows,54,uniform_gap2 uniform_gap6,2
+keyframe::cows:00056,cows,56,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::cows:00058,cows,58,uniform_gap2,1
+keyframe::cows:00060,cows,60,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6,4
+keyframe::cows:00062,cows,62,uniform_gap2,1
+keyframe::cows:00064,cows,64,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::cows:00066,cows,66,uniform_gap2 uniform_gap6,2
+keyframe::cows:00068,cows,68,uniform_gap2 uniform_gap4,2
+keyframe::cows:00070,cows,70,uniform_gap2,1
+keyframe::cows:00072,cows,72,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::cows:00074,cows,74,uniform_gap2,1
+keyframe::cows:00076,cows,76,uniform_gap2 uniform_gap4,2
+keyframe::cows:00078,cows,78,uniform_gap2 uniform_gap6,2
+keyframe::cows:00080,cows,80,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::cows:00082,cows,82,uniform_gap2,1
+keyframe::cows:00084,cows,84,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::cows:00086,cows,86,uniform_gap2,1
+keyframe::cows:00088,cows,88,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::cows:00090,cows,90,uniform_gap2 uniform_gap6,2
+keyframe::cows:00092,cows,92,uniform_gap2 uniform_gap4,2
+keyframe::cows:00094,cows,94,uniform_gap2,1
+keyframe::cows:00096,cows,96,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::cows:00098,cows,98,uniform_gap2,1
+keyframe::cows:00100,cows,100,uniform_gap2 uniform_gap4,2
+keyframe::cows:00102,cows,102,uniform_gap2 uniform_gap6,2
+keyframe::cows:00103,cows,103,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::dance-twirl:00000,dance-twirl,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::dance-twirl:00002,dance-twirl,2,uniform_gap2,1
+keyframe::dance-twirl:00004,dance-twirl,4,uniform_gap2 uniform_gap4,2
+keyframe::dance-twirl:00006,dance-twirl,6,uniform_gap2 uniform_gap6,2
+keyframe::dance-twirl:00008,dance-twirl,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::dance-twirl:00010,dance-twirl,10,uniform_gap2,1
+keyframe::dance-twirl:00012,dance-twirl,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::dance-twirl:00014,dance-twirl,14,uniform_gap2,1
+keyframe::dance-twirl:00016,dance-twirl,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::dance-twirl:00018,dance-twirl,18,uniform_gap2 uniform_gap6,2
+keyframe::dance-twirl:00020,dance-twirl,20,uniform_gap2 uniform_gap4,2
+keyframe::dance-twirl:00021,dance-twirl,21,stage165_adaptive,1
+keyframe::dance-twirl:00022,dance-twirl,22,uniform_gap2,1
+keyframe::dance-twirl:00024,dance-twirl,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::dance-twirl:00026,dance-twirl,26,uniform_gap2,1
+keyframe::dance-twirl:00028,dance-twirl,28,uniform_gap2 uniform_gap4,2
+keyframe::dance-twirl:00030,dance-twirl,30,uniform_gap2 uniform_gap6,2
+keyframe::dance-twirl:00032,dance-twirl,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::dance-twirl:00034,dance-twirl,34,uniform_gap2,1
+keyframe::dance-twirl:00036,dance-twirl,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::dance-twirl:00038,dance-twirl,38,uniform_gap2,1
+keyframe::dance-twirl:00040,dance-twirl,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::dance-twirl:00042,dance-twirl,42,uniform_gap2 uniform_gap6,2
+keyframe::dance-twirl:00044,dance-twirl,44,uniform_gap2 uniform_gap4,2
+keyframe::dance-twirl:00046,dance-twirl,46,uniform_gap2,1
+keyframe::dance-twirl:00048,dance-twirl,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::dance-twirl:00050,dance-twirl,50,uniform_gap2,1
+keyframe::dance-twirl:00052,dance-twirl,52,uniform_gap2 uniform_gap4,2
+keyframe::dance-twirl:00054,dance-twirl,54,uniform_gap2 uniform_gap6,2
+keyframe::dance-twirl:00056,dance-twirl,56,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::dance-twirl:00058,dance-twirl,58,uniform_gap2,1
+keyframe::dance-twirl:00060,dance-twirl,60,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::dance-twirl:00062,dance-twirl,62,uniform_gap2,1
+keyframe::dance-twirl:00064,dance-twirl,64,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::dance-twirl:00066,dance-twirl,66,uniform_gap2 uniform_gap6,2
+keyframe::dance-twirl:00068,dance-twirl,68,stage165_adaptive uniform_gap2 uniform_gap4,3
+keyframe::dance-twirl:00070,dance-twirl,70,uniform_gap2,1
+keyframe::dance-twirl:00072,dance-twirl,72,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::dance-twirl:00074,dance-twirl,74,uniform_gap2,1
+keyframe::dance-twirl:00076,dance-twirl,76,uniform_gap2 uniform_gap4,2
+keyframe::dance-twirl:00078,dance-twirl,78,uniform_gap2 uniform_gap6,2
+keyframe::dance-twirl:00080,dance-twirl,80,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::dance-twirl:00082,dance-twirl,82,stage165_adaptive uniform_gap2,2
+keyframe::dance-twirl:00084,dance-twirl,84,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::dance-twirl:00086,dance-twirl,86,uniform_gap2,1
+keyframe::dance-twirl:00088,dance-twirl,88,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::dance-twirl:00089,dance-twirl,89,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::dog:00000,dog,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::dog:00002,dog,2,uniform_gap2,1
+keyframe::dog:00004,dog,4,uniform_gap2 uniform_gap4,2
+keyframe::dog:00005,dog,5,stage165_adaptive,1
+keyframe::dog:00006,dog,6,uniform_gap2 uniform_gap6,2
+keyframe::dog:00008,dog,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::dog:00010,dog,10,uniform_gap2,1
+keyframe::dog:00012,dog,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::dog:00014,dog,14,uniform_gap2,1
+keyframe::dog:00016,dog,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::dog:00018,dog,18,uniform_gap2 uniform_gap6,2
+keyframe::dog:00020,dog,20,uniform_gap2 uniform_gap4,2
+keyframe::dog:00022,dog,22,uniform_gap2,1
+keyframe::dog:00024,dog,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::dog:00026,dog,26,uniform_gap2,1
+keyframe::dog:00028,dog,28,uniform_gap2 uniform_gap4,2
+keyframe::dog:00030,dog,30,uniform_gap2 uniform_gap6,2
+keyframe::dog:00032,dog,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::dog:00034,dog,34,uniform_gap2,1
+keyframe::dog:00036,dog,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::dog:00038,dog,38,uniform_gap2,1
+keyframe::dog:00040,dog,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::dog:00042,dog,42,stage165_adaptive uniform_gap2 uniform_gap6,3
+keyframe::dog:00044,dog,44,uniform_gap2 uniform_gap4,2
+keyframe::dog:00046,dog,46,uniform_gap2,1
+keyframe::dog:00048,dog,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::dog:00050,dog,50,uniform_gap2,1
+keyframe::dog:00052,dog,52,uniform_gap2 uniform_gap4,2
+keyframe::dog:00054,dog,54,uniform_gap2 uniform_gap6,2
+keyframe::dog:00056,dog,56,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::dog:00058,dog,58,uniform_gap2,1
+keyframe::dog:00059,dog,59,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::dogs-jump:00000,dogs-jump,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::dogs-jump:00002,dogs-jump,2,uniform_gap2,1
+keyframe::dogs-jump:00004,dogs-jump,4,uniform_gap2 uniform_gap4,2
+keyframe::dogs-jump:00006,dogs-jump,6,uniform_gap2 uniform_gap6,2
+keyframe::dogs-jump:00008,dogs-jump,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::dogs-jump:00010,dogs-jump,10,stage165_adaptive uniform_gap2,2
+keyframe::dogs-jump:00012,dogs-jump,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::dogs-jump:00014,dogs-jump,14,uniform_gap2,1
+keyframe::dogs-jump:00016,dogs-jump,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::dogs-jump:00018,dogs-jump,18,uniform_gap2 uniform_gap6,2
+keyframe::dogs-jump:00020,dogs-jump,20,uniform_gap2 uniform_gap4,2
+keyframe::dogs-jump:00022,dogs-jump,22,uniform_gap2,1
+keyframe::dogs-jump:00024,dogs-jump,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::dogs-jump:00026,dogs-jump,26,uniform_gap2,1
+keyframe::dogs-jump:00028,dogs-jump,28,uniform_gap2 uniform_gap4,2
+keyframe::dogs-jump:00030,dogs-jump,30,uniform_gap2 uniform_gap6,2
+keyframe::dogs-jump:00032,dogs-jump,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::dogs-jump:00034,dogs-jump,34,uniform_gap2,1
+keyframe::dogs-jump:00036,dogs-jump,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::dogs-jump:00038,dogs-jump,38,uniform_gap2,1
+keyframe::dogs-jump:00040,dogs-jump,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::dogs-jump:00042,dogs-jump,42,uniform_gap2 uniform_gap6,2
+keyframe::dogs-jump:00044,dogs-jump,44,uniform_gap2 uniform_gap4,2
+keyframe::dogs-jump:00046,dogs-jump,46,uniform_gap2,1
+keyframe::dogs-jump:00048,dogs-jump,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::dogs-jump:00050,dogs-jump,50,uniform_gap2,1
+keyframe::dogs-jump:00052,dogs-jump,52,uniform_gap2 uniform_gap4,2
+keyframe::dogs-jump:00054,dogs-jump,54,uniform_gap2 uniform_gap6,2
+keyframe::dogs-jump:00056,dogs-jump,56,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::dogs-jump:00058,dogs-jump,58,uniform_gap2,1
+keyframe::dogs-jump:00060,dogs-jump,60,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::dogs-jump:00062,dogs-jump,62,uniform_gap2,1
+keyframe::dogs-jump:00064,dogs-jump,64,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::dogs-jump:00065,dogs-jump,65,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::drift-chicane:00000,drift-chicane,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::drift-chicane:00002,drift-chicane,2,uniform_gap2,1
+keyframe::drift-chicane:00004,drift-chicane,4,uniform_gap2 uniform_gap4,2
+keyframe::drift-chicane:00006,drift-chicane,6,stage165_adaptive uniform_gap2 uniform_gap6,3
+keyframe::drift-chicane:00008,drift-chicane,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::drift-chicane:00010,drift-chicane,10,uniform_gap2,1
+keyframe::drift-chicane:00012,drift-chicane,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::drift-chicane:00014,drift-chicane,14,uniform_gap2,1
+keyframe::drift-chicane:00016,drift-chicane,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::drift-chicane:00018,drift-chicane,18,uniform_gap2 uniform_gap6,2
+keyframe::drift-chicane:00020,drift-chicane,20,uniform_gap2 uniform_gap4,2
+keyframe::drift-chicane:00022,drift-chicane,22,uniform_gap2,1
+keyframe::drift-chicane:00024,drift-chicane,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::drift-chicane:00026,drift-chicane,26,uniform_gap2,1
+keyframe::drift-chicane:00028,drift-chicane,28,uniform_gap2 uniform_gap4,2
+keyframe::drift-chicane:00030,drift-chicane,30,uniform_gap2 uniform_gap6,2
+keyframe::drift-chicane:00032,drift-chicane,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::drift-chicane:00034,drift-chicane,34,uniform_gap2,1
+keyframe::drift-chicane:00035,drift-chicane,35,stage165_adaptive,1
+keyframe::drift-chicane:00036,drift-chicane,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::drift-chicane:00038,drift-chicane,38,uniform_gap2,1
+keyframe::drift-chicane:00040,drift-chicane,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::drift-chicane:00042,drift-chicane,42,uniform_gap2 uniform_gap6,2
+keyframe::drift-chicane:00044,drift-chicane,44,uniform_gap2 uniform_gap4,2
+keyframe::drift-chicane:00046,drift-chicane,46,uniform_gap2,1
+keyframe::drift-chicane:00048,drift-chicane,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::drift-chicane:00050,drift-chicane,50,uniform_gap2,1
+keyframe::drift-chicane:00051,drift-chicane,51,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::drift-straight:00000,drift-straight,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::drift-straight:00002,drift-straight,2,stage165_adaptive uniform_gap2,2
+keyframe::drift-straight:00004,drift-straight,4,uniform_gap2 uniform_gap4,2
+keyframe::drift-straight:00006,drift-straight,6,uniform_gap2 uniform_gap6,2
+keyframe::drift-straight:00008,drift-straight,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::drift-straight:00009,drift-straight,9,stage165_adaptive,1
+keyframe::drift-straight:00010,drift-straight,10,uniform_gap2,1
+keyframe::drift-straight:00012,drift-straight,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::drift-straight:00014,drift-straight,14,uniform_gap2,1
+keyframe::drift-straight:00016,drift-straight,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::drift-straight:00018,drift-straight,18,uniform_gap2 uniform_gap6,2
+keyframe::drift-straight:00019,drift-straight,19,stage165_adaptive,1
+keyframe::drift-straight:00020,drift-straight,20,uniform_gap2 uniform_gap4,2
+keyframe::drift-straight:00022,drift-straight,22,uniform_gap2,1
+keyframe::drift-straight:00024,drift-straight,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::drift-straight:00026,drift-straight,26,uniform_gap2,1
+keyframe::drift-straight:00028,drift-straight,28,uniform_gap2 uniform_gap4,2
+keyframe::drift-straight:00030,drift-straight,30,uniform_gap2 uniform_gap6,2
+keyframe::drift-straight:00032,drift-straight,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::drift-straight:00034,drift-straight,34,uniform_gap2,1
+keyframe::drift-straight:00036,drift-straight,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::drift-straight:00037,drift-straight,37,stage165_adaptive,1
+keyframe::drift-straight:00038,drift-straight,38,uniform_gap2,1
+keyframe::drift-straight:00040,drift-straight,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::drift-straight:00042,drift-straight,42,uniform_gap2 uniform_gap6,2
+keyframe::drift-straight:00044,drift-straight,44,uniform_gap2 uniform_gap4,2
+keyframe::drift-straight:00046,drift-straight,46,uniform_gap2,1
+keyframe::drift-straight:00048,drift-straight,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::drift-straight:00049,drift-straight,49,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::goat:00000,goat,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::goat:00002,goat,2,uniform_gap2,1
+keyframe::goat:00003,goat,3,stage165_adaptive,1
+keyframe::goat:00004,goat,4,uniform_gap2 uniform_gap4,2
+keyframe::goat:00006,goat,6,uniform_gap2 uniform_gap6,2
+keyframe::goat:00008,goat,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::goat:00010,goat,10,uniform_gap2,1
+keyframe::goat:00012,goat,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::goat:00014,goat,14,uniform_gap2,1
+keyframe::goat:00016,goat,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::goat:00018,goat,18,uniform_gap2 uniform_gap6,2
+keyframe::goat:00020,goat,20,uniform_gap2 uniform_gap4,2
+keyframe::goat:00022,goat,22,uniform_gap2,1
+keyframe::goat:00024,goat,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::goat:00026,goat,26,uniform_gap2,1
+keyframe::goat:00028,goat,28,uniform_gap2 uniform_gap4,2
+keyframe::goat:00030,goat,30,uniform_gap2 uniform_gap6,2
+keyframe::goat:00032,goat,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::goat:00034,goat,34,uniform_gap2,1
+keyframe::goat:00036,goat,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::goat:00038,goat,38,uniform_gap2,1
+keyframe::goat:00040,goat,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::goat:00042,goat,42,uniform_gap2 uniform_gap6,2
+keyframe::goat:00044,goat,44,uniform_gap2 uniform_gap4,2
+keyframe::goat:00046,goat,46,stage165_adaptive uniform_gap2,2
+keyframe::goat:00048,goat,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::goat:00050,goat,50,uniform_gap2,1
+keyframe::goat:00052,goat,52,uniform_gap2 uniform_gap4,2
+keyframe::goat:00054,goat,54,uniform_gap2 uniform_gap6,2
+keyframe::goat:00056,goat,56,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::goat:00058,goat,58,uniform_gap2,1
+keyframe::goat:00060,goat,60,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::goat:00062,goat,62,uniform_gap2,1
+keyframe::goat:00064,goat,64,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::goat:00066,goat,66,uniform_gap2 uniform_gap6,2
+keyframe::goat:00068,goat,68,uniform_gap2 uniform_gap4,2
+keyframe::goat:00070,goat,70,uniform_gap2,1
+keyframe::goat:00072,goat,72,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::goat:00074,goat,74,uniform_gap2,1
+keyframe::goat:00075,goat,75,stage165_adaptive,1
+keyframe::goat:00076,goat,76,uniform_gap2 uniform_gap4,2
+keyframe::goat:00078,goat,78,stage165_adaptive uniform_gap2 uniform_gap6,3
+keyframe::goat:00080,goat,80,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::goat:00082,goat,82,uniform_gap2,1
+keyframe::goat:00084,goat,84,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::goat:00086,goat,86,uniform_gap2,1
+keyframe::goat:00088,goat,88,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::goat:00089,goat,89,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::gold-fish:00000,gold-fish,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::gold-fish:00002,gold-fish,2,uniform_gap2,1
+keyframe::gold-fish:00004,gold-fish,4,uniform_gap2 uniform_gap4,2
+keyframe::gold-fish:00006,gold-fish,6,uniform_gap2 uniform_gap6,2
+keyframe::gold-fish:00008,gold-fish,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::gold-fish:00010,gold-fish,10,uniform_gap2,1
+keyframe::gold-fish:00012,gold-fish,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::gold-fish:00014,gold-fish,14,uniform_gap2,1
+keyframe::gold-fish:00016,gold-fish,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::gold-fish:00018,gold-fish,18,uniform_gap2 uniform_gap6,2
+keyframe::gold-fish:00020,gold-fish,20,uniform_gap2 uniform_gap4,2
+keyframe::gold-fish:00022,gold-fish,22,uniform_gap2,1
+keyframe::gold-fish:00024,gold-fish,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::gold-fish:00026,gold-fish,26,uniform_gap2,1
+keyframe::gold-fish:00028,gold-fish,28,uniform_gap2 uniform_gap4,2
+keyframe::gold-fish:00030,gold-fish,30,uniform_gap2 uniform_gap6,2
+keyframe::gold-fish:00032,gold-fish,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::gold-fish:00034,gold-fish,34,uniform_gap2,1
+keyframe::gold-fish:00036,gold-fish,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::gold-fish:00038,gold-fish,38,uniform_gap2,1
+keyframe::gold-fish:00040,gold-fish,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::gold-fish:00042,gold-fish,42,uniform_gap2 uniform_gap6,2
+keyframe::gold-fish:00044,gold-fish,44,uniform_gap2 uniform_gap4,2
+keyframe::gold-fish:00046,gold-fish,46,uniform_gap2,1
+keyframe::gold-fish:00048,gold-fish,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::gold-fish:00050,gold-fish,50,uniform_gap2,1
+keyframe::gold-fish:00052,gold-fish,52,uniform_gap2 uniform_gap4,2
+keyframe::gold-fish:00054,gold-fish,54,uniform_gap2 uniform_gap6,2
+keyframe::gold-fish:00056,gold-fish,56,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::gold-fish:00058,gold-fish,58,uniform_gap2,1
+keyframe::gold-fish:00060,gold-fish,60,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::gold-fish:00062,gold-fish,62,uniform_gap2,1
+keyframe::gold-fish:00064,gold-fish,64,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::gold-fish:00066,gold-fish,66,uniform_gap2 uniform_gap6,2
+keyframe::gold-fish:00068,gold-fish,68,uniform_gap2 uniform_gap4,2
+keyframe::gold-fish:00070,gold-fish,70,uniform_gap2,1
+keyframe::gold-fish:00072,gold-fish,72,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::gold-fish:00074,gold-fish,74,uniform_gap2,1
+keyframe::gold-fish:00076,gold-fish,76,uniform_gap2 uniform_gap4,2
+keyframe::gold-fish:00077,gold-fish,77,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::horsejump-high:00000,horsejump-high,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::horsejump-high:00002,horsejump-high,2,uniform_gap2,1
+keyframe::horsejump-high:00004,horsejump-high,4,uniform_gap2 uniform_gap4,2
+keyframe::horsejump-high:00006,horsejump-high,6,uniform_gap2 uniform_gap6,2
+keyframe::horsejump-high:00008,horsejump-high,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::horsejump-high:00010,horsejump-high,10,uniform_gap2,1
+keyframe::horsejump-high:00012,horsejump-high,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::horsejump-high:00014,horsejump-high,14,uniform_gap2,1
+keyframe::horsejump-high:00015,horsejump-high,15,stage165_adaptive,1
+keyframe::horsejump-high:00016,horsejump-high,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::horsejump-high:00018,horsejump-high,18,uniform_gap2 uniform_gap6,2
+keyframe::horsejump-high:00020,horsejump-high,20,stage165_adaptive uniform_gap2 uniform_gap4,3
+keyframe::horsejump-high:00022,horsejump-high,22,uniform_gap2,1
+keyframe::horsejump-high:00024,horsejump-high,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::horsejump-high:00026,horsejump-high,26,uniform_gap2,1
+keyframe::horsejump-high:00028,horsejump-high,28,uniform_gap2 uniform_gap4,2
+keyframe::horsejump-high:00030,horsejump-high,30,uniform_gap2 uniform_gap6,2
+keyframe::horsejump-high:00032,horsejump-high,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::horsejump-high:00034,horsejump-high,34,uniform_gap2,1
+keyframe::horsejump-high:00036,horsejump-high,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::horsejump-high:00038,horsejump-high,38,uniform_gap2,1
+keyframe::horsejump-high:00040,horsejump-high,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::horsejump-high:00042,horsejump-high,42,uniform_gap2 uniform_gap6,2
+keyframe::horsejump-high:00044,horsejump-high,44,uniform_gap2 uniform_gap4,2
+keyframe::horsejump-high:00046,horsejump-high,46,uniform_gap2,1
+keyframe::horsejump-high:00048,horsejump-high,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::horsejump-high:00049,horsejump-high,49,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::india:00000,india,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::india:00002,india,2,uniform_gap2,1
+keyframe::india:00004,india,4,uniform_gap2 uniform_gap4,2
+keyframe::india:00006,india,6,uniform_gap2 uniform_gap6,2
+keyframe::india:00008,india,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::india:00010,india,10,uniform_gap2,1
+keyframe::india:00012,india,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::india:00014,india,14,uniform_gap2,1
+keyframe::india:00016,india,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::india:00018,india,18,uniform_gap2 uniform_gap6,2
+keyframe::india:00020,india,20,uniform_gap2 uniform_gap4,2
+keyframe::india:00022,india,22,uniform_gap2,1
+keyframe::india:00024,india,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::india:00026,india,26,uniform_gap2,1
+keyframe::india:00027,india,27,stage165_adaptive,1
+keyframe::india:00028,india,28,uniform_gap2 uniform_gap4,2
+keyframe::india:00030,india,30,stage165_adaptive uniform_gap2 uniform_gap6,3
+keyframe::india:00032,india,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::india:00034,india,34,uniform_gap2,1
+keyframe::india:00036,india,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::india:00038,india,38,uniform_gap2,1
+keyframe::india:00040,india,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::india:00042,india,42,uniform_gap2 uniform_gap6,2
+keyframe::india:00044,india,44,uniform_gap2 uniform_gap4,2
+keyframe::india:00046,india,46,uniform_gap2,1
+keyframe::india:00048,india,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::india:00050,india,50,uniform_gap2,1
+keyframe::india:00052,india,52,uniform_gap2 uniform_gap4,2
+keyframe::india:00054,india,54,uniform_gap2 uniform_gap6,2
+keyframe::india:00055,india,55,stage165_adaptive,1
+keyframe::india:00056,india,56,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::india:00058,india,58,uniform_gap2,1
+keyframe::india:00060,india,60,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::india:00062,india,62,uniform_gap2,1
+keyframe::india:00064,india,64,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::india:00066,india,66,uniform_gap2 uniform_gap6,2
+keyframe::india:00068,india,68,uniform_gap2 uniform_gap4,2
+keyframe::india:00070,india,70,uniform_gap2,1
+keyframe::india:00072,india,72,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::india:00074,india,74,uniform_gap2,1
+keyframe::india:00076,india,76,uniform_gap2 uniform_gap4,2
+keyframe::india:00078,india,78,uniform_gap2 uniform_gap6,2
+keyframe::india:00080,india,80,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::judo:00000,judo,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::judo:00002,judo,2,uniform_gap2,1
+keyframe::judo:00004,judo,4,uniform_gap2 uniform_gap4,2
+keyframe::judo:00006,judo,6,uniform_gap2 uniform_gap6,2
+keyframe::judo:00008,judo,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::judo:00010,judo,10,uniform_gap2,1
+keyframe::judo:00012,judo,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::judo:00014,judo,14,uniform_gap2,1
+keyframe::judo:00016,judo,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::judo:00018,judo,18,uniform_gap2 uniform_gap6,2
+keyframe::judo:00020,judo,20,uniform_gap2 uniform_gap4,2
+keyframe::judo:00022,judo,22,uniform_gap2,1
+keyframe::judo:00024,judo,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::judo:00026,judo,26,uniform_gap2,1
+keyframe::judo:00028,judo,28,uniform_gap2 uniform_gap4,2
+keyframe::judo:00030,judo,30,uniform_gap2 uniform_gap6,2
+keyframe::judo:00032,judo,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::judo:00033,judo,33,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::kite-surf:00000,kite-surf,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::kite-surf:00002,kite-surf,2,stage165_adaptive uniform_gap2,2
+keyframe::kite-surf:00004,kite-surf,4,uniform_gap2 uniform_gap4,2
+keyframe::kite-surf:00006,kite-surf,6,stage165_adaptive uniform_gap2 uniform_gap6,3
+keyframe::kite-surf:00008,kite-surf,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::kite-surf:00010,kite-surf,10,uniform_gap2,1
+keyframe::kite-surf:00012,kite-surf,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::kite-surf:00014,kite-surf,14,uniform_gap2,1
+keyframe::kite-surf:00016,kite-surf,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::kite-surf:00018,kite-surf,18,uniform_gap2 uniform_gap6,2
+keyframe::kite-surf:00020,kite-surf,20,uniform_gap2 uniform_gap4,2
+keyframe::kite-surf:00022,kite-surf,22,uniform_gap2,1
+keyframe::kite-surf:00024,kite-surf,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::kite-surf:00026,kite-surf,26,uniform_gap2,1
+keyframe::kite-surf:00028,kite-surf,28,uniform_gap2 uniform_gap4,2
+keyframe::kite-surf:00030,kite-surf,30,uniform_gap2 uniform_gap6,2
+keyframe::kite-surf:00032,kite-surf,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::kite-surf:00034,kite-surf,34,uniform_gap2,1
+keyframe::kite-surf:00036,kite-surf,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::kite-surf:00038,kite-surf,38,uniform_gap2,1
+keyframe::kite-surf:00040,kite-surf,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::kite-surf:00042,kite-surf,42,uniform_gap2 uniform_gap6,2
+keyframe::kite-surf:00044,kite-surf,44,uniform_gap2 uniform_gap4,2
+keyframe::kite-surf:00046,kite-surf,46,uniform_gap2,1
+keyframe::kite-surf:00048,kite-surf,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::kite-surf:00049,kite-surf,49,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::lab-coat:00000,lab-coat,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::lab-coat:00002,lab-coat,2,uniform_gap2,1
+keyframe::lab-coat:00004,lab-coat,4,uniform_gap2 uniform_gap4,2
+keyframe::lab-coat:00006,lab-coat,6,uniform_gap2 uniform_gap6,2
+keyframe::lab-coat:00008,lab-coat,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::lab-coat:00010,lab-coat,10,uniform_gap2,1
+keyframe::lab-coat:00012,lab-coat,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::lab-coat:00014,lab-coat,14,uniform_gap2,1
+keyframe::lab-coat:00016,lab-coat,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::lab-coat:00018,lab-coat,18,uniform_gap2 uniform_gap6,2
+keyframe::lab-coat:00020,lab-coat,20,uniform_gap2 uniform_gap4,2
+keyframe::lab-coat:00022,lab-coat,22,uniform_gap2,1
+keyframe::lab-coat:00024,lab-coat,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::lab-coat:00026,lab-coat,26,uniform_gap2,1
+keyframe::lab-coat:00028,lab-coat,28,uniform_gap2 uniform_gap4,2
+keyframe::lab-coat:00030,lab-coat,30,uniform_gap2 uniform_gap6,2
+keyframe::lab-coat:00032,lab-coat,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::lab-coat:00034,lab-coat,34,uniform_gap2,1
+keyframe::lab-coat:00035,lab-coat,35,stage165_adaptive,1
+keyframe::lab-coat:00036,lab-coat,36,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6,4
+keyframe::lab-coat:00038,lab-coat,38,uniform_gap2,1
+keyframe::lab-coat:00040,lab-coat,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::lab-coat:00042,lab-coat,42,uniform_gap2 uniform_gap6,2
+keyframe::lab-coat:00044,lab-coat,44,uniform_gap2 uniform_gap4,2
+keyframe::lab-coat:00046,lab-coat,46,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::libby:00000,libby,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::libby:00002,libby,2,uniform_gap2,1
+keyframe::libby:00004,libby,4,uniform_gap2 uniform_gap4,2
+keyframe::libby:00006,libby,6,uniform_gap2 uniform_gap6,2
+keyframe::libby:00008,libby,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::libby:00010,libby,10,uniform_gap2,1
+keyframe::libby:00012,libby,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::libby:00014,libby,14,uniform_gap2,1
+keyframe::libby:00016,libby,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::libby:00017,libby,17,stage165_adaptive,1
+keyframe::libby:00018,libby,18,uniform_gap2 uniform_gap6,2
+keyframe::libby:00020,libby,20,uniform_gap2 uniform_gap4,2
+keyframe::libby:00022,libby,22,uniform_gap2,1
+keyframe::libby:00024,libby,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::libby:00026,libby,26,uniform_gap2,1
+keyframe::libby:00028,libby,28,uniform_gap2 uniform_gap4,2
+keyframe::libby:00029,libby,29,stage165_adaptive,1
+keyframe::libby:00030,libby,30,uniform_gap2 uniform_gap6,2
+keyframe::libby:00032,libby,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::libby:00034,libby,34,uniform_gap2,1
+keyframe::libby:00036,libby,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::libby:00038,libby,38,stage165_adaptive uniform_gap2,2
+keyframe::libby:00040,libby,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::libby:00042,libby,42,uniform_gap2 uniform_gap6,2
+keyframe::libby:00044,libby,44,uniform_gap2 uniform_gap4,2
+keyframe::libby:00046,libby,46,uniform_gap2,1
+keyframe::libby:00048,libby,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::loading:00000,loading,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::loading:00002,loading,2,uniform_gap2,1
+keyframe::loading:00004,loading,4,uniform_gap2 uniform_gap4,2
+keyframe::loading:00006,loading,6,uniform_gap2 uniform_gap6,2
+keyframe::loading:00008,loading,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::loading:00010,loading,10,uniform_gap2,1
+keyframe::loading:00012,loading,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::loading:00013,loading,13,stage165_adaptive,1
+keyframe::loading:00014,loading,14,uniform_gap2,1
+keyframe::loading:00016,loading,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::loading:00018,loading,18,uniform_gap2 uniform_gap6,2
+keyframe::loading:00020,loading,20,uniform_gap2 uniform_gap4,2
+keyframe::loading:00022,loading,22,uniform_gap2,1
+keyframe::loading:00024,loading,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::loading:00026,loading,26,uniform_gap2,1
+keyframe::loading:00028,loading,28,uniform_gap2 uniform_gap4,2
+keyframe::loading:00030,loading,30,uniform_gap2 uniform_gap6,2
+keyframe::loading:00032,loading,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::loading:00034,loading,34,uniform_gap2,1
+keyframe::loading:00035,loading,35,stage165_adaptive,1
+keyframe::loading:00036,loading,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::loading:00038,loading,38,stage165_adaptive uniform_gap2,2
+keyframe::loading:00040,loading,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::loading:00042,loading,42,uniform_gap2 uniform_gap6,2
+keyframe::loading:00044,loading,44,uniform_gap2 uniform_gap4,2
+keyframe::loading:00046,loading,46,uniform_gap2,1
+keyframe::loading:00048,loading,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::loading:00049,loading,49,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::mbike-trick:00000,mbike-trick,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::mbike-trick:00002,mbike-trick,2,uniform_gap2,1
+keyframe::mbike-trick:00004,mbike-trick,4,uniform_gap2 uniform_gap4,2
+keyframe::mbike-trick:00006,mbike-trick,6,uniform_gap2 uniform_gap6,2
+keyframe::mbike-trick:00008,mbike-trick,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::mbike-trick:00010,mbike-trick,10,uniform_gap2,1
+keyframe::mbike-trick:00012,mbike-trick,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::mbike-trick:00014,mbike-trick,14,uniform_gap2,1
+keyframe::mbike-trick:00016,mbike-trick,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::mbike-trick:00018,mbike-trick,18,uniform_gap2 uniform_gap6,2
+keyframe::mbike-trick:00020,mbike-trick,20,uniform_gap2 uniform_gap4,2
+keyframe::mbike-trick:00022,mbike-trick,22,uniform_gap2,1
+keyframe::mbike-trick:00024,mbike-trick,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::mbike-trick:00026,mbike-trick,26,uniform_gap2,1
+keyframe::mbike-trick:00028,mbike-trick,28,uniform_gap2 uniform_gap4,2
+keyframe::mbike-trick:00030,mbike-trick,30,uniform_gap2 uniform_gap6,2
+keyframe::mbike-trick:00032,mbike-trick,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::mbike-trick:00034,mbike-trick,34,uniform_gap2,1
+keyframe::mbike-trick:00036,mbike-trick,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::mbike-trick:00038,mbike-trick,38,uniform_gap2,1
+keyframe::mbike-trick:00040,mbike-trick,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::mbike-trick:00042,mbike-trick,42,uniform_gap2 uniform_gap6,2
+keyframe::mbike-trick:00044,mbike-trick,44,uniform_gap2 uniform_gap4,2
+keyframe::mbike-trick:00046,mbike-trick,46,uniform_gap2,1
+keyframe::mbike-trick:00048,mbike-trick,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::mbike-trick:00050,mbike-trick,50,uniform_gap2,1
+keyframe::mbike-trick:00052,mbike-trick,52,uniform_gap2 uniform_gap4,2
+keyframe::mbike-trick:00054,mbike-trick,54,uniform_gap2 uniform_gap6,2
+keyframe::mbike-trick:00056,mbike-trick,56,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::mbike-trick:00058,mbike-trick,58,uniform_gap2,1
+keyframe::mbike-trick:00060,mbike-trick,60,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::mbike-trick:00062,mbike-trick,62,uniform_gap2,1
+keyframe::mbike-trick:00064,mbike-trick,64,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::mbike-trick:00066,mbike-trick,66,uniform_gap2 uniform_gap6,2
+keyframe::mbike-trick:00068,mbike-trick,68,uniform_gap2 uniform_gap4,2
+keyframe::mbike-trick:00070,mbike-trick,70,uniform_gap2,1
+keyframe::mbike-trick:00072,mbike-trick,72,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::mbike-trick:00074,mbike-trick,74,uniform_gap2,1
+keyframe::mbike-trick:00076,mbike-trick,76,uniform_gap2 uniform_gap4,2
+keyframe::mbike-trick:00078,mbike-trick,78,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::motocross-jump:00000,motocross-jump,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::motocross-jump:00002,motocross-jump,2,uniform_gap2,1
+keyframe::motocross-jump:00004,motocross-jump,4,uniform_gap2 uniform_gap4,2
+keyframe::motocross-jump:00006,motocross-jump,6,uniform_gap2 uniform_gap6,2
+keyframe::motocross-jump:00008,motocross-jump,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::motocross-jump:00010,motocross-jump,10,uniform_gap2,1
+keyframe::motocross-jump:00012,motocross-jump,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::motocross-jump:00013,motocross-jump,13,stage165_adaptive,1
+keyframe::motocross-jump:00014,motocross-jump,14,uniform_gap2,1
+keyframe::motocross-jump:00016,motocross-jump,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::motocross-jump:00018,motocross-jump,18,uniform_gap2 uniform_gap6,2
+keyframe::motocross-jump:00020,motocross-jump,20,uniform_gap2 uniform_gap4,2
+keyframe::motocross-jump:00022,motocross-jump,22,stage165_adaptive uniform_gap2,2
+keyframe::motocross-jump:00023,motocross-jump,23,stage165_adaptive,1
+keyframe::motocross-jump:00024,motocross-jump,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::motocross-jump:00026,motocross-jump,26,uniform_gap2,1
+keyframe::motocross-jump:00028,motocross-jump,28,uniform_gap2 uniform_gap4,2
+keyframe::motocross-jump:00030,motocross-jump,30,uniform_gap2 uniform_gap6,2
+keyframe::motocross-jump:00032,motocross-jump,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::motocross-jump:00034,motocross-jump,34,uniform_gap2,1
+keyframe::motocross-jump:00036,motocross-jump,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::motocross-jump:00038,motocross-jump,38,uniform_gap2,1
+keyframe::motocross-jump:00039,motocross-jump,39,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::paragliding-launch:00000,paragliding-launch,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::paragliding-launch:00002,paragliding-launch,2,uniform_gap2,1
+keyframe::paragliding-launch:00004,paragliding-launch,4,uniform_gap2 uniform_gap4,2
+keyframe::paragliding-launch:00006,paragliding-launch,6,uniform_gap2 uniform_gap6,2
+keyframe::paragliding-launch:00008,paragliding-launch,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::paragliding-launch:00010,paragliding-launch,10,uniform_gap2,1
+keyframe::paragliding-launch:00012,paragliding-launch,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::paragliding-launch:00014,paragliding-launch,14,uniform_gap2,1
+keyframe::paragliding-launch:00016,paragliding-launch,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::paragliding-launch:00018,paragliding-launch,18,uniform_gap2 uniform_gap6,2
+keyframe::paragliding-launch:00020,paragliding-launch,20,uniform_gap2 uniform_gap4,2
+keyframe::paragliding-launch:00022,paragliding-launch,22,uniform_gap2,1
+keyframe::paragliding-launch:00024,paragliding-launch,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::paragliding-launch:00026,paragliding-launch,26,uniform_gap2,1
+keyframe::paragliding-launch:00028,paragliding-launch,28,uniform_gap2 uniform_gap4,2
+keyframe::paragliding-launch:00030,paragliding-launch,30,uniform_gap2 uniform_gap6,2
+keyframe::paragliding-launch:00032,paragliding-launch,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::paragliding-launch:00034,paragliding-launch,34,uniform_gap2,1
+keyframe::paragliding-launch:00036,paragliding-launch,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::paragliding-launch:00038,paragliding-launch,38,uniform_gap2,1
+keyframe::paragliding-launch:00040,paragliding-launch,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::paragliding-launch:00042,paragliding-launch,42,uniform_gap2 uniform_gap6,2
+keyframe::paragliding-launch:00044,paragliding-launch,44,uniform_gap2 uniform_gap4,2
+keyframe::paragliding-launch:00046,paragliding-launch,46,uniform_gap2,1
+keyframe::paragliding-launch:00048,paragliding-launch,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::paragliding-launch:00050,paragliding-launch,50,uniform_gap2,1
+keyframe::paragliding-launch:00052,paragliding-launch,52,uniform_gap2 uniform_gap4,2
+keyframe::paragliding-launch:00054,paragliding-launch,54,uniform_gap2 uniform_gap6,2
+keyframe::paragliding-launch:00056,paragliding-launch,56,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::paragliding-launch:00058,paragliding-launch,58,uniform_gap2,1
+keyframe::paragliding-launch:00060,paragliding-launch,60,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::paragliding-launch:00062,paragliding-launch,62,uniform_gap2,1
+keyframe::paragliding-launch:00064,paragliding-launch,64,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::paragliding-launch:00066,paragliding-launch,66,uniform_gap2 uniform_gap6,2
+keyframe::paragliding-launch:00068,paragliding-launch,68,uniform_gap2 uniform_gap4,2
+keyframe::paragliding-launch:00070,paragliding-launch,70,uniform_gap2,1
+keyframe::paragliding-launch:00072,paragliding-launch,72,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::paragliding-launch:00074,paragliding-launch,74,uniform_gap2,1
+keyframe::paragliding-launch:00076,paragliding-launch,76,uniform_gap2 uniform_gap4,2
+keyframe::paragliding-launch:00078,paragliding-launch,78,uniform_gap2 uniform_gap6,2
+keyframe::paragliding-launch:00079,paragliding-launch,79,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::parkour:00000,parkour,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::parkour:00002,parkour,2,uniform_gap2,1
+keyframe::parkour:00004,parkour,4,uniform_gap2 uniform_gap4,2
+keyframe::parkour:00006,parkour,6,uniform_gap2 uniform_gap6,2
+keyframe::parkour:00008,parkour,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::parkour:00010,parkour,10,uniform_gap2,1
+keyframe::parkour:00012,parkour,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::parkour:00014,parkour,14,uniform_gap2,1
+keyframe::parkour:00016,parkour,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::parkour:00018,parkour,18,uniform_gap2 uniform_gap6,2
+keyframe::parkour:00020,parkour,20,uniform_gap2 uniform_gap4,2
+keyframe::parkour:00022,parkour,22,uniform_gap2,1
+keyframe::parkour:00024,parkour,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::parkour:00026,parkour,26,uniform_gap2,1
+keyframe::parkour:00028,parkour,28,uniform_gap2 uniform_gap4,2
+keyframe::parkour:00030,parkour,30,uniform_gap2 uniform_gap6,2
+keyframe::parkour:00032,parkour,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::parkour:00034,parkour,34,stage165_adaptive uniform_gap2,2
+keyframe::parkour:00036,parkour,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::parkour:00038,parkour,38,uniform_gap2,1
+keyframe::parkour:00040,parkour,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::parkour:00042,parkour,42,uniform_gap2 uniform_gap6,2
+keyframe::parkour:00044,parkour,44,uniform_gap2 uniform_gap4,2
+keyframe::parkour:00046,parkour,46,uniform_gap2,1
+keyframe::parkour:00048,parkour,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::parkour:00050,parkour,50,uniform_gap2,1
+keyframe::parkour:00052,parkour,52,uniform_gap2 uniform_gap4,2
+keyframe::parkour:00054,parkour,54,uniform_gap2 uniform_gap6,2
+keyframe::parkour:00056,parkour,56,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::parkour:00058,parkour,58,uniform_gap2,1
+keyframe::parkour:00060,parkour,60,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::parkour:00062,parkour,62,uniform_gap2,1
+keyframe::parkour:00064,parkour,64,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::parkour:00066,parkour,66,uniform_gap2 uniform_gap6,2
+keyframe::parkour:00068,parkour,68,uniform_gap2 uniform_gap4,2
+keyframe::parkour:00070,parkour,70,uniform_gap2,1
+keyframe::parkour:00072,parkour,72,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::parkour:00074,parkour,74,uniform_gap2,1
+keyframe::parkour:00076,parkour,76,uniform_gap2 uniform_gap4,2
+keyframe::parkour:00078,parkour,78,uniform_gap2 uniform_gap6,2
+keyframe::parkour:00080,parkour,80,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::parkour:00082,parkour,82,uniform_gap2,1
+keyframe::parkour:00084,parkour,84,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::parkour:00086,parkour,86,uniform_gap2,1
+keyframe::parkour:00087,parkour,87,stage165_adaptive,1
+keyframe::parkour:00088,parkour,88,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::parkour:00090,parkour,90,stage165_adaptive uniform_gap2 uniform_gap6,3
+keyframe::parkour:00092,parkour,92,uniform_gap2 uniform_gap4,2
+keyframe::parkour:00094,parkour,94,uniform_gap2,1
+keyframe::parkour:00096,parkour,96,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::parkour:00098,parkour,98,uniform_gap2,1
+keyframe::parkour:00099,parkour,99,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::pigs:00000,pigs,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::pigs:00002,pigs,2,uniform_gap2,1
+keyframe::pigs:00004,pigs,4,uniform_gap2 uniform_gap4,2
+keyframe::pigs:00006,pigs,6,uniform_gap2 uniform_gap6,2
+keyframe::pigs:00008,pigs,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::pigs:00010,pigs,10,uniform_gap2,1
+keyframe::pigs:00012,pigs,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::pigs:00014,pigs,14,uniform_gap2,1
+keyframe::pigs:00016,pigs,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::pigs:00018,pigs,18,uniform_gap2 uniform_gap6,2
+keyframe::pigs:00020,pigs,20,uniform_gap2 uniform_gap4,2
+keyframe::pigs:00022,pigs,22,uniform_gap2,1
+keyframe::pigs:00024,pigs,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::pigs:00026,pigs,26,uniform_gap2,1
+keyframe::pigs:00028,pigs,28,uniform_gap2 uniform_gap4,2
+keyframe::pigs:00030,pigs,30,uniform_gap2 uniform_gap6,2
+keyframe::pigs:00032,pigs,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::pigs:00034,pigs,34,uniform_gap2,1
+keyframe::pigs:00036,pigs,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::pigs:00038,pigs,38,uniform_gap2,1
+keyframe::pigs:00040,pigs,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::pigs:00042,pigs,42,uniform_gap2 uniform_gap6,2
+keyframe::pigs:00044,pigs,44,uniform_gap2 uniform_gap4,2
+keyframe::pigs:00046,pigs,46,uniform_gap2,1
+keyframe::pigs:00048,pigs,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::pigs:00050,pigs,50,uniform_gap2,1
+keyframe::pigs:00052,pigs,52,uniform_gap2 uniform_gap4,2
+keyframe::pigs:00054,pigs,54,uniform_gap2 uniform_gap6,2
+keyframe::pigs:00056,pigs,56,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::pigs:00058,pigs,58,uniform_gap2,1
+keyframe::pigs:00060,pigs,60,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::pigs:00062,pigs,62,uniform_gap2,1
+keyframe::pigs:00064,pigs,64,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::pigs:00066,pigs,66,uniform_gap2 uniform_gap6,2
+keyframe::pigs:00068,pigs,68,uniform_gap2 uniform_gap4,2
+keyframe::pigs:00070,pigs,70,uniform_gap2,1
+keyframe::pigs:00072,pigs,72,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::pigs:00074,pigs,74,uniform_gap2,1
+keyframe::pigs:00076,pigs,76,uniform_gap2 uniform_gap4,2
+keyframe::pigs:00078,pigs,78,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::scooter-black:00000,scooter-black,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::scooter-black:00002,scooter-black,2,uniform_gap2,1
+keyframe::scooter-black:00004,scooter-black,4,stage165_adaptive uniform_gap2 uniform_gap4,3
+keyframe::scooter-black:00006,scooter-black,6,uniform_gap2 uniform_gap6,2
+keyframe::scooter-black:00008,scooter-black,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::scooter-black:00010,scooter-black,10,stage165_adaptive uniform_gap2,2
+keyframe::scooter-black:00012,scooter-black,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::scooter-black:00014,scooter-black,14,uniform_gap2,1
+keyframe::scooter-black:00016,scooter-black,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::scooter-black:00018,scooter-black,18,uniform_gap2 uniform_gap6,2
+keyframe::scooter-black:00020,scooter-black,20,uniform_gap2 uniform_gap4,2
+keyframe::scooter-black:00022,scooter-black,22,uniform_gap2,1
+keyframe::scooter-black:00024,scooter-black,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::scooter-black:00026,scooter-black,26,uniform_gap2,1
+keyframe::scooter-black:00027,scooter-black,27,stage165_adaptive,1
+keyframe::scooter-black:00028,scooter-black,28,uniform_gap2 uniform_gap4,2
+keyframe::scooter-black:00030,scooter-black,30,uniform_gap2 uniform_gap6,2
+keyframe::scooter-black:00032,scooter-black,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::scooter-black:00034,scooter-black,34,uniform_gap2,1
+keyframe::scooter-black:00036,scooter-black,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::scooter-black:00037,scooter-black,37,stage165_adaptive,1
+keyframe::scooter-black:00038,scooter-black,38,uniform_gap2,1
+keyframe::scooter-black:00040,scooter-black,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::scooter-black:00042,scooter-black,42,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::shooting:00000,shooting,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::shooting:00002,shooting,2,uniform_gap2,1
+keyframe::shooting:00004,shooting,4,uniform_gap2 uniform_gap4,2
+keyframe::shooting:00006,shooting,6,uniform_gap2 uniform_gap6,2
+keyframe::shooting:00007,shooting,7,stage165_adaptive,1
+keyframe::shooting:00008,shooting,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::shooting:00009,shooting,9,stage165_adaptive,1
+keyframe::shooting:00010,shooting,10,uniform_gap2,1
+keyframe::shooting:00012,shooting,12,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6,4
+keyframe::shooting:00014,shooting,14,uniform_gap2,1
+keyframe::shooting:00016,shooting,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::shooting:00018,shooting,18,uniform_gap2 uniform_gap6,2
+keyframe::shooting:00019,shooting,19,stage165_adaptive,1
+keyframe::shooting:00020,shooting,20,uniform_gap2 uniform_gap4,2
+keyframe::shooting:00022,shooting,22,uniform_gap2,1
+keyframe::shooting:00024,shooting,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::shooting:00026,shooting,26,uniform_gap2,1
+keyframe::shooting:00028,shooting,28,uniform_gap2 uniform_gap4,2
+keyframe::shooting:00030,shooting,30,uniform_gap2 uniform_gap6,2
+keyframe::shooting:00032,shooting,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::shooting:00034,shooting,34,uniform_gap2,1
+keyframe::shooting:00036,shooting,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::shooting:00038,shooting,38,uniform_gap2,1
+keyframe::shooting:00039,shooting,39,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::soapbox:00000,soapbox,0,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::soapbox:00002,soapbox,2,uniform_gap2,1
+keyframe::soapbox:00004,soapbox,4,uniform_gap2 uniform_gap4,2
+keyframe::soapbox:00006,soapbox,6,uniform_gap2 uniform_gap6,2
+keyframe::soapbox:00008,soapbox,8,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::soapbox:00010,soapbox,10,uniform_gap2,1
+keyframe::soapbox:00012,soapbox,12,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::soapbox:00014,soapbox,14,uniform_gap2,1
+keyframe::soapbox:00016,soapbox,16,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::soapbox:00018,soapbox,18,uniform_gap2 uniform_gap6,2
+keyframe::soapbox:00020,soapbox,20,uniform_gap2 uniform_gap4,2
+keyframe::soapbox:00022,soapbox,22,uniform_gap2,1
+keyframe::soapbox:00024,soapbox,24,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::soapbox:00026,soapbox,26,uniform_gap2,1
+keyframe::soapbox:00028,soapbox,28,uniform_gap2 uniform_gap4,2
+keyframe::soapbox:00030,soapbox,30,uniform_gap2 uniform_gap6,2
+keyframe::soapbox:00032,soapbox,32,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::soapbox:00034,soapbox,34,uniform_gap2,1
+keyframe::soapbox:00036,soapbox,36,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::soapbox:00038,soapbox,38,uniform_gap2,1
+keyframe::soapbox:00040,soapbox,40,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::soapbox:00042,soapbox,42,uniform_gap2 uniform_gap6,2
+keyframe::soapbox:00044,soapbox,44,uniform_gap2 uniform_gap4,2
+keyframe::soapbox:00046,soapbox,46,uniform_gap2,1
+keyframe::soapbox:00048,soapbox,48,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::soapbox:00049,soapbox,49,stage165_adaptive,1
+keyframe::soapbox:00050,soapbox,50,uniform_gap2,1
+keyframe::soapbox:00052,soapbox,52,uniform_gap2 uniform_gap4,2
+keyframe::soapbox:00054,soapbox,54,uniform_gap2 uniform_gap6,2
+keyframe::soapbox:00056,soapbox,56,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::soapbox:00058,soapbox,58,uniform_gap2,1
+keyframe::soapbox:00060,soapbox,60,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::soapbox:00061,soapbox,61,stage165_adaptive,1
+keyframe::soapbox:00062,soapbox,62,uniform_gap2,1
+keyframe::soapbox:00064,soapbox,64,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::soapbox:00066,soapbox,66,uniform_gap2 uniform_gap6,2
+keyframe::soapbox:00068,soapbox,68,uniform_gap2 uniform_gap4,2
+keyframe::soapbox:00070,soapbox,70,uniform_gap2,1
+keyframe::soapbox:00072,soapbox,72,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,5
+keyframe::soapbox:00074,soapbox,74,uniform_gap2,1
+keyframe::soapbox:00076,soapbox,76,uniform_gap2 uniform_gap4,2
+keyframe::soapbox:00078,soapbox,78,stage165_adaptive uniform_gap2 uniform_gap6,3
+keyframe::soapbox:00080,soapbox,80,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap8,5
+keyframe::soapbox:00082,soapbox,82,uniform_gap2,1
+keyframe::soapbox:00084,soapbox,84,uniform_gap2 uniform_gap4 uniform_gap6,3
+keyframe::soapbox:00086,soapbox,86,uniform_gap2,1
+keyframe::soapbox:00088,soapbox,88,stage165_adaptive uniform_gap2 uniform_gap4 uniform_gap8,4
+keyframe::soapbox:00090,soapbox,90,uniform_gap2 uniform_gap6,2
+keyframe::soapbox:00092,soapbox,92,uniform_gap2 uniform_gap4,2
+keyframe::soapbox:00094,soapbox,94,uniform_gap2,1
+keyframe::soapbox:00096,soapbox,96,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6
+keyframe::soapbox:00098,soapbox,98,stage165_adaptive uniform_gap16 uniform_gap2 uniform_gap4 uniform_gap6 uniform_gap8,6

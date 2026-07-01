@@ -25,6 +25,7 @@ The current measured full-sequence result is a middle RD point: adaptive improve
 | lower-budget sensitivity | Stage188 | interval/row-level additive measured reuse | positive lower-budget points found but gap8 rate not reached |
 | failure-case analysis | Stage189 | promoted keyframe and residual-risk diagnostics | paper-facing failure cases and refinement targets identified |
 | paper-facing package | Stage190 | tables, claims, decoder contract, title/abstract draft | current writing/slides handoff package |
+| expanded fixed-gap protocol | Stage191 | gap2/gap4/gap6/gap8/gap16 plus adaptive protocol | missing measurement manifest for stronger baseline comparison |
 
 ## Middle-Frame Recovery Evidence
 
@@ -400,6 +401,41 @@ Writing stance:
 - Keep Stage188 additive sensitivity separate from Stage185 schedule-packed RD.
 - Keep decoder allowed/forbidden inputs explicit in the method section.
 
+## Stage191 Expanded Fixed-Gap Protocol
+
+The user requested a stronger selector validation: full-sequence results should compare against more than gap4/gap8, and the adaptive selector should show clear gains over the best tested fixed-gap schedule before claiming the module is effective.
+
+Stage191 creates the protocol for `uniform_gap2`, `uniform_gap4`, `uniform_gap6`, `uniform_gap8`, `uniform_gap16`, and current `stage165_adaptive` over the same 30 DAVIS validation sequences / 1999 frames.
+
+Schedule counts:
+
+| schedule | keyframes | residual rows | keyframe ratio | metadata bytes |
+|---|---:|---:|---:|---:|
+| `uniform_gap2` | `1025` | `974` | `0.5127563781890946` | `1` |
+| `uniform_gap4` | `536` | `1463` | `0.2681340670335168` | `1` |
+| `uniform_gap6` | `372` | `1627` | `0.18609304652326164` | `1` |
+| `uniform_gap8` | `292` | `1707` | `0.14607303651825912` | `1` |
+| `uniform_gap16` | `169` | `1830` | `0.08454227113556778` | `1` |
+| `stage165_adaptive` | `358` | `1641` | `0.1790895447723862` | `327` |
+
+Reuse/missing measurement coverage for Stage192:
+
+| scope | expected | existing ok | missing | reuse fraction |
+|---|---:|---:|---:|---:|
+| payload single keyframe | `1065` | `596` | `469` | `0.5596244131455399` |
+| payload residual | `7791` | `3472` | `4319` | `0.44564240790655885` |
+| payload schedule-packed keyframe group | `180` | `90` | `90` | `0.5` |
+| quality single keyframe | `1065` | `596` | `469` | `0.5596244131455399` |
+| quality residual | `7791` | `3472` | `4319` | `0.44564240790655885` |
+
+Stage191 decision: `measure_expanded_fixed_gap_baselines_next`.
+
+Next stance:
+
+- Stage192 must measure the missing gap2/gap6/gap16 rows and aggregate expanded fixed-gap RD-quality.
+- Stage193 should compute oracle upper bounds before training/tuning a new selector.
+- The target is no longer just a middle RD point; the next selector should aim to beat the best tested fixed-gap schedule on full-sequence PSNR by a large margin, ideally around `+1 dB`, without SSIM/MS-SSIM/LPIPS regressions.
+
 ## Non-Claims And Risks
 
 | item | status |
@@ -442,13 +478,15 @@ Writing stance:
 | 188 | lower-budget selector sensitivity | positive lower-budget points found under additive scope, but gap8 rate not reached |
 | 189 | failure-case analysis | identifies promoted rate-risk rows, residual-risk hotspots, and candidate-specific dropped-frame losses |
 | 190 | paper-facing package | packages tables, claim boundaries, decoder contract, recommended title, and abstract draft |
+| 191 | expanded fixed-gap protocol | prepares gap2/gap4/gap6/gap8/gap16/adaptive full-sequence measurement and missing-row manifest |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
-| paper writing | use Stage190 package | draft method/results/limitations from `stage190_paper_facing_report.md` |
-| optional refinement | schedule-packed Stage188 candidate measurement | same-scope RD for selected lower-budget candidates if needed for final claims |
+| 192 | expanded fixed-gap measurement | measured RD-quality for gap2/gap4/gap6/gap8/gap16/adaptive and best fixed-gap baseline identification |
+| 193 | oracle upper-bound analysis | determine whether a `+1 dB` full-sequence selector gain over best fixed gap is achievable with current recovery/keyframe representation |
+| 194+ | multi-gap selector design | rate-aware adaptive schedule candidates only if Stage193 shows enough headroom |
 
 ## Canonical Paths
 
@@ -470,5 +508,6 @@ Writing stance:
 | Stage188 lower-budget sensitivity | `experiments/stage188_lower_budget_selector_sensitivity/` |
 | Stage189 failure-case analysis | `experiments/stage189_failure_case_analysis/` |
 | Stage190 paper-facing package | `experiments/stage190_paper_facing_package/` |
+| Stage191 fixed-gap expansion protocol | `experiments/stage191_fixed_gap_expansion_protocol/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |
