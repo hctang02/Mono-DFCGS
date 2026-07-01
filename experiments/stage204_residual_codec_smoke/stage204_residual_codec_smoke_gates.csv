@@ -1,0 +1,6 @@
+gate,status,value,threshold,detail
+metric_rows_ok,pass,0,0,all rendered metrics must use explicit target-shape alignment
+payload_counted_nonzero,pass,13790.0,>0 bytes and counted as len(payload),"residual payload bytes include headers, metadata, indices/deltas, q values, and zlib bytes"
+residual_anchor_mse_reduction_positive,pass,0.8435545876871436,>0,best_setting=topk_keep0p2_q6
+residual_render_headroom_positive,pass,5.553101207002054,> 0.5 dB vs base,best_setting=topk_keep0p2_q6
+stage197_decoder_contract,pass,0,no target dense/RGB decoder input,decoder uses base GS plus transmitted counted GS residual payload

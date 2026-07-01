@@ -1,0 +1,67 @@
+{
+  "stage": 204,
+  "name": "residual_codec_smoke",
+  "decision": "residual_codec_smoke_positive_headroom",
+  "task_manifest": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage199_learned_gs_training_manifest/stage199_learned_gs_training_tasks.csv",
+  "stage203_package": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage203_gs_latent_residual_codec_design/stage203_gs_latent_residual_codec_design_package.json",
+  "task_split": "eval",
+  "gaps": [
+    4,
+    8
+  ],
+  "keyframe_codec": "q12",
+  "task_count": 12,
+  "setting_count": 3,
+  "side_bits": 6,
+  "keep_fractions": [
+    0.05,
+    0.1,
+    0.2
+  ],
+  "best_setting_label": "topk_keep0p2_q6",
+  "best_delta_psnr_vs_base": 5.553101207002054,
+  "best_mean_payload_bytes": 55761.833333333336,
+  "selected_tasks_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage204_residual_codec_smoke/stage204_selected_tasks.csv",
+  "rows_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage204_residual_codec_smoke/stage204_residual_codec_smoke_rows.csv",
+  "summary_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage204_residual_codec_smoke/stage204_residual_codec_smoke_summary.csv",
+  "gates_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage204_residual_codec_smoke/stage204_residual_codec_smoke_gates.csv",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage204_residual_codec_smoke/stage204_residual_codec_smoke_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage204_residual_codec_smoke/stage204_residual_codec_smoke_report.md",
+  "gate_rows": [
+    {
+      "gate": "metric_rows_ok",
+      "status": "pass",
+      "value": 0,
+      "threshold": "0",
+      "detail": "all rendered metrics must use explicit target-shape alignment"
+    },
+    {
+      "gate": "payload_counted_nonzero",
+      "status": "pass",
+      "value": 13790.0,
+      "threshold": ">0 bytes and counted as len(payload)",
+      "detail": "residual payload bytes include headers, metadata, indices/deltas, q values, and zlib bytes"
+    },
+    {
+      "gate": "residual_anchor_mse_reduction_positive",
+      "status": "pass",
+      "value": 0.8435545876871436,
+      "threshold": ">0",
+      "detail": "best_setting=topk_keep0p2_q6"
+    },
+    {
+      "gate": "residual_render_headroom_positive",
+      "status": "pass",
+      "value": 5.553101207002054,
+      "threshold": "> 0.5 dB vs base",
+      "detail": "best_setting=topk_keep0p2_q6"
+    },
+    {
+      "gate": "stage197_decoder_contract",
+      "status": "pass",
+      "value": 0,
+      "threshold": "no target dense/RGB decoder input",
+      "detail": "decoder uses base GS plus transmitted counted GS residual payload"
+    }
+  ]
+}

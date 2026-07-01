@@ -1,0 +1,13 @@
+task_id,sequence,reference_gap,left_index,right_index,target_index,normalized_time
+stage199_00027608,parkour,4,72,76,74,0.5
+stage199_00021405,camel,8,80,88,86,0.75
+stage199_00023350,dogs-jump,4,12,16,13,0.25
+stage199_00025584,judo,8,16,24,21,0.625
+stage199_00022694,dance-twirl,4,64,68,65,0.25
+stage199_00025526,judo,4,12,16,15,0.75
+stage199_00025911,lab-coat,4,4,8,5,0.25
+stage199_00023892,drift-straight,4,8,12,11,0.75
+stage199_00020274,blackswan,8,32,40,39,0.875
+stage199_00022031,car-shadow,8,24,32,31,0.875
+stage199_00027048,motocross-jump,8,24,32,31,0.875
+stage199_00026240,libby,8,40,48,41,0.125

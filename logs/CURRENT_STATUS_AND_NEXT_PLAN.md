@@ -13,8 +13,8 @@ The current focus is the new predictor/refiner, GS-native residual/latent codec,
 - Repo: `/mnt/hdd2tC/haocheng/Mono-DFCGS`
 - Remote: `git@github.com:hctang02/Mono-DFCGS.git`
 - Python env: `/mnt/hdd2tC/tmp/opencode/streamsplat_venv`
-- Latest pushed commit before Stage203: `ba7bf04 Validate predictor-only headroom`
-- Latest completed local stage: `Stage203 GS latent/residual codec design`
+- Latest pushed commit before Stage204: `c99854f Design GS residual codec`
+- Latest completed local stage: `Stage204 residual codec smoke`
 - Canonical continuation file: `logs/CURRENT_STATUS_AND_NEXT_PLAN.md`
 - Current best adapter checkpoint: `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage65_rgb_h256_medium_training/rgb_h256/best_adapter.safetensors`
 - Main DAVIS root: `/data/hctang/tmp/opencode/datasets/DAVIS_official_downloads/DAVIS`
@@ -56,11 +56,12 @@ The current focus is the new predictor/refiner, GS-native residual/latent codec,
 - Stage201: completed predictor-only smoke. Decision: `predictor_only_smoke_passed_no_regression_gate`. Ran `TemporalBasisGSRefiner` q12 gap4/8 smoke with `8` train tasks, `8` eval tasks, `16` steps, `0` per-frame payload bytes, and checkpoints outside git under `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage201_predictor_only_smoke/`. Best eval PSNR was `20.52573876541323` at step `0`, exactly equal to linear; final eval PSNR was `20.509261273864784` (`-0.016477491548446466` dB vs linear). All stability/contract gates passed, but this is only executable plumbing/no-regression evidence, not learned quality improvement. Stage202 must test longer/broader training headroom before any selector/residual promotion.
 - Stage202: completed predictor-only broader validation. Decision: `predictor_only_broader_training_headroom_not_observed`. Ran q12 gaps `2,4,8,12` with `16` train tasks, `16` eval tasks, three configs, and `0` per-frame payload bytes. Shared linear eval PSNR was `19.239936914617395`. Best config was `anchor_only_lr1e3` at step `32`, with best eval PSNR `19.240604951854333` and only `+0.0006680372369380905` dB vs linear, far below the `>0.05` dB headroom gate. Metric-shape, endpoint-identity, no-payload, and no-regression gates passed; `predictor_headroom_positive` failed. Stage203 should prioritize GS-native residual/latent side-info; selector training remains deferred until residual/edge RD oracle headroom exists.
 - Stage203: completed GS latent/residual codec design. Decision: `gs_attr_topk_residual_entropy_v1_selected_for_stage204_smoke`. Primary codec is `encode_topk_residual_sideinfo_entropy` / `decode_residual_sideinfo_entropy`: encoder uses predictor/base GS plus target dense anchor to select top-k GS attribute residuals, while decoder uses predictor/base GS plus transmitted counted residual payload only. Payload bytes are `len(payload)` and include header, fp16 min/max metadata, sorted index deltas, q residual values, zlib component lengths, and compressed bytes. Toy top-k roundtrip passed with payload `246` bytes and residual MSE reduction `0.8798047118685358`; deterministic-index low-rate ablation passed with payload `217` bytes and MSE reduction `0.8962303087335681`. RGB/image residual remains rejected as final method.
+- Stage204: completed residual codec smoke. Decision: `residual_codec_smoke_positive_headroom`. Ran `12` eval tasks over q12 gaps `4,8` with linear/zero-init predictor base, side bits `6`, zlib level `9`, and keep fractions `0.05,0.10,0.20`. Base mean PSNR was `19.999033822428466`. `topk_keep0p05_q6` reached PSNR `22.39462808214667` at mean payload `15679.583333333334` bytes (`+2.3955942597182047` dB); `topk_keep0p1_q6` reached `23.804629721924517` at `29836.75` bytes (`+3.8055958994960553` dB); `topk_keep0p2_q6` reached `25.552135029430517` at `55761.833333333336` bytes (`+5.553101207002054` dB). All gates passed, including explicit metric shapes, counted nonzero payload, and Stage197 decoder contract. GS-native residual payload has real rendered headroom.
 
 ### Immediate Next Plan
 
 - Continue the user-approved GS-native learned predictive compression route through Stage213 before asking for another decision.
-- Immediate next stages: Stage204 residual codec smoke, Stage205 fixed-gap predictive codec validation, Stage206 edge RD table.
+- Immediate next stages: Stage205 fixed-gap predictive codec validation, Stage206 edge RD table, Stage207 DP oracle schedule.
 
 ### Residual Side-Info Codec / RD
 
