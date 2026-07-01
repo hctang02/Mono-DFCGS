@@ -1,0 +1,74 @@
+{
+  "stage": 203,
+  "name": "gs_latent_residual_codec_design",
+  "decision": "gs_attr_topk_residual_entropy_v1_selected_for_stage204_smoke",
+  "primary_codec": "gs_attr_topk_residual_entropy_v1",
+  "stage202_package": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage202_predictor_only_broader_validation/stage202_predictor_only_broader_validation_package.json",
+  "candidates_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage203_gs_latent_residual_codec_design/stage203_codec_candidates.csv",
+  "roundtrip_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage203_gs_latent_residual_codec_design/stage203_codec_toy_roundtrips.csv",
+  "rate_rules_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage203_gs_latent_residual_codec_design/stage203_rate_accounting_rules.csv",
+  "audit_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage203_gs_latent_residual_codec_design/stage203_decoder_contract_audit.csv",
+  "protocol_csv": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage203_gs_latent_residual_codec_design/stage203_stage204_smoke_protocol.csv",
+  "contract_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage203_gs_latent_residual_codec_design/stage203_primary_codec_contract.json",
+  "package_json": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage203_gs_latent_residual_codec_design/stage203_gs_latent_residual_codec_design_package.json",
+  "report_md": "/mnt/hdd2tC/haocheng/Mono-DFCGS/experiments/stage203_gs_latent_residual_codec_design/stage203_gs_latent_residual_codec_design_report.md",
+  "roundtrip_rows": [
+    {
+      "codec": "gs_attr_topk_residual_entropy_v1",
+      "status": "pass",
+      "payload_bytes": 246,
+      "raw_reference_bytes": 209,
+      "residual_mse_before": 0.006919591687619686,
+      "residual_mse_after": 0.0008317023166455328,
+      "mse_reduction": 0.8798047118685358,
+      "detail": "keep_count=13; side_bits=6; delta_zlib_bytes=15; residual_zlib_bytes=138"
+    },
+    {
+      "codec": "gs_attr_deterministic_index_residual_entropy_v1",
+      "status": "pass",
+      "payload_bytes": 217,
+      "raw_reference_bytes": 187,
+      "residual_mse_before": 0.007950554601848125,
+      "residual_mse_after": 0.0008250265964306891,
+      "mse_reduction": 0.8962303087335681,
+      "detail": "keep_count=12; side_bits=6; index_bytes=0; residual_zlib_bytes=128"
+    }
+  ],
+  "audit_rows": [
+    {
+      "audit": "stage202_predictor_headroom_context",
+      "status": "pass",
+      "value": 0.0006680372369380905,
+      "requirement": "residual codec prioritized after predictor-only headroom check",
+      "detail": "predictor_only_broader_training_headroom_not_observed"
+    },
+    {
+      "audit": "primary_codec_roundtrip",
+      "status": "pass",
+      "value": 0.8798047118685358,
+      "requirement": "primary payload decodes and reduces toy residual MSE",
+      "detail": "encode_topk_residual_sideinfo_entropy/decode_residual_sideinfo_entropy"
+    },
+    {
+      "audit": "deterministic_codec_roundtrip",
+      "status": "pass",
+      "value": 0.8962303087335681,
+      "requirement": "low-rate deterministic payload decodes and reduces toy residual MSE",
+      "detail": "indices are decoder-known and not hidden side-info"
+    },
+    {
+      "audit": "stage197_decoder_contract",
+      "status": "pass",
+      "value": 0,
+      "requirement": "decoder excludes target dense anchors and target RGB/image residuals",
+      "detail": "decoder uses predictor base GS plus transmitted counted GS-native residual payload"
+    },
+    {
+      "audit": "image_residual_rejected",
+      "status": "pass",
+      "value": 0,
+      "requirement": "final method remains GS-native",
+      "detail": "RGB/image residual appears only as rejected candidate"
+    }
+  ]
+}

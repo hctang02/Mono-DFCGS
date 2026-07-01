@@ -1,0 +1,6 @@
+rule,value,rationale
+payload_bytes,len(payload),"Header, metadata, indices/deltas, quantized residual values, and compressed component lengths are all transmitted bytes."
+total_rate,keyframe_bytes + schedule_metadata_bytes + residual_payload_bytes + optional_latent_payload_bytes,Stage197 requires every transmitted side-info byte to be included in RD.
+decoder_base,decoded q-keyframe GS plus predictor/refiner output,Target dense anchors are encoder-side labels/residual sources only.
+forbidden_payload,RGB/image residual post-processing,Final method must remain GS-native compression.
+stage204_primary_setting,q6 keep_fraction sweep 0.05 0.10 0.20 with gs_attr_topk_residual_entropy_v1,Stage158 used q6/keep1.0 successfully; Stage204 should test lower-rate GS-native variants first.

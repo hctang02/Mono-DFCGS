@@ -1,0 +1,6 @@
+audit,status,value,requirement,detail
+stage202_predictor_headroom_context,pass,0.0006680372369380905,residual codec prioritized after predictor-only headroom check,predictor_only_broader_training_headroom_not_observed
+primary_codec_roundtrip,pass,0.8798047118685358,primary payload decodes and reduces toy residual MSE,encode_topk_residual_sideinfo_entropy/decode_residual_sideinfo_entropy
+deterministic_codec_roundtrip,pass,0.8962303087335681,low-rate deterministic payload decodes and reduces toy residual MSE,indices are decoder-known and not hidden side-info
+stage197_decoder_contract,pass,0,decoder excludes target dense anchors and target RGB/image residuals,decoder uses predictor base GS plus transmitted counted GS-native residual payload
+image_residual_rejected,pass,0,final method remains GS-native,RGB/image residual appears only as rejected candidate

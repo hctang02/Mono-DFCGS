@@ -1,6 +1,6 @@
 # Mono-DFCGS Results And Innovation Summary
 
-Date: 2026-07-01
+Date: 2026-07-02
 
 Purpose: consolidate the current Mono-DFCGS evidence chain, module-level innovation points, decoder contracts, non-claims, and next validation plan into one handoff log.
 
@@ -37,6 +37,7 @@ The current measured full-sequence result is a middle RD point: adaptive improve
 | GS predictor architecture | Stage200 | `TemporalBasisGSRefiner` contract and module | selected for Stage201 predictor-only smoke |
 | predictor-only smoke | Stage201 | q12 gap4/8 short training/rendered smoke | plumbing/no-regression passed; no learned gain yet |
 | predictor-only broader validation | Stage202 | q12 multi-gap multi-config training-headroom check | predictor-only headroom not observed |
+| GS residual codec design | Stage203 | counted GS attribute top-k residual entropy codec | selected for Stage204 smoke |
 
 ## Middle-Frame Recovery Evidence
 
@@ -751,6 +752,34 @@ Interpretation:
 - Stage203 must prioritize GS-native residual/latent side-info.
 - Selector training remains deferred until residual/edge RD oracle headroom exists.
 
+## Stage203 GS Latent/Residual Codec Design
+
+Stage203 defines the counted GS-native residual codec after predictor-only headroom was not observed.
+
+Stage203 decision: `gs_attr_topk_residual_entropy_v1_selected_for_stage204_smoke`.
+
+Primary codec:
+
+- Implementation: `mono_dfcgs.residual_sideinfo_codec.encode_topk_residual_sideinfo_entropy`.
+- Decoder: `mono_dfcgs.residual_sideinfo_codec.decode_residual_sideinfo_entropy`.
+- Encoder-side sources: predictor/base GS, target dense anchor, optional target RGB diagnostics.
+- Decoder inputs: predictor/base GS plus transmitted residual payload.
+- Forbidden decoder inputs: target dense anchor, target RGB/image residual, oracle quality labels.
+- Payload accounting: `payload_bytes = len(payload)` and include every transmitted header/metadata/index/value/compressed byte.
+
+Toy roundtrips:
+
+- `gs_attr_topk_residual_entropy_v1`: payload `246` bytes, MSE before/after `0.006919591687619686/0.0008317023166455328`, reduction `0.8798047118685358`.
+- `gs_attr_deterministic_index_residual_entropy_v1`: payload `217` bytes, MSE before/after `0.007950554601848125/0.0008250265964306891`, reduction `0.8962303087335681`.
+
+Stage204 protocol:
+
+- Base: linear or zero-init `TemporalBasisGSRefiner` predictor base from Stage201/202.
+- Gaps: `4 8`.
+- Codec: `q12` keyframes plus `gs_attr_topk_residual_entropy_v1` residual payload.
+- Settings: `side_bits=6`, keep fractions `0.05,0.10,0.20`, `zlib_level=9`.
+- Metrics: rendered PSNR plus counted payload bytes and residual MSE reduction.
+
 ## Non-Claims And Risks
 
 | item | status |
@@ -767,6 +796,7 @@ Interpretation:
 | Stage200 architecture as quality result | not claimed; quality gate begins at Stage201 predictor-only smoke |
 | Stage201 predictor learned improvement | not claimed; best checkpoint is step `0` linear fallback |
 | Stage202 predictor-only headroom | not observed; best delta is only `+0.0006680372369380905` dB |
+| Stage203 residual codec quality on real frames | not claimed yet; Stage203 only designs and toy-tests the codec |
 | selector precision solved | not claimed; Stage189 finds only `2/66` strong promoted rate-risk rows, but precision remains a tuning target |
 | false negatives solved | not claimed; Stage189 finds `1179` residual-risk rows and sequence hotspots |
 | online streaming selector | not claimed; current setting is offline video encoding unless lookahead is declared |
@@ -815,13 +845,14 @@ Interpretation:
 | 200 | GS predictor architecture package | selects `TemporalBasisGSRefiner` and Stage201 predictor-only protocol |
 | 201 | predictor-only smoke | validates executable no-payload predictor plumbing but shows no short-run learned gain |
 | 202 | predictor-only broader validation | shows predictor-only training headroom is not observed and residual codec is mandatory |
+| 203 | GS residual codec design | selects counted top-k GS attribute residual entropy codec for real-frame smoke |
 
 ## Next Validation Plan
 
 | next stage | goal | output |
 |---:|---|---|
-| 203 | GS latent/residual codec design | define counted GS-native residual/latent payload now that predictor-only headroom is insufficient |
-| 204+ | new GS-native predictive codec execution | proceed through Stage213 under the Stage197-202 gates |
+| 204 | residual codec smoke | run `gs_attr_topk_residual_entropy_v1` on real Stage199 tasks with q6 keep sweep |
+| 205+ | new GS-native predictive codec execution | proceed through Stage213 under the Stage197-203 gates |
 
 ## Canonical Paths
 
@@ -855,5 +886,6 @@ Interpretation:
 | Stage200 GS predictor architecture package | `experiments/stage200_gs_predictor_architecture_package/` |
 | Stage201 predictor-only smoke | `experiments/stage201_predictor_only_smoke/` |
 | Stage202 predictor-only broader validation | `experiments/stage202_predictor_only_broader_validation/` |
+| Stage203 GS latent/residual codec design | `experiments/stage203_gs_latent_residual_codec_design/` |
 | Stage160 subjective video | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence.mp4` |
 | Stage160 contact sheet | `/data/hctang/tmp/opencode/mono_dfcgs_runs/stage160_stage158_extended_subjective_evidence/stage160_gap4_stage158_extended_subjective_evidence_contact_sheet.jpg` |

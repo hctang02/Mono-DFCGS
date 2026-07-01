@@ -1,0 +1,3 @@
+codec,status,payload_bytes,raw_reference_bytes,residual_mse_before,residual_mse_after,mse_reduction,detail
+gs_attr_topk_residual_entropy_v1,pass,246,209,0.006919591687619686,0.0008317023166455328,0.8798047118685358,keep_count=13; side_bits=6; delta_zlib_bytes=15; residual_zlib_bytes=138
+gs_attr_deterministic_index_residual_entropy_v1,pass,217,187,0.007950554601848125,0.0008250265964306891,0.8962303087335681,keep_count=12; side_bits=6; index_bytes=0; residual_zlib_bytes=128
